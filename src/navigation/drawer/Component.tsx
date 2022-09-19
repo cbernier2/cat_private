@@ -1,7 +1,7 @@
 import React from 'react';
 import {View} from 'react-native';
 import {CatDrawerType} from './types';
-import CatText from '../text';
+import CatText from '../../components/text';
 import styles from './styles';
 
 const CatDrawer: React.FC<CatDrawerType> = () => {
