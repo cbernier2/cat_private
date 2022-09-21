@@ -23,7 +23,7 @@ const LoginScreen: React.FC<LoginScreenType> = ({navigation}) => {
   };
 
   return (
-    <CatScreen>
+    <CatScreen title={'login'}>
       <View style={styles.container}>
         <CatText>{'Name: '}</CatText>
         <CatTextInput

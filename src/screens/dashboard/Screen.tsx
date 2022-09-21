@@ -16,7 +16,7 @@ const DashboardScreen: React.FC<DashboardScreenType> = ({navigation}) => {
   };
 
   return (
-    <CatScreen>
+    <CatScreen title={'dashboard'}>
       <View style={styles.container}>
         <CatText>{'user name: ' + userName}</CatText>
         <CatButton title={'Go to Login'} onPress={goToLogin} />
