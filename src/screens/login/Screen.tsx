@@ -1,7 +1,6 @@
 import React from 'react';
 import CatScreen from '../../components/screen';
 import {View} from 'react-native';
-import styles from './styles';
 import CatText from '../../components/text';
 import CatButton from '../../components/button';
 import {LoginScreenType} from './types';
@@ -13,9 +12,9 @@ const LoginScreen: React.FC<LoginScreenType> = ({navigation}) => {
 
   return (
     <CatScreen>
-      <View style={styles.container}>
+      <View>
         <CatText>{'login screen'}</CatText>
-        <CatButton title={'Go to Dashboard'} onPress={goToDashboard} />
+        <CatButton onPress={goToDashboard}>Go to Dashboard</CatButton>
       </View>
     </CatScreen>
   );

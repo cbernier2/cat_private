@@ -1,10 +1,9 @@
 import React from 'react';
-import {Text} from 'react-native';
+import {Text} from 'react-native-paper';
 import {CatTextType} from './types';
-import styles from './styles';
 
 const CatText: React.FC<CatTextType> = props => {
-  return <Text {...props} style={[styles.text, props.style]} />;
+  return <Text {...props} />;
 };
 
 export default CatText;
