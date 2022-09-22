@@ -1,0 +1,166 @@
+trigger:
+  - 'main'
+  - 'develop'
+pr: none
+stages:
+- stage: publish
+  variables:
+    - group: cat
+  jobs:
+  - job: publish
+    timeoutInMinutes: 300
+    pool:
+      vmImage: 'macOS-latest'
+    steps:
+      - checkout: self
+
+      - template: setup.yml
+      
+
+      - task: InstallAppleProvisioningProfile@1
+        displayName: Install AdHoc provisioning profile
+        inputs:
+          provProfileSecureFile: PitSupervisor_AdHoc.mobileprovision
+
+      - task: InstallAppleProvisioningProfile@1
+        displayName: Install App Store provisioning profile
+        inputs:
+          provProfileSecureFile: PitSupervisor_AppStore.mobileprovision
+
+      - task: InstallAppleCertificate@2
+        displayName: Install an Apple certificate
+        inputs:
+          certSecureFile: SpiriaDistCertificate.p12
+          certPwd: $(IosDistCertificate)
+          deleteCert: false
+          deleteCustomKeychain: false
+          signingIdentity: $(ioscertificateidentity)
+          
+      - task: DownloadSecureFile@1
+        name: keystore
+        displayName: Download Android keystore
+        inputs:
+          secureFile: keystore.jks
+          
+      - task: Gradle@2
+        displayName: gradlew bundleRelease
+        inputs:
+          wrapperScript: android/gradlew
+          cwd: android
+          tasks: bundleRelease
+          jdkVersionOption: 1.11
+          
+      - task: Bash@3
+        displayName: Sign Android Bundle (.aab)
+        inputs:
+          targetType: inline
+          script: '"$JAVA_HOME/bin/jarsigner" -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore $(keystore.secureFilePath) -storepass $(keystorepass) -keypass $(keystorepass) app/build/outputs/bundle/release/*.aab key0'
+          workingDirectory: android
+          
+      - task: Gradle@2
+        displayName: gradlew assembleRelease
+        inputs:
+          wrapperScript: android/gradlew
+          cwd: android
+          tasks: assembleRelease
+          jdkVersionOption: 1.11
+          
+      - task: AndroidSigning@3
+        displayName: Signing and aligning APK file
+        inputs:
+          apkFiles: android/app/build/outputs/apk/release/*.apk
+          apksignerKeystoreFile: keystore.jks
+          keystorePass: $(keystorepass)
+          keystoreAlias: key0
+          keyPass: $(keystorepass)
+          
+      - task: CmdLine@2
+        displayName: pod install
+        inputs:
+          workingDirectory: ios
+          script: pod install
+          
+      - task: Xcode@5
+        displayName: Xcode build adhoc
+        inputs:
+          configuration: Release
+          sdk: iphoneos
+          xcWorkspacePath: ios/pit_supervisor.xcworkspace
+          scheme: pit_supervisor
+          xcodeVersion: 13
+          signingOption: manual
+          signingIdentity: $(ioscertificateidentity)
+          provisioningProfileUuid: 706c730a-2c64-4918-85dd-8174c1cd7f6f
+          packageApp: true
+          archivePath: ios/build/adhoc
+          exportPath: ios/build/adhoc
+          exportOptions: plist
+          exportMethod: ad-hoc
+          exportTeamId: RHNS93D9UP
+          exportOptionsPlist: ios/ExportOptions_adhoc.plist
+          
+      - task: Xcode@5
+        displayName: Xcode build app store
+        inputs:
+          configuration: Release
+          sdk: iphoneos
+          xcWorkspacePath: ios/pit_supervisor.xcworkspace
+          scheme: pit_supervisor
+          xcodeVersion: 13
+          signingOption: manual
+          signingIdentity: $(ioscertificateidentity)
+          provisioningProfileUuid: 47b90a6f-4075-4816-88c6-393fdb38b937
+          packageApp: true
+          archivePath: ios/build/appstore
+          exportPath: ios/build/appstore
+          exportOptions: plist
+          exportMethod: app-store
+          exportTeamId: RHNS93D9UP
+          exportOptionsPlist: ios/ExportOptions_appstore.plist
+
+      - task: CmdLine@2
+        displayName: Generate change-log.txt
+        inputs:
+          script: >-
+            date > change-log.txt
+
+            echo "Build ID: ${BUILD_BUILDID}" >> change-log.txt
+
+            echo "Last commit: $(git log -n 1 --pretty="%t")" >> change-log.txt
+
+            git log $(git describe --tags --abbrev=0)..HEAD --pretty=format:'PR merge hash %h' --merges >> change-log.txt
+
+      - task: CopyFiles@2
+        displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+        condition: succeededOrFailed()
+        inputs:
+          SourceFolder: $(system.defaultworkingdirectory)
+          Contents: >-
+            change-log.txt
+
+            android/app/build/outputs/bundle/release/*.aab
+
+            android/app/build/**/*.apk
+
+            ios/build/appstore/*.ipa
+
+            ios/build/adhoc/*.ipa
+          TargetFolder: $(build.artifactstagingdirectory)
+          
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish Artifact: MobileApps'
+        condition: succeededOrFailed()
+        inputs:
+          PathtoPublish: $(build.artifactstagingdirectory)
+          ArtifactName: MobileApps
+          
+      - task: AppStoreRelease@1
+        inputs:
+         authType: 'ApiKey'
+         apiKeyId: $(iosapikeyid)
+         apitoken: $(iosapitotken)
+         apiKeyIssuerId: $(iosapikeyissuerid)
+         releaseTrack: 'TestFlight'
+         appIdentifier: 'com.spiria.pit-supervisor'
+         appType: 'iOS'
+         ipaPath: '**/appstore/*.ipa'
