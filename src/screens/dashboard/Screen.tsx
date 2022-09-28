@@ -5,6 +5,7 @@ import styles from './styles';
 import CatText from '../../components/text';
 import CatButton from '../../components/button';
 import {DashboardScreenType} from './types';
+import {BarChart} from '../../components/graphs/bar-chart/Component';
 
 const DashboardScreen: React.FC<DashboardScreenType> = ({navigation}) => {
   const goToLogin = () => {
@@ -16,6 +17,7 @@ const DashboardScreen: React.FC<DashboardScreenType> = ({navigation}) => {
       <View style={styles.container}>
         <CatText>{'dashboard screen'}</CatText>
         <CatButton title={'Go to Login'} onPress={goToLogin} />
+        <BarChart />
       </View>
     </CatScreen>
   );
