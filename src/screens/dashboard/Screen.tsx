@@ -3,11 +3,12 @@ import CatScreen from '../../components/screen';
 import {View} from 'react-native';
 import CatText from '../../components/text';
 import CatButton from '../../components/button';
-// import CatCard from '../../components/card';
 import {DashboardScreenType} from './types';
-import {Card, Paragraph, Title} from 'react-native-paper';
+import {Card, Paragraph, Title, useTheme} from 'react-native-paper';
 
 const DashboardScreen: React.FC<DashboardScreenType> = ({navigation}) => {
+  // RNP's useTheme() hook does reflect the custom theme
+  const theme = useTheme();
   const goToLogin = () => {
     navigation.navigate('Login');
   };
@@ -15,7 +16,11 @@ const DashboardScreen: React.FC<DashboardScreenType> = ({navigation}) => {
   return (
     <CatScreen>
       <View>
-        <CatText>{'dashboard screen'}</CatText>
+        {/* Thanks to global augmentations IDEs should be able to autocomplete
+          with custom things defined in the theme and TS shouldn't complain either */}
+        <CatText style={{color: theme.colors.errorCaution100}}>
+          {'dashboard screen'}
+        </CatText>
         <CatButton onPress={goToLogin}>Go to Login</CatButton>
 
         <CatButton disabled>Disabled</CatButton>

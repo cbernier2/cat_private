@@ -18,7 +18,7 @@ export const useThemePreferences = () => {
       theme,
       toggleTheme,
     }),
-    [toggleTheme, isThemeDark],
+    [isThemeDark, theme, toggleTheme],
   );
 
   return {

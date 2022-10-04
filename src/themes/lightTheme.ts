@@ -1,12 +1,13 @@
 import {DefaultTheme as NavigationDefaultTheme} from '@react-navigation/native';
-import {DefaultTheme as PaperDefaultTheme} from 'react-native-paper';
+import {MD3LightTheme as PaperLightTheme} from 'react-native-paper';
+import {fonts} from './fonts';
 
 const base = {
   ...NavigationDefaultTheme,
-  ...PaperDefaultTheme,
+  ...PaperLightTheme,
   colors: {
     ...NavigationDefaultTheme.colors,
-    ...PaperDefaultTheme.colors,
+    ...PaperLightTheme.colors,
   },
 };
 
@@ -15,6 +16,11 @@ export const lightTheme = {
   ...base,
   dark: false,
   roundness: 10,
+  version: 3,
+  fonts: {
+    ...base.fonts,
+    ...fonts,
+  },
   colors: {
     ...base.colors,
     primary: '#ccff00',
