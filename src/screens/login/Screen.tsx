@@ -36,7 +36,9 @@ const LoginScreen: React.FC<LoginScreenType> = ({navigation}) => {
           onChangeText={value => setPassword(value)}
           secureTextEntry={true}
         />
-        <CatButton disabled={isLogin} title={'Login'} onPress={login} />
+        <CatButton disabled={isLogin} onPress={login}>
+          {'Login'}
+        </CatButton>
       </View>
     </CatScreen>
   );

@@ -1,3 +1,4 @@
-import {TextProps} from 'react-native';
+import {ComponentProps} from 'react';
+import {Text} from 'react-native-paper';
 
-export type CatTextType = TextProps & {};
+export type CatTextType = ComponentProps<typeof Text>;
