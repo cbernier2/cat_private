@@ -52,6 +52,9 @@
     "setupFiles": [
       "<rootDir>/__mocks__/tests-setup.js"
     ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!(@react-native|react-native|react-native-paper))"
+    ],
     "moduleFileExtensions": [
       "ts",
       "tsx",

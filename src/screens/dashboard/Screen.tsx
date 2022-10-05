@@ -6,6 +6,7 @@ import CatButton from '../../components/button';
 import {DashboardScreenType} from './types';
 import useCatSelector from '../../hooks/useCatSelector';
 import {userNameSelector} from '../../redux/user-selectors';
+import {Card, Paragraph, Title, useTheme} from 'react-native-paper';
 
 const DashboardScreen: React.FC<DashboardScreenType> = ({navigation}) => {
   // RNP's useTheme() hook does reflect the custom theme

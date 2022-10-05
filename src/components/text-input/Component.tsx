@@ -1,10 +1,10 @@
 import React from 'react';
 import {TextInput} from 'react-native';
 import {CatTextInputType} from './types';
-import useCatTheme from '../../hooks/useCatTheme';
+import {useTheme} from 'react-native-paper';
 
 const CatTextInput: React.FC<CatTextInputType> = props => {
-  const {colors} = useCatTheme();
+  const {colors} = useTheme();
 
   return <TextInput {...props} style={[{color: colors.text}, props.style]} />;
 };

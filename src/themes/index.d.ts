@@ -1,4 +1,4 @@
-import { ThemeOverride } from './index'
+import {ThemeOverride} from './index';
 
 // Inject custom properties in definition
 declare global {
