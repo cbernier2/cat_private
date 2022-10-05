@@ -32,7 +32,7 @@ export const loginAsyncAction = createAsyncThunk(
 );
 
 const slice = createSlice({
-  name: 'counter',
+  name: key,
   initialState,
   reducers: {
     setPasswordAction: (state, action: PayloadAction<string>) => {
