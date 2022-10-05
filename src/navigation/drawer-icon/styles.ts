@@ -5,20 +5,10 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     flexGrow: 1,
+    backgroundColor: 'black',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  title: {
-    fontSize: 20,
-  },
-  statusContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    width: 100,
-    backgroundColor: 'red',
-  },
-  lastUpdateContainer: {},
-  statusIconContainer: {},
 });
 
 export default styles;

@@ -4,10 +4,10 @@ import app from './app-slice';
 import {persistStore} from 'redux-persist';
 import thunk from 'redux-thunk';
 
-const reducers = combineReducers({user, app});
+export const rootReducer = combineReducers({user, app});
 
 export const store = configureStore({
-  reducer: reducers,
+  reducer: rootReducer,
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       immutableCheck: false,

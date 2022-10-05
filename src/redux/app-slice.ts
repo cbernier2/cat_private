@@ -2,7 +2,8 @@ import {createSlice, Reducer} from '@reduxjs/toolkit';
 import type {PayloadAction} from '@reduxjs/toolkit';
 import {persistReducer} from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {key} from './user-slice';
+
+export const key = 'app';
 
 export interface AppState {
   value: number;
