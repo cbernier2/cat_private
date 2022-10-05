@@ -1,9 +1,7 @@
 trigger: none
 pr:
-  autoCancel: true
-  branches:
-    include:
-      - '*'
+  - 'main'
+  - 'develop'
 stages:
 - stage: test
   variables:

@@ -7,8 +7,7 @@ import CatDrawer from './drawer';
 import CatHeader from './header';
 import React from 'react';
 import {Provider as PaperProvider} from 'react-native-paper';
-import useCatSelector from '../hooks/useCatSelector';
-import {themeSelector} from '../redux/app-selectors';
+import useCatTheme from '../hooks/useCatTheme';
 
 const Tab = createBottomTabNavigator();
 
@@ -28,7 +27,7 @@ const TabNavigator = () => {
 };
 
 const CatNavigation = () => {
-  const theme = useCatSelector(themeSelector);
+  const theme = useCatTheme();
 
   return (
     <PaperProvider theme={theme}>

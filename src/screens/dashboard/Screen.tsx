@@ -6,11 +6,11 @@ import CatButton from '../../components/button';
 import {DashboardScreenType} from './types';
 import useCatSelector from '../../hooks/useCatSelector';
 import {userNameSelector} from '../../redux/user-selectors';
-import {Card, Paragraph, Title, useTheme} from 'react-native-paper';
+import {Card, Paragraph, Title} from 'react-native-paper';
+import useCatTheme from '../../hooks/useCatTheme';
 
 const DashboardScreen: React.FC<DashboardScreenType> = ({navigation}) => {
-  // RNP's useTheme() hook does reflect the custom theme
-  const theme = useTheme();
+  const {colors} = useCatTheme();
 
   const userName = useCatSelector(userNameSelector);
 
@@ -19,11 +19,11 @@ const DashboardScreen: React.FC<DashboardScreenType> = ({navigation}) => {
   };
 
   return (
-    <CatScreen>
+    <CatScreen title={'dashboard'}>
       <View>
         {/* Thanks to global augmentations IDEs should be able to autocomplete
           with custom things defined in the theme and TS shouldn't complain either */}
-        <CatText style={{color: theme.colors.errorCaution100}}>
+        <CatText style={{color: colors.errorCaution100}}>
           {'user name: ' + userName}
         </CatText>
         <CatButton onPress={goToLogin}>Go to Login</CatButton>
