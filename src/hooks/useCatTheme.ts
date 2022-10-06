@@ -1,10 +1,8 @@
+import useCatSelector from './useCatSelector';
+import {themeSelector} from '../redux/app-selectors';
+
 const useCatTheme = () => {
-  return {
-    colors: {
-      screenBackground: '#121212',
-      text: '#FFFFFFDE',
-    },
-  } as const;
+  return useCatSelector(themeSelector);
 };
 
 export default useCatTheme;

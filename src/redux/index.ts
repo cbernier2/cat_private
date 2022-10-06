@@ -10,7 +10,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {networkTransform} from '../utils/offline';
 
-const reducers = persistReducer(
+export const rootReducer = persistReducer(
   {
     key: 'root',
     storage: AsyncStorage,
@@ -25,7 +25,7 @@ const networkMiddleware = createNetworkMiddleware({
 });
 
 export const store = configureStore({
-  reducer: reducers,
+  reducer: rootReducer,
   middleware: getDefaultMiddleware => [
     networkMiddleware,
     ...getDefaultMiddleware({

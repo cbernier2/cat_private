@@ -17,7 +17,7 @@ const CatScreen: React.FC<CatScreenType> = ({children, title}) => {
 
   return (
     <SafeAreaView
-      style={[styles.background, {backgroundColor: colors.screenBackground}]}>
+      style={[styles.background, {backgroundColor: colors.background}]}>
       {children}
     </SafeAreaView>
   );

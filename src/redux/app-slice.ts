@@ -1,19 +1,21 @@
 import {createSlice, Reducer} from '@reduxjs/toolkit';
-import type {PayloadAction} from '@reduxjs/toolkit';
 import {persistReducer} from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {createOfflineAsyncThunk} from '../utils/offline';
 import {offlineActionTypes} from 'react-native-offline';
 import {sleep} from '../utils/promise';
+import {darkTheme} from '../themes/darkTheme';
 
 export const key = 'app';
 
 export interface AppState {
-  value: number;
+  isThemeDark: boolean;
+  theme: typeof darkTheme;
 }
 
 const initialState: AppState = {
-  value: 0,
+  isThemeDark: true,
+  theme: darkTheme,
 };
 
 export const offlineQueueTest = createOfflineAsyncThunk(
@@ -40,8 +42,8 @@ export const slice = createSlice({
       console.log('CANCEL!');
       return state;
     },
-    incrementByAmount: (state, action: PayloadAction<number>) => {
-      state.value += action.payload;
+    toggleTheme: state => {
+      state.isThemeDark = !state.isThemeDark;
     },
   },
   extraReducers: builder => {
@@ -61,6 +63,6 @@ const appReducer = persistReducer(
   typedReducer,
 );
 
-export const {offlineCancelTest} = slice.actions;
+export const {offlineCancelTest, toggleTheme} = slice.actions;
 
 export default appReducer;

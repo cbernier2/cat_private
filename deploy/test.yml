@@ -1,0 +1,17 @@
+trigger: none
+pr:
+  - 'main'
+  - 'develop'
+stages:
+- stage: test
+  variables:
+    - group: cat
+  jobs:
+  - job: test
+    timeoutInMinutes: 300
+    pool:
+      vmImage: 'macOS-latest'
+    steps:
+      - checkout: self
+      
+      - template: setup.yml
