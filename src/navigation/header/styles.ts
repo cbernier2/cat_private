@@ -7,18 +7,33 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'space-between',
     alignItems: 'center',
+    width: '100%',
   },
   title: {
     fontSize: 20,
   },
   statusContainer: {
-    flex: 1,
     flexDirection: 'row',
-    width: 100,
-    backgroundColor: 'red',
   },
-  lastUpdateContainer: {},
-  statusIconContainer: {},
+  statusTextContainer: {
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+  },
+  statusTitle: {
+    textTransform: 'uppercase',
+    fontSize: 8,
+  },
+  statusDate: {
+    fontSize: 12,
+    lineHeight: 12,
+    fontFamily: 'Roboto-Medium',
+  },
+  statusIconContainer: {
+    marginLeft: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
 
 export default styles;
