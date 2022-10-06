@@ -7,7 +7,7 @@ import CatButton from '../../components/button';
 import {DashboardScreenType} from './types';
 import useCatSelector from '../../hooks/useCatSelector';
 import {userNameSelector} from '../../redux/user-selectors';
-// import {offlineQueueTest, offlineCancelTest} from '../../redux/app-slice';
+import {offlineQueueTest, offlineCancelTest} from '../../redux/app-slice';
 import useCatDispatch from '../../hooks/useCatDispatch';
 import {connect} from 'react-redux';
 
@@ -21,24 +21,12 @@ const DashboardScreen: React.FC<DashboardScreenType> = props => {
 
   // hardcoded PO actions, since thunks seem to have some issues being set into the queue
   const cancel = async () => {
-    // await dispatch(offlineCancelTest());
-    dispatch({type: 'app/offlineCancelTest'});
+    await dispatch(offlineCancelTest());
     props.navigation.navigate('Dashboard');
   };
 
   const queue = async () => {
-    // await dispatch(offlineQueueTest());
-    dispatch({
-      type: 'app/offlineQueueTest',
-      payload: {test: true},
-      meta: {
-        retry: true,
-        // Which action type(s) will remove this action from the queue
-        //  We were wondering on if/how we can store posts for multiple users
-        //  If we can't, we can clear them on logout by adding the logout action here
-        dismiss: ['app/offlineCancelTest'],
-      },
-    });
+    await dispatch(offlineQueueTest());
     props.navigation.navigate('Dashboard');
   };
 

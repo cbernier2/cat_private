@@ -26,14 +26,14 @@ const networkMiddleware = createNetworkMiddleware({
 
 export const store = configureStore({
   reducer: reducers,
-  middleware: getDefaultMiddleware =>
-    [
-      networkMiddleware,
-      ...getDefaultMiddleware({
-        immutableCheck: false,
-        serializableCheck: false,
-      }),
-    ].concat(thunk),
+  middleware: getDefaultMiddleware => [
+    networkMiddleware,
+    ...getDefaultMiddleware({
+      immutableCheck: false,
+      serializableCheck: false,
+    }),
+    thunk,
+  ],
 });
 
 export const persistor = persistStore(store);

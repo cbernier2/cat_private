@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice, Reducer} from '@reduxjs/toolkit';
+import {createSlice, Reducer} from '@reduxjs/toolkit';
 import type {PayloadAction} from '@reduxjs/toolkit';
 import {persistReducer} from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -15,14 +15,6 @@ export interface AppState {
 const initialState: AppState = {
   value: 0,
 };
-
-export const offlineCancelTest = createAsyncThunk(
-  `${key}/offlineCancelTest`,
-  async () => {
-    console.log('CANCEL!');
-    return 'CANCEL!';
-  },
-);
 
 export const offlineQueueTest = createOfflineAsyncThunk(
   `${key}/offlineQueueTest`,
@@ -41,33 +33,21 @@ export const offlineQueueTest = createOfflineAsyncThunk(
 );
 
 export const slice = createSlice({
-  name: 'counter',
+  name: key,
   initialState,
   reducers: {
-    increment: state => {
-      state.value += 1;
-    },
-    decrement: state => {
-      state.value -= 1;
+    offlineCancelTest: state => {
+      console.log('CANCEL!');
+      return state;
     },
     incrementByAmount: (state, action: PayloadAction<number>) => {
       state.value += action.payload;
     },
   },
   extraReducers: builder => {
-    builder
-      .addCase(offlineActionTypes.FETCH_OFFLINE_MODE, (state, action) => {
-        console.log(JSON.stringify(state), JSON.stringify(action));
-        return state;
-      })
-      .addCase('app/offlineQueueTest', (state) => {
-        console.log('QUEUED?');
-        return state;
-      })
-      .addCase('app/offlineCancelTest', (state) => {
-        console.log('CANCEL!');
-        return state;
-      });
+    builder.addCase(offlineActionTypes.FETCH_OFFLINE_MODE, state => {
+      return state;
+    });
   },
 });
 
@@ -81,6 +61,6 @@ const appReducer = persistReducer(
   typedReducer,
 );
 
-export const {increment, decrement, incrementByAmount} = slice.actions;
+export const {offlineCancelTest} = slice.actions;
 
 export default appReducer;
