@@ -20,8 +20,18 @@ i18next
     compatibilityJSON: 'v3',
     fallbackLng: 'en',
     resources: {
-      en: {translation: require('./json/en.json')},
-      fr: {translation: require('./json/fr.json')},
+      en: {
+        translation: {
+          ...require('./common/en.json'),
+          m: require('./mobile/en.json'),
+        },
+      },
+      fr: {
+        translation: {
+          ...require('./common/fr.json'),
+          m: require('./mobile/fr.json'),
+        },
+      },
     },
     nsSeparator: false,
   });
