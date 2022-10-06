@@ -86,7 +86,14 @@ export const BarChart = () => {
         {areas.map((area, index) => {
           const {path} = area;
 
-          return <Path key={index} fill="white" d={path!} />;
+          return (
+            <Path
+              key={index}
+              fill="white"
+              d={path!}
+              onPress={() => console.log(`Clicked! #${index}`)}
+            />
+          );
         })}
         {now()}
       </Svg>

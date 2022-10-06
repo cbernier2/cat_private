@@ -1,0 +1,25 @@
+steps:
+      - task: NodeTool@0
+        displayName: Use Node 16.x
+        inputs:
+          versionSpec: 16.x
+
+      - task: CmdLine@2
+        displayName: yarn install
+        inputs:
+          script: yarn install
+
+      - task: CmdLine@2
+        displayName: yarn prebuild
+        inputs:
+          script: yarn prebuild
+          
+      - task: CmdLine@2
+        displayName: yarn lint
+        inputs:
+          script: yarn lint
+          
+      - task: CmdLine@2
+        displayName: yarn test
+        inputs:
+          script: yarn test

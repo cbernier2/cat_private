@@ -1,3 +1,4 @@
-import {ButtonProps} from 'react-native';
+import {ComponentProps} from 'react';
+import {Button} from 'react-native-paper';
 
-export type CatButtonType = ButtonProps & {};
+export type CatButtonType = ComponentProps<typeof Button>;
