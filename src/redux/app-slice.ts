@@ -11,11 +11,13 @@ export const key = 'app';
 export interface AppState {
   isThemeDark: boolean;
   theme: typeof darkTheme;
+  emulateOffline: boolean;
 }
 
 const initialState: AppState = {
   isThemeDark: true,
   theme: darkTheme,
+  emulateOffline: false,
 };
 
 export const offlineQueueTest = createOfflineAsyncThunk(
@@ -45,6 +47,9 @@ export const slice = createSlice({
     toggleTheme: state => {
       state.isThemeDark = !state.isThemeDark;
     },
+    toggleOffline: state => {
+      state.emulateOffline = !state.emulateOffline;
+    }
   },
   extraReducers: builder => {
     builder.addCase(offlineActionTypes.FETCH_OFFLINE_MODE, state => {
@@ -63,6 +68,6 @@ const appReducer = persistReducer(
   typedReducer,
 );
 
-export const {offlineCancelTest, toggleTheme} = slice.actions;
+export const {offlineCancelTest, toggleOffline, toggleTheme} = slice.actions;
 
 export default appReducer;

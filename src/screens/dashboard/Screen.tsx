@@ -44,8 +44,8 @@ const DashboardScreen: React.FC<DashboardScreenType> = props => {
           {'user name: ' + userName}
         </CatText>
         <CatButton onPress={goToLogin}>Go to Login</CatButton>
-        <CatButton title={'Queue a thing'} onPress={queue} />
-        <CatButton title={'Cancel queue'} onPress={cancel} />
+        <CatButton onPress={queue}>Queue a thing</CatButton>
+        <CatButton onPress={cancel}>Cancel queue</CatButton>
 
         <CatText>{JSON.stringify(props.queue)}</CatText>
 
