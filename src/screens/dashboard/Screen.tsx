@@ -21,7 +21,7 @@ const DashboardScreen: React.FC<DashboardScreenType> = ({navigation}) => {
   };
 
   return (
-    <CatScreen title={t('m.summary_title')}>
+    <CatScreen title={t('summary_title')}>
       <View>
         {/* Thanks to global augmentations IDEs should be able to autocomplete
           with custom things defined in the theme and TS shouldn't complain either */}

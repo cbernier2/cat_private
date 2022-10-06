@@ -8,13 +8,11 @@ export const key = 'app';
 export interface AppState {
   isThemeDark: boolean;
   theme: typeof darkTheme;
-  lastSyncTime: Date;
 }
 
 const initialState: AppState = {
   isThemeDark: true,
   theme: darkTheme,
-  lastSyncTime: new Date(),
 };
 
 export const slice = createSlice({
@@ -32,7 +30,7 @@ const appReducer = persistReducer(
   {
     key,
     storage: AsyncStorage,
-    blacklist: ['password', 'isLogin', 'lastSyncTime'],
+    blacklist: ['password', 'isLogin'],
   },
   typedReducer,
 );

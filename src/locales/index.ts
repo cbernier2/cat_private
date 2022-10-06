@@ -22,14 +22,14 @@ i18next
     resources: {
       en: {
         translation: {
-          ...require('./common/en.json'),
-          m: require('./mobile/en.json'),
+          cat: require('./common/en.json'),
+          ...require('./mobile/en.json'),
         },
       },
       fr: {
         translation: {
-          ...require('./common/fr.json'),
-          m: require('./mobile/fr.json'),
+          cat: require('./common/fr.json'),
+          ...require('./mobile/fr.json'),
         },
       },
     },
