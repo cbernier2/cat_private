@@ -4,6 +4,7 @@ import {persistor, store} from './src/redux';
 import {Provider} from 'react-redux';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {PersistGate} from 'redux-persist/integration/react';
+import './src/locales';
 
 const App = () => {
   return (
