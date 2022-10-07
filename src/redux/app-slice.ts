@@ -49,7 +49,7 @@ export const slice = createSlice({
     },
     toggleOffline: state => {
       state.emulateOffline = !state.emulateOffline;
-    }
+    },
   },
   extraReducers: builder => {
     builder.addCase(offlineActionTypes.FETCH_OFFLINE_MODE, state => {

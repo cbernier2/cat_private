@@ -7,6 +7,7 @@ import {PersistGate} from 'redux-persist/integration/react';
 import {ReduxNetworkProvider} from 'react-native-offline';
 import useCatSelector from './src/hooks/useCatSelector';
 import {emulateOfflineSelector} from './src/redux/app-selectors';
+import './src/locales';
 
 const App = () => {
   return (

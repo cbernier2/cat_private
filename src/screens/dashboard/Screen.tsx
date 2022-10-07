@@ -11,10 +11,12 @@ import useCatDispatch from '../../hooks/useCatDispatch';
 import {Card, Paragraph, Title} from 'react-native-paper';
 import useCatTheme from '../../hooks/useCatTheme';
 import {connect} from 'react-redux';
+import {useTranslation} from 'react-i18next';
 
 const DashboardScreen: React.FC<DashboardScreenType> = props => {
   const dispatch = useCatDispatch();
   const {colors} = useCatTheme();
+  const {t} = useTranslation();
 
   const userName = useCatSelector(userNameSelector);
 
@@ -36,7 +38,7 @@ const DashboardScreen: React.FC<DashboardScreenType> = props => {
   console.log(JSON.stringify(props.queue));
 
   return (
-    <CatScreen title={'dashboard'}>
+    <CatScreen title={t('summary_title')}>
       <View>
         {/* Thanks to global augmentations IDEs should be able to autocomplete
           with custom things defined in the theme and TS shouldn't complain either */}
