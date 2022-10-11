@@ -1,3 +1,5 @@
+import {NativeModules} from 'react-native';
+
 jest.mock('redux-persist', () => {
   const real = jest.requireActual('redux-persist');
   return {
@@ -18,3 +20,10 @@ jest.mock('@react-navigation/native', () => {
     }),
   };
 });
+
+NativeModules.RNCNetInfo = {
+  getCurrentConnectivity: jest.fn(),
+  isConnectionMetered: jest.fn(),
+  addListener: jest.fn(),
+  removeListeners: jest.fn(),
+};
