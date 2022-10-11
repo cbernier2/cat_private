@@ -7,3 +7,8 @@ export const themeSelector = createSelector(
   (state: RootState) => state.app.isThemeDark,
   isThemeDark => (isThemeDark ? darkTheme : lightTheme),
 );
+
+export const emulateOfflineSelector = createSelector(
+  (state: RootState) => state.app.emulateOffline,
+  emulateOffline => emulateOffline,
+);

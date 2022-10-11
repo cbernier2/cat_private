@@ -6,19 +6,36 @@ import CatButton from '../../components/button';
 import {DashboardScreenType} from './types';
 import useCatSelector from '../../hooks/useCatSelector';
 import {userNameSelector} from '../../redux/user-selectors';
+import {offlineQueueTest, offlineCancelTest} from '../../redux/app-slice';
+import useCatDispatch from '../../hooks/useCatDispatch';
 import {Card, Paragraph, Title} from 'react-native-paper';
 import useCatTheme from '../../hooks/useCatTheme';
 import {useTranslation} from 'react-i18next';
 
-const DashboardScreen: React.FC<DashboardScreenType> = ({navigation}) => {
+const DashboardScreen: React.FC<DashboardScreenType> = props => {
+  const dispatch = useCatDispatch();
   const {colors} = useCatTheme();
   const {t} = useTranslation();
+  const actionQueue = useCatSelector(state => state.network.actionQueue);
 
   const userName = useCatSelector(userNameSelector);
 
   const goToLogin = () => {
-    navigation.navigate('Login');
+    props.navigation.navigate('Login');
   };
+
+  // hardcoded PO actions, since thunks seem to have some issues being set into the queue
+  const cancel = async () => {
+    await dispatch(offlineCancelTest());
+    props.navigation.navigate('Dashboard');
+  };
+
+  const queue = async () => {
+    await dispatch(offlineQueueTest());
+    props.navigation.navigate('Dashboard');
+  };
+
+  console.log(JSON.stringify(actionQueue));
 
   return (
     <CatScreen title={t('summary_title')}>
@@ -29,6 +46,10 @@ const DashboardScreen: React.FC<DashboardScreenType> = ({navigation}) => {
           {'user name: ' + userName}
         </CatText>
         <CatButton onPress={goToLogin}>Go to Login</CatButton>
+        <CatButton onPress={queue}>Queue a thing</CatButton>
+        <CatButton onPress={cancel}>Cancel queue</CatButton>
+
+        <CatText>{JSON.stringify(actionQueue)}</CatText>
 
         <CatButton disabled>Disabled</CatButton>
 
