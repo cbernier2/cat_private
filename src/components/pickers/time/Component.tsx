@@ -1,30 +1,23 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {TimePickerModal} from 'react-native-paper-dates';
 
 import CatButton from '../../button';
 
-import {CatTimePickerType} from './types';
+import {CatTimePickerType, CatTimePickerSelection} from './types';
 
 export const CatTimePicker: React.FC<CatTimePickerType> = ({onSelect}) => {
-  const [visible, setVisible] = React.useState(false);
-  const onDismiss = React.useCallback(() => {
-    setVisible(false);
-  }, [setVisible]);
+  const [visible, setVisible] = useState(false);
 
-  const onConfirm = React.useCallback(
-    // @ts-ignore
-    ({hours, minutes}) => {
-      setVisible(false);
-      onSelect({hours, minutes});
-    },
-    [onSelect, setVisible],
-  );
+  const onConfirm = ({hours, minutes}: CatTimePickerSelection) => {
+    setVisible(false);
+    onSelect({hours, minutes});
+  };
 
   return (
     <>
       <TimePickerModal
         visible={visible}
-        onDismiss={onDismiss}
+        onDismiss={() => setVisible(false)}
         onConfirm={onConfirm}
         hours={12} // default: current hours
         minutes={14} // default: current minutes

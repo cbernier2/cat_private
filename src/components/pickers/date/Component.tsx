@@ -1,29 +1,22 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {DatePickerModal} from 'react-native-paper-dates';
 
 import CatButton from '../../button';
 
-import {CatDatePickerType} from './types';
+import {CatDatePickerType, CatDatePickerSelection} from './types';
 
 export const CatDatePicker: React.FC<CatDatePickerType> = ({
   date,
   onSelect,
 }) => {
-  const [value, setValue] = React.useState<Date | undefined>(date);
-  const [visible, setVisible] = React.useState(false);
+  const [value, setValue] = useState<Date | undefined>(date);
+  const [visible, setVisible] = useState(false);
 
-  const onDismiss = React.useCallback(() => {
+  const onConfirm = (data: CatDatePickerSelection) => {
     setVisible(false);
-  }, [setVisible]);
-
-  const onConfirm = React.useCallback(
-    (data: any) => {
-      setVisible(false);
-      setValue(data.date);
-      onSelect(data.date);
-    },
-    [onSelect, setVisible],
-  );
+    setValue(data.date);
+    onSelect(data);
+  };
 
   return (
     <>
@@ -34,7 +27,7 @@ export const CatDatePicker: React.FC<CatDatePickerType> = ({
         locale="en" // Not optional for date pickers...
         mode="single"
         visible={visible}
-        onDismiss={onDismiss}
+        onDismiss={() => setVisible(false)}
         date={value}
         onConfirm={onConfirm}
         // validRange={{
@@ -56,4 +49,4 @@ export const CatDatePicker: React.FC<CatDatePickerType> = ({
       />
     </>
   );
-}
+};

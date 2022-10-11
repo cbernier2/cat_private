@@ -1,4 +1,10 @@
+import {SetStateAction} from 'react';
+
 export interface CatDatePickerType {
   date?: Date;
-  onSelect: (time: {hours: number; minutes: number}) => void;
+  onSelect: (date: CatDatePickerSelection) => void;
+}
+
+export interface CatDatePickerSelection {
+  date: SetStateAction<Date | undefined>;
 }

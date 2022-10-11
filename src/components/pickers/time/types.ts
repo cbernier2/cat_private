@@ -1,3 +1,8 @@
 export interface CatTimePickerType {
-  onSelect: (time: {hours: number; minutes: number}) => void;
+  onSelect: (time: CatTimePickerSelection) => void;
+}
+
+export interface CatTimePickerSelection {
+  hours: number;
+  minutes: number;
 }
