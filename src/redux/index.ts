@@ -1,20 +1,61 @@
 import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import user from './user-slice';
 import app, {offlineQueueTest} from './app-slice';
-import {persistReducer, persistStore} from 'redux-persist';
+import {createTransform, persistReducer, persistStore} from 'redux-persist';
 import thunk from 'redux-thunk';
 import {
   reducer as network,
   createNetworkMiddleware,
 } from 'react-native-offline';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {networkTransform} from '../utils/offline';
+
+const offlineActions = {offlineQueueTest};
 
 export const rootReducer = persistReducer(
   {
     key: 'root',
     storage: AsyncStorage,
-    transforms: [networkTransform({offlineQueueTest})],
+    transforms: [
+      createTransform(
+        (inboundState: any) => {
+          const actionQueue: any[] = [];
+          console.log('inbound', JSON.stringify(inboundState));
+
+          inboundState.actionQueue.forEach((action: any) => {
+            if (typeof action === 'function') {
+              actionQueue.push({
+                function: action.meta.name,
+                args: action.meta.args,
+              });
+            } else if (typeof action === 'object') {
+              actionQueue.push(action);
+            }
+          });
+
+          return {
+            ...inboundState,
+            actionQueue,
+          };
+        },
+        (outboundState: any) => {
+          const actionQueue: any[] = [];
+          console.log('outbound', JSON.stringify(outboundState));
+
+          outboundState.actionQueue.forEach((action: any) => {
+            if (action.function) {
+              // @ts-ignore
+              const actionFunction = offlineActions[action.function];
+              actionQueue.push(actionFunction(...action.args));
+            } else {
+              actionQueue.push(action);
+            }
+          });
+
+          return {...outboundState, actionQueue};
+        },
+        {whitelist: ['network']},
+      ),
+    ],
   },
   combineReducers({user, app, network}),
 );

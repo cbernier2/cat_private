@@ -10,13 +10,13 @@ import {offlineQueueTest, offlineCancelTest} from '../../redux/app-slice';
 import useCatDispatch from '../../hooks/useCatDispatch';
 import {Card, Paragraph, Title} from 'react-native-paper';
 import useCatTheme from '../../hooks/useCatTheme';
-import {connect} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 
 const DashboardScreen: React.FC<DashboardScreenType> = props => {
   const dispatch = useCatDispatch();
   const {colors} = useCatTheme();
   const {t} = useTranslation();
+  const actionQueue = useCatSelector(state => state.network.actionQueue);
 
   const userName = useCatSelector(userNameSelector);
 
@@ -35,7 +35,7 @@ const DashboardScreen: React.FC<DashboardScreenType> = props => {
     props.navigation.navigate('Dashboard');
   };
 
-  console.log(JSON.stringify(props.queue));
+  console.log(JSON.stringify(actionQueue));
 
   return (
     <CatScreen title={t('summary_title')}>
@@ -49,7 +49,7 @@ const DashboardScreen: React.FC<DashboardScreenType> = props => {
         <CatButton onPress={queue}>Queue a thing</CatButton>
         <CatButton onPress={cancel}>Cancel queue</CatButton>
 
-        <CatText>{JSON.stringify(props.queue)}</CatText>
+        <CatText>{JSON.stringify(actionQueue)}</CatText>
 
         <CatButton disabled>Disabled</CatButton>
 
@@ -68,8 +68,4 @@ const DashboardScreen: React.FC<DashboardScreenType> = props => {
   );
 };
 
-const mapStateToProps = (state: any) => ({
-  queue: state.network.actionQueue,
-});
-
-export default connect(mapStateToProps)(DashboardScreen);
+export default DashboardScreen;
