@@ -4,6 +4,7 @@ import {View} from 'react-native';
 import CatText from '../../components/text';
 import CatButton from '../../components/button';
 import {DashboardScreenType} from './types';
+import {BarChart} from '../../components/graphs/bar-chart/Component';
 import useCatSelector from '../../hooks/useCatSelector';
 import {userNameSelector} from '../../redux/user-selectors';
 import {offlineQueueTest, offlineCancelTest} from '../../redux/app-slice';
@@ -63,6 +64,7 @@ const DashboardScreen: React.FC<DashboardScreenType> = props => {
             <Paragraph>Card content</Paragraph>
           </Card.Content>
         </Card>
+        <BarChart />
       </View>
     </CatScreen>
   );
