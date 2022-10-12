@@ -12,6 +12,8 @@ import useCatTheme from '../hooks/useCatTheme';
 import {SiteStopsScreen} from '../screens/site-stops';
 import {SearchScreen} from '../screens/search';
 import CatTabBarIcon from './tab-bar-icon';
+import CatSyncStatus from './header/SyncStatus';
+import {EdgeInsets, useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const SummaryStack = createStackNavigator();
 const SummaryNavigator = () => (
@@ -38,6 +40,7 @@ const Tab = createBottomTabNavigator();
 const createTabScreen = (
   props: ComponentProps<typeof Tab.Screen>,
   iconName: string,
+  safeAreaInsets: EdgeInsets,
 ) =>
   React.createElement(Tab.Screen, {
     ...props,
@@ -47,11 +50,13 @@ const createTabScreen = (
       ),
       tabBarShowLabel: false,
       tabBarStyle: {
-        height: 56,
+        height: 56 + safeAreaInsets.bottom,
       },
     },
   });
 const TabNavigator = () => {
+  const safeAreaInsets = useSafeAreaInsets();
+
   return (
     <Tab.Navigator
       initialRouteName={'Dashboard'}
@@ -64,6 +69,7 @@ const TabNavigator = () => {
           component: SummaryNavigator,
         },
         'apps',
+        safeAreaInsets,
       )}
       {createTabScreen(
         {
@@ -71,6 +77,7 @@ const TabNavigator = () => {
           component: SiteStopsNavigator,
         },
         'access-time',
+        safeAreaInsets,
       )}
       {createTabScreen(
         {
@@ -78,6 +85,7 @@ const TabNavigator = () => {
           component: SearchNavigator,
         },
         'search',
+        safeAreaInsets,
       )}
     </Tab.Navigator>
   );
@@ -93,6 +101,8 @@ const DrawerNavigator = () => {
       screenOptions={{
         headerTintColor: theme.colors.onSurface,
         headerTitle: props => <CatHeader {...props} />,
+        headerTitleAlign: 'left',
+        headerRight: () => <CatSyncStatus />,
       }}>
       <Drawer.Screen name={'DrawerNavigator'} component={TabNavigator} />
     </Drawer.Navigator>
