@@ -1,5 +1,7 @@
 {
     "summary_title": "Summary",
+    "site_stops_title": "Site Stops",
+    "search_title": "Search",
     "status_last_update": "Last Update",
     "status_date_format": "L/d, HH:mm",
     "status_not_available": "--"

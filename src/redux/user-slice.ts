@@ -25,7 +25,7 @@ type LoginActionType = {
 export const loginAsyncAction = createAsyncThunk(
   `${key}/login`,
   async (user: LoginActionType) => {
-    await sleep(2000);
+    await sleep(200);
     //const response = await fetch('https://www.google.com?' + user.userName);
     return user.userName;
   },

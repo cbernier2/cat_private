@@ -19,11 +19,11 @@ const LoginScreen: React.FC<LoginScreenType> = ({navigation}) => {
 
   const login = async () => {
     await dispatch(loginAsyncAction({password, userName}));
-    navigation.navigate('Dashboard');
+    navigation.navigate('ConnectedNavigator');
   };
 
   return (
-    <CatScreen title={'login'}>
+    <CatScreen>
       <View style={styles.container}>
         <CatText>{'Name: '}</CatText>
         <CatTextInput
