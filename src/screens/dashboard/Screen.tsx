@@ -19,7 +19,7 @@ const DashboardScreen: React.FC<DashboardScreenType> = props => {
   const {t} = useTranslation();
   const actionQueue = useCatSelector(state => state.network.actionQueue);
 
-  const userName = useCatSelector(userNameSelector);
+  const username = useCatSelector(userNameSelector);
 
   const goToLogin = () => {
     props.navigation.navigate('Login');
@@ -44,7 +44,7 @@ const DashboardScreen: React.FC<DashboardScreenType> = props => {
         {/* Thanks to global augmentations IDEs should be able to autocomplete
           with custom things defined in the theme and TS shouldn't complain either */}
         <CatText style={{color: colors.errorCaution100}}>
-          {'user name: ' + userName}
+          {'user name: ' + username}
         </CatText>
         <CatButton onPress={goToLogin}>Go to Login</CatButton>
         <CatButton onPress={queue}>Queue a thing</CatButton>

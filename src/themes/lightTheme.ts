@@ -27,6 +27,7 @@ export const lightTheme: typeof darkTheme = {
   colors: {
     ...darkTheme.colors, // Only needed to fix the Typescript error while the Light Theme is not supported
     ...base.colors,
+    logoColor: '#000',
     primary: '#ccff00',
   },
 };
