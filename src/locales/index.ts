@@ -2,6 +2,9 @@ import i18next, {LanguageDetectorModule} from 'i18next';
 import {initReactI18next} from 'react-i18next';
 import {findBestAvailableLanguage} from 'react-native-localize';
 
+import {en, registerTranslation} from 'react-native-paper-dates';
+registerTranslation('en', en);
+
 const detectLanguage: () => string | undefined = () => {
   return findBestAvailableLanguage(['en', 'fr'])?.languageTag;
 };
