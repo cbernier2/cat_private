@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
   },
   statusContainer: {
     flexDirection: 'row',
+    marginRight: 10,
   },
   statusTextContainer: {
     flexDirection: 'column',
