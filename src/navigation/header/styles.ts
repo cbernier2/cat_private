@@ -28,6 +28,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  drawerIcon: {
+    marginLeft: 8,
+  },
 });
 
 export default styles;

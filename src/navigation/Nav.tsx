@@ -15,6 +15,7 @@ import CatTabBarIcon from './tab-bar-icon';
 import CatSyncStatus from './header/SyncStatus';
 import {EdgeInsets, useSafeAreaInsets} from 'react-native-safe-area-context';
 import DebugScreen from '../screens/debug/Screen';
+import CatDrawerIcon from './header/DrawerIcon';
 
 const SummaryStack = createStackNavigator();
 const SummaryNavigator = () => (
@@ -94,18 +95,19 @@ const TabNavigator = () => {
 
 const Drawer = createDrawerNavigator();
 const DrawerNavigator = () => {
-  const theme = useCatTheme();
+  const {colors} = useCatTheme();
 
   return (
     <Drawer.Navigator
       drawerContent={props => <CatDrawer {...props} />}
       screenOptions={{
-        headerTintColor: theme.colors.onSurface,
+        headerTintColor: colors.onSurface,
         headerTitle: props => <CatHeader {...props} />,
         headerTitleAlign: 'left',
         headerRight: () => <CatSyncStatus />,
+        headerLeft: () => <CatDrawerIcon />,
       }}>
-      <Drawer.Screen name={'DrawerNavigator'} component={TabNavigator} />
+      <Drawer.Screen name={'TabNavigator'} component={TabNavigator} />
     </Drawer.Navigator>
   );
 };
