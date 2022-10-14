@@ -1,4 +1,4 @@
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
 import {LoginScreen} from '../screens/login';
@@ -6,16 +6,15 @@ import {DashboardScreen} from '../screens/dashboard';
 import {NavigationContainer} from '@react-navigation/native';
 import CatDrawer from './drawer';
 import CatHeader from './header';
-import React, {ComponentProps} from 'react';
+import React from 'react';
 import {Provider as PaperProvider} from 'react-native-paper';
 import useCatTheme from '../hooks/useCatTheme';
 import {SiteStopsScreen} from '../screens/site-stops';
 import {SearchScreen} from '../screens/search';
-import CatTabBarIcon from './tab-bar-icon';
 import CatSyncStatus from './header/SyncStatus';
-import {EdgeInsets, useSafeAreaInsets} from 'react-native-safe-area-context';
 import DebugScreen from '../screens/debug/Screen';
 import CatDrawerIcon from './header/DrawerIcon';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const SummaryStack = createStackNavigator();
 const SummaryNavigator = () => (
@@ -38,57 +37,37 @@ const SearchNavigator = () => (
   </SearchStack.Navigator>
 );
 
-const Tab = createBottomTabNavigator();
-const createTabScreen = (
-  props: ComponentProps<typeof Tab.Screen>,
-  iconName: string,
-  safeAreaInsets: EdgeInsets,
-) =>
-  React.createElement(Tab.Screen, {
-    ...props,
-    options: {
-      tabBarIcon: ({focused}) => (
-        <CatTabBarIcon focused={focused} iconName={iconName} />
-      ),
-      tabBarShowLabel: false,
-      tabBarStyle: {
-        height: 56 + safeAreaInsets.bottom,
-      },
-    },
-  });
+const Tab = createMaterialBottomTabNavigator();
 const TabNavigator = () => {
-  const safeAreaInsets = useSafeAreaInsets();
-
   return (
-    <Tab.Navigator
-      initialRouteName={'Dashboard'}
-      screenOptions={{
-        headerShown: false,
-      }}>
-      {createTabScreen(
-        {
-          name: 'SummaryTab',
-          component: SummaryNavigator,
-        },
-        'apps',
-        safeAreaInsets,
-      )}
-      {createTabScreen(
-        {
-          name: 'SiteStopsTab',
-          component: SiteStopsNavigator,
-        },
-        'access-time',
-        safeAreaInsets,
-      )}
-      {createTabScreen(
-        {
-          name: 'SearchTab',
-          component: SearchNavigator,
-        },
-        'search',
-        safeAreaInsets,
-      )}
+    <Tab.Navigator initialRouteName={'Dashboard'} labeled={false}>
+      <Tab.Screen
+        name={'SummaryTab'}
+        component={SummaryNavigator}
+        options={{
+          tabBarIcon: ({color}) => (
+            <MaterialIcons name="apps" color={color} size={26} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name={'SiteStopsTab'}
+        component={SiteStopsNavigator}
+        options={{
+          tabBarIcon: ({color}) => (
+            <MaterialIcons name="access-time" color={color} size={26} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name={'SearchTab'}
+        component={SearchNavigator}
+        options={{
+          tabBarIcon: ({color}) => (
+            <MaterialIcons name="search" color={color} size={26} />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 };
