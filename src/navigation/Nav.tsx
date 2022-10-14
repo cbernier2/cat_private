@@ -14,6 +14,7 @@ import {SearchScreen} from '../screens/search';
 import CatTabBarIcon from './tab-bar-icon';
 import CatSyncStatus from './header/SyncStatus';
 import {EdgeInsets, useSafeAreaInsets} from 'react-native-safe-area-context';
+import DebugScreen from '../screens/debug/Screen';
 
 const SummaryStack = createStackNavigator();
 const SummaryNavigator = () => (
@@ -121,6 +122,11 @@ const CatNavigation = () => {
           <MainStack.Screen
             name={'ConnectedNavigator'}
             component={DrawerNavigator}
+          />
+          <MainStack.Screen
+            name={'Debug'}
+            component={DebugScreen}
+            options={{headerShown: true, presentation: 'modal'}}
           />
         </MainStack.Navigator>
       </NavigationContainer>
