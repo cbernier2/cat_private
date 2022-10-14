@@ -1,17 +1,22 @@
-import React from 'react';
+import React, {useState} from 'react';
+import {ScrollView} from 'react-native';
+import {useTranslation} from 'react-i18next';
+import {Card} from 'react-native-paper';
+import {DatePickerInput} from 'react-native-paper-dates';
+
 import CatScreen from '../../components/screen';
-import {View} from 'react-native';
 import CatText from '../../components/text';
 import CatButton from '../../components/button';
-import {DashboardScreenType} from './types';
 import {BarChart} from '../../components/graphs/bar-chart/Component';
 import useCatSelector from '../../hooks/useCatSelector';
 import {userNameSelector} from '../../redux/user-selectors';
 import {offlineQueueTest, offlineCancelTest} from '../../redux/app-slice';
 import useCatDispatch from '../../hooks/useCatDispatch';
-import {Card, Paragraph, Title} from 'react-native-paper';
 import useCatTheme from '../../hooks/useCatTheme';
-import {useTranslation} from 'react-i18next';
+import {CatTimePicker} from '../../components/pickers/time/Component';
+import {CatDatePicker} from '../../components/pickers/date/Component';
+
+import {DashboardScreenType} from './types';
 
 const DashboardScreen: React.FC<DashboardScreenType> = props => {
   const dispatch = useCatDispatch();
@@ -19,6 +24,7 @@ const DashboardScreen: React.FC<DashboardScreenType> = props => {
   const {t} = useTranslation();
   const actionQueue = useCatSelector(state => state.network.actionQueue);
 
+  const [inputDate, setInputDate] = useState<Date | undefined>(undefined);
   const username = useCatSelector(userNameSelector);
 
   const goToLogin = () => {
@@ -40,7 +46,7 @@ const DashboardScreen: React.FC<DashboardScreenType> = props => {
 
   return (
     <CatScreen title={t('summary_title')}>
-      <View>
+      <ScrollView>
         {/* Thanks to global augmentations IDEs should be able to autocomplete
           with custom things defined in the theme and TS shouldn't complain either */}
         <CatText style={{color: colors.errorCaution100}}>
@@ -60,12 +66,26 @@ const DashboardScreen: React.FC<DashboardScreenType> = props => {
             console.log('go somewhere!');
           }}>
           <Card.Content>
-            <Title>Card title</Title>
-            <Paragraph>Card content</Paragraph>
+            <CatText variant="headlineMedium">Card title</CatText>
+            <CatText>Card content</CatText>
           </Card.Content>
         </Card>
         <BarChart />
-      </View>
+
+        <CatTimePicker onSelect={console.log} />
+        <CatDatePicker onSelect={console.log} />
+
+        <DatePickerInput
+          locale="en"
+          label="Birthdate"
+          value={inputDate}
+          onChange={d => setInputDate(d)}
+          inputMode="end"
+          // mode="outlined" (see react-native-paper docs)
+          // calendarIcon="calendar" // optional, default is "calendar"
+          // other react native TextInput props
+        />
+      </ScrollView>
     </CatScreen>
   );
 };
