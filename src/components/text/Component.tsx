@@ -7,10 +7,22 @@ const CatText: React.FC<CatTextType> = props => {
   const {variant = 'bodyMedium'} = props;
   const {colors} = useCatTheme();
 
+  const getColor = () => {
+    if (variant.startsWith('body')) {
+      return colors.text;
+    } else if (variant.startsWith('label')) {
+      return colors.label;
+    } else if (variant.startsWith('headline') || variant.startsWith('title')) {
+      return colors.title;
+    } else {
+      colors.primary;
+    }
+  };
+
   return (
     <Text
       {...props}
-      style={[{color: colors.primary}, props.style]}
+      style={[{color: getColor()}, props.style]}
       variant={variant}
     />
   );

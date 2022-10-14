@@ -54,7 +54,9 @@ const CatSyncStatus: React.FC = () => {
   return (
     <View style={styles.statusContainer}>
       <View style={styles.statusTextContainer}>
-        <CatText style={styles.statusTitle}>{t('status_last_update')}</CatText>
+        <CatText variant={'labelSmall'} style={styles.statusTitle}>
+          {t('status_last_update')}
+        </CatText>
         <CatText style={styles.statusDate}>{lastSyncText}</CatText>
       </View>
       <View style={styles.statusIconContainer}>

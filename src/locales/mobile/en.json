@@ -4,5 +4,12 @@
     "search_title": "Search",
     "status_last_update": "Last Update",
     "status_date_format": "L/d, HH:mm",
-    "status_not_available": "--"
+    "status_not_available": "--",
+    "theme_switch": "Change to {{name}} Mode",
+    "theme_light": "Light",
+    "theme_dark": "Dark",
+    "side_menu_switch_site": "Switch Site",
+    "side_menu_legal": "Legal",
+    "side_menu_help": "Help",
+    "side_menu_logout": "Log Out"
 }

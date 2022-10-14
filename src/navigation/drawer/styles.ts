@@ -7,6 +7,49 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+  menuContainer: {
+    flex: 1,
+    flexDirection: 'column',
+  },
+  menuHeaderContainer: {
+    height: 110,
+    padding: 16,
+  },
+  menuBodyContainer: {
+    padding: 16,
+    paddingBottom: 28,
+    flexGrow: 1,
+  },
+  menuUserNameContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingBottom: 32,
+    paddingTop: 16,
+  },
+  userName: {
+    marginLeft: 14,
+  },
+  menuItemsContainer: {
+    flexDirection: 'column',
+    flexGrow: 1,
+  },
+  menuItemContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  menuItemTextContainer: {
+    flexDirection: 'column',
+  },
+  menuItemSubText: {
+    marginTop: 4,
+  },
+  menuItemSpacer: {
+    height: 20,
+  },
+  menuItemsMiddle: {
+    flexGrow: 1,
+  },
 });
 
 export default styles;

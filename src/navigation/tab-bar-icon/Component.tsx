@@ -12,7 +12,7 @@ const CatTabBarIcon: React.FC<CatTabBarType> = ({focused, iconName}) => {
     <View style={styles.container}>
       <MaterialIcons
         name={iconName}
-        color={focused ? colors.secondaryContainer : colors.primary}
+        color={focused ? colors.secondaryContainer : colors.grey50}
         size={32}
       />
     </View>

@@ -19,12 +19,9 @@ const styles = StyleSheet.create({
   },
   statusTitle: {
     textTransform: 'uppercase',
-    fontSize: 8,
   },
   statusDate: {
-    fontSize: 12,
-    lineHeight: 12,
-    fontFamily: 'Roboto-Medium',
+    fontFamily: 'Roboto',
   },
   statusIconContainer: {
     marginLeft: 8,
