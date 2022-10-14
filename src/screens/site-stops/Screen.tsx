@@ -1,12 +1,12 @@
 import React from 'react';
 import CatScreen from '../../components/screen';
-import {SiteStopsScreenType} from './types';
+import {ScreenType} from './types';
 import {useTranslation} from 'react-i18next';
 
-const LoginScreen: React.FC<SiteStopsScreenType> = () => {
+const Screen: React.FC<ScreenType> = () => {
   const {t} = useTranslation();
 
-  return <CatScreen title={t('site_stops_title')}>{''}</CatScreen>;
+  return <CatScreen title={t('cat.site_stops')}>{''}</CatScreen>;
 };
 
-export default LoginScreen;
+export default Screen;

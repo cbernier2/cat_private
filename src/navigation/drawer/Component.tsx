@@ -85,7 +85,7 @@ const CatDrawer: React.FC<CatDrawerType> = ({navigation}) => {
           <View style={styles.menuItemSpacer} />
           <View style={styles.menuItemSpacer} />
           <CatMenuItem icon="logout" onPress={() => {}}>
-            {t('side_menu_logout')}
+            {t('cat.button_sign_out')}
           </CatMenuItem>
         </View>
       </View>

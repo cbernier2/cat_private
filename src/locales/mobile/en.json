@@ -1,6 +1,5 @@
 {
     "summary_title": "Summary",
-    "site_stops_title": "Site Stops",
     "search_title": "Search",
     "status_last_update": "Last Update",
     "status_date_format": "L/d, HH:mm",
@@ -11,5 +10,4 @@
     "side_menu_switch_site": "Switch Site",
     "side_menu_legal": "Legal",
     "side_menu_help": "Help",
-    "side_menu_logout": "Log Out"
 }

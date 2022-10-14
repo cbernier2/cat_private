@@ -1,5 +1,5 @@
 import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
 
-export type SiteStopsScreenType = {
+export type ScreenType = {
   navigation: BottomTabNavigationProp<any>;
 };

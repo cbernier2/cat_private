@@ -7,6 +7,7 @@ const CatText: React.FC<CatTextType> = props => {
   const {variant = 'bodyMedium'} = props;
   const {colors} = useCatTheme();
 
+  // TODO: Use MD3 colors
   const getColor = () => {
     if (variant.startsWith('body')) {
       return colors.text;
