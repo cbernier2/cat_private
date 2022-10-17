@@ -1,3 +1,6 @@
-import {TextInputProps} from 'react-native';
+import {ComponentProps} from 'react';
+import {TextInput} from 'react-native-paper';
 
-export type CatTextInputType = TextInputProps & {};
+export type CatTextInputType = ComponentProps<typeof TextInput> & {
+  errorMessage?: string;
+};

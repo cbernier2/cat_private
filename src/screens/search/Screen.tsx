@@ -6,7 +6,7 @@ import {useTranslation} from 'react-i18next';
 const Screen: React.FC<ScreenType> = () => {
   const {t} = useTranslation();
 
-  return <CatScreen title={t('button_search')}>{''}</CatScreen>;
+  return <CatScreen title={t('cat.button_search')}>{''}</CatScreen>;
 };
 
 export default Screen;

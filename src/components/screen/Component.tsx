@@ -2,13 +2,11 @@ import React, {useCallback, useRef, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {CatScreenType} from './types';
 import styles from './styles';
-import useCatTheme from '../../hooks/useCatTheme';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {TouchableWithoutFeedback, View} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 
 const CatScreen: React.FC<CatScreenType> = ({children, title}) => {
-  const {colors} = useCatTheme();
   const navigation = useNavigation<StackNavigationProp<any>>();
 
   useFocusEffect(
@@ -45,8 +43,7 @@ const CatScreen: React.FC<CatScreenType> = ({children, title}) => {
   };
 
   return (
-    <SafeAreaView
-      style={[styles.background, {backgroundColor: colors.background}]}>
+    <SafeAreaView style={[styles.background]}>
       <TouchableWithoutFeedback onPress={onPressTrigger}>
         <View style={styles.triggerContainer} />
       </TouchableWithoutFeedback>

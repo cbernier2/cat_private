@@ -25,7 +25,7 @@ const Screen: React.FC<ScreenType> = props => {
   const actionQueue = useCatSelector(state => state.network.actionQueue);
 
   const [inputDate, setInputDate] = useState<Date | undefined>(undefined);
-  const userName = useCatSelector(userNameSelector);
+  const username = useCatSelector(userNameSelector);
 
   const goToLogin = () => {
     props.navigation.navigate('Login');
@@ -50,7 +50,7 @@ const Screen: React.FC<ScreenType> = props => {
         {/* Thanks to global augmentations IDEs should be able to autocomplete
           with custom things defined in the theme and TS shouldn't complain either */}
         <CatText style={{color: colors.errorCaution100}}>
-          {'user name: ' + userName}
+          {'user name: ' + username}
         </CatText>
         <CatButton onPress={goToLogin}>Go to Login</CatButton>
         <CatButton onPress={queue}>Queue a thing</CatButton>

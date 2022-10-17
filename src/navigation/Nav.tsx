@@ -15,6 +15,8 @@ import CatSyncStatus from './header/SyncStatus';
 import DebugScreen from '../screens/debug/Screen';
 import CatDrawerIcon from './header/DrawerIcon';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import useCatSelector from '../hooks/useCatSelector';
+import {userAuthTokenSelector} from '../redux/user-selectors';
 
 const SummaryStack = createStackNavigator();
 const SummaryNavigator = () => (
@@ -94,16 +96,20 @@ const DrawerNavigator = () => {
 const MainStack = createStackNavigator();
 const CatNavigation = () => {
   const theme = useCatTheme();
+  const userToken = useCatSelector(userAuthTokenSelector);
 
   return (
     <PaperProvider theme={theme}>
       <NavigationContainer theme={theme}>
         <MainStack.Navigator screenOptions={{headerShown: false}}>
-          <MainStack.Screen name="Login" component={LoginScreen} />
-          <MainStack.Screen
-            name={'ConnectedNavigator'}
-            component={DrawerNavigator}
-          />
+          {userToken === null ? (
+            <MainStack.Screen name="Login" component={LoginScreen} />
+          ) : (
+            <MainStack.Screen
+              name={'ConnectedNavigator'}
+              component={DrawerNavigator}
+            />
+          )}
           <MainStack.Screen
             name={'Debug'}
             component={DebugScreen}

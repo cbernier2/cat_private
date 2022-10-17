@@ -7,6 +7,9 @@ import {useTranslation} from 'react-i18next';
 import styles from './styles';
 import useCatTheme from '../../hooks/useCatTheme';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {logout} from '../../redux/user-slice';
+import useCatDispatch from '../../hooks/useCatDispatch';
+import MineStarLogo from '../../../assets/MineStarLogo.svg';
 
 const CatMenuItem = ({
   children,
@@ -39,6 +42,7 @@ const CatMenuItem = ({
 };
 
 const CatDrawer: React.FC<CatDrawerType> = ({navigation}) => {
+  const dispatch = useCatDispatch();
   const {t} = useTranslation();
   const {colors} = useCatTheme();
 
@@ -55,6 +59,7 @@ const CatDrawer: React.FC<CatDrawerType> = ({navigation}) => {
           size={32}
           onPress={() => navigation.closeDrawer()}
         />
+        <MineStarLogo color={colors.logoColor} width="100%" />
       </View>
       <View style={styles.menuBodyContainer}>
         <View style={styles.menuUserNameContainer}>
@@ -75,7 +80,7 @@ const CatDrawer: React.FC<CatDrawerType> = ({navigation}) => {
           <CatMenuItem onPress={() => {}}>{t('side_menu_help')}</CatMenuItem>
           <View style={styles.menuItemSpacer} />
           <View style={styles.menuItemSpacer} />
-          <CatMenuItem icon="logout" onPress={() => {}}>
+          <CatMenuItem icon="logout" onPress={() => dispatch(logout())}>
             {t('cat.button_sign_out')}
           </CatMenuItem>
         </View>

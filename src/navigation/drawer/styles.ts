@@ -12,8 +12,11 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   menuHeaderContainer: {
-    height: 110,
-    padding: 16,
+    flexDirection: 'column',
+    paddingTop: 16,
+    paddingBottom: 8,
+    paddingLeft: 20,
+    paddingRight: 20,
   },
   menuBodyContainer: {
     padding: 16,
