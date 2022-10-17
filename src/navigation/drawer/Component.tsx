@@ -1,5 +1,5 @@
 import React from 'react';
-import {View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 import {CatDrawerType} from './types';
 import CatText from '../../components/text';
 import {Avatar} from 'react-native-paper';
@@ -25,11 +25,9 @@ const CatMenuItem = ({
   const {colors} = useCatTheme();
 
   return (
-    <View style={styles.menuItemContainer}>
+    <TouchableOpacity style={styles.menuItemContainer} onPress={onPress}>
       <View style={styles.menuItemTextContainer}>
-        <CatText variant={'titleLarge'} onPress={onPress}>
-          {children}
-        </CatText>
+        <CatText variant={'titleLarge'}>{children}</CatText>
         {subText && (
           <CatText variant={'labelLarge'} style={styles.menuItemSubText}>
             {subText}
@@ -37,7 +35,7 @@ const CatMenuItem = ({
         )}
       </View>
       {icon && <MaterialIcons name={icon} size={32} color={colors.title} />}
-    </View>
+    </TouchableOpacity>
   );
 };
 
