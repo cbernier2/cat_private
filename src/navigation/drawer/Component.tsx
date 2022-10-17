@@ -11,27 +11,7 @@ import {logout} from '../../redux/user-slice';
 import useCatDispatch from '../../hooks/useCatDispatch';
 import MineStarLogo from '../../../assets/MineStarLogo.svg';
 import {Drawer} from 'react-native-paper';
-
-const CatMenuItem = ({
-  label,
-  onPress,
-  icon,
-}: {
-  label: string;
-  onPress: () => void;
-  icon?: string;
-}) => {
-  return (
-    <Drawer.Item
-      style={styles.menuItemContainer}
-      onPress={onPress}
-      label={label}
-      icon={({size, color}) =>
-        icon && <MaterialIcons name={icon} size={size} color={color} />
-      }
-    />
-  );
-};
+import {CatMenuItem} from './MenuItem';
 
 const CatDrawer: React.FC<CatDrawerType> = ({navigation}) => {
   const dispatch = useCatDispatch();

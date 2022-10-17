@@ -11,12 +11,11 @@ import {
   toggleTheme,
 } from '../../redux/app-slice';
 import useCatDispatch from '../../hooks/useCatDispatch';
-
-import {DebugcreenType} from './types';
+import {DebugScreenType} from './types';
 import {emulateOfflineSelector} from '../../redux/app-selectors';
 import {useTranslation} from 'react-i18next';
 
-const DebugScreen: React.FC<DebugcreenType> = props => {
+const DebugScreen: React.FC<DebugScreenType> = props => {
   const dispatch = useCatDispatch();
   const actionQueue = useCatSelector(state => state.network.actionQueue);
   const {t} = useTranslation();
