@@ -3,9 +3,6 @@ import {View} from 'react-native';
 import {CatDrawerType} from './types';
 import CatText from '../../components/text';
 import {Avatar} from 'react-native-paper';
-import useCatDispatch from '../../hooks/useCatDispatch';
-import {toggleTheme} from '../../redux/app-slice';
-import useCatSelector from '../../hooks/useCatSelector';
 import {useTranslation} from 'react-i18next';
 import styles from './styles';
 import useCatTheme from '../../hooks/useCatTheme';
@@ -42,9 +39,7 @@ const CatMenuItem = ({
 };
 
 const CatDrawer: React.FC<CatDrawerType> = ({navigation}) => {
-  const dispatch = useCatDispatch();
   const {t} = useTranslation();
-  const isThemeDark = useCatSelector(state => state.app.isThemeDark);
   const {colors} = useCatTheme();
 
   const userName = 'John Doe'; // TODO
@@ -71,12 +66,6 @@ const CatDrawer: React.FC<CatDrawerType> = ({navigation}) => {
         <View style={styles.menuItemsContainer}>
           <CatMenuItem onPress={() => {}} subText={siteName}>
             {t('side_menu_switch_site')}
-          </CatMenuItem>
-          <View style={styles.menuItemSpacer} />
-          <CatMenuItem onPress={() => dispatch(toggleTheme())}>
-            {t('theme_switch', {
-              name: t(`theme_${isThemeDark ? 'light' : 'dark'}`),
-            })}
           </CatMenuItem>
           <View style={styles.menuItemsMiddle} />
           <CatMenuItem onPress={() => {}}>{t('side_menu_legal')}</CatMenuItem>

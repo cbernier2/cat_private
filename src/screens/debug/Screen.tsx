@@ -8,15 +8,19 @@ import {
   offlineQueueTest,
   offlineCancelTest,
   toggleOffline,
+  toggleTheme,
 } from '../../redux/app-slice';
 import useCatDispatch from '../../hooks/useCatDispatch';
 
 import {DebugcreenType} from './types';
 import {emulateOfflineSelector} from '../../redux/app-selectors';
+import {useTranslation} from 'react-i18next';
 
 const DebugScreen: React.FC<DebugcreenType> = props => {
   const dispatch = useCatDispatch();
   const actionQueue = useCatSelector(state => state.network.actionQueue);
+  const {t} = useTranslation();
+  const isThemeDark = useCatSelector(state => state.app.isThemeDark);
 
   const isEmulatingOffline = useCatSelector(emulateOfflineSelector);
 
@@ -43,6 +47,12 @@ const DebugScreen: React.FC<DebugcreenType> = props => {
         <CatButton onPress={cancel}>Cancel queue</CatButton>
 
         <CatText>{JSON.stringify(actionQueue)}</CatText>
+
+        <CatButton onPress={() => dispatch(toggleTheme())}>
+          {t('theme_switch', {
+            name: t(`theme_${isThemeDark ? 'light' : 'dark'}`),
+          })}
+        </CatButton>
       </ScrollView>
     </CatScreen>
   );
