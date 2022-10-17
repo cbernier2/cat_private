@@ -19,39 +19,20 @@ const styles = StyleSheet.create({
     paddingRight: 20,
   },
   menuBodyContainer: {
-    padding: 16,
-    paddingBottom: 28,
     flexGrow: 1,
   },
   menuUserNameContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingBottom: 32,
-    paddingTop: 16,
+    padding: 16,
   },
   userName: {
     marginLeft: 14,
-  },
-  menuItemsContainer: {
-    flexDirection: 'column',
-    flexGrow: 1,
   },
   menuItemContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-  },
-  menuItemTextContainer: {
-    flexDirection: 'column',
-  },
-  menuItemSubText: {
-    marginTop: 4,
-  },
-  menuItemSpacer: {
-    height: 20,
-  },
-  menuItemsMiddle: {
-    flexGrow: 1,
   },
 });
 

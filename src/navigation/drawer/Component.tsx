@@ -1,5 +1,5 @@
 import React from 'react';
-import {TouchableOpacity, View} from 'react-native';
+import {View} from 'react-native';
 import {CatDrawerType} from './types';
 import CatText from '../../components/text';
 import {Avatar} from 'react-native-paper';
@@ -10,32 +10,26 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {logout} from '../../redux/user-slice';
 import useCatDispatch from '../../hooks/useCatDispatch';
 import MineStarLogo from '../../../assets/MineStarLogo.svg';
+import {Drawer} from 'react-native-paper';
 
 const CatMenuItem = ({
-  children,
+  label,
   onPress,
-  subText,
   icon,
 }: {
-  children: React.ReactNode;
+  label: string;
   onPress: () => void;
-  subText?: string;
   icon?: string;
 }) => {
-  const {colors} = useCatTheme();
-
   return (
-    <TouchableOpacity style={styles.menuItemContainer} onPress={onPress}>
-      <View style={styles.menuItemTextContainer}>
-        <CatText variant={'titleLarge'}>{children}</CatText>
-        {subText && (
-          <CatText variant={'labelLarge'} style={styles.menuItemSubText}>
-            {subText}
-          </CatText>
-        )}
-      </View>
-      {icon && <MaterialIcons name={icon} size={32} color={colors.title} />}
-    </TouchableOpacity>
+    <Drawer.Item
+      style={styles.menuItemContainer}
+      onPress={onPress}
+      label={label}
+      icon={({size, color}) =>
+        icon && <MaterialIcons name={icon} size={size} color={color} />
+      }
+    />
   );
 };
 
@@ -54,34 +48,45 @@ const CatDrawer: React.FC<CatDrawerType> = ({navigation}) => {
         <MaterialIcons
           name={'close'}
           color={colors.grey100}
-          size={32}
+          size={24}
           onPress={() => navigation.closeDrawer()}
         />
         <MineStarLogo color={colors.logoColor} width="100%" />
       </View>
+
       <View style={styles.menuBodyContainer}>
         <View style={styles.menuUserNameContainer}>
-          <Avatar.Text size={48} label="JD" />
-          <CatText variant={'titleLarge'} style={styles.userName}>
+          <Avatar.Text size={40} label="JD" />
+          <CatText variant={'titleMedium'} style={styles.userName}>
             {userName}
           </CatText>
         </View>
-        <View style={styles.menuItemsContainer}>
-          <CatMenuItem onPress={() => {}} subText={siteName}>
-            {t('side_menu_switch_site')}
-          </CatMenuItem>
-          <View style={styles.menuItemsMiddle} />
-          <CatMenuItem onPress={() => {}}>
-            {t('cat.legal_page_title')}
-          </CatMenuItem>
-          <View style={styles.menuItemSpacer} />
-          <CatMenuItem onPress={() => {}}>{t('side_menu_help')}</CatMenuItem>
-          <View style={styles.menuItemSpacer} />
-          <View style={styles.menuItemSpacer} />
-          <CatMenuItem icon="logout" onPress={() => dispatch(logout())}>
-            {t('cat.button_sign_out')}
-          </CatMenuItem>
-        </View>
+        <Drawer.Section title={siteName}>
+          <CatMenuItem
+            onPress={() => {}}
+            label={t('side_menu_switch_site')}
+            icon={'swap-horiz'}
+          />
+        </Drawer.Section>
+        <Drawer.Section>
+          <CatMenuItem
+            onPress={() => {}}
+            label={t('cat.legal_page_title')}
+            icon={'copyright'}
+          />
+          <CatMenuItem
+            onPress={() => {}}
+            label={t('side_menu_help')}
+            icon={'help'}
+          />
+        </Drawer.Section>
+        <Drawer.Section>
+          <CatMenuItem
+            icon="logout"
+            onPress={() => dispatch(logout())}
+            label={t('cat.button_sign_out')}
+          />
+        </Drawer.Section>
       </View>
     </View>
   );
