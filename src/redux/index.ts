@@ -15,6 +15,7 @@ export const rootReducer = persistReducer(
   {
     key: 'root',
     storage: AsyncStorage,
+    blacklist: ['user', 'app'],
     transforms: [
       createTransform(
         (inboundState: any) => {
