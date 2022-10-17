@@ -1,5 +1,5 @@
-import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
+import {MaterialBottomTabNavigationProp} from '@react-navigation/material-bottom-tabs';
 
 export type ScreenType = {
-  navigation: BottomTabNavigationProp<any>;
+  navigation: MaterialBottomTabNavigationProp<any>;
 };
