@@ -68,7 +68,9 @@ const CatDrawer: React.FC<CatDrawerType> = ({navigation}) => {
             {t('side_menu_switch_site')}
           </CatMenuItem>
           <View style={styles.menuItemsMiddle} />
-          <CatMenuItem onPress={() => {}}>{t('side_menu_legal')}</CatMenuItem>
+          <CatMenuItem onPress={() => {}}>
+            {t('cat.legal_page_title')}
+          </CatMenuItem>
           <View style={styles.menuItemSpacer} />
           <CatMenuItem onPress={() => {}}>{t('side_menu_help')}</CatMenuItem>
           <View style={styles.menuItemSpacer} />
