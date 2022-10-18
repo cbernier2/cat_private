@@ -1,5 +1,13 @@
 import {NativeModules} from 'react-native';
 
+jest.mock('react-native-localize', () => {
+  return {
+    getLocales: jest.fn(),
+    findBestAvailableLanguage: () => 'en',
+  };
+});
+import '../src/locales';
+
 jest.mock('redux-persist', () => {
   const real = jest.requireActual('redux-persist');
   return {
@@ -18,6 +26,7 @@ jest.mock('@react-navigation/native', () => {
       navigate: jest.fn(),
       getParent: jest.fn(),
     }),
+    useFocusEffect: () => {},
   };
 });
 
@@ -27,3 +36,5 @@ NativeModules.RNCNetInfo = {
   addListener: jest.fn(),
   removeListeners: jest.fn(),
 };
+
+jest.mock('react-native-paper');

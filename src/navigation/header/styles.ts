@@ -2,18 +2,17 @@ import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     flexDirection: 'row',
-    flexGrow: 1,
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
-    width: '100%',
   },
   title: {
     fontSize: 20,
+    marginLeft: 16,
   },
   statusContainer: {
     flexDirection: 'row',
+    marginRight: 10,
   },
   statusTextContainer: {
     flexDirection: 'column',
@@ -22,17 +21,17 @@ const styles = StyleSheet.create({
   },
   statusTitle: {
     textTransform: 'uppercase',
-    fontSize: 8,
   },
   statusDate: {
-    fontSize: 12,
-    lineHeight: 12,
-    fontFamily: 'Roboto-Medium',
+    fontFamily: 'Roboto',
   },
   statusIconContainer: {
     marginLeft: 8,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  drawerIcon: {
+    marginLeft: 8,
   },
 });
 

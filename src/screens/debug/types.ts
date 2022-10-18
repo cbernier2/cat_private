@@ -1,5 +1,5 @@
 import {StackNavigationProp} from '@react-navigation/stack';
 
-export type LoginScreenType = {
+export type DebugScreenType = {
   navigation: StackNavigationProp<any>;
 };

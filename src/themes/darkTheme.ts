@@ -11,6 +11,24 @@ const base = {
   },
 };
 
+const greyColors = {
+  grey0: '#000000',
+  grey5: '#12171C',
+  grey10: '#191E23',
+  grey12: '#21262B',
+  grey15: '#262B30',
+  grey20: '#32373C',
+  grey30: '#4B5055',
+  grey40: '#64696E',
+  grey50: '#7D8287',
+  grey55: '#969BA0',
+  grey60: '#AFB4B9',
+  grey70: '#C8CDD2',
+  grey80: '#E1E6EB',
+  grey90: '#F0F5FA',
+  grey100: '#FFFFFF',
+};
+
 // Expand/overwrite default dark theme and export
 export const darkTheme = {
   ...base,
@@ -41,12 +59,6 @@ export const darkTheme = {
     tertiary: '#08CB36',
     onTertiary: '#FAFBFE',
 
-    // custom values, matching what's in the UI Kit which have no MD3 match
-    errorCaution0: '#FF7C00',
-    errorCaution100: 'rgba(255, 124, 0, 0.8)',
-    errorWarning0: '#D32F2F',
-    errorWarning100: 'rgba(211, 47, 47, 0.8)',
-
     // onBackground and onSurface don't make much sense since `on*` is "text over *" for MD3
     //  and according to the UI Kit, we want almost black on black...
     background: '#12171C',
@@ -63,5 +75,17 @@ export const darkTheme = {
       level4: '#4B5055',
       level5: '#64696E',
     },
+
+    // custom values, matching what's in the UI Kit which have no MD3 match
+    errorCaution0: '#FF7C00',
+    errorCaution100: 'rgba(255, 124, 0, 0.8)',
+    errorWarning0: '#D32F2F',
+    errorWarning100: 'rgba(211, 47, 47, 0.8)',
+
+    ...greyColors,
+
+    text: greyColors.grey90,
+    label: greyColors.grey50,
+    title: greyColors.grey70,
   },
 };
