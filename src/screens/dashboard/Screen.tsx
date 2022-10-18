@@ -18,7 +18,7 @@ import {CatDatePicker} from '../../components/pickers/date/Component';
 
 import {ScreenType} from './types';
 
-const Screen: React.FC<ScreenType> = props => {
+const DashboardScreen: React.FC<ScreenType> = props => {
   const dispatch = useCatDispatch();
   const {colors} = useCatTheme();
   const {t} = useTranslation();
@@ -90,4 +90,4 @@ const Screen: React.FC<ScreenType> = props => {
   );
 };
 
-export default Screen;
+export default DashboardScreen;
