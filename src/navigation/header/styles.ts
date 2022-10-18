@@ -2,11 +2,13 @@ import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
   title: {
     fontSize: 20,
+    marginLeft: 16,
   },
   statusContainer: {
     flexDirection: 'row',
