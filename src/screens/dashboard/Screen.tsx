@@ -27,10 +27,6 @@ const DashboardScreen: React.FC<ScreenType> = props => {
   const [inputDate, setInputDate] = useState<Date | undefined>(undefined);
   const username = useCatSelector(userNameSelector);
 
-  const goToLogin = () => {
-    props.navigation.navigate('Login');
-  };
-
   // hardcoded PO actions, since thunks seem to have some issues being set into the queue
   const cancel = async () => {
     await dispatch(offlineCancelTest());
@@ -52,7 +48,6 @@ const DashboardScreen: React.FC<ScreenType> = props => {
         <CatText style={{color: colors.errorCaution100}}>
           {'user name: ' + username}
         </CatText>
-        <CatButton onPress={goToLogin}>Go to Login</CatButton>
         <CatButton onPress={queue}>Queue a thing</CatButton>
         <CatButton onPress={cancel}>Cancel queue</CatButton>
 

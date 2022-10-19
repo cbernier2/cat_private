@@ -14,7 +14,7 @@ export const CatError: React.FC<CatErrorType> = props => {
   }
 
   return (
-    <Card style={styles.card}>
+    <Card style={[styles.card, props.style]}>
       <Card.Content>
         <CatText style={styles.cardContent}>{props.message}</CatText>
       </Card.Content>

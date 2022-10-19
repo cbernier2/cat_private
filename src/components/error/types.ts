@@ -1,4 +1,7 @@
+import {StyleProp, ViewStyle} from 'react-native';
+
 export interface CatErrorType {
-  visible: boolean;
   message: string;
+  style?: StyleProp<ViewStyle> | undefined;
+  visible: boolean;
 }

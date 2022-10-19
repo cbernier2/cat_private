@@ -1,5 +1,7 @@
 import React from 'react';
 import {ScrollView} from 'react-native';
+import {useTranslation} from 'react-i18next';
+
 import CatScreen from '../../components/screen';
 import CatText from '../../components/text';
 import CatButton from '../../components/button';
@@ -11,9 +13,10 @@ import {
   toggleTheme,
 } from '../../redux/app-slice';
 import useCatDispatch from '../../hooks/useCatDispatch';
-import {DebugScreenType} from './types';
 import {emulateOfflineSelector} from '../../redux/app-selectors';
-import {useTranslation} from 'react-i18next';
+import {selectSite} from '../../redux/sites/sites-slice';
+
+import {DebugScreenType} from './types';
 
 const DebugScreen: React.FC<DebugScreenType> = props => {
   const dispatch = useCatDispatch();
@@ -23,7 +26,6 @@ const DebugScreen: React.FC<DebugScreenType> = props => {
 
   const isEmulatingOffline = useCatSelector(emulateOfflineSelector);
 
-  // hardcoded PO actions, since thunks seem to have some issues being set into the queue
   const cancel = async () => {
     await dispatch(offlineCancelTest());
     props.navigation.navigate('Dashboard');
@@ -32,6 +34,11 @@ const DebugScreen: React.FC<DebugScreenType> = props => {
   const queue = async () => {
     await dispatch(offlineQueueTest());
     props.navigation.navigate('Dashboard');
+  };
+
+  const clearSiteSelection = () => {
+    dispatch(selectSite(null));
+    props.navigation.popToTop();
   };
 
   console.log(JSON.stringify(actionQueue));
@@ -52,6 +59,8 @@ const DebugScreen: React.FC<DebugScreenType> = props => {
             name: t(`theme_${isThemeDark ? 'light' : 'dark'}`),
           })}
         </CatButton>
+
+        <CatButton onPress={clearSiteSelection}>Clear site selection</CatButton>
       </ScrollView>
     </CatScreen>
   );
