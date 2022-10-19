@@ -3,7 +3,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {CatScreenType} from './types';
 import styles from './styles';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
-import {TouchableWithoutFeedback, View} from 'react-native';
+import {ScrollView, TouchableWithoutFeedback, View} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 
 const CatScreen: React.FC<CatScreenType> = ({children, title}) => {
@@ -47,7 +47,7 @@ const CatScreen: React.FC<CatScreenType> = ({children, title}) => {
       <TouchableWithoutFeedback onPress={onPressTrigger}>
         <View style={styles.triggerContainer} />
       </TouchableWithoutFeedback>
-      {children}
+      <ScrollView>{children}</ScrollView>
     </SafeAreaView>
   );
 };

@@ -1532,7 +1532,7 @@
     "site_hierarchy_level_regx_required": "Regular expression required",
     "site_hierarchy_mandatory_field_error": "Please provide the required field values",
     "site_part_cannot_be_blank": "Site node name and location should not be empty",
-    
+
     "loader_already_in_assignment_group" : "Loader already in another assignment group",
     "hauler_already_in_assignment_group" :  "Hauler already in another assignment group",
     "only_one_loader_per_assignment_group" :  "Only one loader per assignment group",
