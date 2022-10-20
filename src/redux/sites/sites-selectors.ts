@@ -1,6 +1,6 @@
 import {createSelector} from '@reduxjs/toolkit';
 import {RootState} from '../index';
-import { Site } from './sites-slice';
+import {Site} from './sites-slice';
 
 export const sitesErrorSelector = createSelector(
   (state: RootState) => state.sites.error,
@@ -14,7 +14,10 @@ export const sitesLoadingSelector = createSelector(
 
 export const sitesSelectedSiteSelector = createSelector(
   (state: RootState) => state.sites,
-  siteState => siteState.sites.find((site: Site) => site.id === siteState.selectedSiteId) ?? null,
+  siteState =>
+    siteState.sites.find(
+      (site: Site) => site.id === siteState.selectedSiteId,
+    ) ?? null,
 );
 
 export const sitesSitesSelector = createSelector(
