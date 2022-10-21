@@ -28,6 +28,11 @@ export type LoginActionType = {
 export const loginAsyncAction = createAsyncThunk(
   `${key}/login`,
   async (user: LoginActionType, {rejectWithValue}) => {
+    // TODO: Remove temporary "successful" login user
+    if (user.username.toLowerCase() === 'letmein') {
+      return true;
+    }
+
     try {
       const response = await fetch(
         'http://cluster04.centralus.cloudapp.azure.com/uaa/oauth/token',
@@ -43,10 +48,6 @@ export const loginAsyncAction = createAsyncThunk(
           body: `grant_type=password&username=${user.username}&password=${user.password}`,
         },
       );
-      // TODO: Remove temporary "successful" login user
-      if (user.username.toLowerCase() === 'letmein') {
-        return true;
-      }
 
       const body = await response.json();
       if (response.status !== 200) {
@@ -97,7 +98,7 @@ const userReducer = persistReducer(
   {
     key,
     storage: AsyncStorage,
-    blacklist: ['password', 'isLogin', 'loginError'],
+    blacklist: ['password', 'isLogin', 'loginError', 'selectedSite'],
   },
   typedReducer,
 );

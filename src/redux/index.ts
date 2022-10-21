@@ -1,6 +1,7 @@
 import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import user from './user-slice';
 import app, {offlineQueueTest} from './app-slice';
+import sites from './sites/sites-slice';
 import {createTransform, persistReducer, persistStore} from 'redux-persist';
 import thunk from 'redux-thunk';
 import {
@@ -15,7 +16,7 @@ export const rootReducer = persistReducer(
   {
     key: 'root',
     storage: AsyncStorage,
-    blacklist: ['user', 'app'],
+    blacklist: ['user', 'app', 'sites'],
     transforms: [
       createTransform(
         (inboundState: any) => {
@@ -58,7 +59,7 @@ export const rootReducer = persistReducer(
       ),
     ],
   },
-  combineReducers({user, app, network}),
+  combineReducers({user, app, network, sites}),
 );
 
 const networkMiddleware = createNetworkMiddleware({
