@@ -14,17 +14,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginRight: 10,
   },
-  statusTextContainer: {
-    flexDirection: 'column',
-    alignItems: 'flex-end',
-    justifyContent: 'center',
-  },
-  statusTitle: {
-    textTransform: 'uppercase',
-  },
-  statusDate: {
-    fontFamily: 'Roboto',
-  },
   statusIconContainer: {
     marginLeft: 8,
     alignItems: 'center',

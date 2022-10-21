@@ -1,86 +1,107 @@
 import React, {useState} from 'react';
-import {ScrollView} from 'react-native';
 import {useTranslation} from 'react-i18next';
-import {Card} from 'react-native-paper';
-import {DatePickerInput} from 'react-native-paper-dates';
-
-import CatScreen from '../../components/screen';
-import CatText from '../../components/text';
-import CatButton from '../../components/button';
-import {BarChart} from '../../components/graphs/bar-chart/Component';
-import useCatSelector from '../../hooks/useCatSelector';
-import {userNameSelector} from '../../redux/user-selectors';
-import {offlineQueueTest, offlineCancelTest} from '../../redux/app-slice';
-import useCatDispatch from '../../hooks/useCatDispatch';
-import useCatTheme from '../../hooks/useCatTheme';
-import {CatTimePicker} from '../../components/pickers/time/Component';
-import {CatDatePicker} from '../../components/pickers/date/Component';
-
 import {ScreenType} from './types';
+import {useStyles} from './styles';
+import CatSummaryCard from './SummaryCard';
+import HaulTruckSvg from 'assets/icons/maintenance.svg';
+import useCatTheme from '../../hooks/useCatTheme';
+import ValuesRow from './ValuesRow';
+import {numberWithCommas, unitTranslateKey} from '../../utils/units';
+import {units} from 'minestar-units';
+import CatScreen from '../../components/screen';
+import {View} from 'react-native';
+import CatText from '../../components/text';
+import CatSwitch from '../../components/switch';
+import CatActiveItemsSection from './ActiveItemsSection';
+import CatAccordion from '../../components/accordion';
 
-const DashboardScreen: React.FC<ScreenType> = props => {
-  const dispatch = useCatDispatch();
-  const {colors} = useCatTheme();
+const DashboardScreen: React.FC<ScreenType> = () => {
   const {t} = useTranslation();
-  const actionQueue = useCatSelector(state => state.network.actionQueue);
+  const [isLoad, setIsLoad] = useState(false);
+  const {colors} = useCatTheme();
+  const styles = useStyles();
 
-  const [inputDate, setInputDate] = useState<Date | undefined>(undefined);
-  const username = useCatSelector(userNameSelector);
+  // TODO: Retrieve from Store / API
+  const siteName = 'Rasmussen Valley Clone';
+  const productionSummary = {total: 20000, projected: 90000, target: 120000};
+  const unit = units.TONNE;
 
-  // hardcoded PO actions, since thunks seem to have some issues being set into the queue
-  const cancel = async () => {
-    await dispatch(offlineCancelTest());
-    props.navigation.navigate('Dashboard');
+  const getWorkAreaJSX = (attentionRequired = false) => {
+    return (
+      <CatSummaryCard
+        hasError={attentionRequired}
+        title={{
+          icon: HaulTruckSvg,
+          iconColor: colors.error,
+          children: 'Truck 01',
+        }}
+        total={1000}
+        projected={15000}
+        target={20000}
+        unit={unit}
+      />
+    );
   };
 
-  const queue = async () => {
-    await dispatch(offlineQueueTest());
-    props.navigation.navigate('Dashboard');
-  };
-
-  console.log(JSON.stringify(actionQueue));
+  const firstRowJSX = () => (
+    <ValuesRow
+      style={styles.productionRow}
+      values={[
+        {
+          label:
+            t('cat.production_secondary_total') +
+            ' ' +
+            t(unitTranslateKey(unit)),
+          children: numberWithCommas(productionSummary.total),
+          isPrimary: true,
+        },
+        {
+          label: t('cat.production_projected'),
+          children: numberWithCommas(productionSummary.projected),
+        },
+        {
+          label: t('cat.production_target'),
+          children: numberWithCommas(productionSummary.target),
+        },
+      ]}
+    />
+  );
 
   return (
     <CatScreen title={t('summary_title')}>
-      <ScrollView>
-        {/* Thanks to global augmentations IDEs should be able to autocomplete
-          with custom things defined in the theme and TS shouldn't complain either */}
-        <CatText style={{color: colors.errorCaution100}}>
-          {'user name: ' + username}
-        </CatText>
-        <CatButton onPress={queue}>Queue a thing</CatButton>
-        <CatButton onPress={cancel}>Cancel queue</CatButton>
-
-        <CatText>{JSON.stringify(actionQueue)}</CatText>
-
-        <CatButton disabled>Disabled</CatButton>
-
-        <Card
-          mode="outlined"
-          onPress={() => {
-            console.log('go somewhere!');
-          }}>
-          <Card.Content>
-            <CatText variant="headlineMedium">Card title</CatText>
-            <CatText>Card content</CatText>
-          </Card.Content>
-        </Card>
-        <BarChart />
-
-        <CatTimePicker onSelect={console.log} />
-        <CatDatePicker onSelect={console.log} />
-
-        <DatePickerInput
-          locale="en"
-          label="Birthdate"
-          value={inputDate}
-          onChange={d => setInputDate(d)}
-          inputMode="end"
-          // mode="outlined" (see react-native-paper docs)
-          // calendarIcon="calendar" // optional, default is "calendar"
-          // other react native TextInput props
+      <View style={styles.siteNameContainer}>
+        <CatText variant={'titleMedium'}>{siteName}</CatText>
+        <CatSwitch
+          label={t(isLoad ? 'cat.production_loads' : 'cat.production_dumps')}
+          value={isLoad}
+          onValueChange={val => setIsLoad(val)}
         />
-      </ScrollView>
+      </View>
+      <View style={styles.productionContainer}>
+        {firstRowJSX()}
+        <CatAccordion>{firstRowJSX()}</CatAccordion>
+      </View>
+      <CatText style={styles.activeWorkTitle} variant={'headlineSmall'}>
+        {t('summary_active_work_title', {num: 6})}
+      </CatText>
+      <CatActiveItemsSection title={t('summary_attention_required')}>
+        <>
+          {[...Array(10)].map((val, i) => (
+            <View style={styles.activeProductionItem} key={i}>
+              {getWorkAreaJSX(true)}
+            </View>
+          ))}
+        </>
+      </CatActiveItemsSection>
+      <CatActiveItemsSection title={t('summary_active_work_areas')}>
+        <>
+          {[...Array(10)].map((val, i) => (
+            <View style={styles.activeProductionItem} key={i}>
+              {getWorkAreaJSX()}
+            </View>
+          ))}
+        </>
+      </CatActiveItemsSection>
     </CatScreen>
   );
 };

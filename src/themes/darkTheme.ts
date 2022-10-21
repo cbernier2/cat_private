@@ -76,6 +76,8 @@ export const darkTheme = {
       level5: '#64696E',
     },
 
+    error: '#D32F2F',
+
     // custom values, matching what's in the UI Kit which have no MD3 match
     errorCaution0: '#FF7C00',
     errorCaution100: 'rgba(255, 124, 0, 0.8)',
