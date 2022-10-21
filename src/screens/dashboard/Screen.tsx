@@ -1,21 +1,19 @@
 import React, {useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import CatScreen from '../../components/screen';
 import {ScreenType} from './types';
-import CatText from '../../components/text';
-import {View} from 'react-native';
 import styles from './styles';
-import CatSwitch from '../../components/switch';
-import ValuesRow from './ValuesRow';
 import CatSummaryCard from './SummaryCard';
 import HaulTruckSvg from 'assets/icons/maintenance.svg';
 import useCatTheme from '../../hooks/useCatTheme';
-import CatActiveItemsSection from './ActiveItemsSection';
+import ValuesRow from './ValuesRow';
+import {numberWithCommas, unitTranslateKey} from '../../utils/units';
+import {units} from 'minestar-units';
+import CatScreen from '../../components/screen';
+import {View} from 'react-native';
+import CatText from '../../components/text';
+import CatSwitch from '../../components/switch';
 import CatAccordion from './Accordion';
-
-const numberWithCommas = (x: number) => {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-};
+import CatActiveItemsSection from './ActiveItemsSection';
 
 const DashboardScreen: React.FC<ScreenType> = () => {
   const {t} = useTranslation();
@@ -25,6 +23,7 @@ const DashboardScreen: React.FC<ScreenType> = () => {
   // TODO: Retrieve from Store / API
   const siteName = 'Rasmussen Valley Clone';
   const productionSummary = {total: 20000, project: 90000, target: 120000};
+  const unit = units.TONNE;
 
   const getWorkAreaJSX = (attentionRequired = false) => {
     return (
@@ -38,7 +37,10 @@ const DashboardScreen: React.FC<ScreenType> = () => {
         row1={{
           values: [
             {
-              label: 'Total Tonnes',
+              label:
+                t('cat.production_secondary_total') +
+                ' ' +
+                t(unitTranslateKey(unit)),
               children: numberWithCommas(123456),
               isPrimary: true,
             },
@@ -46,7 +48,7 @@ const DashboardScreen: React.FC<ScreenType> = () => {
         }}
         row2={{
           values: [
-            {label: 'ProJ. Tonnes', children: numberWithCommas(1000)},
+            {label: 'Proj. Tonnes', children: numberWithCommas(1000)},
             {label: 'Target', children: numberWithCommas(1000), isDown: true},
           ],
         }}
