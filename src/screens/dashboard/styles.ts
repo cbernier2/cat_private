@@ -5,13 +5,6 @@ export const useStyles = () => {
   const {colors} = useCatTheme();
 
   return StyleSheet.create({
-    textWithIconContainer: {
-      flexDirection: 'row',
-      alignItems: 'flex-start',
-    },
-    textWithIcon: {
-      marginLeft: 4,
-    },
     siteNameContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
@@ -26,25 +19,13 @@ export const useStyles = () => {
     productionRow: {
       marginBottom: 16,
     },
-    textWithLabelContainer: {
-      flexDirection: 'column',
-      alignItems: 'flex-start',
-    },
-    textWithLabelLabel: {
-      textTransform: 'uppercase',
-    },
-    textWithLabelDownArrow: {
-      position: 'absolute',
-      bottom: -4,
-      left: -20,
-    },
-    textWithLabelText: {
-      fontWeight: 'bold',
-    },
     valuesRowContainer: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'flex-start',
+    },
+    valuesRowText: {
+      fontWeight: 'bold',
     },
     cardContainer: {
       width: 220,

@@ -1,12 +1,12 @@
 import React from 'react';
 import {CatSummaryCardType} from './types';
 import {Surface} from 'react-native-paper';
-import TextWithIcon from './TextWithIcon';
 import ValuesRow from './ValuesRow';
 import {View, ViewStyle} from 'react-native';
 import {useStyles} from './styles';
 import {useTranslation} from 'react-i18next';
 import {numberWithCommas, unitTranslateKey} from '../../utils/units';
+import CatTextWithIcon from '../../components/text-with-icon';
 
 const CatSummaryCard: React.FC<CatSummaryCardType> = ({
   title,
@@ -25,7 +25,7 @@ const CatSummaryCard: React.FC<CatSummaryCardType> = ({
   }
   return (
     <Surface elevation={2} style={containerStyle}>
-      <TextWithIcon style={styles.cardTitle} {...title} />
+      <CatTextWithIcon style={styles.cardTitle} {...title} />
       <ValuesRow
         values={[
           {
@@ -35,6 +35,7 @@ const CatSummaryCard: React.FC<CatSummaryCardType> = ({
               t(unitTranslateKey(unit)),
             isDown: false,
             children: numberWithCommas(total),
+            isPrimary: true,
           },
         ]}
       />
@@ -45,7 +46,6 @@ const CatSummaryCard: React.FC<CatSummaryCardType> = ({
             label: t('cat.production_projected'),
             isDown: false,
             children: numberWithCommas(projected),
-            isPrimary: true,
           },
           {
             label: t('cat.production_target'),

@@ -2,30 +2,34 @@ import React from 'react';
 import {CatTextWithLabelType} from './types';
 import useCatTheme from '../../hooks/useCatTheme';
 import {TextStyle, View} from 'react-native';
-import {useStyles} from './styles';
 import CatText from '../../components/text';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import styles from './styles';
 
 const CatTextWithLabel: React.FC<CatTextWithLabelType> = ({
   label,
   isPrimary,
   variant = 'bodyLarge',
   isDown = false,
+  labelProps = {},
+  style: textStyle,
   ...textProps
 }) => {
   const {colors} = useCatTheme();
-  const styles = useStyles();
 
   const valueStyle: TextStyle = isPrimary ? {color: colors.primary} : {};
 
   return (
-    <View style={styles.textWithLabelContainer}>
-      <CatText style={styles.textWithLabelLabel} variant={'labelMedium'}>
+    <View style={styles.container}>
+      <CatText
+        style={styles.label}
+        variant={labelProps?.variant || 'labelMedium'}
+        {...labelProps}>
         {label}
       </CatText>
       {isDown && (
         <MaterialIcons
-          style={styles.textWithLabelDownArrow}
+          style={styles.downArrow}
           name={'arrow-drop-down'}
           color={colors.error}
           size={24}
@@ -33,7 +37,7 @@ const CatTextWithLabel: React.FC<CatTextWithLabelType> = ({
       )}
       <CatText
         variant={variant}
-        style={[styles.textWithLabelText, textProps.style, valueStyle]}
+        style={[textStyle, valueStyle]}
         {...textProps}
       />
     </View>

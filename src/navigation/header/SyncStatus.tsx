@@ -1,6 +1,5 @@
 import React from 'react';
 import {View} from 'react-native';
-import CatText from '../../components/text';
 import styles from './styles';
 import NetworkStrengthHighSvg from 'assets/icons/edge_network_strength_high.svg';
 import NetworkStrengthMediumSvg from 'assets/icons/edge_network_strength_medium.svg';
@@ -16,6 +15,7 @@ import {
   NetInfoWifiState,
   useNetInfo,
 } from '@react-native-community/netinfo';
+import CatTextWithLabel from '../../components/text-with-label';
 
 const CatSyncStatus: React.FC = () => {
   const {t} = useTranslation();
@@ -53,12 +53,11 @@ const CatSyncStatus: React.FC = () => {
 
   return (
     <View style={styles.statusContainer}>
-      <View style={styles.statusTextContainer}>
-        <CatText variant={'labelSmall'} style={styles.statusTitle}>
-          {t('cat.last_updated')}
-        </CatText>
-        <CatText style={styles.statusDate}>{lastSyncText}</CatText>
-      </View>
+      <CatTextWithLabel
+        label={t('cat.last_updated')}
+        labelProps={{variant: 'labelSmall'}}>
+        {lastSyncText}
+      </CatTextWithLabel>
       <View style={styles.statusIconContainer}>
         {React.createElement(statusIcon(), {width: 32, height: 32})}
       </View>
