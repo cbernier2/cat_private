@@ -1,11 +1,10 @@
 import React from 'react';
 import {CatSummaryCardType} from './types';
-import styles from './styles';
 import {Surface} from 'react-native-paper';
 import TextWithIcon from './TextWithIcon';
 import ValuesRow from './ValuesRow';
 import {View, ViewStyle} from 'react-native';
-import useCatTheme from '../../hooks/useCatTheme';
+import {useStyles} from './styles';
 
 const CatSummaryCard: React.FC<CatSummaryCardType> = ({
   title,
@@ -13,11 +12,11 @@ const CatSummaryCard: React.FC<CatSummaryCardType> = ({
   row2,
   hasError,
 }) => {
-  const {colors} = useCatTheme();
+  const styles = useStyles();
 
   const containerStyle: ViewStyle[] = [styles.cardContainer];
   if (hasError) {
-    containerStyle.push(styles.cardContainerError, {borderColor: colors.error});
+    containerStyle.push(styles.cardContainerError);
   }
   return (
     <Surface elevation={2} style={containerStyle}>

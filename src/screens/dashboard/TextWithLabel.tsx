@@ -2,7 +2,7 @@ import React from 'react';
 import {CatTextWithLabelType} from './types';
 import useCatTheme from '../../hooks/useCatTheme';
 import {TextStyle, View} from 'react-native';
-import styles from './styles';
+import {useStyles} from './styles';
 import CatText from '../../components/text';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
@@ -14,6 +14,7 @@ const CatTextWithLabel: React.FC<CatTextWithLabelType> = ({
   ...textProps
 }) => {
   const {colors} = useCatTheme();
+  const styles = useStyles();
 
   const valueStyle: TextStyle = isPrimary ? {color: colors.primary} : {};
 

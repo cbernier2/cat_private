@@ -1,6 +1,6 @@
 import React from 'react';
 import {CatActiveItemsSectionType} from './types';
-import styles from './styles';
+import {useStyles} from './styles';
 import {ScrollView, View} from 'react-native';
 import CatText from '../../components/text';
 
@@ -8,6 +8,8 @@ const CatActiveItemsSection: React.FC<CatActiveItemsSectionType> = ({
   title,
   children,
 }) => {
+  const styles = useStyles();
+
   return (
     <>
       <View style={styles.activeProductionItemsHeader}>

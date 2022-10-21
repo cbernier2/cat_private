@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {ScreenType} from './types';
-import styles from './styles';
+import {useStyles} from './styles';
 import CatSummaryCard from './SummaryCard';
 import HaulTruckSvg from 'assets/icons/maintenance.svg';
 import useCatTheme from '../../hooks/useCatTheme';
@@ -19,6 +19,7 @@ const DashboardScreen: React.FC<ScreenType> = () => {
   const {t} = useTranslation();
   const [isLoad, setIsLoad] = useState(false);
   const {colors} = useCatTheme();
+  const styles = useStyles();
 
   // TODO: Retrieve from Store / API
   const siteName = 'Rasmussen Valley Clone';
