@@ -1,22 +1,27 @@
+import React from 'react';
+import {Provider as PaperProvider} from 'react-native-paper';
+import {useTranslation} from 'react-i18next';
+import {NavigationContainer} from '@react-navigation/native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
+
 import {LoginScreen} from '../screens/login';
+import {SitesListScreen} from '../screens/sites-list';
 import {DashboardScreen} from '../screens/dashboard';
-import {NavigationContainer} from '@react-navigation/native';
-import CatDrawer from './drawer';
-import CatHeader from './header';
-import React from 'react';
-import {Provider as PaperProvider} from 'react-native-paper';
 import useCatTheme from '../hooks/useCatTheme';
 import {SiteStopsScreen} from '../screens/site-stops';
 import {SearchScreen} from '../screens/search';
-import CatSyncStatus from './header/SyncStatus';
 import DebugScreen from '../screens/debug/Screen';
-import CatDrawerIcon from './header/DrawerIcon';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import useCatSelector from '../hooks/useCatSelector';
 import {userAuthTokenSelector} from '../redux/user-selectors';
+import {sitesSelectedSiteSelector} from '../redux/sites/sites-selectors';
+
+import CatDrawer from './drawer';
+import CatDrawerIcon from './header/DrawerIcon';
+import CatHeader from './header';
+import CatSyncStatus from './header/SyncStatus';
 
 const SummaryStack = createStackNavigator();
 const SummaryNavigator = () => (
@@ -96,7 +101,10 @@ const DrawerNavigator = () => {
 const MainStack = createStackNavigator();
 const CatNavigation = () => {
   const theme = useCatTheme();
+  const {t} = useTranslation();
   const userToken = useCatSelector(userAuthTokenSelector);
+  const selectedSite = useCatSelector(sitesSelectedSiteSelector);
+  console.log('Nav', JSON.stringify({userToken, selectedSite}));
 
   return (
     <PaperProvider theme={theme}>
@@ -104,11 +112,28 @@ const CatNavigation = () => {
         <MainStack.Navigator screenOptions={{headerShown: false}}>
           {userToken === null ? (
             <MainStack.Screen name="Login" component={LoginScreen} />
-          ) : (
+          ) : selectedSite === null ? (
             <MainStack.Screen
-              name={'ConnectedNavigator'}
-              component={DrawerNavigator}
+              name="SitesList"
+              component={SitesListScreen}
+              initialParams={{root: true}}
             />
+          ) : (
+            <>
+              <MainStack.Screen
+                name={'ConnectedNavigator'}
+                component={DrawerNavigator}
+              />
+              <MainStack.Screen
+                name={'SwitchSite'}
+                component={SitesListScreen}
+                options={{
+                  headerShown: true,
+                  headerTitle: t('side_menu_switch_site'),
+                  presentation: 'modal',
+                }}
+              />
+            </>
           )}
           <MainStack.Screen
             name={'Debug'}

@@ -1,25 +1,31 @@
 import React from 'react';
 import {View} from 'react-native';
-import {CatDrawerType} from './types';
-import CatText from '../../components/text';
-import {Avatar} from 'react-native-paper';
+import {Avatar, Drawer} from 'react-native-paper';
 import {useTranslation} from 'react-i18next';
-import styles from './styles';
-import useCatTheme from '../../hooks/useCatTheme';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
+import MineStarLogo from '../../../assets/MineStarLogo.svg';
+
+import CatText from '../../components/text';
+import useCatTheme from '../../hooks/useCatTheme';
 import {logout} from '../../redux/user-slice';
 import useCatDispatch from '../../hooks/useCatDispatch';
-import MineStarLogo from '../../../assets/MineStarLogo.svg';
-import {Drawer} from 'react-native-paper';
+import useCatSelector from '../../hooks/useCatSelector';
+import {sitesSelectedSiteSelector} from '../../redux/sites/sites-selectors';
+
+import {CatDrawerType} from './types';
+import styles from './styles';
+
 import {CatMenuItem} from './MenuItem';
 
 const CatDrawer: React.FC<CatDrawerType> = ({navigation}) => {
   const dispatch = useCatDispatch();
   const {t} = useTranslation();
   const {colors} = useCatTheme();
+  const selectedSite = useCatSelector(sitesSelectedSiteSelector);
 
   const userName = 'John Doe'; // TODO
-  const siteName = 'Rasmussen Valley Clone'; // TODO
+  const siteName = selectedSite?.name ?? '';
 
   return (
     <View style={styles.menuContainer}>
@@ -43,7 +49,7 @@ const CatDrawer: React.FC<CatDrawerType> = ({navigation}) => {
         </View>
         <Drawer.Section title={siteName}>
           <CatMenuItem
-            onPress={() => {}}
+            onPress={() => navigation.navigate('SwitchSite')}
             label={t('side_menu_switch_site')}
             icon={'swap-horiz'}
           />
