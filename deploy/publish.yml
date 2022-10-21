@@ -155,6 +155,8 @@ stages:
           ArtifactName: MobileApps
           
       - task: AppStoreRelease@1
+        env:
+          ITMSTRANSPORTER_FORCE_ITMS_PACKAGE_UPLOAD: true
         inputs:
          authType: 'ApiKey'
          apiKeyId: $(iosapikeyid)
