@@ -23,7 +23,7 @@ const DashboardScreen: React.FC<ScreenType> = () => {
 
   // TODO: Retrieve from Store / API
   const siteName = 'Rasmussen Valley Clone';
-  const productionSummary = {total: 20000, project: 90000, target: 120000};
+  const productionSummary = {total: 20000, projected: 90000, target: 120000};
   const unit = units.TONNE;
 
   const getWorkAreaJSX = (attentionRequired = false) => {
@@ -35,24 +35,10 @@ const DashboardScreen: React.FC<ScreenType> = () => {
           iconColor: colors.error,
           children: 'Truck 01',
         }}
-        row1={{
-          values: [
-            {
-              label:
-                t('cat.production_secondary_total') +
-                ' ' +
-                t(unitTranslateKey(unit)),
-              children: numberWithCommas(123456),
-              isPrimary: true,
-            },
-          ],
-        }}
-        row2={{
-          values: [
-            {label: 'Proj. Tonnes', children: numberWithCommas(1000)},
-            {label: 'Target', children: numberWithCommas(1000), isDown: true},
-          ],
-        }}
+        total={1000}
+        projected={15000}
+        target={20000}
+        unit={unit}
       />
     );
   };
@@ -62,17 +48,20 @@ const DashboardScreen: React.FC<ScreenType> = () => {
       style={styles.productionRow}
       values={[
         {
-          label: 'Total Tonnes',
+          label:
+            t('cat.production_secondary_total') +
+            ' ' +
+            t(unitTranslateKey(unit)),
           children: numberWithCommas(productionSummary.total),
           isPrimary: true,
         },
         {
-          label: 'Proj. Tonnes',
-          children: numberWithCommas(productionSummary.total),
+          label: t('cat.production_projected'),
+          children: numberWithCommas(productionSummary.projected),
         },
         {
-          label: 'Target',
-          children: numberWithCommas(productionSummary.total),
+          label: t('cat.production_target'),
+          children: numberWithCommas(productionSummary.target),
         },
       ]}
     />

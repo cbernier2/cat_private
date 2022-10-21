@@ -3,6 +3,7 @@ import React, {ComponentProps, ReactNode} from 'react';
 import {Text} from 'react-native-paper';
 import {SvgProps} from 'react-native-svg';
 import {ColorValue, ViewStyle} from 'react-native';
+import {units} from 'minestar-units';
 
 export type ScreenType = {
   navigation: MaterialBottomTabNavigationProp<any>;
@@ -26,9 +27,11 @@ export type CatValuesRowType = {
 
 export type CatSummaryCardType = {
   title: CatTextWithIconType;
-  row1: CatValuesRowType;
-  row2: CatValuesRowType;
-  hasError?: boolean;
+  hasError: boolean;
+  total: number;
+  projected: number;
+  target: number;
+  unit: units.Unit;
 };
 
 export type CatActiveItemsSectionType = {
