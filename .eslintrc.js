@@ -2,7 +2,7 @@ module.exports = {
   root: true,
   extends: '@react-native-community',
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', 'eslint-comments'],
   overrides: [
     {
       files: ['*.ts', '*.tsx'],
@@ -10,7 +10,12 @@ module.exports = {
         '@typescript-eslint/no-shadow': ['error'],
         'no-shadow': 'off',
         'no-undef': 'off',
-        'no-unlimited-disable': 'off',
+      },
+    },
+    {
+      files: ['*.js'],
+      rules: {
+        'eslint-comments/no-unlimited-disable': 'off',
       },
     },
   ],

@@ -1,8 +1,8 @@
 import {MaterialBottomTabNavigationProp} from '@react-navigation/material-bottom-tabs';
-import {ComponentProps} from 'react';
+import React, {ComponentProps, ReactNode} from 'react';
 import {Text} from 'react-native-paper';
 import {SvgProps} from 'react-native-svg';
-import {ColorValue} from 'react-native';
+import {ColorValue, ViewStyle} from 'react-native';
 
 export type ScreenType = {
   navigation: MaterialBottomTabNavigationProp<any>;
@@ -20,6 +20,7 @@ export type CatTextWithLabelType = ComponentProps<typeof Text> & {
 };
 
 export type CatValuesRowType = {
+  style?: ViewStyle;
   values: CatTextWithLabelType[];
 };
 
@@ -28,4 +29,13 @@ export type CatSummaryCardType = {
   row1: CatValuesRowType;
   row2: CatValuesRowType;
   hasError?: boolean;
+};
+
+export type CatActiveItemsSectionType = {
+  title: string;
+  children: ReactNode;
+};
+
+export type CatAccordionType = {
+  children: ReactNode;
 };
