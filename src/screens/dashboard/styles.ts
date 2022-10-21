@@ -70,14 +70,5 @@ export const useStyles = () => {
     activeProductionItem: {
       margin: 6,
     },
-    accordionHandle: {
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'flex-start',
-      height: 32,
-    },
-    accordionDivider: {
-      height: 1,
-    },
   });
 };

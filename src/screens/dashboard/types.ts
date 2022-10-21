@@ -35,7 +35,3 @@ export type CatActiveItemsSectionType = {
   title: string;
   children: ReactNode;
 };
-
-export type CatAccordionType = {
-  children: ReactNode;
-};

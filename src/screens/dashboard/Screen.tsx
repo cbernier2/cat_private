@@ -12,8 +12,8 @@ import CatScreen from '../../components/screen';
 import {View} from 'react-native';
 import CatText from '../../components/text';
 import CatSwitch from '../../components/switch';
-import CatAccordion from './Accordion';
 import CatActiveItemsSection from './ActiveItemsSection';
+import CatAccordion from '../../components/accordion';
 
 const DashboardScreen: React.FC<ScreenType> = () => {
   const {t} = useTranslation();
