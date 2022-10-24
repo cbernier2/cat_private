@@ -14,15 +14,16 @@ import useCatSelector from '../../hooks/useCatSelector';
 import {sitesSelectedSiteSelector} from '../../redux/sites/sites-selectors';
 
 import {CatDrawerType} from './types';
-import styles from './styles';
 
 import {CatMenuItem} from './MenuItem';
+import {useStyles} from './styles';
 
 const CatDrawer: React.FC<CatDrawerType> = ({navigation}) => {
   const dispatch = useCatDispatch();
   const {t} = useTranslation();
   const {colors} = useCatTheme();
   const selectedSite = useCatSelector(sitesSelectedSiteSelector);
+  const styles = useStyles();
 
   const userName = 'John Doe'; // TODO
   const siteName = selectedSite?.name ?? '';
