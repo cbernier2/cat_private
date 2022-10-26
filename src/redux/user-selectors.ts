@@ -2,8 +2,8 @@ import {createSelector} from '@reduxjs/toolkit';
 import {RootState} from './index';
 
 export const userAuthTokenSelector = createSelector(
-  (state: RootState) => state.user.authToken,
-  authToken => authToken,
+  (state: RootState) => state.user.auth?.accessToken,
+  accessToken => accessToken || null,
 );
 
 export const userIsLoggingInSelector = createSelector(

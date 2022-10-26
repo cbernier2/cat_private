@@ -1,61 +1,80 @@
-import {Buffer} from 'buffer';
 import {createAsyncThunk, createSlice, Reducer} from '@reduxjs/toolkit';
 import {persistReducer} from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import i18n from 'i18next';
+import * as OAuth from 'react-native-app-auth';
+import {AuthorizeResult} from 'react-native-app-auth';
+import {RootState} from './index';
 
 export const key = 'user';
 
 export interface UserState {
   password?: string;
   name?: string;
-  authToken: string | null;
+  auth: AuthorizeResult | null;
   isLogin: boolean;
   loginError: string | null;
 }
 
 const initialState: UserState = {
-  authToken: null,
+  auth: null,
   isLogin: false,
   loginError: null,
 };
 
-export type LoginActionType = {
-  username: string;
-  password: string;
+const authClientId = 'bdd47baa-a878-4483-8a53-6448640ad312';
+const authConfig = {
+  issuer:
+    'https://cwslogin.b2clogin.com/cwslogin.onmicrosoft.com/B2C_1A_P1_V1_SIGNIN_NONPROD/v2.0',
+  clientId: authClientId,
+  redirectUrl: 'msauth.com.spiria.pitsupervisor://auth/', //'msauth.com.cat.pitsupervisor://auth',
+  scopes: ['openid', 'offline_access', authClientId],
 };
+OAuth.prefetchConfiguration(authConfig).then().catch();
+
+export const refreshTokenAsyncAction = createAsyncThunk(
+  `${key}/refreshToken`,
+  async (_, {rejectWithValue, getState}) => {
+    const refreshToken = (getState() as RootState).user.auth?.refreshToken;
+    if (refreshToken) {
+      try {
+        return await OAuth.refresh(authConfig, {refreshToken});
+      } catch (e) {
+        return rejectWithValue(e);
+      }
+    } else {
+      return rejectWithValue(null);
+    }
+  },
+);
 
 export const loginAsyncAction = createAsyncThunk(
   `${key}/login`,
-  async (user: LoginActionType, {rejectWithValue}) => {
-    // TODO: Remove temporary "successful" login user
-    if (user.username.toLowerCase() === 'letmein') {
-      return true;
-    }
-
+  async (_, {rejectWithValue}) => {
     try {
-      const response = await fetch(
-        'http://cluster04.centralus.cloudapp.azure.com/uaa/oauth/token',
-        {
-          method: 'post',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            Authorization: `Basic ${Buffer.from(
-              'dev:dev-secret',
-              'binary',
-            ).toString('base64')}`,
-          },
-          body: `grant_type=password&username=${user.username}&password=${user.password}`,
-        },
-      );
-
-      const body = await response.json();
-      if (response.status !== 200) {
-        return rejectWithValue(body);
-      }
-      return body;
+      return await OAuth.authorize({
+        ...authConfig,
+        additionalParameters: {groupsFilter: 'OMS'},
+      });
     } catch (e) {
-      rejectWithValue(e);
+      return rejectWithValue(e);
+    }
+  },
+);
+
+export const logoutAsyncAction = createAsyncThunk(
+  `${key}/logout`,
+  async (_, {rejectWithValue, getState}) => {
+    try {
+      const userState = (getState() as RootState).user;
+      if (userState.auth) {
+        return await OAuth.logout(authConfig, {
+          idToken: userState.auth.idToken,
+          postLogoutRedirectUrl: authConfig.redirectUrl,
+        });
+      }
+    } catch (e) {
+      return rejectWithValue(e);
     }
   },
 );
@@ -63,12 +82,7 @@ export const loginAsyncAction = createAsyncThunk(
 const slice = createSlice({
   name: key,
   initialState,
-  reducers: {
-    logout: state => {
-      // TODO: this will probably need to do other things in the future
-      state.authToken = null;
-    },
-  },
+  reducers: {},
   extraReducers: builder => {
     builder
       .addCase(loginAsyncAction.pending, state => {
@@ -77,8 +91,11 @@ const slice = createSlice({
       })
       .addCase(loginAsyncAction.rejected, (state, action) => {
         state.isLogin = false;
-        // @ts-ignore
-        if (action.payload.error === 'invalid_grant') {
+        const errorCode = (action.payload as {code: string}).code;
+        if (
+          errorCode === 'authentication_failed' ||
+          errorCode === 'registration_failed '
+        ) {
           state.loginError = i18n.t('cat.login_bad_credentials_error');
         } else {
           state.loginError = i18n.t('cat.login_server_error');
@@ -86,9 +103,23 @@ const slice = createSlice({
       })
       .addCase(loginAsyncAction.fulfilled, (state, action) => {
         state.isLogin = false;
-        state.name = action.meta.arg.username;
-        state.password = action.meta.arg.password;
-        state.authToken = 'yay';
+        state.auth = action.payload;
+      })
+      .addCase(logoutAsyncAction.pending, state => {
+        state.isLogin = true;
+      })
+      .addCase(logoutAsyncAction.fulfilled, state => {
+        state.isLogin = false;
+        state.auth = null;
+      })
+      .addCase(logoutAsyncAction.rejected, state => {
+        state.isLogin = false;
+        state.auth = null;
+      })
+      .addCase(refreshTokenAsyncAction.fulfilled, (state, action) => {
+        if (state.auth) {
+          state.auth.accessToken = action.payload.accessToken;
+        }
       });
   },
 });
@@ -102,7 +133,5 @@ const userReducer = persistReducer(
   },
   typedReducer,
 );
-
-export const {logout} = slice.actions;
 
 export default userReducer;

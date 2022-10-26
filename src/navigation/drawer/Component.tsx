@@ -8,7 +8,7 @@ import MineStarLogo from '../../../assets/MineStarLogo.svg';
 
 import CatText from '../../components/text';
 import useCatTheme from '../../hooks/useCatTheme';
-import {logout} from '../../redux/user-slice';
+import {logoutAsyncAction} from '../../redux/user-slice';
 import useCatDispatch from '../../hooks/useCatDispatch';
 import useCatSelector from '../../hooks/useCatSelector';
 import {sitesSelectedSiteSelector} from '../../redux/sites/sites-selectors';
@@ -70,7 +70,7 @@ const CatDrawer: React.FC<CatDrawerType> = ({navigation}) => {
         <Drawer.Section>
           <CatMenuItem
             icon="logout"
-            onPress={() => dispatch(logout())}
+            onPress={() => dispatch(logoutAsyncAction())}
             label={t('cat.button_sign_out')}
           />
         </Drawer.Section>
