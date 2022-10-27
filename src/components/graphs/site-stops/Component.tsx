@@ -38,7 +38,7 @@ export const SiteStopsChart: React.FC<SiteStopsChartType> = () => {
       setWidth(d.window.width);
     });
     return () => subscription?.remove();
-  });
+  }, [setWidth]);
 
   const equipment_band = scale
     .scaleBand()

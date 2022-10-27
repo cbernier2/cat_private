@@ -2,11 +2,10 @@ import React from 'react';
 import {View} from 'react-native';
 import Svg, {Circle, ForeignObject, G, Text} from 'react-native-svg';
 
-import {equipmentIconMap} from '../../../assets/icons/equipment-icon.map';
-
 import useCatTheme from '../../hooks/useCatTheme';
 
 import {EquipmentIconType, ForeignEquipmentIconType} from './types';
+import {equipmentIconMap} from './map';
 
 export const EquipmentIcon: React.FC<EquipmentIconType> = props => {
   const theme = useCatTheme();
@@ -30,7 +29,6 @@ export const EquipmentIcon: React.FC<EquipmentIconType> = props => {
           r={21}
         />
         <ForeignObject x={7} y={7}>
-          {/*@ts-ignore*/}
           {Icon && <Icon width={36} height={36} fill={iconColor} />}
         </ForeignObject>
         <G display={props.badge ? '' : 'none'}>
