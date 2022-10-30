@@ -1,4 +1,5 @@
 import {Summary} from './production';
+import {Shift} from './shift';
 
 export type GetProductionCountResult = {
   rowCount: number;
@@ -10,3 +11,5 @@ export type GetAllProductionParams = {
 };
 
 export type GetAllProductionResult = Summary[];
+
+export type GetShiftsResult = Shift[];

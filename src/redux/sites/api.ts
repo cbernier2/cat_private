@@ -6,6 +6,7 @@ import {
   GetAllProductionParams,
   GetAllProductionResult,
   GetProductionCountResult,
+  GetShiftsResult,
 } from './types/api';
 
 const catBaseQuery: BaseQueryFn<{
@@ -71,6 +72,9 @@ export const catApi = createApi({
         method: 'GET',
         queryParams,
       }),
+    }),
+    getShifts: builder.query<GetShiftsResult, void>({
+      query: () => ({path: 'shift/find', method: 'GET'}),
     }),
   }),
 });
