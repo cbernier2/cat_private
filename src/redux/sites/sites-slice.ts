@@ -5,6 +5,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {sleep} from '../../utils/promise';
 
 import {logoutAsyncAction} from '../user-slice';
+import {catApi} from './api';
+import {Summary} from './types/production';
 
 export const key = 'sites';
 
@@ -20,6 +22,7 @@ export interface SitesState {
   loading: boolean;
   sites: Site[];
   selectedSiteId: string | null;
+  summaries?: Summary[];
 }
 
 const initialState: SitesState = {
@@ -43,19 +46,57 @@ export const fetchSitesAsyncAction = createAsyncThunk(
   `${key}/fetchSites`,
   // TODO add required parameters based on API endpoint; hit endpoint
   async () => {
-    await sleep(5000);
+    await sleep(500);
     return mockSitesList;
+  },
+);
+
+export const apiResult = async <T extends {error?: unknown; data?: unknown}>(
+  dispatchResult: Promise<T>,
+): Promise<NonNullable<T['data']>> => {
+  const result = await dispatchResult;
+  if (result.error) {
+    throw result.error;
+  } else if (result.data) {
+    return result.data;
+  } else {
+    throw null;
+  }
+};
+
+export const fetchSiteAsyncAction = createAsyncThunk(
+  `${key}/fetchSite`,
+  async (_, {dispatch, rejectWithValue}) => {
+    try {
+      const result: Summary[] = [];
+      const count = await apiResult(
+        dispatch(catApi.endpoints.getProductionCount.initiate()),
+      );
+      const pageCount = Math.ceil(count.rowCount / count.rowsPerPage);
+      for (let page = 1; page <= pageCount; page++) {
+        const summaries = await apiResult(
+          dispatch(catApi.endpoints.getAllProduction.initiate({page})),
+        );
+        result.push(...summaries);
+      }
+      return result;
+    } catch (e) {
+      return rejectWithValue(e);
+    }
+  },
+);
+
+export const selectSiteAsyncAction = createAsyncThunk<void, Site | null>(
+  `${key}/selectSite`,
+  async (_, {dispatch}) => {
+    await dispatch(fetchSiteAsyncAction());
   },
 );
 
 const slice = createSlice({
   name: key,
   initialState,
-  reducers: {
-    selectSite: (state, action) => {
-      state.selectedSiteId = action.payload?.id || null;
-    },
-  },
+  reducers: {},
   extraReducers: builder => {
     builder
       .addCase(logoutAsyncAction.pending, state => {
@@ -74,6 +115,12 @@ const slice = createSlice({
       .addCase(fetchSitesAsyncAction.fulfilled, (state, action) => {
         state.loading = false;
         state.sites = action.payload;
+      })
+      .addCase(fetchSiteAsyncAction.fulfilled, (state, action) => {
+        state.summaries = action.payload;
+      })
+      .addCase(selectSiteAsyncAction.pending, (state, action) => {
+        state.selectedSiteId = action.meta.arg?.id || null;
       });
   },
 });
@@ -88,6 +135,6 @@ const sitesReducer = persistReducer(
   typedReducer,
 );
 
-export const {selectSite} = slice.actions;
+export const {} = slice.actions;
 
 export default sitesReducer;
