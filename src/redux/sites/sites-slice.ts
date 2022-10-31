@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {sleep} from '../../utils/promise';
 
-import {logout} from '../user-slice';
+import {logoutAsyncAction} from '../user-slice';
 
 export const key = 'sites';
 
@@ -58,7 +58,7 @@ const slice = createSlice({
   },
   extraReducers: builder => {
     builder
-      .addCase(logout, state => {
+      .addCase(logoutAsyncAction.pending, state => {
         // TODO clear this when signing in with a different user than
         //  the one that's persisted instead of onLogout?
         state.selectedSiteId = null;

@@ -163,6 +163,10 @@ android {
                 }
             }
         }
+
+        manifestPlaceholders = [
+            appAuthRedirectScheme: 'msauth.com.spiria.pitsupervisor'
+        ]
     }
 
     if (isNewArchitectureEnabled()) {
