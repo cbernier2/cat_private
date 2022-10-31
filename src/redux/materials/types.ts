@@ -1,4 +1,4 @@
-import { units } from 'minestar-units';
+import {units} from 'minestar-units';
 
 import {UnitType} from '../../constants/common';
 

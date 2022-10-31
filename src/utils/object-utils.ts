@@ -4,7 +4,6 @@
  */
 
 export class ObjectUtils {
-
   public static isSet(obj: any, prop: string): boolean {
     // note: We're specifically testing for undefined and null to ensure zeros are passed through
     if (!obj || obj[prop] === undefined || obj[prop] === null) {
@@ -27,19 +26,21 @@ export class ObjectUtils {
     }
   }
 
-  public static clearAllProperties(obj: any) : void {
-    if(!obj) {
+  public static clearAllProperties(obj: any): void {
+    if (!obj) {
       return;
     }
-    Object.keys(obj).forEach((key) => obj[key] = null);
+    Object.keys(obj).forEach(key => (obj[key] = null));
   }
 
   /**
    * Tests if a value is not empty/zero
    */
-  public static isSetAndNotZero(target:any, property:string) {
+  public static isSetAndNotZero(target: any, property: string) {
     let value = ObjectUtils.resolveProperty(target, property);
-    return ObjectUtils.isSet(value.target, value.property) && value.result !== 0;
+    return (
+      ObjectUtils.isSet(value.target, value.property) && value.result !== 0
+    );
   }
 
   /**
@@ -68,7 +69,7 @@ export class ObjectUtils {
     return {
       target: finalTarget,
       property: finalProperty,
-      result: finalTarget ? finalTarget[finalProperty!] : null
+      result: finalTarget ? finalTarget[finalProperty!] : null,
     };
   }
 
@@ -80,7 +81,7 @@ export class ObjectUtils {
     return value === null || value === undefined;
   }
 
-  public static transFormPropertyToMap(object: any, propertyKey: string) : void {
+  public static transFormPropertyToMap(object: any, propertyKey: string): void {
     const returnMap = new Map();
     const values = object[propertyKey];
     if (values) {
