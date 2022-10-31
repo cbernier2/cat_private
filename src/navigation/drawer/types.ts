@@ -7,3 +7,7 @@ export type MenuItemType = {
   onPress: () => void;
   icon?: string;
 };
+
+export type ExternalLinkType = Omit<MenuItemType, 'onPress'> & {
+  url: string;
+};
