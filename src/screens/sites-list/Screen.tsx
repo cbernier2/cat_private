@@ -15,7 +15,7 @@ import {
 } from '../../redux/sites/sites-selectors';
 import {
   fetchSitesAsyncAction,
-  selectSite,
+  selectSiteAsyncAction,
   Site,
 } from '../../redux/sites/sites-slice';
 
@@ -39,7 +39,7 @@ export const SitesListScreen: React.FC<SitesListTypes> = props => {
 
   useEffect(() => {
     if (root && sites.length === 1) {
-      dispatch(selectSite(sites[0]));
+      dispatch(selectSiteAsyncAction(sites[0]));
     }
   }, [dispatch, root, sites]);
 
@@ -52,8 +52,8 @@ export const SitesListScreen: React.FC<SitesListTypes> = props => {
     );
   }, [filter, sites]);
 
-  const onSelect = (site: Site) => {
-    dispatch(selectSite(site));
+  const onSelect = async (site: Site) => {
+    await dispatch(selectSiteAsyncAction(site));
     if (!root) {
       props.navigation.navigate('Dashboard');
     }

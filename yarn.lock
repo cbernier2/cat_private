@@ -6435,6 +6435,16 @@ mimic-fn@^2.1.0:
   resolved "https://registry.yarnpkg.com/mimic-fn/-/mimic-fn-2.1.0.tgz#7ed2c2ccccaf84d3ffcb7a69b57711fc2083401b"
   integrity sha512-OqbOk5oEQeAZ8WXWydlu9HJjz9WVdEIvamMCcXmuqUYjTknH/sqsWvhQ3vgwKFRR1HpjvNBKQ37nbJgYzGqGcg==
 
+minestar-equipment-defs@1.1.18:
+  version "1.1.18"
+  resolved "https://drive.spiria.com/index.php/s/xWapKipswAghK74/download"
+  integrity sha512-Ys6kJACWtY4SZfxRYMSiw6i1J8XbQ4UEbLAv6jjPHxvRyZIt9l6BTVw9l5hNmt8ivNC7pqBDKdtYanPF2tWxBQ==
+
+minestar-icons@1.0.32:
+  version "1.0.32"
+  resolved "https://drive.spiria.com/index.php/s/mWgTN0rQBjH1Xh6/download"
+  integrity sha512-c0+CivnhDZqm3LgODrk7QGCQseGT4Ncyw+GuN+mEGqPoEYjCUckQ5ZrDCLsCiNuMxghe9HLu5fSH+WtiEPHzSg==
+
 minestar-units@1.9.4:
   version "1.9.4"
   resolved "https://drive.spiria.com/index.php/s/HRMaIYmiCpyvU1T/download"
@@ -6466,6 +6476,11 @@ mkdirp@^0.5.1:
   integrity sha512-FP+p8RB8OWpF3YZBCrP5gtADmtXApB5AMLn+vdyA+PyxCjrCs00mjyUozssO33cwDeT3wNGdLxJ5M//YqtHAJw==
   dependencies:
     minimist "^1.2.6"
+
+moment@^2.29.4:
+  version "2.29.4"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.4.tgz#3dbe052889fe7c1b2ed966fcb3a77328964ef108"
+  integrity sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==
 
 ms@2.0.0:
   version "2.0.0"

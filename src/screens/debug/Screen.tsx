@@ -14,7 +14,7 @@ import {
 } from '../../redux/app-slice';
 import useCatDispatch from '../../hooks/useCatDispatch';
 import {emulateOfflineSelector} from '../../redux/app-selectors';
-import {selectSite} from '../../redux/sites/sites-slice';
+import {selectSiteAsyncAction} from '../../redux/sites/sites-slice';
 
 import {DebugScreenType} from './types';
 
@@ -36,8 +36,8 @@ const DebugScreen: React.FC<DebugScreenType> = props => {
     props.navigation.navigate('Dashboard');
   };
 
-  const clearSiteSelection = () => {
-    dispatch(selectSite(null));
+  const clearSiteSelection = async () => {
+    await dispatch(selectSiteAsyncAction(null));
     props.navigation.popToTop();
   };
 

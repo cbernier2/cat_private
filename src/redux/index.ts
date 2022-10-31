@@ -9,6 +9,7 @@ import {
   createNetworkMiddleware,
 } from 'react-native-offline';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {catApi} from './sites/api';
 
 const offlineActions = {offlineQueueTest};
 
@@ -16,7 +17,7 @@ export const rootReducer = persistReducer(
   {
     key: 'root',
     storage: AsyncStorage,
-    blacklist: ['user', 'app', 'sites'],
+    blacklist: ['user', 'app', 'sites', catApi.reducerPath],
     transforms: [
       createTransform(
         (inboundState: any) => {
@@ -59,7 +60,13 @@ export const rootReducer = persistReducer(
       ),
     ],
   },
-  combineReducers({user, app, network, sites}),
+  combineReducers({
+    user,
+    app,
+    network,
+    sites,
+    [catApi.reducerPath]: catApi.reducer,
+  }),
 );
 
 const networkMiddleware = createNetworkMiddleware({
@@ -76,6 +83,7 @@ export const store = configureStore({
       serializableCheck: false,
     }),
     thunk,
+    catApi.middleware,
   ],
 });
 

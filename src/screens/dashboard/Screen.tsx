@@ -14,6 +14,7 @@ import CatText from '../../components/text';
 import CatSwitch from '../../components/switch';
 import CatActiveItemsSection from './ActiveItemsSection';
 import CatAccordion from '../../components/accordion';
+import useCatSelector from '../../hooks/useCatSelector';
 
 const DashboardScreen: React.FC<ScreenType> = () => {
   const {t} = useTranslation();
@@ -22,8 +23,13 @@ const DashboardScreen: React.FC<ScreenType> = () => {
   const styles = useStyles();
 
   // TODO: Retrieve from Store / API
+  const summaries = useCatSelector(state => state.sites.summaries);
   const siteName = 'Rasmussen Valley Clone';
-  const productionSummary = {total: 20000, projected: 90000, target: 120000};
+  const productionSummary = {
+    total: summaries?.length || 0,
+    projected: 90000,
+    target: 120000,
+  };
   const unit = units.TONNE;
 
   const getWorkAreaJSX = (attentionRequired = false) => {
