@@ -1,4 +1,4 @@
-import {Material} from '../utils/material';
+import {Material} from '../redux/materials/types';
 
 /**
  * Unit system constants used in the site which represent unit.UnitSystem
