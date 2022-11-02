@@ -1,0 +1,88 @@
+[
+  {
+    "id" : "00",
+    "top": false,
+    "thin": true,
+    "deleted": false,
+    "lastUpdateTime": 0,
+    "stopReasonId": 0,
+    "stoppedEquipmentId": "5937ab6c-b397-42b5-b15a-30b0314dd5df",
+    "stoppedPlanAreaId": "02",
+    "startTime": 1666268100000,
+    "endTime": 1666272600000
+  },
+  {
+    "id" : "10",
+    "top": true,
+    "thin": false,
+    "deleted": false,
+    "lastUpdateTime": 0,
+    "stopReasonId": 0,
+    "stoppedEquipmentId": "5937ab6c-b397-42b5-b15a-30b0314dd5df",
+    "stoppedPlanAreaId": "02",
+    "startTime": 1666268100000,
+    "endTime": 1666272600000
+  },
+  {
+    "id" : "01",
+    "deleted": false,
+    "lastUpdateTime": 0,
+    "stopReasonId": 0,
+    "stoppedEquipmentId": "5937ab6c-b397-42b5-b15a-30b0314dd5df",
+    "stoppedPlanAreaId": "02",
+    "startTime": 1666272900000,
+    "endTime": 1666273500000
+  },
+  {
+    "id" : "02",
+    "top": false,
+    "deleted": false,
+    "lastUpdateTime": 0,
+    "stopReasonId": 0,
+    "stoppedEquipmentId": "b7e38d23-da6c-48f8-a380-7001977b20af",
+    "stoppedPlanAreaId": "02",
+    "startTime": 1666263600000,
+    "endTime": 222564884400000
+  },
+  {
+    "id" : "11",
+    "thin": true,
+    "deleted": false,
+    "lastUpdateTime": 0,
+    "stopReasonId": 0,
+    "stoppedEquipmentId": "b7e38d23-da6c-48f8-a380-7001977b20af",
+    "stoppedPlanAreaId": "02",
+    "startTime": 1666272900000,
+    "endTime": 1666273500000
+  },
+  {
+    "id" : "03",
+    "deleted": false,
+    "lastUpdateTime": 0,
+    "stopReasonId": 0,
+    "stoppedEquipmentId": "a7c60f75-2288-4d21-818a-1f05504a85dc",
+    "stoppedPlanAreaId": "02",
+    "startTime": 1666270800000,
+    "endTime": 222564884400000
+  },
+  {
+    "id" : "04",
+    "deleted": false,
+    "lastUpdateTime": 0,
+    "stopReasonId": 0,
+    "stoppedEquipmentId": "ec050415-5bc5-421a-9d9e-7f61c2387f0e",
+    "stoppedPlanAreaId": "02",
+    "startTime": 1666270800000,
+    "endTime": 1666273500000
+  },
+  {
+    "id" : "05",
+    "deleted": false,
+    "lastUpdateTime": 0,
+    "stopReasonId": 0,
+    "stoppedEquipmentId": "ec050415-5bc5-421a-9d9e-7f61c2387f0e",
+    "stoppedPlanAreaId": "02",
+    "startTime": 1666267500000,
+    "endTime": 1666270800000
+  }
+]

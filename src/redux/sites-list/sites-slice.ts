@@ -13,6 +13,7 @@ export const key = 'sitesList';
 export interface Site {
   id: string;
   name: string;
+  siteUrl: string;
 }
 
 // TODO review when API is ready
@@ -34,10 +35,12 @@ const mockSitesList: Site[] = [
   {
     id: 'rasvalleyclone',
     name: 'Rasmussen Valley Clone',
+    siteUrl: 'https://stage.minestar.com/rasvalleyclone/',
   },
   {
     id: 'floridacanyonclone',
     name: 'Florida Canyon Clone',
+    siteUrl: 'https://dev.minestar.com/floridacanyonclone/',
   },
 ];
 export const fetchSitesAsyncAction = createAsyncThunk(

@@ -15,6 +15,7 @@ import {sitesSelectedSiteSelector} from '../../redux/sites-list/sites-selectors'
 
 import {CatDrawerType} from './types';
 
+import {CatExternalLink} from './external-link';
 import {CatMenuItem} from './MenuItem';
 import {useStyles} from './styles';
 
@@ -56,13 +57,15 @@ const CatDrawer: React.FC<CatDrawerType> = ({navigation}) => {
           />
         </Drawer.Section>
         <Drawer.Section>
-          <CatMenuItem
-            onPress={() => {}}
+          <CatExternalLink
+            /* TODO are we always sending to the EN version?
+                If other versions exist, simply changing `en` to another ISO-639 code doesn't work */
+            url="https://www.caterpillar.com/en/legal-notices/minestar-legal.html"
             label={t('cat.legal_page_title')}
             icon={'copyright'}
           />
-          <CatMenuItem
-            onPress={() => {}}
+          <CatExternalLink
+            url="https://google.com"
             label={t('side_menu_help')}
             icon={'help'}
           />
