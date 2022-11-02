@@ -4,7 +4,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {apiResult, catApi} from './api';
 import {Shift} from '../../api/types/cat/shift';
 import {ProductionSummary} from '../../api/types/cat/production';
-import {findMostRecentShift} from '../../api/shift';
 
 export const key = 'site';
 
@@ -24,22 +23,18 @@ export const fetchSiteAsyncAction = createAsyncThunk(
   `${key}/fetchSite`,
   async (_, {dispatch, rejectWithValue}) => {
     try {
-      const shifts = await apiResult(
-        dispatch(catApi.endpoints.getShifts.initiate()),
+      const currentShift = await apiResult(
+        dispatch(catApi.endpoints.getCurrentShifts.initiate()),
       );
-      const currentShift = findMostRecentShift(shifts);
       let productionSummary: ProductionSummary | null = null;
       if (currentShift) {
-        const productionSummaries = await apiResult(
+        productionSummary = await apiResult(
           dispatch(
             catApi.endpoints.productionSummaryForShift.initiate({
               shiftId: currentShift.id,
             }),
           ),
         );
-        if (productionSummaries.length > 0) {
-          productionSummary = productionSummaries[0];
-        }
       }
       return {currentShift, productionSummary};
     } catch (e) {

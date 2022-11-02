@@ -2,8 +2,10 @@ import {BaseQueryFn, createApi} from '@reduxjs/toolkit/query/react';
 import {sub as dateSub} from 'date-fns';
 import {RootState} from '../index';
 import {invalidateToken, refreshTokenAsyncAction} from '../user/user-slice';
-import {CatQueryFnParams, GetShiftsResult} from '../../api/types';
+import {CatQueryFnParams} from '../../api/types';
 import {ProductionSummary} from '../../api/types/cat/production';
+import {Shift} from '../../api/types/cat/shift';
+import {findMostRecentShift} from '../../api/shift';
 
 export const apiResult = async <T extends {error?: unknown; data?: unknown}>(
   dispatchResult: Promise<T>,
@@ -69,11 +71,14 @@ export const catApi = createApi({
   baseQuery: catBaseQuery,
   refetchOnMountOrArgChange: true,
   endpoints: builder => ({
-    getShifts: builder.query<GetShiftsResult, void>({
+    getCurrentShifts: builder.query<Shift | null, void>({
       query: () => ({path: 'shift/find', method: 'GET'}),
+      transformResponse: (shifts: Shift[]) => {
+        return findMostRecentShift(shifts);
+      },
     }),
     productionSummaryForShift: builder.query<
-      ProductionSummary[],
+      ProductionSummary | null,
       {shiftId: string}
     >({
       query: queryParams => ({
@@ -81,6 +86,9 @@ export const catApi = createApi({
         method: 'GET',
         queryParams: {page: 1, ...queryParams},
       }),
+      transformResponse: (productionSummaries: ProductionSummary[]) => {
+        return productionSummaries.length ? productionSummaries[0] : null;
+      },
     }),
   }),
 });

@@ -1,5 +1,3 @@
-import {Shift} from './cat/shift';
-
 export type CatQueryFnParams = {
   method: string;
   path: string;
@@ -10,5 +8,3 @@ export type GetCountResult = {
   rowCount: number;
   rowsPerPage: number;
 };
-
-export type GetShiftsResult = Shift[];
