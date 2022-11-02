@@ -1,4 +1,3 @@
-import {Summary} from './cat/production';
 import {Shift} from './cat/shift';
 
 export type CatQueryFnParams = {
@@ -7,15 +6,9 @@ export type CatQueryFnParams = {
   queryParams?: Record<string, any>;
 };
 
-export type GetProductionCountResult = {
+export type GetCountResult = {
   rowCount: number;
   rowsPerPage: number;
 };
-
-export type GetAllProductionParams = {
-  page: number;
-};
-
-export type GetAllProductionResult = Summary[];
 
 export type GetShiftsResult = Shift[];

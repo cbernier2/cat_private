@@ -2,13 +2,7 @@ import {BaseQueryFn, createApi} from '@reduxjs/toolkit/query/react';
 import {sub as dateSub} from 'date-fns';
 import {RootState} from '../index';
 import {invalidateToken, refreshTokenAsyncAction} from '../user/user-slice';
-import {
-  CatQueryFnParams,
-  GetAllProductionParams,
-  GetAllProductionResult,
-  GetProductionCountResult,
-  GetShiftsResult,
-} from '../../api/types';
+import {CatQueryFnParams, GetShiftsResult} from '../../api/types';
 import {ProductionSummary} from '../../api/types/cat/production';
 
 export const apiResult = async <T extends {error?: unknown; data?: unknown}>(
@@ -75,19 +69,6 @@ export const catApi = createApi({
   baseQuery: catBaseQuery,
   refetchOnMountOrArgChange: true,
   endpoints: builder => ({
-    getProductionCount: builder.query<GetProductionCountResult, void>({
-      query: () => ({path: 'production/all/count', method: 'GET'}),
-    }),
-    getAllProduction: builder.query<
-      GetAllProductionResult,
-      GetAllProductionParams
-    >({
-      query: queryParams => ({
-        path: 'production/all/find',
-        method: 'GET',
-        queryParams,
-      }),
-    }),
     getShifts: builder.query<GetShiftsResult, void>({
       query: () => ({path: 'shift/find', method: 'GET'}),
     }),
