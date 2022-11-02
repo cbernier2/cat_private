@@ -48,6 +48,7 @@ const catBaseQuery: BaseQueryFn<CatQueryFnParams> = async (
       urlParams = '?' + new URLSearchParams(urlParamsObj);
     }
     const response = await fetch(
+      //TODO: Use the current site URL
       `https://stage.minestar.com/rasvalleyclone/core/site/mobile_api/v1/${path}${urlParams}`,
       {
         method,
