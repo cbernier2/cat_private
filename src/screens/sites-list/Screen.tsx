@@ -12,12 +12,12 @@ import {
   sitesErrorSelector,
   sitesLoadingSelector,
   sitesSitesSelector,
-} from '../../redux/sites/sites-selectors';
+} from '../../redux/sites-list/sites-selectors';
 import {
   fetchSitesAsyncAction,
   selectSiteAsyncAction,
   Site,
-} from '../../redux/sites/sites-slice';
+} from '../../redux/sites-list/sites-slice';
 
 import {SitesListTypes} from './types';
 import styles from './styles';

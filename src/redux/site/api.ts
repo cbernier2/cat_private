@@ -1,19 +1,33 @@
 import {BaseQueryFn, createApi} from '@reduxjs/toolkit/query/react';
 import {sub as dateSub} from 'date-fns';
 import {RootState} from '../index';
-import {invalidateToken, refreshTokenAsyncAction} from '../user-slice';
+import {invalidateToken, refreshTokenAsyncAction} from '../user/user-slice';
 import {
+  CatQueryFnParams,
   GetAllProductionParams,
   GetAllProductionResult,
   GetProductionCountResult,
   GetShiftsResult,
-} from './types/api';
+} from '../../api/types';
+import {ProductionSummary} from '../../api/types/cat/production';
 
-const catBaseQuery: BaseQueryFn<{
-  method: string;
-  path: string;
-  queryParams?: Record<string, any>;
-}> = async ({method, path, queryParams}, {getState, dispatch}) => {
+export const apiResult = async <T extends {error?: unknown; data?: unknown}>(
+  dispatchResult: Promise<T>,
+): Promise<NonNullable<T['data']>> => {
+  const result = await dispatchResult;
+  if (result.error) {
+    throw result.error;
+  } else if (result.data) {
+    return result.data;
+  } else {
+    throw null;
+  }
+};
+
+const catBaseQuery: BaseQueryFn<CatQueryFnParams> = async (
+  {method, path, queryParams},
+  {getState, dispatch},
+) => {
   let auth = (getState() as RootState).user.auth;
   if (auth) {
     if (
@@ -75,6 +89,16 @@ export const catApi = createApi({
     }),
     getShifts: builder.query<GetShiftsResult, void>({
       query: () => ({path: 'shift/find', method: 'GET'}),
+    }),
+    productionSummaryForShift: builder.query<
+      ProductionSummary[],
+      {shiftId: string}
+    >({
+      query: queryParams => ({
+        path: 'production/findForShift',
+        method: 'GET',
+        queryParams: {page: 1, ...queryParams},
+      }),
     }),
   }),
 });

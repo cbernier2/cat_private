@@ -1,3 +1,5 @@
+// Copy from Caterpillar Web App: src/common/providers/material/material.ts
+
 import {units} from 'minestar-units';
 import {CommonConstants, UnitType} from './common';
 import {Style} from './colors';

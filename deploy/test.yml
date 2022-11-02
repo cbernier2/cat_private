@@ -15,3 +15,9 @@ stages:
       - checkout: self
       
       - template: setup.yml
+      
+      - task: CmdLine@2
+        displayName: yarn bundle
+        inputs:
+          script: yarn bundle
+          

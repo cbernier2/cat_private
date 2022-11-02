@@ -1,3 +1,5 @@
+// Copy from Caterpillar Web App: src/common/utils/colour-palettes.ts
+
 import {ColourPaletteItem} from './colors';
 
 export const MATERIAL_COLOUR_PALETTE: ColourPaletteItem[] = [

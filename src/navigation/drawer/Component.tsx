@@ -8,10 +8,10 @@ import MineStarLogo from '../../../assets/MineStarLogo.svg';
 
 import CatText from '../../components/text';
 import useCatTheme from '../../hooks/useCatTheme';
-import {logoutAsyncAction} from '../../redux/user-slice';
+import {logoutAsyncAction} from '../../redux/user/user-slice';
 import useCatDispatch from '../../hooks/useCatDispatch';
 import useCatSelector from '../../hooks/useCatSelector';
-import {sitesSelectedSiteSelector} from '../../redux/sites/sites-selectors';
+import {sitesSelectedSiteSelector} from '../../redux/sites-list/sites-selectors';
 
 import {CatDrawerType} from './types';
 

@@ -13,8 +13,8 @@ import useCatSelector from '../../hooks/useCatSelector';
 import {
   userIsLoggingInSelector,
   userLoginErrorSelector,
-} from '../../redux/user-selectors';
-import {loginAsyncAction} from '../../redux/user-slice';
+} from '../../redux/user/user-selectors';
+import {loginAsyncAction} from '../../redux/user/user-slice';
 import useCatDispatch from '../../hooks/useCatDispatch';
 import useCatTheme from '../../hooks/useCatTheme';
 

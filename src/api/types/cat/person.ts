@@ -1,3 +1,5 @@
+// Copy from Caterpillar Web App: src/common/providers/person/person.ts
+
 import {ColourPaletteItem, ColourUtils} from './colors';
 import {PERSON_COLOUR_PALETTE} from './color_palettes';
 

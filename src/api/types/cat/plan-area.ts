@@ -1,3 +1,5 @@
+// Copy from Caterpillar Web App: src/common/providers/plan-area/plan-area.ts
+
 export class PlanArea {
   // Plan Area types
   public static readonly TYPE_FACE: string = 'face';

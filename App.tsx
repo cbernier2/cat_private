@@ -7,7 +7,7 @@ import {ReduxNetworkProvider} from 'react-native-offline';
 import CatNavigation from './src/navigation';
 import {persistor, store} from './src/redux';
 import useCatSelector from './src/hooks/useCatSelector';
-import {emulateOfflineSelector} from './src/redux/app-selectors';
+import {emulateOfflineSelector} from './src/redux/app/app-selectors';
 import './src/locales';
 
 const App = () => {

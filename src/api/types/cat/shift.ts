@@ -1,11 +1,7 @@
-import {Person} from './person';
+// Copy from Caterpillar Web App: src/common/providers/shift/shift.ts
 
-export interface OperatorBreak {
-  name?: string;
-  startTime: number;
-  endTime: number;
-  duration: number;
-}
+import {Person} from './person';
+import {OperatorBreak} from './operator-break';
 
 export interface Shift {
   shiftId: string;

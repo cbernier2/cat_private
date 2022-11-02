@@ -1,3 +1,5 @@
+// Copy from Caterpillar Web App: src/common/providers/route/route.ts
+
 import {PlanArea} from './plan-area';
 import {Equipment} from './equipment';
 

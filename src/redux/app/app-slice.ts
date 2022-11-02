@@ -1,10 +1,10 @@
 import {createSlice, Reducer} from '@reduxjs/toolkit';
 import {persistReducer} from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {createOfflineAsyncThunk} from '../utils/offline';
+import {createOfflineAsyncThunk} from '../../utils/offline';
 import {offlineActionTypes} from 'react-native-offline';
-import {sleep} from '../utils/promise';
-import {darkTheme} from '../themes/darkTheme';
+import {sleep} from '../../utils/promise';
+import {darkTheme} from '../../themes/darkTheme';
 
 export const key = 'app';
 

@@ -1,3 +1,5 @@
+// Copy from Caterpillar Web App: src/common/utils/colour-utils.ts
+
 export class ColourUtils {
   /**
    * Given a string representing a hexCode colour, convert it into

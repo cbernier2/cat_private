@@ -1,3 +1,5 @@
+// Copy from Caterpillar Web App: src/common/common-constants.ts
+
 import {Material} from './material';
 
 /**

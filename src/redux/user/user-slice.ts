@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import i18n from 'i18next';
 import * as OAuth from 'react-native-app-auth';
 import {AuthorizeResult} from 'react-native-app-auth';
-import {RootState} from './index';
+import {RootState} from '../index';
 
 export const key = 'user';
 
@@ -44,11 +44,11 @@ export const refreshTokenAsyncAction = createAsyncThunk(
       if (refreshToken) {
         try {
           pendingOAuthRefresh = OAuth.refresh(authConfig, {refreshToken});
-          const result = await pendingOAuthRefresh;
-          pendingOAuthRefresh = null;
-          return result;
+          return await pendingOAuthRefresh;
         } catch (e) {
           return rejectWithValue(e);
+        } finally {
+          pendingOAuthRefresh = null;
         }
       } else {
         return rejectWithValue(null);

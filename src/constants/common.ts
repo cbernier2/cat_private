@@ -1,9 +1,10 @@
-import {Material} from '../utils/material';
+import {Material} from '../api/types/cat/material';
 
 /**
  * Unit system constants used in the site which represent unit.UnitSystem
  * instances of the 'MINING_SI' and 'MINING_IMPERIAL' constant unit systems
  */
+
 export const enum UnitSystem {
   IMPERIAL = 'Mining Imperial', // units.MINING_IMPERIAL.name
   METRIC = 'Mining SI', // units.MINING_SI.name

@@ -1,3 +1,5 @@
+// Copy from Caterpillar Web App: src/common/providers/production/production-summary.ts
+
 import {Route} from './route';
 import {PlanArea} from './plan-area';
 import {Equipment} from './equipment';
@@ -199,8 +201,8 @@ export namespace EquipmentSummaryUtils {
 export interface ProductionSummary {
   id: string;
   shiftId: string;
-  siteSummary: Array<Summary>;
-  siteLoadSummary: Array<Summary>;
+  siteSummary: Summary;
+  siteLoadSummary: Summary;
   materialSummaries: Array<MaterialSummary>;
   loadAreaSummaries: Array<LoadAreaSummary>;
   dumpSummaries: Array<DumpAreaSummary>;

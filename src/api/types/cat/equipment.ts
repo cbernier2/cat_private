@@ -1,3 +1,5 @@
+// Copy from Caterpillar Web App: src/common/providers/equipment/equipment.ts
+
 import {Shift} from './shift';
 import {CategoryType, EquipmentOperationalStatus} from './common';
 import {EquipmentType as UnifiedEquipmentType} from 'minestar-equipment-defs';

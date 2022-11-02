@@ -23,10 +23,12 @@ const DashboardScreen: React.FC<ScreenType> = () => {
   const styles = useStyles();
 
   // TODO: Retrieve from Store / API
-  const summaries = useCatSelector(state => state.sites.summaries);
+  const siteProductionSummary = useCatSelector(
+    state => state.site.productionSummary,
+  );
   const siteName = 'Rasmussen Valley Clone';
   const productionSummary = {
-    total: summaries?.length || 0,
+    total: siteProductionSummary?.siteLoadSummary.totalLoads,
     projected: 90000,
     target: 120000,
   };

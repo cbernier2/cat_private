@@ -11,10 +11,10 @@ import {
   offlineCancelTest,
   toggleOffline,
   toggleTheme,
-} from '../../redux/app-slice';
+} from '../../redux/app/app-slice';
 import useCatDispatch from '../../hooks/useCatDispatch';
-import {emulateOfflineSelector} from '../../redux/app-selectors';
-import {selectSiteAsyncAction} from '../../redux/sites/sites-slice';
+import {emulateOfflineSelector} from '../../redux/app/app-selectors';
+import {selectSiteAsyncAction} from '../../redux/sites-list/sites-slice';
 
 import {DebugScreenType} from './types';
 

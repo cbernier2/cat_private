@@ -1,5 +1,11 @@
-import {Summary} from './production';
-import {Shift} from './shift';
+import {Summary} from './cat/production';
+import {Shift} from './cat/shift';
+
+export type CatQueryFnParams = {
+  method: string;
+  path: string;
+  queryParams?: Record<string, any>;
+};
 
 export type GetProductionCountResult = {
   rowCount: number;
