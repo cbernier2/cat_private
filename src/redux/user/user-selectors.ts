@@ -1,5 +1,7 @@
 import {createSelector} from '@reduxjs/toolkit';
 import {RootState} from '../index';
+import jwtDecode from 'jwt-decode';
+import {AccessTokenPayload} from '../../api/types/cat/oauth';
 
 export const userAuthTokenSelector = createSelector(
   (state: RootState) => state.user.auth?.accessToken,
@@ -17,6 +19,12 @@ export const userLoginErrorSelector = createSelector(
 );
 
 export const userNameSelector = createSelector(
-  (state: RootState) => state.user.name,
-  name => name || '',
+  (state: RootState) => state.user.auth,
+  auth => {
+    if (auth) {
+      return (jwtDecode(auth.accessToken) as AccessTokenPayload).catloginid;
+    } else {
+      return 'unknown';
+    }
+  },
 );

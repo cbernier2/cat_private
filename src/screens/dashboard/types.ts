@@ -1,7 +1,6 @@
 import {MaterialBottomTabNavigationProp} from '@react-navigation/material-bottom-tabs';
 import {ReactNode} from 'react';
 import {ViewStyle} from 'react-native';
-import {units} from 'minestar-units';
 import {CatTextWithLabelType} from '../../components/text-with-label/types';
 import {CatTextWithIconType} from '../../components/text-with-icon/types';
 
@@ -20,10 +19,15 @@ export type CatSummaryCardType = {
   total: number;
   projected: number;
   target: number;
-  unit: units.Unit;
+  unit: string;
 };
 
 export type CatActiveItemsSectionType = {
   title: string;
   children: ReactNode;
+};
+
+export type SummaryCell = {
+  key: string;
+  unit: string;
 };

@@ -18,15 +18,19 @@ import {CatDrawerType} from './types';
 import {CatExternalLink} from './external-link';
 import {CatMenuItem} from './MenuItem';
 import {useStyles} from './styles';
+import {userNameSelector} from '../../redux/user/user-selectors';
+import {personsSelector} from '../../redux/site/site-selectors';
+import {Person} from '../../api/types/cat/person';
 
 const CatDrawer: React.FC<CatDrawerType> = ({navigation}) => {
   const dispatch = useCatDispatch();
   const {t} = useTranslation();
   const {colors} = useCatTheme();
   const selectedSite = useCatSelector(sitesSelectedSiteSelector);
+  const userName = useCatSelector(userNameSelector);
+  const persons = useCatSelector(personsSelector);
+  const person: Person = persons[userName] || {};
   const styles = useStyles();
-
-  const userName = 'John Doe'; // TODO
   const siteName = selectedSite?.name ?? '';
 
   return (
@@ -44,9 +48,9 @@ const CatDrawer: React.FC<CatDrawerType> = ({navigation}) => {
 
       <View style={styles.menuBodyContainer}>
         <View style={styles.menuUserNameContainer}>
-          <Avatar.Text size={40} label="JD" />
+          <Avatar.Text size={40} label={person.initials} />
           <CatText variant={'titleMedium'} style={styles.userName}>
-            {userName}
+            {person.name}
           </CatText>
         </View>
         <Drawer.Section title={siteName}>

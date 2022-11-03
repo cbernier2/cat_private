@@ -2,10 +2,14 @@ import {BaseQueryFn, createApi} from '@reduxjs/toolkit/query/react';
 import {sub as dateSub} from 'date-fns';
 import {RootState} from '../index';
 import {invalidateToken, refreshTokenAsyncAction} from '../user/user-slice';
-import {CatQueryFnParams} from '../../api/types';
+import {CatConfig, CatPersons, CatQueryFnParams} from '../../api/types';
 import {ProductionSummary} from '../../api/types/cat/production';
 import {Shift} from '../../api/types/cat/shift';
 import {findMostRecentShift} from '../../api/shift';
+import {ConfigItem} from '../../api/types/cat/config-item';
+import {Material} from '../../api/types/cat/material';
+import {onConfigChange} from '../../api/config';
+import {Person} from '../../api/types/cat/person';
 
 export const apiResult = async <T extends {error?: unknown; data?: unknown}>(
   dispatchResult: Promise<T>,
@@ -87,8 +91,54 @@ export const catApi = createApi({
         queryParams: {page: 1, ...queryParams},
       }),
       transformResponse: (productionSummaries: ProductionSummary[]) => {
-        return productionSummaries.length ? productionSummaries[0] : null;
+        if (productionSummaries.length) {
+          // TODO: Fix redux persist AsyncStorage or the ProductSummary structure so that it can be saved
+          const productionSummary = productionSummaries[0];
+          return {
+            id: productionSummary.id,
+            shiftId: productionSummary.shiftId,
+            siteSummary: productionSummary.siteSummary,
+            siteLoadSummary: productionSummary.siteLoadSummary,
+            materialSummaries: [],
+            loadAreaSummaries: [],
+            dumpSummaries: [],
+            loadEquipSummaries: [],
+            crusherSummaries: [],
+            haulEquipSummaries: [],
+            supportEquipSummaries: [],
+            waterTruckSummaries: [],
+            routeSummaries: [],
+          };
+        } else {
+          return null;
+        }
       },
+    }),
+    getConfig: builder.query<CatConfig, void>({
+      query: () => ({path: 'config/find', method: 'GET'}),
+      transformResponse: (configItems: ConfigItem[]) => {
+        const result: CatConfig = {};
+        configItems.forEach(configItem => {
+          result[configItem.name] = configItem.value;
+        });
+        onConfigChange(result);
+        return result;
+      },
+    }),
+    getPersons: builder.query<CatPersons, void>({
+      query: () => ({path: 'person/find', method: 'GET'}),
+      transformResponse: (persons: Person[]) => {
+        const result: CatPersons = {};
+        persons.forEach(person => {
+          if (person.userName) {
+            result[person.userName] = person;
+          }
+        });
+        return result;
+      },
+    }),
+    getMaterials: builder.query<Material[], void>({
+      query: () => ({path: 'material/find', method: 'GET'}),
     }),
   }),
 });

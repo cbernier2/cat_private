@@ -466,6 +466,7 @@
     "personnel_operator_hint": "Cette personne est un opérateur",
     "personnel_preferred_equipment_hint": "Sélectionner l'équipement préféré",
     "personnel_company_hint": "Entrer le nom de société (facultatif)",
+    "personnel_company_hint_v2": "Entrer le nom de société",
     "personnel_external_id_hint": "Entrer l'ID externe (ID de société - p.ex. 46532 ou e-mail de société)",
     "personnel_duplicate_name_error": "Une personne portant ce prénom, nom de famille et nom préféré existe déjà",
     "personnel_archived_person_warning": "Une personne portant ce prénom, nom de famille et nom préféré a été archivé. Voulez-vous restaurer la personne archivée ?",
@@ -1395,5 +1396,6 @@
     "design_converter_caes_tin_write_error": "Erreur d’écriture TIN",
     "on_board_display_stop_icon": "Icône d’arrêt de l’écran de bord",
     "coordinate_system_DCCAL_current": "Fichier importé",
-    "geo_design_error_download": "Échec du téléchargement de fichier; nettoyez les artefacts laissés sur la clé USB afin d’éviter que des parcelles incomplètes ou corrompues ne soient utilisées."
+    "geo_design_error_download": "Échec du téléchargement de fichier; nettoyez les artefacts laissés sur la clé USB afin d’éviter que des parcelles incomplètes ou corrompues ne soient utilisées.",
+    "observation": "Observation"
 }

@@ -466,6 +466,7 @@
     "personnel_operator_hint": "Esta pessoa é um operador",
     "personnel_preferred_equipment_hint": "Selecione o equipamento preferencial",
     "personnel_company_hint": "Insira o nome da empresa (opcional)",
+    "personnel_company_hint_v2": "Insira o nome da empresa",
     "personnel_external_id_hint": "Insira a ID externa (ID da empresa, p.ex.: 46532 ou e-mail da empresa)",
     "personnel_duplicate_name_error": "Uma pessoa com o mesmo nome, sobrenome e nome preferencial já existe",
     "personnel_archived_person_warning": "Uma pessoa com o mesmo nome, sobrenome e nome preferencial foi arquivada. Deseja restaurar a pessoa arquivada?",
@@ -909,7 +910,7 @@
     "equipment_observation_stop_no_reason": "Parado sem motivo",
     "equipment_observation_operator": "Operador",
     "equipment_observation_maintenance": "Manutenção",
-    "equipment_observation_standby": "Standby",
+    "equipment_observation_standby": "En Espera",
     "equipment_observation_operational_delay": "Atraso operacional",
 
     "equipment_manage": "Gerenciar",
@@ -985,7 +986,7 @@
     "operators_people": "Pessoas",
     "operators_operator_name": "Operador",
     "operators_equipment": "Equipamento",
-    "operators_equipment_standby": "Standby",
+    "operators_equipment_standby": "En Espera",
     "operators_location": "Área de trabalho",
 
     "site_total_production": "Produção total da mina",
@@ -1118,7 +1119,7 @@
     "non_operational_time": "Tempo inoperante",
     "down_time": "Tempo inativo",
     "operational_delay": "Atraso operacional",
-    "standby": "Standby",
+    "standby": "En Espera",
     "sche_maintenance": "Manutenção prog.",
     "unsche_maintenance": "Manutenção não prog.",
     "hrs": "H",
@@ -1395,5 +1396,6 @@
     "design_converter_caes_tin_write_error": "Erro de gravação de TIN",
     "on_board_display_stop_icon": "Ícone de parada do visor de bordo",
     "coordinate_system_DCCAL_current": "Arquivo importado",
-    "geo_design_error_download": "Falha no download de arquivo; limpe os artefatos residuais no pen drive para impedir que artefatos parciais/corrompidos sejam usados"
+    "geo_design_error_download": "Falha no download de arquivo; limpe os artefatos residuais no pen drive para impedir que artefatos parciais/corrompidos sejam usados",
+    "observation": "Observação"
 }

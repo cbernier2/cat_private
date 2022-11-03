@@ -1,13 +1,11 @@
 import React, {useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {ScreenType} from './types';
+import {ScreenType, SummaryCell} from './types';
 import {useStyles} from './styles';
 import CatSummaryCard from './SummaryCard';
 import HaulTruckSvg from 'assets/icons/maintenance.svg';
 import useCatTheme from '../../hooks/useCatTheme';
 import ValuesRow from './ValuesRow';
-import {numberWithCommas, unitTranslateKey} from '../../utils/units';
-import {units} from 'minestar-units';
 import CatScreen from '../../components/screen';
 import {View} from 'react-native';
 import CatText from '../../components/text';
@@ -15,24 +13,138 @@ import CatSwitch from '../../components/switch';
 import CatActiveItemsSection from './ActiveItemsSection';
 import CatAccordion from '../../components/accordion';
 import useCatSelector from '../../hooks/useCatSelector';
+import {
+  configSelector,
+  materialsSelector,
+  productionSummarySelector,
+} from '../../redux/site/site-selectors';
+import {getPreferredMeasurementBasis} from '../../api/production';
+import {ConfigItemName} from '../../api/types/cat/config-item';
+import {CommonConstants} from '../../api/types/cat/common';
+import {UnitUtils} from '../../utils/unit-utils';
+import {summaryCells} from './constants';
+import {formatMinutesOnly, formatNumber} from '../../utils/format';
 
 const DashboardScreen: React.FC<ScreenType> = () => {
   const {t} = useTranslation();
   const [isLoad, setIsLoad] = useState(false);
   const {colors} = useCatTheme();
   const styles = useStyles();
-
-  // TODO: Retrieve from Store / API
-  const siteProductionSummary = useCatSelector(
-    state => state.site.productionSummary,
-  );
+  const config = useCatSelector(configSelector);
+  const systemUnitType =
+    config[ConfigItemName.PRODUCTION_UNIT_TYPE] ||
+    CommonConstants.DEFAULT_UNIT_TYPE_VALUE;
+  const materials = useCatSelector(materialsSelector);
+  const productionSummary = useCatSelector(productionSummarySelector);
+  const displaySummary = isLoad
+    ? productionSummary?.siteLoadSummary
+    : productionSummary?.siteSummary;
   const siteName = 'Rasmussen Valley Clone';
-  const productionSummary = {
-    total: siteProductionSummary?.siteLoadSummary.totalLoads,
-    projected: 90000,
-    target: 120000,
-  };
-  const unit = units.TONNE;
+  const unitType = getPreferredMeasurementBasis(
+    displaySummary,
+    materials,
+    systemUnitType,
+  );
+
+  const totalConfig = summaryCells.total[unitType];
+  const projectedConfig = summaryCells.projected[unitType];
+  const averageConfig = summaryCells.average[unitType];
+  const targetConfig: SummaryCell = {key: 'target', unit: 'targetUnit'};
+
+  const valuesRow1 = (
+    <ValuesRow
+      style={styles.productionRow}
+      values={[
+        {
+          label:
+            t('cat.production_secondary_total') +
+            ' ' +
+            t(UnitUtils.toDisplayUnit(displaySummary, totalConfig.unit, false)),
+          children: formatNumber(
+            UnitUtils.toDisplayValue(
+              displaySummary,
+              totalConfig.key,
+              totalConfig.unit,
+            ),
+          ),
+          isPrimary: true,
+        },
+        {
+          label:
+            t('production_projected_short') +
+            ' ' +
+            t(
+              UnitUtils.toDisplayUnit(
+                displaySummary,
+                projectedConfig.unit,
+                false,
+              ),
+            ),
+          children: formatNumber(
+            UnitUtils.toDisplayValue(
+              displaySummary,
+              projectedConfig.key,
+              projectedConfig.unit,
+            ),
+          ),
+        },
+        {
+          label:
+            t('cat.production_target') +
+            ' ' +
+            t(
+              UnitUtils.toDisplayUnit(
+                displaySummary,
+                projectedConfig.unit,
+                false,
+              ),
+            ),
+          children: formatNumber(
+            UnitUtils.toDisplayValue(
+              displaySummary,
+              targetConfig.key,
+              targetConfig.unit,
+            ),
+          ),
+        },
+      ]}
+    />
+  );
+
+  const valuesRow2 = (
+    <ValuesRow
+      style={styles.productionRow}
+      values={[
+        {
+          label:
+            t('cat.production_secondary_total') +
+            ' ' +
+            t(isLoad ? 'cat.production_loads' : 'cat.production_dumps'),
+          children: formatNumber(displaySummary?.totalLoads),
+          isPrimary: true,
+        },
+        {
+          label:
+            t('cat.production_secondary_averageRate') +
+            ' ' +
+            t(
+              UnitUtils.toDisplayUnit(displaySummary, averageConfig.unit, true),
+            ),
+          children: formatNumber(
+            UnitUtils.toDisplayValue(
+              displaySummary,
+              averageConfig.key,
+              averageConfig.unit,
+            ),
+          ),
+        },
+        {
+          label: t('average_cycle_time_short'),
+          children: formatMinutesOnly(displaySummary?.averageCycleTime),
+        },
+      ]}
+    />
+  );
 
   const getWorkAreaJSX = (attentionRequired = false) => {
     return (
@@ -46,34 +158,10 @@ const DashboardScreen: React.FC<ScreenType> = () => {
         total={1000}
         projected={15000}
         target={20000}
-        unit={unit}
+        unit={''}
       />
     );
   };
-
-  const firstRowJSX = () => (
-    <ValuesRow
-      style={styles.productionRow}
-      values={[
-        {
-          label:
-            t('cat.production_secondary_total') +
-            ' ' +
-            t(unitTranslateKey(unit)),
-          children: numberWithCommas(productionSummary.total),
-          isPrimary: true,
-        },
-        {
-          label: t('cat.production_projected'),
-          children: numberWithCommas(productionSummary.projected),
-        },
-        {
-          label: t('cat.production_target'),
-          children: numberWithCommas(productionSummary.target),
-        },
-      ]}
-    />
-  );
 
   return (
     <CatScreen title={t('summary_title')}>
@@ -86,8 +174,8 @@ const DashboardScreen: React.FC<ScreenType> = () => {
         />
       </View>
       <View style={styles.productionContainer}>
-        {firstRowJSX()}
-        <CatAccordion>{firstRowJSX()}</CatAccordion>
+        {valuesRow1}
+        <CatAccordion>{valuesRow2}</CatAccordion>
       </View>
       <CatText style={styles.activeWorkTitle} variant={'headlineSmall'}>
         {t('summary_active_work_title', {num: 6})}
