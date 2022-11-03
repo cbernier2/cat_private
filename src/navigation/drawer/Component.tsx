@@ -55,6 +55,11 @@ const CatDrawer: React.FC<CatDrawerType> = ({navigation}) => {
             label={t('side_menu_switch_site')}
             icon={'swap-horiz'}
           />
+          <CatMenuItem
+            onPress={() => navigation.navigate('halftest')}
+            label="half"
+            icon={'swap-horiz'}
+          />
         </Drawer.Section>
         <Drawer.Section>
           <CatExternalLink
