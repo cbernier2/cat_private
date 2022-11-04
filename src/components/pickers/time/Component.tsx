@@ -10,7 +10,7 @@ export const CatTimePicker: React.FC<CatTimePickerType> = props => {
   const [visible, setVisible] = useState(false);
 
   const {
-    animationType = "fade",
+    animationType = 'fade',
     children,
     locale = i18n.language,
     onConfirm,
@@ -20,7 +20,7 @@ export const CatTimePicker: React.FC<CatTimePickerType> = props => {
 
   const handleConfirm = (data: CatTimePickerSelection) => {
     setVisible(false);
-    props.onConfirm(data);
+    onConfirm(data);
   };
 
   return (
