@@ -22,7 +22,6 @@ import CatDrawer from './drawer';
 import CatDrawerIcon from './header/DrawerIcon';
 import CatHeader from './header';
 import CatSyncStatus from './header/SyncStatus';
-import {Test} from '../screens/SampleHalfScreenModal/Screen';
 
 const SummaryStack = createStackNavigator();
 const SummaryNavigator = () => (
@@ -132,13 +131,6 @@ const CatNavigation = () => {
                   headerShown: true,
                   headerTitle: t('side_menu_switch_site'),
                   presentation: 'modal',
-                }}
-              />
-              <MainStack.Screen
-                name={'halftest'}
-                component={Test}
-                options={{
-                  presentation: 'transparentModal',
                 }}
               />
             </>
