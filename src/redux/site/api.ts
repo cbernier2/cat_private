@@ -84,7 +84,7 @@ export const catApi = createApi({
       query: queryParams => ({
         path: 'production/findForShift',
         method: 'GET',
-        queryParams: {page: 1, ...queryParams},
+        queryParams,
       }),
       transformResponse: (productionSummaries: ProductionSummary[]) => {
         return productionSummaries.length ? productionSummaries[0] : null;
