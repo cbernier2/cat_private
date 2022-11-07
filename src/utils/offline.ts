@@ -1,6 +1,7 @@
 import type {AsyncThunkPayloadCreator} from '@reduxjs/toolkit';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import type {Dispatch} from 'redux';
+import {createTransform} from 'redux-persist';
 
 declare type AsyncThunkConfig = {
   state?: unknown;
@@ -65,3 +66,44 @@ export const createOfflineAsyncThunk = <
     ) as typeof thunk;
   }, thunk);
 };
+
+export const networkTransform = (actions: object) =>
+  createTransform(
+    (inboundState: any) => {
+      const actionQueue: any[] = [];
+      console.log('inbound', JSON.stringify(inboundState));
+
+      inboundState.actionQueue.forEach((action: any) => {
+        if (typeof action === 'function') {
+          actionQueue.push({
+            function: action.meta.name,
+            args: action.meta.args,
+          });
+        } else if (typeof action === 'object') {
+          actionQueue.push(action);
+        }
+      });
+
+      return {
+        ...inboundState,
+        actionQueue,
+      };
+    },
+    (outboundState: any) => {
+      const actionQueue: any[] = [];
+      console.log('outbound', JSON.stringify(outboundState));
+
+      outboundState.actionQueue.forEach((action: any) => {
+        if (action.function) {
+          // @ts-ignore
+          const actionFunction = actions[action.function];
+          actionQueue.push(actionFunction(...action.args));
+        } else {
+          actionQueue.push(action);
+        }
+      });
+
+      return {...outboundState, actionQueue};
+    },
+    {whitelist: ['network']},
+  );
