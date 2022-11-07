@@ -10,7 +10,7 @@ const CatValuesRow: React.FC<CatValuesRowType> = ({values, style}) => {
   return (
     <View style={[styles.valuesRowContainer, style]}>
       {values.map(({style: valueStyle, ...valueProps}, i) => (
-        <View key={i} style={{maxWidth: 100 / values.length + '%'}}>
+        <View key={i} style={{width: 100 / values.length + '%'}}>
           <CatTextWithLabel
             variant={'titleLarge'}
             style={[styles.valuesRowText, valueStyle]}
