@@ -23,3 +23,11 @@ steps:
         displayName: yarn test
         inputs:
           script: yarn test
+          
+      - task: Gradle@2
+        displayName: gradlew bundleRelease
+        inputs:
+          wrapperScript: android/gradlew
+          cwd: android
+          tasks: bundleRelease
+          jdkVersionOption: 1.11

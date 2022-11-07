@@ -15,8 +15,8 @@ import {SiteStopsScreen} from '../screens/site-stops';
 import {SearchScreen} from '../screens/search';
 import DebugScreen from '../screens/debug/Screen';
 import useCatSelector from '../hooks/useCatSelector';
-import {userAuthTokenSelector} from '../redux/user-selectors';
-import {sitesSelectedSiteSelector} from '../redux/sites/sites-selectors';
+import {userAuthTokenSelector} from '../redux/user/user-selectors';
+import {sitesSelectedSiteSelector} from '../redux/sites-list/sites-selectors';
 
 import CatDrawer from './drawer';
 import CatDrawerIcon from './header/DrawerIcon';

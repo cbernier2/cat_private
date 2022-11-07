@@ -1,5 +1,5 @@
 import {createSelector} from '@reduxjs/toolkit';
-import {RootState} from './index';
+import {RootState} from '../index';
 
 export const userAuthTokenSelector = createSelector(
   (state: RootState) => state.user.auth?.accessToken,

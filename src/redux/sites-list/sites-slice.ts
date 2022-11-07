@@ -4,9 +4,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {sleep} from '../../utils/promise';
 
-import {logoutAsyncAction} from '../user-slice';
+import {logoutAsyncAction} from '../user/user-slice';
+import {fetchSiteAsyncAction} from '../site/site-slice';
 
-export const key = 'sites';
+export const key = 'sitesList';
 
 // TODO review when API is ready
 export interface Site {
@@ -46,19 +47,22 @@ export const fetchSitesAsyncAction = createAsyncThunk(
   `${key}/fetchSites`,
   // TODO add required parameters based on API endpoint; hit endpoint
   async () => {
-    await sleep(5000);
+    await sleep(500);
     return mockSitesList;
+  },
+);
+
+export const selectSiteAsyncAction = createAsyncThunk<void, Site | null>(
+  `${key}/selectSite`,
+  async (_, {dispatch}) => {
+    await dispatch(fetchSiteAsyncAction());
   },
 );
 
 const slice = createSlice({
   name: key,
   initialState,
-  reducers: {
-    selectSite: (state, action) => {
-      state.selectedSiteId = action.payload?.id || null;
-    },
-  },
+  reducers: {},
   extraReducers: builder => {
     builder
       .addCase(logoutAsyncAction.pending, state => {
@@ -77,6 +81,9 @@ const slice = createSlice({
       .addCase(fetchSitesAsyncAction.fulfilled, (state, action) => {
         state.loading = false;
         state.sites = action.payload;
+      })
+      .addCase(selectSiteAsyncAction.pending, (state, action) => {
+        state.selectedSiteId = action.meta.arg?.id || null;
       });
   },
 });
@@ -91,6 +98,6 @@ const sitesReducer = persistReducer(
   typedReducer,
 );
 
-export const {selectSite} = slice.actions;
+export const {} = slice.actions;
 
 export default sitesReducer;

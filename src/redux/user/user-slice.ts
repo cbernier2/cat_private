@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import i18n from 'i18next';
 import * as OAuth from 'react-native-app-auth';
 import {AuthorizeResult} from 'react-native-app-auth';
-import {RootState} from './index';
+import {RootState} from '../index';
 
 export const key = 'user';
 
@@ -32,18 +32,27 @@ const authConfig = {
 };
 OAuth.prefetchConfiguration(authConfig).then().catch();
 
+let pendingOAuthRefresh: Promise<OAuth.RefreshResult> | null = null;
 export const refreshTokenAsyncAction = createAsyncThunk(
   `${key}/refreshToken`,
   async (_, {rejectWithValue, getState}) => {
-    const refreshToken = (getState() as RootState).user.auth?.refreshToken;
-    if (refreshToken) {
-      try {
-        return await OAuth.refresh(authConfig, {refreshToken});
-      } catch (e) {
-        return rejectWithValue(e);
-      }
-    } else {
+    if (pendingOAuthRefresh) {
+      await pendingOAuthRefresh;
       return rejectWithValue(null);
+    } else {
+      const refreshToken = (getState() as RootState).user.auth?.refreshToken;
+      if (refreshToken) {
+        try {
+          pendingOAuthRefresh = OAuth.refresh(authConfig, {refreshToken});
+          return await pendingOAuthRefresh;
+        } catch (e) {
+          return rejectWithValue(e);
+        } finally {
+          pendingOAuthRefresh = null;
+        }
+      } else {
+        return rejectWithValue(null);
+      }
     }
   },
 );
@@ -82,7 +91,11 @@ export const logoutAsyncAction = createAsyncThunk(
 const slice = createSlice({
   name: key,
   initialState,
-  reducers: {},
+  reducers: {
+    invalidateToken: state => {
+      state.auth = null;
+    },
+  },
   extraReducers: builder => {
     builder
       .addCase(loginAsyncAction.pending, state => {
@@ -119,6 +132,8 @@ const slice = createSlice({
       .addCase(refreshTokenAsyncAction.fulfilled, (state, action) => {
         if (state.auth) {
           state.auth.accessToken = action.payload.accessToken;
+          state.auth.accessTokenExpirationDate =
+            action.payload.accessTokenExpirationDate;
         }
       });
   },
@@ -133,5 +148,7 @@ const userReducer = persistReducer(
   },
   typedReducer,
 );
+
+export const {invalidateToken} = slice.actions;
 
 export default userReducer;

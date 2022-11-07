@@ -3,17 +3,17 @@ import {RootState} from '../index';
 import {Site} from './sites-slice';
 
 export const sitesErrorSelector = createSelector(
-  (state: RootState) => state.sites.error,
+  (state: RootState) => state.sitesList.error,
   error => error,
 );
 
 export const sitesLoadingSelector = createSelector(
-  (state: RootState) => state.sites.loading,
+  (state: RootState) => state.sitesList.loading,
   loading => loading,
 );
 
 export const sitesSelectedSiteSelector = createSelector(
-  (state: RootState) => state.sites,
+  (state: RootState) => state.sitesList,
   siteState =>
     siteState.sites.find(
       (site: Site) => site.id === siteState.selectedSiteId,
@@ -21,6 +21,6 @@ export const sitesSelectedSiteSelector = createSelector(
 );
 
 export const sitesSitesSelector = createSelector(
-  (state: RootState) => state.sites.sites,
+  (state: RootState) => state.sitesList.sites,
   sites => sites,
 );

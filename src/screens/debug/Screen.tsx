@@ -11,10 +11,10 @@ import {
   offlineCancelTest,
   toggleOffline,
   toggleTheme,
-} from '../../redux/app-slice';
+} from '../../redux/app/app-slice';
 import useCatDispatch from '../../hooks/useCatDispatch';
-import {emulateOfflineSelector} from '../../redux/app-selectors';
-import {selectSite} from '../../redux/sites/sites-slice';
+import {emulateOfflineSelector} from '../../redux/app/app-selectors';
+import {selectSiteAsyncAction} from '../../redux/sites-list/sites-slice';
 
 import {DebugScreenType} from './types';
 
@@ -36,8 +36,8 @@ const DebugScreen: React.FC<DebugScreenType> = props => {
     props.navigation.navigate('Dashboard');
   };
 
-  const clearSiteSelection = () => {
-    dispatch(selectSite(null));
+  const clearSiteSelection = async () => {
+    await dispatch(selectSiteAsyncAction(null));
     props.navigation.popToTop();
   };
 

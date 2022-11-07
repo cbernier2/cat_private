@@ -1,10 +1,11 @@
-import {Material} from '../api/types/cat/material';
+// Copy from Caterpillar Web App: src/common/common-constants.ts
+
+import {Material} from './material';
 
 /**
  * Unit system constants used in the site which represent unit.UnitSystem
  * instances of the 'MINING_SI' and 'MINING_IMPERIAL' constant unit systems
  */
-
 export const enum UnitSystem {
   IMPERIAL = 'Mining Imperial', // units.MINING_IMPERIAL.name
   METRIC = 'Mining SI', // units.MINING_SI.name
@@ -22,11 +23,6 @@ export const enum UnitType {
   VOLUME = 'BANK_VOLUME',
 }
 
-export const enum MaterialDensityToUse {
-  BANK_DENSITY = 'BANK_DENSITY',
-  LOOSE_DENSITY = 'LOOSE_DENSITY',
-}
-
 export const enum PayloadSourcePolicy {
   DISABLED = 'DISABLED',
   HAULER = 'HAULER',
@@ -35,11 +31,6 @@ export const enum PayloadSourcePolicy {
   HIGHEST_SCORE_THEN_HAULER = 'HIGHEST_SCORE_THEN_HAULER',
   HIGHEST_SCORE_THEN_LOADER = 'HIGHEST_SCORE_THEN_LOADER',
   HIGHEST_SCORE_THEN_AVERAGE = 'HIGHEST_SCORE_THEN_AVERAGE',
-}
-
-export interface WATER_TRUCK_WDS_MODE_CONFIGURATIONS {
-  mode: string;
-  color: string;
 }
 
 export const enum DipperCountSourcePolicy {
@@ -51,12 +42,9 @@ export const enum DipperCountSourcePolicy {
 // @dynamic
 
 export class CommonConstants {
-  public static readonly DEFAULT_UNDO_TIMEOUT: number = 5000;
   public static readonly GRID_COLUMNS = 12;
   public static readonly UNDEFINED_UUID =
     '00000000-0000-0000-0000-000000000000';
-  public static readonly OPERATOR_UNAVAILABLE_EQUIPMENT_UUID =
-    CommonConstants.UNDEFINED_UUID;
   public static readonly UNDEFINED_TERRAIN_DELAY_UUID =
     '00000000-0000-0000-0000-000000000001';
   public static readonly UNKNOWN_VALUE_COLOUR = '#165A7F';
@@ -68,9 +56,6 @@ export class CommonConstants {
   public static readonly COLOR_DARK_ORANGE = '#ff7c00';
   public static readonly COLOR_YELLOW_ORANGE = '#ffad01';
   public static readonly COLOR_OBSERVATION_HATCH_BACKGROUND = '#3C4650';
-  public static readonly LOAD_CHART_COLOUR = '#FFFFFF';
-  public static readonly DUMP_CHART_COLOUR = '#000000';
-  public static readonly COLOR_TANK_REFILL = '#447ccf';
   public static readonly STOP_REASON_UNKNOWN_ICON_NAME = 'stop_reason_unknown';
   public static readonly ADDITIONAL_ICONS_LOGIN_KEY = 'operatorLoginIconKey';
   public static readonly ADDITIONAL_ICONS_LOGOUT_KEY = 'operatorLogoutIconKey';
@@ -78,10 +63,6 @@ export class CommonConstants {
     'fuelingOccurredIconKey';
   public static readonly DEFAULT_EULA_URL =
     'https://www.caterpillar.com/en/legal-notices/minestar-legal.html';
-
-  // Map layer z indexes
-  public static readonly MAP_LAYER_DESIGN_CUT_FILL_Z_INDEX = 1;
-  public static readonly MAP_LAYER_DESIGN_BOUNDARY_Z_INDEX = 2;
 
   // Events
   public static readonly EVENT_MENU_TOGGLED = 'menu.toggled';
@@ -116,28 +97,25 @@ export class CommonConstants {
   public static readonly DISPLAY = 'display';
   public static readonly ON_GOING = 'onGoing';
   public static readonly ERROR_CODES = 'errorCodes';
-  public static readonly OL_FEATURES = 'features';
-  public static readonly OL_LAYER_TYPE = 'layerType';
 
   // UI settings
   public static readonly SNACKBAR_TIMEOUT = 5000;
   public static readonly DEFAULT_TILE_SIZE = 512;
   public static readonly DEFAULT_ZOOM = 1;
   public static readonly DEFAULT_MAX_ZOOM = 10;
-  public static readonly POLLING_INTERVAL = 30 * 1000; // 30 seconds
 
   public static readonly DEFAULT_PRODUCTION_MAX_SHIFT_AGE = 130; // days
 
   public static readonly STYLE_FONT_FAMILY: string = 'Roboto';
 
-  public static readonly SHIFT_DATE_FORMAT: string = 'DD MMMM YYYY';
+  public static readonly SHIFT_DATE_FORMAT: string = 'DD MMM YYYY';
 
   // The default colour swatch config is also used as the default material
   public static readonly DEFAULT_COLOUR_SWATCH_CONFIG: Material = {
     id: CommonConstants.UNDEFINED_UUID,
     color: '#03a9f4',
-    patternColor: '',
-    pattern: '',
+    patternColor: null,
+    pattern: null,
   };
 
   public static readonly DEFAULT_PRODUCTION_SUMMARY_PAYLOAD_RESOLUTION_PREFERENCE =
@@ -183,64 +161,6 @@ export class CommonConstants {
     ];
   }
   public static readonly SLIDER_ROUND_CLASS_NAME: string = 'slider round';
-  public static readonly CHECKBOX_CLASS_NAME: string = 'checkbox';
-
-  public static get WATER_TRUCK_WATER_AGE_CONFIGURATIONS(): any {
-    return [
-      {
-        valueKey: 2,
-        color: '#447ccf',
-        valueLabel: 'Last 2H',
-      },
-      {
-        valueKey: 4,
-        color: '#2adc71',
-        valueLabel: 'Older than 2H',
-      },
-      {
-        valueKey: 6,
-        color: '#00b689',
-        valueLabel: 'Older than 6H',
-      },
-    ];
-  }
-
-  public static get WATER_TRUCK_WDS_MODE_CONFIGURATIONS(): WATER_TRUCK_WDS_MODE_CONFIGURATIONS[] {
-    return [
-      {
-        mode: 'AUTO MODE',
-        color: '#8244cf',
-      },
-      {
-        mode: 'DUMP BAR',
-        color: '#bc6738',
-      },
-      {
-        mode: 'HEAD CLEAN',
-        color: '#996e56',
-      },
-      {
-        mode: 'MANUAL',
-        color: '#f63b5a',
-      },
-      {
-        mode: 'HOSE REEL',
-        color: '#ffc240',
-      },
-      {
-        mode: 'TANK FILL',
-        color: '#447ccf',
-      },
-      {
-        mode: 'UNKNOWN',
-        color: '#f0f5fa',
-      },
-      {
-        mode: 'WATER CANNON',
-        color: '#d110aa',
-      },
-    ];
-  }
 }
 // NOTE this is not a 'const' enum because transpiling using our current build process
 //      doesn't correctly include/replace the const enum value
@@ -271,12 +191,9 @@ export enum Permission {
   SURFACE_MANAGER_WRITE = 'PERMISSION_SURFACE_MANAGER_WRITE',
   DESIGN_FILE_UPLOAD = 'PERMISSION_DESIGN_FILE_UPLOAD',
   PERMISSION_ADDRESS_SCHEMA_WRITE = 'PERMISSION_ADDRESS_SCHEMA_WRITE',
-  PERMISSION_ADDRESS_READ = 'PERMISSION_ADDRESS_READ',
   PERMISSION_ADDRESS_WRITE = 'PERMISSION_ADDRESS_WRITE',
   PLANNER_READ = 'PERMISSION_PLANNER_READ',
   PLANNER_WRITE = 'PERMISSION_PLANNER_WRITE',
-  DUMP_OVERRIDE_READ = 'PERMISSION_DUMP_OVERRIDE_READ',
-  DUMP_OVERRIDE_WRITE = 'PERMISSION_DUMP_OVERRIDE_WRITE',
 }
 
 /**
@@ -445,17 +362,6 @@ export namespace Category {
         summariesKey: 'routeSummaries',
       },
     ],
-    [
-      CategoryType.WATER_TRUCK_EQUIPMENT,
-      <Category>{
-        type: CategoryType.WATER_TRUCK_EQUIPMENT,
-        i18n: 'production_water_truck',
-        unknownI18n: 'production_unknown_water_truck',
-        icon: 'water_truck',
-        iconClass: 'icons',
-        summariesKey: 'waterTruckSummaries',
-      },
-    ],
   ] as Array<[CategoryType, Category]>);
 
   /**
@@ -465,7 +371,7 @@ export namespace Category {
    *                     resolve the category details from
    */
   export function findByCategoryType(categoryType: CategoryType): Category {
-    return <Category>categories.get(categoryType);
+    return categories.get(categoryType)!;
   }
 
   /**

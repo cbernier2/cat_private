@@ -15,7 +15,6 @@ stages:
       - checkout: self
 
       - template: setup.yml
-      
 
       - task: InstallAppleProvisioningProfile@1
         displayName: Install AdHoc provisioning profile
@@ -41,14 +40,6 @@ stages:
         displayName: Download Android keystore
         inputs:
           secureFile: keystore.jks
-          
-      - task: Gradle@2
-        displayName: gradlew bundleRelease
-        inputs:
-          wrapperScript: android/gradlew
-          cwd: android
-          tasks: bundleRelease
-          jdkVersionOption: 1.11
           
       - task: Bash@3
         displayName: Sign Android Bundle (.aab)
