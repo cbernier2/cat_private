@@ -28,6 +28,7 @@ export interface Timeline {
 export interface Summary {
   id: string;
   name: string;
+  '@type': string;
   startTime: number;
   endTime: number;
   deleted: boolean;
@@ -112,6 +113,9 @@ export interface Summary {
   averageSlopeDistanceEmpty: number;
   averageSlopeDistanceFull: number;
   lengthUnit: string;
+  target: number;
+  targetUnit: string;
+  preferredProdVolumeUnit: string;
 }
 
 export interface PlanAreaSummary extends Summary {
