@@ -1,16 +1,26 @@
 import React, {useState} from 'react';
+import {Pressable} from 'react-native';
+import {useTranslation} from 'react-i18next';
 import {TimePickerModal} from 'react-native-paper-dates';
-
-import CatButton from '../../button';
 
 import {CatTimePickerType, CatTimePickerSelection} from './types';
 
-export const CatTimePicker: React.FC<CatTimePickerType> = ({onSelect}) => {
+export const CatTimePicker: React.FC<CatTimePickerType> = props => {
+  const {i18n} = useTranslation();
   const [visible, setVisible] = useState(false);
 
-  const onConfirm = ({hours, minutes}: CatTimePickerSelection) => {
+  const {
+    animationType = 'fade',
+    children,
+    locale = i18n.language,
+    onConfirm,
+    uppercase = false,
+    ...rest
+  } = props;
+
+  const handleConfirm = (data: CatTimePickerSelection) => {
     setVisible(false);
-    onSelect({hours, minutes});
+    onConfirm(data);
   };
 
   return (
@@ -18,19 +28,13 @@ export const CatTimePicker: React.FC<CatTimePickerType> = ({onSelect}) => {
       <TimePickerModal
         visible={visible}
         onDismiss={() => setVisible(false)}
-        onConfirm={onConfirm}
-        hours={12} // default: current hours
-        minutes={14} // default: current minutes
-        label="Select time" // optional, default 'Select time'
-        uppercase={false} // optional, default is true
-        cancelLabel="Cancel" // optional, default: 'Cancel'
-        confirmLabel="Ok" // optional, default: 'Ok'
-        animationType="fade" // optional, default is 'none'
-        locale="en" // optional, default is automatically detected by your system
-        // keyboardIcon="keyboard-outline" // optional, default is "keyboard-outline"
-        // clockIcon="clock-outline" // optional, default is "clock-outline"
+        onConfirm={handleConfirm}
+        uppercase={uppercase}
+        animationType={animationType}
+        locale={locale}
+        {...rest}
       />
-      <CatButton onPress={() => setVisible(true)}>Pick time</CatButton>
+      <Pressable onPress={() => setVisible(true)}>{children}</Pressable>
     </>
   );
 };

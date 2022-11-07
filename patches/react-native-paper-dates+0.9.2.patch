@@ -1,3 +1,5 @@
+Source for the patch: https://github.com/web-ridge/react-native-paper-dates/issues/189
+
 diff --git a/node_modules/react-native-paper-dates/lib/typescript/Date/DatePickerModalContent.d.ts b/node_modules/react-native-paper-dates/lib/typescript/Date/DatePickerModalContent.d.ts
 index 8208b86..517b977 100644
 --- a/node_modules/react-native-paper-dates/lib/typescript/Date/DatePickerModalContent.d.ts
