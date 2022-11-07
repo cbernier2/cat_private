@@ -2,8 +2,14 @@ import i18next, {LanguageDetectorModule} from 'i18next';
 import {initReactI18next} from 'react-i18next';
 import {findBestAvailableLanguage} from 'react-native-localize';
 
-import {en, registerTranslation} from 'react-native-paper-dates';
+import {en, pt, registerTranslation} from 'react-native-paper-dates';
+import ar from 'react-native-paper-dates/src/translations/ar';
+import fr from 'react-native-paper-dates/src/translations/fr';
+// TODO missing es, id, sv and tr
+registerTranslation('ar', ar);
 registerTranslation('en', en);
+registerTranslation('fr', fr);
+registerTranslation('pt', pt);
 
 const detectLanguage: () => string | undefined = () => {
   return findBestAvailableLanguage(['en', 'fr'])?.languageTag;
