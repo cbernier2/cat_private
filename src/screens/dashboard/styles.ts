@@ -28,7 +28,7 @@ export const useStyles = () => {
       fontWeight: 'bold',
     },
     cardContainer: {
-      width: 220,
+      width: 250,
       padding: 16,
       borderRadius: 16,
       flexDirection: 'column',
@@ -40,6 +40,8 @@ export const useStyles = () => {
     },
     cardTitle: {
       marginBottom: 24,
+      paddingRight: 12,
+      minHeight: 50,
     },
     cardRowsSpacer: {
       height: 8,

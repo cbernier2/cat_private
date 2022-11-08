@@ -19,7 +19,7 @@ const CatTextWithIcon: React.FC<CatTextWithIconType> = props => {
   return (
     <View style={styles.container}>
       {React.createElement(icon, {
-        color: iconColor,
+        fill: iconColor,
         width: 24,
         height: 24,
       })}

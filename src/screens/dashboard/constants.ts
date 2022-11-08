@@ -1,7 +1,8 @@
-import {SummaryCell} from './types';
 import {UnitType} from '../../api/types/cat/common';
+import {CatColumn} from '../../api/types';
 
-export const summaryCells: {[key: string]: {[key in UnitType]: SummaryCell}} = {
+// Base on Cat's web app: src/common/pages/site-board/bottom-panel/bottom-panel-summary-abstract.card.ts
+const summaryColumns = {
   total: {
     [UnitType.MASS]: {key: 'totalMass', unit: 'massUnit'},
     [UnitType.VOLUME]: {key: 'totalVolume', unit: 'preferredProdVolumeUnit'},
@@ -40,3 +41,9 @@ export const summaryCells: {[key: string]: {[key in UnitType]: SummaryCell}} = {
     [UnitType.LOAD]: {key: 'variationLoads', unit: 'loadUnit'},
   },
 };
+
+export const SUMMARY_COLUMNS: {
+  [column in keyof typeof summaryColumns]: {[unit in UnitType]: CatColumn};
+} = summaryColumns;
+
+export const TARGET_COLUMN: CatColumn = {key: 'target', unit: 'targetUnit'};

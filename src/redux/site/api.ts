@@ -99,6 +99,7 @@ export const catApi = createApi({
             shiftId: productionSummary.shiftId,
             siteSummary: productionSummary.siteSummary,
             siteLoadSummary: productionSummary.siteLoadSummary,
+            routeSummaries: productionSummary.routeSummaries,
             materialSummaries: [],
             loadAreaSummaries: [],
             dumpSummaries: [],
@@ -107,7 +108,6 @@ export const catApi = createApi({
             haulEquipSummaries: [],
             supportEquipSummaries: [],
             waterTruckSummaries: [],
-            routeSummaries: [],
           };
         } else {
           return null;

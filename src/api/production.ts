@@ -5,6 +5,7 @@ import {UnitUtils} from '../utils/unit-utils';
 import {units} from 'minestar-units';
 import {ArrayUtils} from '../utils/array-utils';
 
+// From Cat's web app: src/common/providers/production/production.service.ts
 export const getPreferredMeasurementBasis = (
   summary: Summary | undefined,
   materials: Material[],

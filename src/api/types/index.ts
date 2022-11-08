@@ -15,3 +15,8 @@ export type GetCountResult = {
   rowCount: number;
   rowsPerPage: number;
 };
+
+export type CatColumn = {
+  key: string;
+  unit: string;
+};

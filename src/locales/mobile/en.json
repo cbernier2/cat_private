@@ -9,7 +9,7 @@
     "side_menu_switch_site": "Switch Site",
     "side_menu_help": "Help",
     "summary_active_work_title": "Active Work ({{num}})",
-    "summary_active_work_areas": "Active Work Areas",
+    "summary_active_routes": "Active Routes ({{num}})",
     "summary_attention_required": "Attention Required",
     "production_projected_short": "Proj.",
     "average_cycle_time_short": "Avg Cycle Time"

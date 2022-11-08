@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {ScreenType, SummaryCell} from './types';
+import {ScreenType} from './types';
 import {useStyles} from './styles';
 import CatSummaryCard from './SummaryCard';
-import HaulTruckSvg from 'assets/icons/maintenance.svg';
+import RouteSvg from 'node_modules/minestar-icons/svg/route.svg';
 import useCatTheme from '../../hooks/useCatTheme';
 import ValuesRow from './ValuesRow';
 import CatScreen from '../../components/screen';
@@ -14,154 +14,125 @@ import CatActiveItemsSection from './ActiveItemsSection';
 import CatAccordion from '../../components/accordion';
 import useCatSelector from '../../hooks/useCatSelector';
 import {
-  configSelector,
   materialsSelector,
   productionSummarySelector,
+  systemUnitTypeSelector,
 } from '../../redux/site/site-selectors';
 import {getPreferredMeasurementBasis} from '../../api/production';
-import {ConfigItemName} from '../../api/types/cat/config-item';
-import {CommonConstants} from '../../api/types/cat/common';
-import {UnitUtils} from '../../utils/unit-utils';
-import {summaryCells} from './constants';
-import {formatMinutesOnly, formatNumber} from '../../utils/format';
+import {SUMMARY_COLUMNS, TARGET_COLUMN} from './constants';
+import {
+  formatLabel,
+  formatMinutesOnly,
+  formatNumber,
+  formatUnit,
+} from '../../utils/format';
+import {CatTextWithLabelType} from '../../components/text-with-label/types';
+import {isAttentionRequired} from './functions';
 
 const DashboardScreen: React.FC<ScreenType> = () => {
   const {t} = useTranslation();
   const [isLoad, setIsLoad] = useState(false);
   const {colors} = useCatTheme();
   const styles = useStyles();
-  const config = useCatSelector(configSelector);
-  const systemUnitType =
-    config[ConfigItemName.PRODUCTION_UNIT_TYPE] ||
-    CommonConstants.DEFAULT_UNIT_TYPE_VALUE;
+  const systemUnitType = useCatSelector(systemUnitTypeSelector);
   const materials = useCatSelector(materialsSelector);
   const productionSummary = useCatSelector(productionSummarySelector);
   const displaySummary = isLoad
     ? productionSummary?.siteLoadSummary
     : productionSummary?.siteSummary;
+  const routeSummaries = productionSummary?.routeSummaries || [];
+  const workSummaryCount = routeSummaries.length;
   const siteName = 'Rasmussen Valley Clone';
   const unitType = getPreferredMeasurementBasis(
     displaySummary,
     materials,
     systemUnitType,
   );
+  const totalColumn = SUMMARY_COLUMNS.total[unitType];
+  const projectedColumn = SUMMARY_COLUMNS.projected[unitType];
+  const averageColumn = SUMMARY_COLUMNS.average[unitType];
 
-  const totalConfig = summaryCells.total[unitType];
-  const projectedConfig = summaryCells.projected[unitType];
-  const averageConfig = summaryCells.average[unitType];
-  const targetConfig: SummaryCell = {key: 'target', unit: 'targetUnit'};
-
-  const valuesRow1 = (
-    <ValuesRow
-      style={styles.productionRow}
-      values={[
-        {
-          label:
-            t('cat.production_secondary_total') +
-            ' ' +
-            t(UnitUtils.toDisplayUnit(displaySummary, totalConfig.unit, false)),
-          children: formatNumber(
-            UnitUtils.toDisplayValue(
-              displaySummary,
-              totalConfig.key,
-              totalConfig.unit,
-            ),
-          ),
-          isPrimary: true,
-        },
-        {
-          label:
-            t('production_projected_short') +
-            ' ' +
-            t(
-              UnitUtils.toDisplayUnit(
-                displaySummary,
-                projectedConfig.unit,
-                false,
-              ),
-            ),
-          children: formatNumber(
-            UnitUtils.toDisplayValue(
-              displaySummary,
-              projectedConfig.key,
-              projectedConfig.unit,
-            ),
-          ),
-        },
-        {
-          label:
-            t('cat.production_target') +
-            ' ' +
-            t(
-              UnitUtils.toDisplayUnit(
-                displaySummary,
-                projectedConfig.unit,
-                false,
-              ),
-            ),
-          children: formatNumber(
-            UnitUtils.toDisplayValue(
-              displaySummary,
-              targetConfig.key,
-              targetConfig.unit,
-            ),
-          ),
-        },
-      ]}
-    />
+  const valueRowJSX = (values: CatTextWithLabelType[]) => (
+    <ValuesRow style={styles.productionRow} values={values} />
   );
 
-  const valuesRow2 = (
-    <ValuesRow
-      style={styles.productionRow}
-      values={[
-        {
-          label:
-            t('cat.production_secondary_total') +
-            ' ' +
-            t(isLoad ? 'cat.production_loads' : 'cat.production_dumps'),
-          children: formatNumber(displaySummary?.totalLoads),
-          isPrimary: true,
-        },
-        {
-          label:
-            t('cat.production_secondary_averageRate') +
-            ' ' +
-            t(
-              UnitUtils.toDisplayUnit(displaySummary, averageConfig.unit, true),
-            ),
-          children: formatNumber(
-            UnitUtils.toDisplayValue(
-              displaySummary,
-              averageConfig.key,
-              averageConfig.unit,
-            ),
-          ),
-        },
-        {
-          label: t('average_cycle_time_short'),
-          children: formatMinutesOnly(displaySummary?.averageCycleTime),
-        },
-      ]}
-    />
-  );
+  const valuesRow1 = valueRowJSX([
+    {
+      label: formatLabel(
+        'cat.production_secondary_total',
+        displaySummary,
+        totalColumn.unit,
+      ),
+      children: formatUnit(displaySummary, totalColumn),
+      isPrimary: true,
+    },
+    {
+      label: formatLabel(
+        'production_projected_short',
+        displaySummary,
+        projectedColumn.unit,
+      ),
+      children: formatUnit(displaySummary, projectedColumn),
+    },
+    {
+      label: formatLabel(
+        'cat.production_target',
+        displaySummary,
+        TARGET_COLUMN.unit,
+      ),
+      children: formatUnit(displaySummary, TARGET_COLUMN),
+    },
+  ]);
 
-  const getWorkAreaJSX = (attentionRequired = false) => {
-    return (
-      <CatSummaryCard
-        hasError={attentionRequired}
-        title={{
-          icon: HaulTruckSvg,
-          iconColor: colors.error,
-          children: 'Truck 01',
-        }}
-        total={1000}
-        projected={15000}
-        target={20000}
-        unit={''}
-      />
+  const valuesRow2 = valueRowJSX([
+    {
+      label:
+        t('cat.production_secondary_total') +
+        ' ' +
+        t(isLoad ? 'cat.production_loads' : 'cat.production_dumps'),
+      children: formatNumber(displaySummary?.totalLoads),
+      isPrimary: true,
+    },
+    {
+      label: formatLabel(
+        'cat.production_secondary_averageRate',
+        displaySummary,
+        averageColumn.unit,
+      ),
+      children: formatUnit(displaySummary, averageColumn),
+    },
+    {
+      label: t('average_cycle_time_short'),
+      children: formatMinutesOnly(displaySummary?.averageCycleTime),
+    },
+  ]);
+
+  const attentionNeededCardsJsx: JSX.Element[] = [];
+  const activeWorkCards: JSX.Element[] = [];
+
+  routeSummaries.forEach(routeSummary => {
+    const routeUnitType = getPreferredMeasurementBasis(
+      routeSummary,
+      materials,
+      systemUnitType,
     );
-  };
+    const attentionRequired = isAttentionRequired(routeSummary, routeUnitType);
+    const el = (
+      <View style={styles.activeProductionItem} key={routeSummary.id}>
+        <CatSummaryCard
+          hasError={attentionRequired}
+          title={{
+            icon: RouteSvg,
+            iconColor: colors.label,
+            children: routeSummary.route.name,
+          }}
+          summary={routeSummary}
+          unitType={routeUnitType}
+        />
+      </View>
+    );
+    (attentionRequired ? attentionNeededCardsJsx : activeWorkCards).push(el);
+  });
 
   return (
     <CatScreen title={t('summary_title')}>
@@ -178,26 +149,19 @@ const DashboardScreen: React.FC<ScreenType> = () => {
         <CatAccordion>{valuesRow2}</CatAccordion>
       </View>
       <CatText style={styles.activeWorkTitle} variant={'headlineSmall'}>
-        {t('summary_active_work_title', {num: 6})}
+        {t('summary_active_work_title', {num: workSummaryCount})}
       </CatText>
-      <CatActiveItemsSection title={t('summary_attention_required')}>
-        <>
-          {[...Array(10)].map((val, i) => (
-            <View style={styles.activeProductionItem} key={i}>
-              {getWorkAreaJSX(true)}
-            </View>
-          ))}
-        </>
-      </CatActiveItemsSection>
-      <CatActiveItemsSection title={t('summary_active_work_areas')}>
-        <>
-          {[...Array(10)].map((val, i) => (
-            <View style={styles.activeProductionItem} key={i}>
-              {getWorkAreaJSX()}
-            </View>
-          ))}
-        </>
-      </CatActiveItemsSection>
+      {attentionNeededCardsJsx.length > 0 && (
+        <CatActiveItemsSection title={t('summary_attention_required')}>
+          {attentionNeededCardsJsx}
+        </CatActiveItemsSection>
+      )}
+      {activeWorkCards.length > 0 && (
+        <CatActiveItemsSection
+          title={t('summary_active_routes', {num: activeWorkCards.length})}>
+          {activeWorkCards}
+        </CatActiveItemsSection>
+      )}
     </CatScreen>
   );
 };

@@ -4,21 +4,20 @@ import {Surface} from 'react-native-paper';
 import ValuesRow from './ValuesRow';
 import {View, ViewStyle} from 'react-native';
 import {useStyles} from './styles';
-import {useTranslation} from 'react-i18next';
 import CatTextWithIcon from '../../components/text-with-icon';
-import {UnitUtils} from '../../utils/unit-utils';
-import {formatNumber} from '../../utils/format';
+import {formatLabel, formatUnit} from '../../utils/format';
+import {SUMMARY_COLUMNS, TARGET_COLUMN} from './constants';
+import {UnitType} from '../../api/types/cat/common';
 
 const CatSummaryCard: React.FC<CatSummaryCardType> = ({
   title,
-  total,
-  projected,
-  target,
-  unit,
+  summary,
+  unitType,
   hasError,
 }) => {
   const styles = useStyles();
-  const {t} = useTranslation();
+  const totalLoadColumn = SUMMARY_COLUMNS.total[UnitType.LOAD];
+  const projectedColumn = SUMMARY_COLUMNS.projected[unitType];
 
   const containerStyle: ViewStyle[] = [styles.cardContainer];
   if (hasError) {
@@ -26,16 +25,18 @@ const CatSummaryCard: React.FC<CatSummaryCardType> = ({
   }
   return (
     <Surface elevation={2} style={containerStyle}>
-      <CatTextWithIcon style={styles.cardTitle} {...title} />
+      <View style={styles.cardTitle}>
+        <CatTextWithIcon {...title} />
+      </View>
       <ValuesRow
         values={[
           {
-            label:
-              t('cat.production_secondary_total') +
-              ' ' +
-              t(UnitUtils.toLocalisationKey(unit)),
-            isDown: false,
-            children: formatNumber(total),
+            label: formatLabel(
+              'cat.production_secondary_total',
+              summary,
+              totalLoadColumn.unit,
+            ),
+            children: formatUnit(summary, totalLoadColumn),
             isPrimary: true,
           },
         ]}
@@ -44,14 +45,21 @@ const CatSummaryCard: React.FC<CatSummaryCardType> = ({
       <ValuesRow
         values={[
           {
-            label: t('cat.production_projected'),
-            isDown: false,
-            children: formatNumber(projected),
+            label: formatLabel(
+              'production_projected_short',
+              summary,
+              projectedColumn.unit,
+            ),
+            children: formatUnit(summary, projectedColumn),
           },
           {
-            label: t('cat.production_target'),
+            label: formatLabel(
+              'cat.production_target',
+              summary,
+              TARGET_COLUMN.unit,
+            ),
+            children: formatUnit(summary, TARGET_COLUMN),
             isDown: hasError,
-            children: formatNumber(target),
           },
         ]}
       />

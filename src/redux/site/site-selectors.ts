@@ -1,9 +1,18 @@
 import {createSelector} from '@reduxjs/toolkit';
 import {RootState} from '../index';
+import {ConfigItemName} from '../../api/types/cat/config-item';
+import {CommonConstants} from '../../api/types/cat/common';
 
 export const configSelector = createSelector(
   (state: RootState) => state.site.config,
   config => config,
+);
+
+export const systemUnitTypeSelector = createSelector(
+  (state: RootState) => state.site.config,
+  config =>
+    config[ConfigItemName.PRODUCTION_UNIT_TYPE] ||
+    CommonConstants.DEFAULT_UNIT_TYPE_VALUE,
 );
 
 export const productionSummarySelector = createSelector(
