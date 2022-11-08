@@ -1,7 +1,7 @@
 import {createSelector} from '@reduxjs/toolkit';
 import {RootState} from '../index';
 import jwtDecode from 'jwt-decode';
-import {AccessTokenPayload} from '../../api/types/cat/oauth';
+import {AccessTokenPayload} from '../../api/types/oauth';
 
 export const userAuthTokenSelector = createSelector(
   (state: RootState) => state.user.auth?.accessToken,

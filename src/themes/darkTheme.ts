@@ -34,7 +34,6 @@ export const darkTheme = {
   ...base,
   dark: true,
   roundness: 10,
-  version: 3,
   fonts: {
     ...base.fonts,
     ...fonts,

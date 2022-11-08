@@ -20,6 +20,11 @@ steps:
           script: yarn lint
           
       - task: CmdLine@2
+        displayName: yarn check-types
+        inputs:
+          script: yarn check-types
+          
+      - task: CmdLine@2
         displayName: yarn test
         inputs:
           script: yarn test

@@ -18,7 +18,6 @@ export const lightTheme: typeof darkTheme = {
   ...base,
   dark: false,
   roundness: 10,
-  version: 3,
   fonts: {
     ...darkTheme.fonts,
     ...base.fonts,

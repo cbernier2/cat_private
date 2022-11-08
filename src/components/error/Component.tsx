@@ -9,7 +9,7 @@ import {useStyles} from './styles';
 export const CatError: React.FC<CatErrorType> = props => {
   const styles = useStyles();
 
-  if (!props.visible) {
+  if (!props.message) {
     return null;
   }
 
