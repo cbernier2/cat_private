@@ -1,5 +1,5 @@
 import React from 'react';
-import {View} from 'react-native';
+import {SafeAreaView, View} from 'react-native';
 import {Avatar, Drawer} from 'react-native-paper';
 import {useTranslation} from 'react-i18next';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -34,7 +34,7 @@ const CatDrawer: React.FC<CatDrawerType> = ({navigation}) => {
   const siteName = selectedSite?.name ?? '';
 
   return (
-    <View style={styles.menuContainer}>
+    <SafeAreaView style={styles.menuContainer}>
       <View
         style={[{backgroundColor: colors.grey0}, styles.menuHeaderContainer]}>
         <MaterialIcons
@@ -82,7 +82,7 @@ const CatDrawer: React.FC<CatDrawerType> = ({navigation}) => {
           />
         </Drawer.Section>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

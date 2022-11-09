@@ -1,5 +1,4 @@
 import React, {useCallback, useRef, useState} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import {CatScreenType} from './types';
 import styles from './styles';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
@@ -43,14 +42,14 @@ const CatScreen: React.FC<CatScreenType> = ({children, title}) => {
   };
 
   return (
-    <SafeAreaView style={[styles.background]}>
+    <View style={[styles.background]}>
       <TouchableWithoutFeedback onPress={onPressTrigger}>
         <View style={styles.triggerContainer} />
       </TouchableWithoutFeedback>
-      <ScrollView>
+      <ScrollView alwaysBounceVertical={false}>
         <View style={styles.scrollViewContent}>{children}</View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 
