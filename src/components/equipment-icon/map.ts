@@ -2,9 +2,9 @@ import {SvgProps} from 'react-native-svg';
 
 import {EquipmentType} from '../../redux/equipments/types';
 
-import Dozer from 'node_modules/minestar-icons/svg/dozer.svg';
-import LightVehicle from 'node_modules/minestar-icons/svg//light_vehicle.svg';
-import Scraper from 'node_modules/minestar-icons/svg//scraper.svg';
+import Dozer from '../../../assets/icons/dozer.svg';
+import LightVehicle from '../../../assets/icons//light_vehicle.svg';
+import Scraper from '../../../assets/icons//scraper.svg';
 
 type EquipmentIconMap = {
   [K in EquipmentType]?: React.FC<SvgProps>;

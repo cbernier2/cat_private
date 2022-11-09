@@ -1,7 +1,7 @@
 import React from 'react';
 import {G, Text, Defs, Mask, Rect, ForeignObject} from 'react-native-svg';
 
-import NoReason from 'node_modules/minestar-icons/svg/stop_reason_unknown.svg';
+import NoReason from '../../../../../assets/icons/stop_reason_unknown.svg';
 
 import {SiteStopsStopsType} from './types';
 
