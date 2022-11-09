@@ -116,6 +116,8 @@ export interface Summary {
   target: number;
   targetUnit: string;
   preferredProdVolumeUnit: string;
+  averageQueuingDurationEmpty: number;
+  averageQueuingDurationFull: number;
 }
 
 export interface PlanAreaSummary extends Summary {

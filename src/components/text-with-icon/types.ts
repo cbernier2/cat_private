@@ -5,5 +5,6 @@ import {ColorValue} from 'react-native';
 
 export type CatTextWithIconType = ComponentProps<typeof Text> & {
   icon: React.FC<SvgProps>;
+  iconSize?: number;
   iconColor?: ColorValue;
 };

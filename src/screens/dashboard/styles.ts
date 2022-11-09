@@ -16,16 +16,8 @@ export const useStyles = () => {
     activeWorkTitle: {
       marginHorizontal: 16,
     },
-    productionRow: {
+    kpiRow: {
       marginBottom: 16,
-    },
-    valuesRowContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'flex-start',
-    },
-    valuesRowText: {
-      fontWeight: 'bold',
     },
     cardContainer: {
       width: 250,

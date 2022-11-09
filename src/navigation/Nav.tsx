@@ -22,11 +22,13 @@ import CatDrawer from './drawer';
 import CatDrawerIcon from './header/DrawerIcon';
 import CatHeader from './header';
 import CatSyncStatus from './header/SyncStatus';
+import RouteOverviewScreen from '../screens/route-overview';
 
 const SummaryStack = createStackNavigator();
 const SummaryNavigator = () => (
   <SummaryStack.Navigator screenOptions={{headerShown: false}}>
     <SummaryStack.Screen name="Dashboard" component={DashboardScreen} />
+    <SummaryStack.Screen name="RouteOverview" component={RouteOverviewScreen} />
   </SummaryStack.Navigator>
 );
 

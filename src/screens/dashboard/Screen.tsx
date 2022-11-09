@@ -5,7 +5,6 @@ import {useStyles} from './styles';
 import CatSummaryCard from './SummaryCard';
 import RouteSvg from 'node_modules/minestar-icons/svg/route.svg';
 import useCatTheme from '../../hooks/useCatTheme';
-import ValuesRow from './ValuesRow';
 import CatScreen from '../../components/screen';
 import {View} from 'react-native';
 import CatText from '../../components/text';
@@ -19,7 +18,7 @@ import {
   systemUnitTypeSelector,
 } from '../../redux/site/site-selectors';
 import {getPreferredMeasurementBasis} from '../../api/production';
-import {SUMMARY_COLUMNS, TARGET_COLUMN} from './constants';
+import {SUMMARY_COLUMNS, TARGET_COLUMN} from '../../api/production';
 import {
   formatLabel,
   formatMinutesOnly,
@@ -28,9 +27,13 @@ import {
 } from '../../utils/format';
 import {CatTextWithLabelType} from '../../components/text-with-label/types';
 import {isAttentionRequired} from './functions';
+import CatValuesRow from '../../components/value-row';
+import {actions as siteActions} from '../../redux/site/site-slice';
+import useCatDispatch from '../../hooks/useCatDispatch';
 
-const DashboardScreen: React.FC<ScreenType> = () => {
+const DashboardScreen: React.FC<ScreenType> = ({navigation}) => {
   const {t} = useTranslation();
+  const dispatch = useCatDispatch();
   const [isLoad, setIsLoad] = useState(false);
   const {colors} = useCatTheme();
   const styles = useStyles();
@@ -52,11 +55,11 @@ const DashboardScreen: React.FC<ScreenType> = () => {
   const projectedColumn = SUMMARY_COLUMNS.projected[unitType];
   const averageColumn = SUMMARY_COLUMNS.average[unitType];
 
-  const valueRowJSX = (values: CatTextWithLabelType[]) => (
-    <ValuesRow style={styles.productionRow} values={values} />
+  const kpiRowJSX = (values: CatTextWithLabelType[]) => (
+    <CatValuesRow style={styles.kpiRow} values={values} />
   );
 
-  const valuesRow1 = valueRowJSX([
+  const kpiRow1 = kpiRowJSX([
     {
       label: formatLabel(
         'cat.production_secondary_total',
@@ -84,7 +87,7 @@ const DashboardScreen: React.FC<ScreenType> = () => {
     },
   ]);
 
-  const valuesRow2 = valueRowJSX([
+  const kpiRow2 = kpiRowJSX([
     {
       label:
         t('cat.production_secondary_total') +
@@ -128,6 +131,10 @@ const DashboardScreen: React.FC<ScreenType> = () => {
           }}
           summary={routeSummary}
           unitType={routeUnitType}
+          onPress={() => {
+            dispatch(siteActions.setCurrentRouteId(routeSummary.id));
+            navigation.navigate('RouteOverview');
+          }}
         />
       </View>
     );
@@ -145,8 +152,8 @@ const DashboardScreen: React.FC<ScreenType> = () => {
         />
       </View>
       <View style={styles.productionContainer}>
-        {valuesRow1}
-        <CatAccordion>{valuesRow2}</CatAccordion>
+        {kpiRow1}
+        <CatAccordion>{kpiRow2}</CatAccordion>
       </View>
       <CatText style={styles.activeWorkTitle} variant={'headlineSmall'}>
         {t('summary_active_work_title', {num: workSummaryCount})}

@@ -47,7 +47,9 @@ const CatScreen: React.FC<CatScreenType> = ({children, title}) => {
       <TouchableWithoutFeedback onPress={onPressTrigger}>
         <View style={styles.triggerContainer} />
       </TouchableWithoutFeedback>
-      <ScrollView>{children}</ScrollView>
+      <ScrollView>
+        <View style={styles.scrollViewContent}>{children}</View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

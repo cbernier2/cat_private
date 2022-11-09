@@ -1,5 +1,5 @@
 import {Summary} from '../../api/types/cat/production';
-import {SUMMARY_COLUMNS} from './constants';
+import {SUMMARY_COLUMNS} from '../../api/production';
 import {UnitType} from '../../api/types/cat/common';
 
 export const isAttentionRequired = (summary: Summary, unitType: UnitType) => {

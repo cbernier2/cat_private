@@ -12,5 +12,6 @@
     "summary_active_routes": "Active Routes ({{num}})",
     "summary_attention_required": "Attention Required",
     "production_projected_short": "Proj.",
-    "average_cycle_time_short": "Avg Cycle Time"
+    "average_cycle_time_short": "Avg Cycle Time",
+    "route_overview_title": "Route Overview"
 }

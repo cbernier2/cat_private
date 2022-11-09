@@ -1,4 +1,9 @@
-import {createAsyncThunk, createSlice, Reducer} from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSlice,
+  PayloadAction,
+  Reducer,
+} from '@reduxjs/toolkit';
 import {persistReducer} from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {apiResult, catApi} from './api';
@@ -11,6 +16,7 @@ export const key = 'site';
 
 export interface SiteState {
   loading: boolean;
+  currentRouteId: string | null;
   config: CatConfig;
   persons: CatPersons;
   currentShift: Shift | null;
@@ -20,6 +26,7 @@ export interface SiteState {
 
 const initialState: SiteState = {
   loading: false,
+  currentRouteId: null,
   config: {},
   persons: {},
   currentShift: null,
@@ -74,7 +81,11 @@ export const fetchSiteAsyncAction = createAsyncThunk(
 const slice = createSlice({
   name: key,
   initialState,
-  reducers: {},
+  reducers: {
+    setCurrentRouteId: (state, action: PayloadAction<string | null>) => {
+      state.currentRouteId = action.payload;
+    },
+  },
   extraReducers: builder => {
     builder
       .addCase(fetchSiteAsyncAction.pending, state => {
@@ -106,6 +117,6 @@ const sitesReducer = persistReducer(
   typedReducer,
 );
 
-export const {} = slice.actions;
+export const {actions} = slice;
 
 export default sitesReducer;

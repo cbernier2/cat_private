@@ -22,12 +22,16 @@ export const formatNumber = (value?: number, numDecimals = 0) => {
 };
 
 // Base on CAT's web-app: src/common/components/cell-display/cell-display.ts
-export const formatMinutesOnly = (value?: number): string => {
+export const formatMinutesOnlyFromMillis = (value?: number): string => {
   if (value) {
-    let ms = Math.floor(value * 60 * 1000);
+    let ms = Math.floor(value);
     return DateUtils.humanize(ms, 'minutes');
   }
   return UNDEFINED_VALUE;
+};
+
+export const formatMinutesOnly = (value?: number): string => {
+  return formatMinutesOnlyFromMillis(value && value * 60 * 1000);
 };
 
 export const formatUnit = (summary: Summary | undefined, column: CatColumn) => {

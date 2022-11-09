@@ -20,6 +20,20 @@ export const productionSummarySelector = createSelector(
   summary => summary,
 );
 
+export const currentRouteSelector = createSelector(
+  (state: RootState) => state.site.productionSummary?.routeSummaries,
+  (state: RootState) => state.site.currentRouteId,
+  (routeSummaries, selectedRoute) => {
+    if (routeSummaries && selectedRoute) {
+      return routeSummaries.find(
+        routeSummary => routeSummary.id === selectedRoute,
+      );
+    } else {
+      return undefined;
+    }
+  },
+);
+
 export const personsSelector = createSelector(
   (state: RootState) => state.site.persons,
   persons => persons,
