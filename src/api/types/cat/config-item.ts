@@ -128,9 +128,3 @@ export enum ConfigItemName {
   SITE_FEATURE_WATERING_PRODUCTION = 'site.feature.wateringProduction',
   SITE_HTMLHELP_VERSION = 'site.htmlhelp.version',
 }
-
-export interface ConfigItem {
-  id: string;
-  name: ConfigItemName;
-  value: any;
-}

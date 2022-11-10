@@ -11,7 +11,7 @@ export const configSelector = createSelector(
 export const systemUnitTypeSelector = createSelector(
   (state: RootState) => state.site.config,
   config =>
-    config[ConfigItemName.PRODUCTION_UNIT_TYPE] ||
+    config[ConfigItemName.PRODUCTION_UNIT_TYPE]?.value ||
     CommonConstants.DEFAULT_UNIT_TYPE_VALUE,
 );
 

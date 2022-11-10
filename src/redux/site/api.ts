@@ -2,11 +2,15 @@ import {BaseQueryFn, createApi} from '@reduxjs/toolkit/query/react';
 import {sub as dateSub} from 'date-fns';
 import {RootState} from '../index';
 import {invalidateToken, refreshTokenAsyncAction} from '../user/user-slice';
-import {CatConfig, CatPersons, CatQueryFnParams} from '../../api/types';
+import {
+  CatConfig,
+  CatPersons,
+  CatQueryFnParams,
+  CatSiteConfig,
+} from '../../api/types';
 import {ProductionSummary} from '../../api/types/cat/production';
 import {Shift} from '../../api/types/cat/shift';
 import {findMostRecentShift} from '../../api/shift';
-import {ConfigItem} from '../../api/types/cat/config-item';
 import {Material} from '../../api/types/cat/material';
 import {onConfigChange} from '../../api/config';
 import {Person} from '../../api/types/cat/person';
@@ -116,10 +120,10 @@ export const catApi = createApi({
     }),
     getConfig: builder.query<CatConfig, void>({
       query: () => ({path: 'config/find', method: 'GET'}),
-      transformResponse: (configItems: ConfigItem[]) => {
+      transformResponse: (configItems: CatSiteConfig[]) => {
         const result: CatConfig = {};
         configItems.forEach(configItem => {
-          result[configItem.name] = configItem.value;
+          result[configItem.name] = configItem;
         });
         onConfigChange(result);
         return result;
