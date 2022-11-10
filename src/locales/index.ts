@@ -5,6 +5,7 @@ import {findBestAvailableLanguage} from 'react-native-localize';
 import {en, pt, registerTranslation} from 'react-native-paper-dates';
 import ar from 'react-native-paper-dates/src/translations/ar';
 import fr from 'react-native-paper-dates/src/translations/fr';
+import moment from 'moment';
 // TODO missing es, id, sv and tr
 registerTranslation('ar', ar);
 registerTranslation('en', en);
@@ -44,5 +45,7 @@ i18next
     },
     nsSeparator: false,
   });
+
+moment.locale(i18next.language);
 
 export default i18next;

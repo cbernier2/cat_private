@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {sleep} from '../../utils/promise';
 
 import {logoutAsyncAction} from '../user/user-slice';
-import {fetchSiteAsyncAction} from '../site/site-slice';
+import {fetchSiteAsyncAction, actions as siteActions} from '../site/site-slice';
 
 export const key = 'sitesList';
 
@@ -55,6 +55,7 @@ export const fetchSitesAsyncAction = createAsyncThunk(
 export const selectSiteAsyncAction = createAsyncThunk<void, Site | null>(
   `${key}/selectSite`,
   async (_, {dispatch}) => {
+    await dispatch(siteActions.siteSelected());
     await dispatch(fetchSiteAsyncAction());
   },
 );

@@ -14,6 +14,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginRight: 10,
   },
+  statusDate: {
+    alignSelf: 'flex-end',
+  },
   statusIconContainer: {
     marginLeft: 8,
     alignItems: 'center',

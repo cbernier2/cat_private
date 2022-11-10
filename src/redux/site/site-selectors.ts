@@ -2,6 +2,7 @@ import {createSelector} from '@reduxjs/toolkit';
 import {RootState} from '../index';
 import {ConfigItemName} from '../../api/types/cat/config-item';
 import {CommonConstants} from '../../api/types/cat/common';
+import moment from 'moment';
 
 export const configSelector = createSelector(
   (state: RootState) => state.site.config,
@@ -18,6 +19,11 @@ export const systemUnitTypeSelector = createSelector(
 export const productionSummarySelector = createSelector(
   (state: RootState) => state.site.productionSummary,
   summary => summary,
+);
+
+export const lastUpdateSelector = createSelector(
+  (state: RootState) => state.site.lastUpdate,
+  lastUpdate => lastUpdate && moment.utc(lastUpdate).toDate(),
 );
 
 export const currentRouteSelector = createSelector(

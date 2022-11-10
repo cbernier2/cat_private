@@ -11,11 +11,13 @@ import {Shift} from '../../api/types/cat/shift';
 import {ProductionSummary} from '../../api/types/cat/production';
 import {CatPersons, CatConfig} from '../../api/types';
 import {Material} from '../../api/types/cat/material';
+import moment from 'moment';
 
 export const key = 'site';
 
 export interface SiteState {
   loading: boolean;
+  lastUpdate: number | null;
   currentRouteId: string | null;
   config: CatConfig;
   persons: CatPersons;
@@ -26,6 +28,7 @@ export interface SiteState {
 
 const initialState: SiteState = {
   loading: false,
+  lastUpdate: null,
   currentRouteId: null,
   config: {},
   persons: {},
@@ -82,6 +85,13 @@ const slice = createSlice({
   name: key,
   initialState,
   reducers: {
+    siteSelected: state => {
+      state.config = {};
+      state.materials = [];
+      state.currentShift = null;
+      state.productionSummary = null;
+      state.lastUpdate = null;
+    },
     setCurrentRouteId: (state, action: PayloadAction<string | null>) => {
       state.currentRouteId = action.payload;
     },
@@ -100,6 +110,7 @@ const slice = createSlice({
         state.materials = action.payload.materials;
         state.currentShift = action.payload.currentShift;
         state.productionSummary = action.payload.productionSummary;
+        state.lastUpdate = moment.utc().valueOf();
       })
       .addCase(fetchPersonsAsyncAction.fulfilled, (state, action) => {
         state.persons = action.payload;
