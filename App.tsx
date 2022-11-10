@@ -10,6 +10,8 @@ import useCatSelector from './src/hooks/useCatSelector';
 import {emulateOfflineSelector} from './src/redux/app/app-selectors';
 import './src/locales';
 import {onConfigChange} from './src/api/config';
+import useCatDispatch from './src/hooks/useCatDispatch';
+import {startBackgroundFetchAsyncAction} from './src/redux/site/background-fetch';
 
 const App = () => {
   return (
@@ -20,6 +22,7 @@ const App = () => {
 };
 
 const InnerApp = () => {
+  const dispatch = useCatDispatch();
   const isEmulatingOffline = useCatSelector(emulateOfflineSelector);
   const offlineUrl = 'https://www.a.ca';
   const onlineUrl = 'https://www.google.com';
@@ -27,6 +30,7 @@ const InnerApp = () => {
   const onPersistGateLift = () => {
     const state = store.getState();
     onConfigChange(state.site.config);
+    dispatch(startBackgroundFetchAsyncAction());
   };
 
   return (

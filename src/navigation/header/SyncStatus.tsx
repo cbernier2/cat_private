@@ -17,11 +17,8 @@ import {
 } from '@react-native-community/netinfo';
 import CatTextWithLabel from '../../components/text-with-label';
 import {lastUpdateSelector} from '../../redux/site/site-selectors';
-import {useBackgroundFetch} from './useBackgroundFetch';
 
 const CatSyncStatus: React.FC = () => {
-  useBackgroundFetch();
-
   const {t} = useTranslation();
   const netInfo = useNetInfo();
   const lastSyncTime = useCatSelector(lastUpdateSelector);
