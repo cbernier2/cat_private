@@ -1,9 +1,9 @@
 import React from 'react';
 
-import {Circles} from './components/circles';
-import {Flat} from './components/flat';
-import {Lines} from './components/lines';
-import {Paths} from './components/paths';
+import {Circles} from './components/Circles';
+import {Flat} from './components/Flat';
+import {Lines} from './components/Lines';
+import {Paths} from './components/Paths';
 
 import {getPatternId} from './functions';
 import {patterns} from './patterns';
