@@ -1,11 +1,11 @@
 /**
- * Copied from CAT's minestar-web-common repo
- * /src/utils/unit-utils.ts
+ Sourced from https://gitgis.ecorp.cat.com/minestar/pitsupervisor/minestar-core/-/blob/develop/app-web/src/common/utils/unit-utils.ts
+ Edited for lint/prettier fixes and some @ts-ignores
  */
 
 import {units} from 'minestar-units';
 import {ObjectUtils} from './object-utils';
-import {UnitType} from '../constants/common';
+import {UnitType} from '../api/types/cat/common';
 import Unit = units.Unit;
 
 export class UnitUtils {
@@ -64,20 +64,24 @@ export class UnitUtils {
   public static toLocalUnitValue(
     storageValue: number,
     storageUnitNameOrSymbol: string,
-  ): number {
-    let storageUnit: units.Unit = units.Unit.of(storageUnitNameOrSymbol);
-    let localUnit: units.Unit = units.MINING_SI.preferredUnit(
-      storageUnit.quantityType,
-    );
-    if (units.getLocalUnitSystem() === units.MINING_IMPERIAL.name) {
-      localUnit = units.MINING_IMPERIAL.preferredUnit(storageUnit.quantityType);
+  ): number | undefined {
+    if (storageUnitNameOrSymbol) {
+      let storageUnit: units.Unit = units.Unit.of(storageUnitNameOrSymbol);
+      let localUnit: units.Unit = units.MINING_SI.preferredUnit(
+        storageUnit.quantityType,
+      );
+      if (units.getLocalUnitSystem() === units.MINING_IMPERIAL.name) {
+        localUnit = units.MINING_IMPERIAL.preferredUnit(
+          storageUnit.quantityType,
+        );
+      }
+      let storageQuantity: units.Quantity = new units.Quantity(
+        storageValue,
+        storageUnit,
+      );
+      let localQuantity: units.Quantity = storageQuantity.toUnit(localUnit);
+      return localQuantity.value;
     }
-    let storageQuantity: units.Quantity = new units.Quantity(
-      storageValue,
-      storageUnit,
-    );
-    let localQuantity: units.Quantity = storageQuantity.toUnit(localUnit);
-    return localQuantity.value;
   }
 
   /**
@@ -264,6 +268,31 @@ export class UnitUtils {
   }
 
   /**
+   * Converts a storage unit value to a local unit value.
+   * @param storageValue              The storage unit value to be converted
+   * @param storageUnitNameOrSymbol   The storage unit name or symbol for the value
+   * @returns                         The local unit value resulting from the conversion
+   */
+  public static toPreferredLocalUnitValue(
+    storageValue: number,
+    storageUnitNameOrSymbol: string,
+  ): number {
+    let storageUnit: units.Unit = units.Unit.of(storageUnitNameOrSymbol);
+    let localUnit: units.Unit = units.MINING_SI.preferredUnit(
+      storageUnit.quantityType,
+    );
+    if (units.getLocalUnitSystem() === units.MINING_IMPERIAL.name) {
+      localUnit = units.MINING_IMPERIAL.preferredUnit(storageUnit.quantityType);
+    }
+    let storageQuantity: units.Quantity = new units.Quantity(
+      storageValue,
+      storageUnit,
+    );
+    let localQuantity: units.Quantity = storageQuantity.toUnit(localUnit);
+    return localQuantity.value;
+  }
+
+  /**
    * Retrieves the system unit for a given quantity type
    * @param quantityType quantity type of unit desired
    * @returns The system unit of the quantity
@@ -308,6 +337,8 @@ export class UnitUtils {
         return UnitType.MASS;
       case units.QuantityType.BANK_VOLUME:
       case units.QuantityType.BANK_VOLUME_FLOW_RATE:
+      case units.QuantityType.LOOSE_VOLUME:
+      case units.QuantityType.LOOSE_VOLUME_FLOW_RATE:
         return UnitType.VOLUME;
     }
     return null;
@@ -331,6 +362,9 @@ export class UnitUtils {
       case units.QuantityType.BANK_VOLUME:
       case units.QuantityType.BANK_VOLUME_FLOW_RATE:
         return units.BANK_CUBIC_METRES;
+      case units.QuantityType.LOOSE_VOLUME:
+      case units.QuantityType.LOOSE_VOLUME_FLOW_RATE:
+        return units.LOOSE_CUBIC_METRES;
     }
     return null;
   }

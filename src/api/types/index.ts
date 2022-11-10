@@ -8,3 +8,11 @@ export type GetCountResult = {
   rowCount: number;
   rowsPerPage: number;
 };
+
+export type CatSiteConfig = {
+  id?: string;
+  name: string;
+  startTime: number;
+  deleted: boolean;
+  value: any; // Seen mostly strings, some boolean, one string[]
+};

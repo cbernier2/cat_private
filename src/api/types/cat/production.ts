@@ -112,6 +112,18 @@ export interface Summary {
   averageSlopeDistanceEmpty: number;
   averageSlopeDistanceFull: number;
   lengthUnit: string;
+
+  // missing from source
+  targetUnit: string;
+  cumulativeTarget: Labelable & {
+    values: Array<{value: number} & Timestampable>;
+  };
+  cumulativeTargetMaxThreshold: Labelable & {
+    values: Array<{value: number} & Timestampable>;
+  };
+  cumulativeTargetMinThreshold: Labelable & {
+    values: Array<{value: number} & Timestampable>;
+  };
 }
 
 export interface PlanAreaSummary extends Summary {

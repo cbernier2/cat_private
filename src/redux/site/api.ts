@@ -1,11 +1,14 @@
 import {BaseQueryFn, createApi} from '@reduxjs/toolkit/query/react';
 import {sub as dateSub} from 'date-fns';
-import {RootState} from '../index';
-import {invalidateToken, refreshTokenAsyncAction} from '../user/user-slice';
-import {CatQueryFnParams} from '../../api/types';
+
+import {CatQueryFnParams, CatSiteConfig} from '../../api/types';
+import {Material} from '../../api/types/cat/material';
 import {ProductionSummary} from '../../api/types/cat/production';
 import {Shift} from '../../api/types/cat/shift';
 import {findMostRecentShift} from '../../api/shift';
+
+import {RootState} from '../index';
+import {invalidateToken, refreshTokenAsyncAction} from '../user/user-slice';
 
 export const apiResult = async <T extends {error?: unknown; data?: unknown}>(
   dispatchResult: Promise<T>,
@@ -77,6 +80,15 @@ export const catApi = createApi({
         return findMostRecentShift(shifts);
       },
     }),
+
+    getMaterials: builder.query<Material[] | null, void>({
+      query: () => ({path: 'material/find', method: 'GET'}),
+    }),
+
+    getSiteConfiguration: builder.query<CatSiteConfig[] | null, void>({
+      query: () => ({path: 'config/find', method: 'GET'}),
+    }),
+
     productionSummaryForShift: builder.query<
       ProductionSummary | null,
       {shiftId: string}
