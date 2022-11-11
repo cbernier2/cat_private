@@ -1,4 +1,7 @@
 import {createSelector} from '@reduxjs/toolkit';
+
+import {ConfigItemName} from '../../api/types/cat/config-item';
+
 import {RootState} from '../index';
 
 export const currentShiftSelector = createSelector(
@@ -21,12 +24,12 @@ export const shiftStartTimeSelector = createSelector(
   currentShift => currentShift.startTime,
 );
 
-export const siteConfigsSelector = (name?: string) =>
+export const siteConfigsSelector = (name?: ConfigItemName) =>
   createSelector(
     (state: RootState) => state.site.siteConfig,
     siteConfig => {
-      if (name && name !== '') {
-        return siteConfig.find((config: any) => config.name === name) ?? null;
+      if (name) {
+        return siteConfig[name] ?? null;
       }
 
       return siteConfig;
@@ -34,6 +37,11 @@ export const siteConfigsSelector = (name?: string) =>
   );
 
 export const siteTimezoneSelector = createSelector(
-  siteConfigsSelector('settings.localization.timezone'),
-  timezone => timezone?.value ?? null,
+  siteConfigsSelector(ConfigItemName.SETTINGS_LOCALIZATION_TIMEZONE),
+  timezone => timezone ?? '',
+);
+
+export const siteClockIs24HourSelector = createSelector(
+  siteConfigsSelector(ConfigItemName.SETTINGS_LOCALIZATION_TIME_FORMAT_24HOUR),
+  clockFormat => clockFormat ?? true,
 );

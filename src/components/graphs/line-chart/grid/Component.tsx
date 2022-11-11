@@ -5,6 +5,7 @@ import moment from 'moment-timezone';
 
 import {
   shiftNominalOperationalTimelineSelector,
+  siteClockIs24HourSelector,
   siteTimezoneSelector,
 } from '../../../../redux/site/site-selectors';
 
@@ -17,6 +18,9 @@ export const Grid: React.FC<GridType> = props => {
     shiftNominalOperationalTimelineSelector,
   );
   const timezone = useSelector(siteTimezoneSelector);
+  const clockIs24 = useSelector(siteClockIs24HourSelector);
+
+  const timeFormat = clockIs24 ? 'HH:mm' : 'ha';
 
   const [x_min, x_max] = x_scale.domain();
   const x_0 = x_scale(x_min);
@@ -39,7 +43,7 @@ export const Grid: React.FC<GridType> = props => {
   const x_step_length = (end - start) / x_steps;
   const verticalLines = Array.apply(null, Array(x_steps + 1)).map((_, i) => {
     const value = firstHour + i * x_step_length;
-    const hour = moment(value).tz(timezone).format('HH:mm');
+    const hour = moment(value).tz(timezone).format(timeFormat);
     return {
       x: x_scale(value),
       value: i % 2 ? hour : '',

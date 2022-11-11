@@ -1,3 +1,5 @@
+import {ConfigItemName} from './cat/config-item';
+
 export type CatQueryFnParams = {
   method: string;
   path: string;
@@ -16,3 +18,5 @@ export type CatSiteConfig = {
   deleted: boolean;
   value: any; // Seen mostly strings, some boolean, one string[]
 };
+
+export type SiteConfig = {[key in ConfigItemName]?: any};

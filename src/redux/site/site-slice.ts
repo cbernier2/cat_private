@@ -2,12 +2,15 @@ import {createAsyncThunk, createSlice, Reducer} from '@reduxjs/toolkit';
 import {persistReducer} from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import {Shift} from '../../api/types/cat/shift';
-import {CatSiteConfig} from '../../api/types';
+import {ConfigItemName} from '../../api/types/cat/config-item';
 import {Material} from '../../api/types/cat/material';
 import {ProductionSummary} from '../../api/types/cat/production';
+import {Shift} from '../../api/types/cat/shift';
+import {SiteConfig} from '../../api/types';
+import {UnitType} from '../../api/types/cat/common';
 
 import {apiResult, catApi} from './api';
+import {transformConfig} from './helpers/transformConfig';
 import {transformSummaries} from './helpers/transformSummaries';
 
 export const key = 'site';
@@ -17,7 +20,7 @@ export interface SiteState {
   currentShift: Shift | null;
   materials: Material[] | null;
   productionSummary: ProductionSummary | null;
-  siteConfig: CatSiteConfig[] | null;
+  siteConfig: SiteConfig;
 }
 
 const initialState: SiteState = {
@@ -25,7 +28,7 @@ const initialState: SiteState = {
   currentShift: null,
   materials: null,
   productionSummary: null,
-  siteConfig: null,
+  siteConfig: {},
 };
 
 export const fetchSiteAsyncAction = createAsyncThunk(
@@ -64,17 +67,17 @@ const slice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder.addCase(fetchSiteAsyncAction.fulfilled, (state, action) => {
+      const config = transformConfig(action.payload.siteConfig);
+
       state.currentShift = action.payload.currentShift;
       state.materials = action.payload.materials;
-      state.siteConfig = action.payload.siteConfig;
+      state.siteConfig = config;
 
       // @ts-ignore TODO while we build our production summary type(s)
       state.productionSummary = transformSummaries(
         action.payload.productionSummary!,
         action.payload.materials,
-        action.payload.siteConfig.find(
-          config => (config.name = 'production.unit.type'),
-        )!.value,
+        config[ConfigItemName.PRODUCTION_UNIT_TYPE] as UnitType,
       );
     });
   },
