@@ -1,6 +1,6 @@
 /**
- * Copied from CAT's minestar-web-common repo
- * /src/utils/object-utils.ts
+ Sourced from https://gitgis.ecorp.cat.com/minestar/pitsupervisor/minestar-core/-/blob/develop/app-web/src/common/utils/object-utils.ts
+ Edited for lint/prettier fixes and some @ts-ignores
  */
 
 export class ObjectUtils {
@@ -69,7 +69,8 @@ export class ObjectUtils {
     return {
       target: finalTarget,
       property: finalProperty,
-      result: finalTarget ? finalTarget[finalProperty!] : null,
+      // @ts-ignore
+      result: finalTarget ? finalTarget[finalProperty] : null,
     };
   }
 

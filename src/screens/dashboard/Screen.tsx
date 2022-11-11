@@ -1,20 +1,28 @@
 import React, {useState} from 'react';
+import {useSelector} from 'react-redux';
+import {View} from 'react-native';
 import {useTranslation} from 'react-i18next';
+import HaulTruckSvg from 'assets/icons/maintenance.svg';
+import {units} from 'minestar-units';
+
+import useCatTheme from '../../hooks/useCatTheme';
+import {numberWithCommas, unitTranslateKey} from '../../utils/units';
+import CatScreen from '../../components/screen';
+import CatText from '../../components/text';
+import CatSwitch from '../../components/switch';
+import CatAccordion from '../../components/accordion';
+import useCatSelector from '../../hooks/useCatSelector';
+import {LineChart} from '../../components/graphs/line-chart/Component';
+import {
+  shiftEndTimeSelector,
+  shiftStartTimeSelector,
+} from '../../redux/site/site-selectors';
+
+import CatActiveItemsSection from './ActiveItemsSection';
 import {ScreenType} from './types';
 import {useStyles} from './styles';
 import CatSummaryCard from './SummaryCard';
-import HaulTruckSvg from 'assets/icons/maintenance.svg';
-import useCatTheme from '../../hooks/useCatTheme';
 import ValuesRow from './ValuesRow';
-import {numberWithCommas, unitTranslateKey} from '../../utils/units';
-import {units} from 'minestar-units';
-import CatScreen from '../../components/screen';
-import {View} from 'react-native';
-import CatText from '../../components/text';
-import CatSwitch from '../../components/switch';
-import CatActiveItemsSection from './ActiveItemsSection';
-import CatAccordion from '../../components/accordion';
-import useCatSelector from '../../hooks/useCatSelector';
 
 const DashboardScreen: React.FC<ScreenType> = () => {
   const {t} = useTranslation();
@@ -26,6 +34,11 @@ const DashboardScreen: React.FC<ScreenType> = () => {
   const siteProductionSummary = useCatSelector(
     state => state.site.productionSummary,
   );
+  // TODO get summary based on switch
+  const summary = siteProductionSummary?.siteLoadSummary;
+
+  const shiftEndTime = useSelector(shiftEndTimeSelector);
+  const shiftStartTime = useSelector(shiftStartTimeSelector);
   const siteName = 'Rasmussen Valley Clone';
   const productionSummary = {
     total: siteProductionSummary?.siteLoadSummary.totalLoads,
@@ -33,6 +46,12 @@ const DashboardScreen: React.FC<ScreenType> = () => {
     target: 120000,
   };
   const unit = units.TONNE;
+
+  const cumulativeTargetMaxThreshold = summary.cumulativeTargetMaxThreshold;
+  const cumulativeTargetMinThreshold = summary.cumulativeTargetMinThreshold;
+  const cumulativeTarget = summary.cumulativeTarget;
+  const cumulativeValues = summary.cumulativeValues;
+  const projectedCumulativeValues = summary.projectedCumulativeValues;
 
   const getWorkAreaJSX = (attentionRequired = false) => {
     return (
@@ -87,7 +106,17 @@ const DashboardScreen: React.FC<ScreenType> = () => {
       </View>
       <View style={styles.productionContainer}>
         {firstRowJSX()}
-        <CatAccordion>{firstRowJSX()}</CatAccordion>
+        <CatAccordion>
+          <LineChart
+            endTime={shiftEndTime}
+            maxThreshold={cumulativeTargetMaxThreshold}
+            minThreshold={cumulativeTargetMinThreshold}
+            projected={projectedCumulativeValues}
+            startTime={shiftStartTime}
+            target={cumulativeTarget}
+            values={cumulativeValues}
+          />
+        </CatAccordion>
       </View>
       <CatText style={styles.activeWorkTitle} variant={'headlineSmall'}>
         {t('summary_active_work_title', {num: 6})}
