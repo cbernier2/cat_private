@@ -1,6 +1,6 @@
 /**
- * Copied from CAT's minestar-web-common repo
- * /src/utils/array-utils.ts
+ * Sourced from https://gitgis.ecorp.cat.com/minestar/pitsupervisor/minestar-core/-/blob/develop/app-web/src/common/utils/array-utils.ts
+ * Edited for lint/prettier fixes and some @ts-ignores
  */
 
 import {ObjectUtils} from './object-utils';
@@ -112,18 +112,22 @@ export class ArrayUtils {
 
   public static groupBy<T>(key: string, array: T[]): Map<string, T[]> {
     let map: Map<string, T[]> = new Map();
-    array.forEach((a: any) => {
+    array.forEach(a => {
+      // @ts-ignore
       if (!map.has(a[key])) {
+        // @ts-ignore
         map.set(a[key], []);
       }
-      map.get(a[key])?.push(a);
+      // @ts-ignore
+      map.get(a[key]).push(a);
     });
     return map;
   }
 
   public static toMap<T>(key: string, array: T[]): Map<string, T> {
     let map: Map<string, T> = new Map();
-    array.forEach((a: any) => map.set(a[key], a));
+    // @ts-ignore
+    array.forEach(a => map.set(a[key], a));
     return map;
   }
 

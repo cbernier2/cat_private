@@ -1,6 +1,6 @@
 /**
- * Copied from CAT's minestar-web-common repo
- * /src/utils/unit-utils.ts
+ Sourced from https://gitgis.ecorp.cat.com/minestar/pitsupervisor/minestar-core/-/blob/develop/app-web/src/common/utils/unit-utils.ts
+ Edited for lint/prettier fixes and some @ts-ignores
  */
 
 import {units} from 'minestar-units';

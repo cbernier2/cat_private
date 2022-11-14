@@ -1,18 +1,14 @@
 import {BaseQueryFn, createApi} from '@reduxjs/toolkit/query/react';
 import {sub as dateSub} from 'date-fns';
-import {RootState} from '../index';
-import {invalidateToken, refreshTokenAsyncAction} from '../user/user-slice';
-import {
-  CatConfig,
-  CatPersons,
-  CatQueryFnParams,
-  CatSiteConfig,
-} from '../../api/types';
+
+import {CatPersons, CatQueryFnParams, CatSiteConfig} from '../../api/types';
+import {Material} from '../../api/types/cat/material';
 import {ProductionSummary} from '../../api/types/cat/production';
 import {Shift} from '../../api/types/cat/shift';
 import {findMostRecentShift} from '../../api/shift';
-import {Material} from '../../api/types/cat/material';
-import {onConfigChange} from '../../api/config';
+
+import {RootState} from '../index';
+import {invalidateToken, refreshTokenAsyncAction} from '../user/user-slice';
 import {Person} from '../../api/types/cat/person';
 
 export const apiResult = async <T extends {error?: unknown; data?: unknown}>(
@@ -85,50 +81,15 @@ export const catApi = createApi({
         return findMostRecentShift(shifts);
       },
     }),
-    productionSummaryForShift: builder.query<
-      ProductionSummary | null,
-      {shiftId: string}
-    >({
-      query: queryParams => ({
-        path: 'production/findForShift',
-        method: 'GET',
-        queryParams,
-      }),
-      transformResponse: (productionSummaries: ProductionSummary[]) => {
-        if (productionSummaries.length) {
-          // TODO: Fix redux persist AsyncStorage or the ProductSummary structure so that it can be saved
-          const productionSummary = productionSummaries[0];
-          return {
-            id: productionSummary.id,
-            shiftId: productionSummary.shiftId,
-            siteSummary: productionSummary.siteSummary,
-            siteLoadSummary: productionSummary.siteLoadSummary,
-            routeSummaries: productionSummary.routeSummaries,
-            materialSummaries: [],
-            loadAreaSummaries: [],
-            dumpSummaries: [],
-            loadEquipSummaries: [],
-            crusherSummaries: [],
-            haulEquipSummaries: [],
-            supportEquipSummaries: [],
-            waterTruckSummaries: [],
-          };
-        } else {
-          return null;
-        }
-      },
+
+    getMaterials: builder.query<Material[] | null, void>({
+      query: () => ({path: 'material/find', method: 'GET'}),
     }),
-    getConfig: builder.query<CatConfig, void>({
+
+    getSiteConfiguration: builder.query<CatSiteConfig[] | null, void>({
       query: () => ({path: 'config/find', method: 'GET'}),
-      transformResponse: (configItems: CatSiteConfig[]) => {
-        const result: CatConfig = {};
-        configItems.forEach(configItem => {
-          result[configItem.name] = configItem;
-        });
-        onConfigChange(result);
-        return result;
-      },
     }),
+
     getPersons: builder.query<CatPersons, void>({
       query: () => ({path: 'person/find', method: 'GET'}),
       transformResponse: (persons: Person[]) => {
@@ -141,8 +102,19 @@ export const catApi = createApi({
         return result;
       },
     }),
-    getMaterials: builder.query<Material[], void>({
-      query: () => ({path: 'material/find', method: 'GET'}),
+
+    productionSummaryForShift: builder.query<
+      ProductionSummary | null,
+      {shiftId: string}
+    >({
+      query: queryParams => ({
+        path: 'production/findForShift',
+        method: 'GET',
+        queryParams,
+      }),
+      transformResponse: (productionSummaries: ProductionSummary[]) => {
+        return productionSummaries.length ? productionSummaries[0] : null;
+      },
     }),
   }),
 });

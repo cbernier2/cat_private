@@ -14,7 +14,8 @@ import CatAccordion from '../../components/accordion';
 import useCatSelector from '../../hooks/useCatSelector';
 import {
   materialsSelector,
-  productionSummarySelector,
+  shiftEndTimeSelector,
+  shiftStartTimeSelector,
   systemUnitTypeSelector,
 } from '../../redux/site/site-selectors';
 import {getPreferredMeasurementBasis} from '../../api/production';
@@ -30,6 +31,7 @@ import {isAttentionRequired} from './functions';
 import CatValuesRow from '../../components/value-row';
 import {actions as siteActions} from '../../redux/site/site-slice';
 import useCatDispatch from '../../hooks/useCatDispatch';
+import {LineChart} from '../../components/graphs/line-chart/Component';
 
 const DashboardScreen: React.FC<ScreenType> = ({navigation}) => {
   const {t} = useTranslation();
@@ -39,13 +41,25 @@ const DashboardScreen: React.FC<ScreenType> = ({navigation}) => {
   const styles = useStyles();
   const systemUnitType = useCatSelector(systemUnitTypeSelector);
   const materials = useCatSelector(materialsSelector);
-  const productionSummary = useCatSelector(productionSummarySelector);
-  const displaySummary = isLoad
+  const shiftEndTime = useCatSelector(shiftEndTimeSelector);
+  const shiftStartTime = useCatSelector(shiftStartTimeSelector);
+  const productionSummary = useCatSelector(
+    state => state.site.productionSummary,
+  );
+  const summary = isLoad
     ? productionSummary?.siteLoadSummary
     : productionSummary?.siteSummary;
   const routeSummaries = productionSummary?.routeSummaries || [];
   const workSummaryCount = routeSummaries.length;
   const siteName = 'Rasmussen Valley Clone';
+  const cumulativeTargetMaxThreshold = summary?.cumulativeTargetMaxThreshold;
+  const cumulativeTargetMinThreshold = summary?.cumulativeTargetMinThreshold;
+  const cumulativeTarget = summary?.cumulativeTarget;
+  const cumulativeValues = summary?.cumulativeValues;
+  const projectedCumulativeValues = summary?.projectedCumulativeValues;
+
+  // TODO: pre-compute the values in transformSiteSummary()
+  const displaySummary = summary?.summary;
   const unitType = getPreferredMeasurementBasis(
     displaySummary,
     materials,
@@ -153,7 +167,18 @@ const DashboardScreen: React.FC<ScreenType> = ({navigation}) => {
       </View>
       <View style={styles.productionContainer}>
         {kpiRow1}
-        <CatAccordion>{kpiRow2}</CatAccordion>
+        <CatAccordion>
+          {kpiRow2}
+          <LineChart
+            endTime={shiftEndTime}
+            maxThreshold={cumulativeTargetMaxThreshold}
+            minThreshold={cumulativeTargetMinThreshold}
+            projected={projectedCumulativeValues}
+            startTime={shiftStartTime}
+            target={cumulativeTarget}
+            values={cumulativeValues}
+          />
+        </CatAccordion>
       </View>
       <CatText style={styles.activeWorkTitle} variant={'headlineSmall'}>
         {t('summary_active_work_title', {num: workSummaryCount})}

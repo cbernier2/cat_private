@@ -7,7 +7,7 @@ import useCatTheme from '../../../hooks/useCatTheme';
 import {IEquipment} from '../../../redux/equipments/types';
 import {IStop} from '../../../redux/stops/types';
 
-import {HatchedFill} from '../fills/hatched';
+import {Pattern} from '../pattern/Component';
 
 import {SiteStopsChartType} from './types';
 
@@ -65,8 +65,8 @@ export const SiteStopsChart: React.FC<SiteStopsChartType> = () => {
   return (
     <Svg height={height} width={width}>
       <Defs>
-        <HatchedFill />
-        <HatchedFill idSuffix="blue" color="rgba(21, 151, 255, 0.3)" />
+        <Pattern background={'#555'} pattern="PATTERN_07" foreground="red" />
+        <Pattern background={'#555'} pattern="PATTERN_07" foreground="blue" />
       </Defs>
       <SiteStopsHeader
         addStop={addStop}

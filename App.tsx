@@ -26,7 +26,7 @@ const InnerApp = () => {
 
   const onPersistGateLift = () => {
     const state = store.getState();
-    onConfigChange(state.site.config);
+    onConfigChange(state.site.siteConfig);
   };
 
   return (
