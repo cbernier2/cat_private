@@ -115,9 +115,20 @@ export interface Summary {
   lengthUnit: string;
   target: number;
   targetUnit: string;
+  currentHourLoads: number;
+  preferredProdVolumetricFlowRateUnit: string;
   preferredProdVolumeUnit: string;
   averageQueuingDurationEmpty: number;
   averageQueuingDurationFull: number;
+  cumulativeTarget: Labelable & {
+    values: Array<{value: number} & Timestampable>;
+  };
+  cumulativeTargetMaxThreshold: Labelable & {
+    values: Array<{value: number} & Timestampable>;
+  };
+  cumulativeTargetMinThreshold: Labelable & {
+    values: Array<{value: number} & Timestampable>;
+  };
 }
 
 export interface PlanAreaSummary extends Summary {

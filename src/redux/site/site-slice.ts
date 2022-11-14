@@ -6,11 +6,17 @@ import {
 } from '@reduxjs/toolkit';
 import {persistReducer} from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {apiResult, catApi} from './api';
-import {Shift} from '../../api/types/cat/shift';
-import {ProductionSummary} from '../../api/types/cat/production';
-import {CatPersons, CatConfig} from '../../api/types';
+
+import {ConfigItemName} from '../../api/types/cat/config-item';
 import {Material} from '../../api/types/cat/material';
+import {ProductionSummary} from '../../api/types/cat/production';
+import {Shift} from '../../api/types/cat/shift';
+import {CatPersons, SiteConfig} from '../../api/types';
+import {UnitType} from '../../api/types/cat/common';
+
+import {apiResult, catApi} from './api';
+import {transformConfig} from './helpers/transformConfig';
+import {transformSummaries} from './helpers/transformSummaries';
 import moment from 'moment';
 
 export const key = 'site';
@@ -19,22 +25,22 @@ export interface SiteState {
   loading: boolean;
   lastUpdate: number | null;
   currentRouteId: string | null;
-  config: CatConfig;
   persons: CatPersons;
   currentShift: Shift | null;
-  productionSummary: ProductionSummary | null;
   materials: Material[];
+  productionSummary: ReturnType<typeof transformSummaries> | null;
+  siteConfig: SiteConfig;
 }
 
 const initialState: SiteState = {
   loading: false,
   lastUpdate: null,
   currentRouteId: null,
-  config: {},
   persons: {},
   currentShift: null,
-  productionSummary: null,
   materials: [],
+  productionSummary: null,
+  siteConfig: {},
 };
 
 export const fetchPersonsAsyncAction = createAsyncThunk(
@@ -55,8 +61,14 @@ export const fetchSiteAsyncAction = createAsyncThunk(
     dispatch(fetchPersonsAsyncAction());
 
     try {
+      const siteConfig = await apiResult(
+        dispatch(catApi.endpoints.getSiteConfiguration.initiate()),
+      );
       const currentShift = await apiResult(
         dispatch(catApi.endpoints.getCurrentShifts.initiate()),
+      );
+      const materials = await apiResult(
+        dispatch(catApi.endpoints.getMaterials.initiate()),
       );
       let productionSummary: ProductionSummary | null = null;
       if (currentShift) {
@@ -68,13 +80,7 @@ export const fetchSiteAsyncAction = createAsyncThunk(
           ),
         );
       }
-      const config = await apiResult(
-        dispatch(catApi.endpoints.getConfig.initiate()),
-      );
-      const materials = await apiResult(
-        dispatch(catApi.endpoints.getMaterials.initiate()),
-      );
-      return {config, materials, currentShift, productionSummary};
+      return {currentShift, materials, productionSummary, siteConfig};
     } catch (e) {
       return rejectWithValue(e);
     }
@@ -86,11 +92,12 @@ const slice = createSlice({
   initialState,
   reducers: {
     siteSelected: state => {
-      state.config = {};
+      state.siteConfig = {};
       state.materials = [];
       state.currentShift = null;
       state.productionSummary = null;
       state.lastUpdate = null;
+      state.persons = {};
     },
     setCurrentRouteId: (state, action: PayloadAction<string | null>) => {
       state.currentRouteId = action.payload;
@@ -106,11 +113,21 @@ const slice = createSlice({
       })
       .addCase(fetchSiteAsyncAction.fulfilled, (state, action) => {
         state.loading = false;
-        state.config = action.payload.config;
-        state.materials = action.payload.materials;
+        state.lastUpdate = moment().valueOf();
+
+        const config = transformConfig(action.payload.siteConfig);
+
         state.currentShift = action.payload.currentShift;
-        state.productionSummary = action.payload.productionSummary;
-        state.lastUpdate = moment.utc().valueOf();
+        state.materials = action.payload.materials;
+        state.siteConfig = config;
+
+        state.productionSummary =
+          action.payload.productionSummary &&
+          transformSummaries(
+            action.payload.productionSummary,
+            action.payload.materials,
+            config[ConfigItemName.PRODUCTION_UNIT_TYPE] as UnitType,
+          );
       })
       .addCase(fetchPersonsAsyncAction.fulfilled, (state, action) => {
         state.persons = action.payload;

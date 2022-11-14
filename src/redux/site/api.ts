@@ -1,14 +1,14 @@
 import {BaseQueryFn, createApi} from '@reduxjs/toolkit/query/react';
 import {sub as dateSub} from 'date-fns';
-import {RootState} from '../index';
-import {invalidateToken, refreshTokenAsyncAction} from '../user/user-slice';
-import {CatConfig, CatPersons, CatQueryFnParams} from '../../api/types';
+
+import {CatPersons, CatQueryFnParams, CatSiteConfig} from '../../api/types';
+import {Material} from '../../api/types/cat/material';
 import {ProductionSummary} from '../../api/types/cat/production';
 import {Shift} from '../../api/types/cat/shift';
 import {findMostRecentShift} from '../../api/shift';
-import {ConfigItem} from '../../api/types/cat/config-item';
-import {Material} from '../../api/types/cat/material';
-import {onConfigChange} from '../../api/config';
+
+import {RootState} from '../index';
+import {invalidateToken, refreshTokenAsyncAction} from '../user/user-slice';
 import {Person} from '../../api/types/cat/person';
 
 export const apiResult = async <T extends {error?: unknown; data?: unknown}>(
@@ -28,14 +28,22 @@ const catBaseQuery: BaseQueryFn<CatQueryFnParams> = async (
   {method, path, queryParams},
   {getState, dispatch},
 ) => {
-  let auth = (getState() as RootState).user.auth;
+  const state = () => getState() as RootState;
+  const sitesList = state().sitesList;
+  const selectedSite = sitesList.sites.find(
+    site => site.id === sitesList.selectedSiteId,
+  );
+  if (selectedSite === undefined) {
+    return {error: {status: -1, data: new Error('Site not selected')}};
+  }
+  let auth = state().user.auth;
   if (auth) {
     if (
       new Date(auth.accessTokenExpirationDate) <
       dateSub(new Date(), {minutes: 1})
     ) {
       await dispatch(refreshTokenAsyncAction());
-      auth = (getState() as RootState).user.auth;
+      auth = state().user.auth;
     }
   }
   try {
@@ -49,7 +57,7 @@ const catBaseQuery: BaseQueryFn<CatQueryFnParams> = async (
     }
     const response = await fetch(
       //TODO: Use the current site URL
-      `https://stage.minestar.com/rasvalleyclone/core/site/mobile_api/v1/${path}${urlParams}`,
+      `${selectedSite.siteUrl}/core/site/mobile_api/v1/${path}${urlParams}`,
       {
         method,
         headers: {
@@ -81,50 +89,15 @@ export const catApi = createApi({
         return findMostRecentShift(shifts);
       },
     }),
-    productionSummaryForShift: builder.query<
-      ProductionSummary | null,
-      {shiftId: string}
-    >({
-      query: queryParams => ({
-        path: 'production/findForShift',
-        method: 'GET',
-        queryParams,
-      }),
-      transformResponse: (productionSummaries: ProductionSummary[]) => {
-        if (productionSummaries.length) {
-          // TODO: Fix redux persist AsyncStorage or the ProductSummary structure so that it can be saved
-          const productionSummary = productionSummaries[0];
-          return {
-            id: productionSummary.id,
-            shiftId: productionSummary.shiftId,
-            siteSummary: productionSummary.siteSummary,
-            siteLoadSummary: productionSummary.siteLoadSummary,
-            routeSummaries: productionSummary.routeSummaries,
-            materialSummaries: [],
-            loadAreaSummaries: [],
-            dumpSummaries: [],
-            loadEquipSummaries: [],
-            crusherSummaries: [],
-            haulEquipSummaries: [],
-            supportEquipSummaries: [],
-            waterTruckSummaries: [],
-          };
-        } else {
-          return null;
-        }
-      },
+
+    getMaterials: builder.query<Material[] | null, void>({
+      query: () => ({path: 'material/find', method: 'GET'}),
     }),
-    getConfig: builder.query<CatConfig, void>({
+
+    getSiteConfiguration: builder.query<CatSiteConfig[] | null, void>({
       query: () => ({path: 'config/find', method: 'GET'}),
-      transformResponse: (configItems: ConfigItem[]) => {
-        const result: CatConfig = {};
-        configItems.forEach(configItem => {
-          result[configItem.name] = configItem.value;
-        });
-        onConfigChange(result);
-        return result;
-      },
     }),
+
     getPersons: builder.query<CatPersons, void>({
       query: () => ({path: 'person/find', method: 'GET'}),
       transformResponse: (persons: Person[]) => {
@@ -137,8 +110,19 @@ export const catApi = createApi({
         return result;
       },
     }),
-    getMaterials: builder.query<Material[], void>({
-      query: () => ({path: 'material/find', method: 'GET'}),
+
+    productionSummaryForShift: builder.query<
+      ProductionSummary | null,
+      {shiftId: string}
+    >({
+      query: queryParams => ({
+        path: 'production/findForShift',
+        method: 'GET',
+        queryParams,
+      }),
+      transformResponse: (productionSummaries: ProductionSummary[]) => {
+        return productionSummaries.length ? productionSummaries[0] : null;
+      },
     }),
   }),
 });

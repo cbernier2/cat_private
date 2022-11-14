@@ -1,11 +1,8 @@
-import {Summary} from '../../api/types/cat/production';
-import {SUMMARY_COLUMNS} from '../../api/production';
-import {UnitType} from '../../api/types/cat/common';
+import {CatSiteSummary} from '../../redux/site/helpers/transformSiteSummary';
 
-export const isAttentionRequired = (summary: Summary, unitType: UnitType) => {
-  const projected = (summary as any)[SUMMARY_COLUMNS.projected[unitType].key];
-  if (projected) {
-    return Number(projected) < summary.target;
+export const isAttentionRequired = (summary: CatSiteSummary) => {
+  if (summary.projectedValue && summary.targetValue) {
+    return summary.projectedValue < summary.targetValue;
   } else {
     return false;
   }

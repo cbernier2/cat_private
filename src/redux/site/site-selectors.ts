@@ -4,26 +4,9 @@ import {ConfigItemName} from '../../api/types/cat/config-item';
 import {CommonConstants} from '../../api/types/cat/common';
 import moment from 'moment';
 
-export const configSelector = createSelector(
-  (state: RootState) => state.site.config,
-  config => config,
-);
-
-export const systemUnitTypeSelector = createSelector(
-  (state: RootState) => state.site.config,
-  config =>
-    config[ConfigItemName.PRODUCTION_UNIT_TYPE] ||
-    CommonConstants.DEFAULT_UNIT_TYPE_VALUE,
-);
-
-export const productionSummarySelector = createSelector(
-  (state: RootState) => state.site.productionSummary,
-  summary => summary,
-);
-
 export const lastUpdateSelector = createSelector(
   (state: RootState) => state.site.lastUpdate,
-  lastUpdate => lastUpdate && moment.utc(lastUpdate).toDate(),
+  lastUpdate => lastUpdate && moment(lastUpdate).toDate(),
 );
 
 export const currentRouteSelector = createSelector(
@@ -53,4 +36,43 @@ export const materialsSelector = createSelector(
 export const siteIsLoadingSelector = createSelector(
   (state: RootState) => state.site.loading,
   loading => loading,
+);
+
+export const currentShiftSelector = createSelector(
+  (state: RootState) => state.site.currentShift,
+  currentShift => currentShift,
+);
+
+export const shiftNominalOperationalTimelineSelector = createSelector(
+  currentShiftSelector,
+  currentShift => currentShift?.nominalOperationalTimeline,
+);
+
+export const shiftEndTimeSelector = createSelector(
+  currentShiftSelector,
+  currentShift => currentShift?.endTime,
+);
+
+export const shiftStartTimeSelector = createSelector(
+  currentShiftSelector,
+  currentShift => currentShift?.startTime,
+);
+
+export const createSiteConfigsSelector = (
+  name: ConfigItemName,
+  defaultValue: any = null,
+) =>
+  createSelector(
+    (state: RootState) => state.site.siteConfig,
+    siteConfig => {
+      return siteConfig[name] ?? defaultValue;
+    },
+  );
+
+export const siteClockIs24HourSelector = createSiteConfigsSelector(
+  ConfigItemName.SETTINGS_LOCALIZATION_TIME_FORMAT_24HOUR,
+);
+export const systemUnitTypeSelector = createSiteConfigsSelector(
+  ConfigItemName.PRODUCTION_UNIT_TYPE,
+  CommonConstants.DEFAULT_UNIT_TYPE_VALUE,
 );

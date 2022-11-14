@@ -35,12 +35,12 @@ const mockSitesList: Site[] = [
   {
     id: 'rasvalleyclone',
     name: 'Rasmussen Valley Clone',
-    siteUrl: 'https://stage.minestar.com/rasvalleyclone/',
+    siteUrl: 'https://stage.minestar.com/rasvalleyclone',
   },
   {
     id: 'floridacanyonclone',
     name: 'Florida Canyon Clone',
-    siteUrl: 'https://dev.minestar.com/floridacanyonclone/',
+    siteUrl: 'https://dev.minestar.com/floridacanyonclone',
   },
 ];
 export const fetchSitesAsyncAction = createAsyncThunk(

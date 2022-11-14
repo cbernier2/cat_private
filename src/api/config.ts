@@ -1,9 +1,9 @@
-import {CatConfig} from './types';
+import {SiteConfig} from './types';
 import {ConfigItemName} from './types/cat/config-item';
 import moment from 'moment-timezone';
 import {UnitUtils} from '../utils/unit-utils';
 
-export const onConfigChange = (config: CatConfig) => {
+export const onConfigChange = (config: SiteConfig) => {
   if (config[ConfigItemName.SETTINGS_LOCALIZATION_TIMEZONE]) {
     moment.tz.setDefault(config[ConfigItemName.SETTINGS_LOCALIZATION_TIMEZONE]);
   }

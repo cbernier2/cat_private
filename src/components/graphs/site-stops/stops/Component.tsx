@@ -35,8 +35,8 @@ export const SiteStopsStops: React.FC<SiteStopsStopsType> = props => {
 
         const fill =
           Math.random() < 0.5
-            ? 'url(#hatched-fill)'
-            : 'url(#hatched-fill-blue)';
+            ? 'url(##555-PATTERN_07-red)'
+            : 'url(##555-PATTERN_07-blue)';
 
         return (
           <G key={stop.id} onPress={props.addObservation}>

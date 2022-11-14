@@ -11,7 +11,7 @@ const CatTextWithIcon: React.FC<CatTextWithIconType> = props => {
   const {
     icon,
     iconColor = colors.label,
-    iconSize,
+    iconSize = 24,
     variant = 'bodyLarge',
     style: textStyle,
     ...textProps
@@ -21,8 +21,8 @@ const CatTextWithIcon: React.FC<CatTextWithIconType> = props => {
     <View style={styles.container}>
       {React.createElement(icon, {
         fill: iconColor,
-        width: iconSize || 24,
-        height: iconSize || 24,
+        width: iconSize,
+        height: iconSize,
       })}
       <CatText
         variant={variant}
