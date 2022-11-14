@@ -13,13 +13,9 @@ import CatActiveItemsSection from './ActiveItemsSection';
 import CatAccordion from '../../components/accordion';
 import useCatSelector from '../../hooks/useCatSelector';
 import {
-  materialsSelector,
   shiftEndTimeSelector,
   shiftStartTimeSelector,
-  systemUnitTypeSelector,
 } from '../../redux/site/site-selectors';
-import {getPreferredMeasurementBasis} from '../../api/production';
-import {SUMMARY_COLUMNS, TARGET_COLUMN} from '../../api/production';
 import {
   formatLabel,
   formatMinutesOnly,
@@ -39,8 +35,6 @@ const DashboardScreen: React.FC<ScreenType> = ({navigation}) => {
   const [isLoad, setIsLoad] = useState(false);
   const {colors} = useCatTheme();
   const styles = useStyles();
-  const systemUnitType = useCatSelector(systemUnitTypeSelector);
-  const materials = useCatSelector(materialsSelector);
   const shiftEndTime = useCatSelector(shiftEndTimeSelector);
   const shiftStartTime = useCatSelector(shiftStartTimeSelector);
   const productionSummary = useCatSelector(
@@ -58,46 +52,23 @@ const DashboardScreen: React.FC<ScreenType> = ({navigation}) => {
   const cumulativeValues = summary?.cumulativeValues;
   const projectedCumulativeValues = summary?.projectedCumulativeValues;
 
-  // TODO: pre-compute the values in transformSiteSummary()
-  const displaySummary = summary?.summary;
-  const unitType = getPreferredMeasurementBasis(
-    displaySummary,
-    materials,
-    systemUnitType,
-  );
-  const totalColumn = SUMMARY_COLUMNS.total[unitType];
-  const projectedColumn = SUMMARY_COLUMNS.projected[unitType];
-  const averageColumn = SUMMARY_COLUMNS.average[unitType];
-
   const kpiRowJSX = (values: CatTextWithLabelType[]) => (
     <CatValuesRow style={styles.kpiRow} values={values} />
   );
 
   const kpiRow1 = kpiRowJSX([
     {
-      label: formatLabel(
-        'cat.production_secondary_total',
-        displaySummary,
-        totalColumn.unit,
-      ),
-      children: formatUnit(displaySummary, totalColumn),
+      label: formatLabel('cat.production_secondary_total', summary?.totalUnit),
+      children: formatUnit(summary?.totalValue),
       isPrimary: true,
     },
     {
-      label: formatLabel(
-        'production_projected_short',
-        displaySummary,
-        projectedColumn.unit,
-      ),
-      children: formatUnit(displaySummary, projectedColumn),
+      label: formatLabel('production_projected_short', summary?.projectedUnit),
+      children: formatUnit(summary?.projectedValue),
     },
     {
-      label: formatLabel(
-        'cat.production_target',
-        displaySummary,
-        TARGET_COLUMN.unit,
-      ),
-      children: formatUnit(displaySummary, TARGET_COLUMN),
+      label: formatLabel('cat.production_target', summary?.targetUnit),
+      children: formatUnit(summary?.targetValue),
     },
   ]);
 
@@ -107,20 +78,19 @@ const DashboardScreen: React.FC<ScreenType> = ({navigation}) => {
         t('cat.production_secondary_total') +
         ' ' +
         t(isLoad ? 'cat.production_loads' : 'cat.production_dumps'),
-      children: formatNumber(displaySummary?.totalLoads),
+      children: formatNumber(summary?.totalLoadsValue),
       isPrimary: true,
     },
     {
       label: formatLabel(
         'cat.production_secondary_averageRate',
-        displaySummary,
-        averageColumn.unit,
+        summary?.averageUnit,
       ),
-      children: formatUnit(displaySummary, averageColumn),
+      children: formatUnit(summary?.averageValue),
     },
     {
       label: t('average_cycle_time_short'),
-      children: formatMinutesOnly(displaySummary?.averageCycleTime),
+      children: formatMinutesOnly(summary?.averageCycleTime),
     },
   ]);
 
@@ -128,12 +98,7 @@ const DashboardScreen: React.FC<ScreenType> = ({navigation}) => {
   const activeWorkCards: JSX.Element[] = [];
 
   routeSummaries.forEach(routeSummary => {
-    const routeUnitType = getPreferredMeasurementBasis(
-      routeSummary,
-      materials,
-      systemUnitType,
-    );
-    const attentionRequired = isAttentionRequired(routeSummary, routeUnitType);
+    const attentionRequired = isAttentionRequired(routeSummary);
     const el = (
       <View style={styles.activeProductionItem} key={routeSummary.id}>
         <CatSummaryCard
@@ -144,7 +109,6 @@ const DashboardScreen: React.FC<ScreenType> = ({navigation}) => {
             children: routeSummary.route.name,
           }}
           summary={routeSummary}
-          unitType={routeUnitType}
           onPress={() => {
             dispatch(siteActions.setCurrentRouteId(routeSummary.id));
             navigation.navigate('RouteOverview');

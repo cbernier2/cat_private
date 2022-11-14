@@ -5,22 +5,13 @@ import {useTranslation} from 'react-i18next';
 import BackArrowSvg from 'assets/icons/edge_arrow_back_ios.svg';
 import RouteSvg from 'assets/icons/route.svg';
 import {TouchableOpacity, View} from 'react-native';
-import {
-  currentRouteSelector,
-  materialsSelector,
-  systemUnitTypeSelector,
-} from '../../redux/site/site-selectors';
+import {currentRouteSelector} from '../../redux/site/site-selectors';
 import useCatSelector from '../../hooks/useCatSelector';
 import useCatDispatch from '../../hooks/useCatDispatch';
 import {actions as siteActions} from '../../redux/site/site-slice';
 import styles from './styles';
 import CatText from '../../components/text';
 import useCatTheme from '../../hooks/useCatTheme';
-import {
-  getPreferredMeasurementBasis,
-  SUMMARY_COLUMNS,
-  TARGET_COLUMN,
-} from '../../api/production';
 import {CatTextWithLabelType} from '../../components/text-with-label/types';
 import CatValuesRow from '../../components/value-row';
 import {
@@ -29,21 +20,12 @@ import {
   formatMinutesOnlyFromMillis,
   formatUnit,
 } from '../../utils/format';
-import {UnitType} from '../../api/types/cat/common';
 
 const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
   const {t} = useTranslation();
   const dispatch = useCatDispatch();
   const currentRouteSummary = useCatSelector(currentRouteSelector);
   const {colors} = useCatTheme();
-  const systemUnitType = useCatSelector(systemUnitTypeSelector);
-  const materials = useCatSelector(materialsSelector);
-  const unitType = getPreferredMeasurementBasis(
-    currentRouteSummary,
-    materials,
-    systemUnitType,
-  );
-  const totalLoadColumn = SUMMARY_COLUMNS.total[UnitType.LOAD];
 
   useEffect(() => {
     if (!currentRouteSummary) {
@@ -63,25 +45,20 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
     {
       label: formatLabel(
         'cat.production_target',
-        currentRouteSummary,
-        TARGET_COLUMN.unit,
+        currentRouteSummary.targetUnit,
       ),
-      children: formatUnit(currentRouteSummary, TARGET_COLUMN),
+      children: formatUnit(currentRouteSummary.targetValue),
     },
     {
       label: t('cat.production_shiftToDate'),
-      children: formatUnit(
-        currentRouteSummary,
-        SUMMARY_COLUMNS.shiftToDate[unitType],
-      ),
+      children: formatUnit(currentRouteSummary.totalValue),
     },
     {
       label: formatLabel(
         'cat.production_secondary_total',
-        currentRouteSummary,
-        totalLoadColumn.unit,
+        currentRouteSummary.totalLoadsUnit,
       ),
-      children: formatUnit(currentRouteSummary, totalLoadColumn),
+      children: formatUnit(currentRouteSummary.totalLoadsValue),
     },
   ]);
 
