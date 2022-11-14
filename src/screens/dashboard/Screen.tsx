@@ -28,6 +28,7 @@ import CatValuesRow from '../../components/value-row';
 import {actions as siteActions} from '../../redux/site/site-slice';
 import useCatDispatch from '../../hooks/useCatDispatch';
 import {LineChart} from '../../components/graphs/line-chart/Component';
+import {sitesSelectedSiteSelector} from '../../redux/sites-list/sites-selectors';
 
 const DashboardScreen: React.FC<ScreenType> = ({navigation}) => {
   const {t} = useTranslation();
@@ -35,6 +36,7 @@ const DashboardScreen: React.FC<ScreenType> = ({navigation}) => {
   const [isLoad, setIsLoad] = useState(false);
   const {colors} = useCatTheme();
   const styles = useStyles();
+  const selectedSite = useCatSelector(sitesSelectedSiteSelector);
   const shiftEndTime = useCatSelector(shiftEndTimeSelector);
   const shiftStartTime = useCatSelector(shiftStartTimeSelector);
   const productionSummary = useCatSelector(
@@ -45,7 +47,6 @@ const DashboardScreen: React.FC<ScreenType> = ({navigation}) => {
     : productionSummary?.siteSummary;
   const routeSummaries = productionSummary?.routeSummaries || [];
   const workSummaryCount = routeSummaries.length;
-  const siteName = 'Rasmussen Valley Clone';
   const cumulativeTargetMaxThreshold = summary?.cumulativeTargetMaxThreshold;
   const cumulativeTargetMinThreshold = summary?.cumulativeTargetMinThreshold;
   const cumulativeTarget = summary?.cumulativeTarget;
@@ -122,7 +123,7 @@ const DashboardScreen: React.FC<ScreenType> = ({navigation}) => {
   return (
     <CatScreen title={t('summary_title')}>
       <View style={styles.siteNameContainer}>
-        <CatText variant={'titleMedium'}>{siteName}</CatText>
+        <CatText variant={'titleMedium'}>{selectedSite?.name}</CatText>
         <CatSwitch
           label={t(isLoad ? 'cat.production_loads' : 'cat.production_dumps')}
           value={isLoad}

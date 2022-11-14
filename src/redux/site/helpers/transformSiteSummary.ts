@@ -149,7 +149,6 @@ export const transformSiteSummary = (
     averageQueuingDurationEmpty: summary.averageQueuingDurationEmpty,
     ...commonData,
     ...getUnitData(summary, materials, defaultUnit),
-    summary, // TODO still dump the whole thing for now, but we'll want to remove it latter
     // TODO add anything else that is needed for other views
   };
 };

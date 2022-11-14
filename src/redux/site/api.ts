@@ -28,14 +28,22 @@ const catBaseQuery: BaseQueryFn<CatQueryFnParams> = async (
   {method, path, queryParams},
   {getState, dispatch},
 ) => {
-  let auth = (getState() as RootState).user.auth;
+  const state = () => getState() as RootState;
+  const sitesList = state().sitesList;
+  const selectedSite = sitesList.sites.find(
+    site => site.id === sitesList.selectedSiteId,
+  );
+  if (selectedSite === undefined) {
+    return {error: {status: -1, data: new Error('Site not selected')}};
+  }
+  let auth = state().user.auth;
   if (auth) {
     if (
       new Date(auth.accessTokenExpirationDate) <
       dateSub(new Date(), {minutes: 1})
     ) {
       await dispatch(refreshTokenAsyncAction());
-      auth = (getState() as RootState).user.auth;
+      auth = state().user.auth;
     }
   }
   try {
@@ -49,7 +57,7 @@ const catBaseQuery: BaseQueryFn<CatQueryFnParams> = async (
     }
     const response = await fetch(
       //TODO: Use the current site URL
-      `https://stage.minestar.com/rasvalleyclone/core/site/mobile_api/v1/${path}${urlParams}`,
+      `${selectedSite.siteUrl}/core/site/mobile_api/v1/${path}${urlParams}`,
       {
         method,
         headers: {

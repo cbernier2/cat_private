@@ -14,7 +14,6 @@ export const transformSummaries = (
   }
 
   return {
-    ...summaries,
     siteSummary: transformSiteSummary(
       summaries.siteSummary,
       materials,
