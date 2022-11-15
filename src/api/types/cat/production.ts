@@ -118,8 +118,6 @@ export interface Summary {
   target: number;
   targetUnit: string;
   currentHourLoads: number;
-  preferredProdVolumetricFlowRateUnit: string;
-  preferredProdVolumeUnit: string;
   averageQueuingDurationEmpty: number;
   averageQueuingDurationFull: number;
   cumulativeTarget: Labelable & {

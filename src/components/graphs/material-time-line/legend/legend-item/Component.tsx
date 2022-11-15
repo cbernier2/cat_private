@@ -15,11 +15,12 @@ export const LegendItem: React.FC<LegendItemType> = props => {
 
   const getQtyLabel = () => {
     if (quantity) {
-      // @ts-ignore
-      const unit = UnitUtils.toPreferredLocalUnitSymbol(quantity.unit);
+      const unit = UnitUtils.toPreferredLocalUnitSymbol(
+        quantity.unit.toString(),
+      );
       const value = Math.round(
-        // @ts-ignore
-        UnitUtils.toLocalUnitValue(quantity.value, quantity.unit) ?? 0,
+        UnitUtils.toLocalUnitValue(quantity.value, quantity.unit.toString()) ??
+          0,
       );
 
       return `${value} ${unit}`;
