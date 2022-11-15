@@ -468,7 +468,7 @@ index baf24fc..0000000
 -
 -export default main;
 diff --git a/node_modules/textures/dist/textures.js b/node_modules/textures/dist/textures.js
-index 56ebe9e..214c641 100644
+index 56ebe9e..455127f 100644
 --- a/node_modules/textures/dist/textures.js
 +++ b/node_modules/textures/dist/textures.js
 @@ -1 +1,484 @@
@@ -873,8 +873,8 @@ index 56ebe9e..214c641 100644
 +  };
 +
 +  $.serialize = function () {
-+    var path = path(d);
-+    return { name: 'paths', size, background, stroke, strokeWidth, width, height, id, path, fill, shapeRendering };
++    var p = path(d);
++    return { name: 'paths', size, background, stroke, strokeWidth, width, height, id, path: p, fill, shapeRendering };
 +  };
 +
 +  $.heavier = function (_) {

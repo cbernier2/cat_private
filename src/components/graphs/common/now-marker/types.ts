@@ -6,5 +6,5 @@ export interface NowMarkerType {
   x_scale: ScaleTime<number, number>;
   y1?: number;
   y2?: number;
-  y_scale: ScaleLinear<number, number>;
+  y_scale?: ScaleLinear<number, number>;
 }

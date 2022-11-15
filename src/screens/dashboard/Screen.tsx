@@ -1,15 +1,12 @@
 import React, {useState} from 'react';
+import {View} from 'react-native';
 import {useTranslation} from 'react-i18next';
-import {ScreenType} from './types';
-import {useStyles} from './styles';
-import CatSummaryCard from './SummaryCard';
 import RouteSvg from 'node_modules/minestar-icons/svg/route.svg';
+
 import useCatTheme from '../../hooks/useCatTheme';
 import CatScreen from '../../components/screen';
-import {View} from 'react-native';
 import CatText from '../../components/text';
 import CatSwitch from '../../components/switch';
-import CatActiveItemsSection from './ActiveItemsSection';
 import CatAccordion from '../../components/accordion';
 import useCatSelector from '../../hooks/useCatSelector';
 import {
@@ -23,12 +20,17 @@ import {
   formatUnit,
 } from '../../utils/format';
 import {CatTextWithLabelType} from '../../components/text-with-label/types';
-import {isAttentionRequired} from './functions';
 import CatValuesRow from '../../components/value-row';
 import {actions as siteActions} from '../../redux/site/site-slice';
 import useCatDispatch from '../../hooks/useCatDispatch';
 import {LineChart} from '../../components/graphs/line-chart/Component';
 import {sitesSelectedSiteSelector} from '../../redux/sites-list/sites-selectors';
+
+import {ScreenType} from './types';
+import {useStyles} from './styles';
+import CatSummaryCard from './SummaryCard';
+import CatActiveItemsSection from './ActiveItemsSection';
+import {isAttentionRequired} from './functions';
 
 const DashboardScreen: React.FC<ScreenType> = ({navigation}) => {
   const {t} = useTranslation();
@@ -47,11 +49,14 @@ const DashboardScreen: React.FC<ScreenType> = ({navigation}) => {
     : productionSummary?.siteSummary;
   const routeSummaries = productionSummary?.routeSummaries || [];
   const workSummaryCount = routeSummaries.length;
+
   const cumulativeTargetMaxThreshold = summary?.cumulativeTargetMaxThreshold;
   const cumulativeTargetMinThreshold = summary?.cumulativeTargetMinThreshold;
   const cumulativeTarget = summary?.cumulativeTarget;
   const cumulativeValues = summary?.cumulativeValues;
   const projectedCumulativeValues = summary?.projectedCumulativeValues;
+  const materialLegend = summary?.materialLegend;
+  const materialTimeSeries = summary?.materialTimeSeries;
 
   const kpiRowJSX = (values: CatTextWithLabelType[]) => (
     <CatValuesRow style={styles.kpiRow} values={values} />
@@ -136,6 +141,8 @@ const DashboardScreen: React.FC<ScreenType> = ({navigation}) => {
           {kpiRow2}
           <LineChart
             endTime={shiftEndTime}
+            materialLegend={materialLegend}
+            materialTime={materialTimeSeries}
             maxThreshold={cumulativeTargetMaxThreshold}
             minThreshold={cumulativeTargetMinThreshold}
             projected={projectedCumulativeValues}

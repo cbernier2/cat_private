@@ -3,6 +3,8 @@ import {RootState} from '../index';
 import {ConfigItemName} from '../../api/types/cat/config-item';
 import {CommonConstants} from '../../api/types/cat/common';
 import moment from 'moment';
+import {Material} from '../../api/types/cat/material';
+import {SiteConfig} from '../../api/types';
 
 export const lastUpdateSelector = createSelector(
   (state: RootState) => state.site.lastUpdate,
@@ -28,11 +30,6 @@ export const personsSelector = createSelector(
   persons => persons,
 );
 
-export const materialsSelector = createSelector(
-  (state: RootState) => state.site.materials,
-  materials => materials,
-);
-
 export const siteIsLoadingSelector = createSelector(
   (state: RootState) => state.site.loading,
   loading => loading,
@@ -43,9 +40,21 @@ export const currentShiftSelector = createSelector(
   currentShift => currentShift,
 );
 
+export const materialsSelector = (ids?: string[]) =>
+  createSelector(
+    (state: RootState) => state.site.materials,
+    (materials: Material[]) => {
+      if (ids && ids.length) {
+        return materials.filter(material => ids.includes(material.id)) ?? [];
+      }
+
+      return materials;
+    },
+  );
+
 export const shiftNominalOperationalTimelineSelector = createSelector(
   currentShiftSelector,
-  currentShift => currentShift?.nominalOperationalTimeline,
+  currentShift => currentShift?.nominalOperationalTimeline ?? [],
 );
 
 export const shiftEndTimeSelector = createSelector(
@@ -64,7 +73,7 @@ export const createSiteConfigsSelector = (
 ) =>
   createSelector(
     (state: RootState) => state.site.siteConfig,
-    siteConfig => {
+    (siteConfig: SiteConfig) => {
       return siteConfig[name] ?? defaultValue;
     },
   );
