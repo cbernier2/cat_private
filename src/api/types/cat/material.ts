@@ -1,6 +1,9 @@
 // Copy from Caterpillar Web App: src/common/providers/material/material.ts
 
 import {units} from 'minestar-units';
+
+import {Pattern} from '../../../components/graphs/pattern/types';
+
 import {CommonConstants, UnitType} from './common';
 import {Style} from './colors';
 
@@ -13,7 +16,7 @@ export interface Material {
   bankDensity?: units.Quantity; // the bank material density
 
   color: string; // the hex value for the background color
-  pattern: string | null; // the name of the pattern to use
+  pattern: Pattern | null; // the name of the pattern to use
   patternColor: string | null; // the foreground color / color of the stroke to use in the pattern
 
   preferredMeasurementBasis?: UnitType; // the preferred way to measure this material for production

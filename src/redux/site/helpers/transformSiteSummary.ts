@@ -1,12 +1,26 @@
+import {units} from 'minestar-units';
+
 import {Summary} from '../../../api/types/cat/production';
 import {
   getPreferredMeasurementBasis,
   toTimeData,
 } from '../../../utils/production-utils';
 import {Material} from '../../../api/types/cat/material';
+import {MaterialLegend} from '../../../api/types';
 import {UnitType} from '../../../api/types/cat/common';
 import {UnitUtils} from '../../../utils/unit-utils';
+import {Segment} from '../../../components/graphs/material-time-line/types';
+
 import {SUMMARY_COLUMNS, TARGET_COLUMN, UnitData} from './types';
+
+const transformMaterialQuantity = (
+  materials: {[id: string]: number},
+  unit: string,
+): MaterialLegend[] =>
+  Object.keys(materials).map(id => ({
+    id,
+    quantity: units.Quantity.of(materials[id], unit),
+  }));
 
 const getTimeUnitData = (summary: Summary, unitType: UnitType) => {
   switch (unitType) {
@@ -14,6 +28,10 @@ const getTimeUnitData = (summary: Summary, unitType: UnitType) => {
       return {
         cumulativeValues: toTimeData(
           summary.cumulativeLoads?.values ?? [],
+          summary.loadUnit,
+        ),
+        materialLegend: transformMaterialQuantity(
+          summary.materialLoads,
           summary.loadUnit,
         ),
         projectedCumulativeValues: toTimeData(
@@ -28,6 +46,10 @@ const getTimeUnitData = (summary: Summary, unitType: UnitType) => {
           summary.cumulativeMass?.values ?? [],
           summary.massUnit,
         ),
+        materialLegend: transformMaterialQuantity(
+          summary.materialMass,
+          summary.massUnit,
+        ),
         projectedCumulativeValues: toTimeData(
           summary.projectedCumulativeMass?.values ?? [],
           summary.massUnit,
@@ -39,6 +61,12 @@ const getTimeUnitData = (summary: Summary, unitType: UnitType) => {
         cumulativeValues: toTimeData(
           summary.cumulativeVolume?.values ?? [],
           summary.volumeUnit,
+        ),
+        materialLegend: transformMaterialQuantity(
+          summary.materialVolume,
+          summary.preferredProdVolumeUnit
+            ? summary.preferredProdVolumeUnit
+            : summary.volumeUnit,
         ),
         projectedCumulativeValues: toTimeData(
           summary.projectedCumulativeVolume?.values ?? [],
@@ -124,26 +152,52 @@ export const transformSiteSummary = (
   materials: Material[],
   defaultUnit: UnitType,
 ) => {
+  const baseTargetUnit = summary.targetUnit
+    ? UnitUtils.toBaseUnit(summary.targetUnit)?.name ?? ''
+    : '';
+
   // TODO replicated transformations found in the web app, but numbers don't see to match what we see in it
   //  e.g.: 527.1040744695023 volume does not change on mobile but shows 689 on web...
   const commonData = {
     cumulativeTarget: toTimeData(
       summary.cumulativeTarget?.values ?? [],
-      UnitUtils.toBaseUnit(summary.targetUnit)?.name ?? '',
+      baseTargetUnit,
     ),
     cumulativeTargetMaxThreshold: toTimeData(
       summary.cumulativeTargetMaxThreshold?.values ?? [],
-      UnitUtils.toBaseUnit(summary.targetUnit)?.name ?? '',
+      baseTargetUnit,
     ),
     cumulativeTargetMinThreshold: toTimeData(
       summary.cumulativeTargetMinThreshold?.values ?? [],
-      UnitUtils.toBaseUnit(summary.targetUnit)?.name ?? '',
+      baseTargetUnit,
     ),
   };
+
+  const materialTimeSeries: Segment[] = summary.materialTimeSeries.values
+    .map(entry => ({
+      time: entry.timestamp,
+      value: entry.value,
+    }))
+    .reduce((r, timeData) => {
+      if (!r.length) {
+        r.push([timeData, timeData]);
+        return r;
+      }
+
+      let [, last] = r[r.length - 1];
+      if (timeData.value === last.value) {
+        r[r.length - 1][1] = timeData; // replace the 'last' segments end timeData with the current
+      } else {
+        r.push([{...timeData, time: last.time}, timeData]); // start a new segment from the last segment's last time
+      }
+
+      return r;
+    }, [] as Segment[]);
 
   return {
     id: summary.id, // Some data we keep raw
     name: summary.name,
+    materialTimeSeries,
     totalLoadsValue: summary.totalLoads,
     averageCycleTime: summary.averageCycleTime,
     averageQueuingDurationEmpty: summary.averageQueuingDurationEmpty,

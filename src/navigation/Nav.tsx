@@ -1,5 +1,6 @@
 import React from 'react';
 import {Provider as PaperProvider} from 'react-native-paper';
+import {ThemeProp} from 'react-native-paper/src/types';
 import {useTranslation} from 'react-i18next';
 import {NavigationContainer} from '@react-navigation/native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -17,13 +18,12 @@ import DebugScreen from '../screens/debug/Screen';
 import useCatSelector from '../hooks/useCatSelector';
 import {userAuthTokenSelector} from '../redux/user/user-selectors';
 import {sitesSelectedSiteSelector} from '../redux/sites-list/sites-selectors';
+import RouteOverviewScreen from '../screens/route-overview';
 
 import CatDrawer from './drawer';
 import CatDrawerIcon from './header/DrawerIcon';
 import CatHeader from './header';
 import CatSyncStatus from './header/SyncStatus';
-import RouteOverviewScreen from '../screens/route-overview';
-import {ThemeProp} from 'react-native-paper/src/types';
 
 const SummaryStack = createStackNavigator();
 const SummaryNavigator = () => (

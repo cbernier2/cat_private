@@ -41,6 +41,8 @@ export interface Summary {
   massFlowRateUnit: string;
   volumeUnit: string;
   volumetricFlowRateUnit: string;
+  preferredProdVolumeUnit: string;
+  preferredProdVolumetricFlowRateUnit: string;
   totalLoads: number;
   averageLoadRate: number;
   loadRateByHour: Labelable & {
@@ -116,8 +118,6 @@ export interface Summary {
   target: number;
   targetUnit: string;
   currentHourLoads: number;
-  preferredProdVolumetricFlowRateUnit: string;
-  preferredProdVolumeUnit: string;
   averageQueuingDurationEmpty: number;
   averageQueuingDurationFull: number;
   cumulativeTarget: Labelable & {
@@ -130,6 +130,8 @@ export interface Summary {
     values: Array<{value: number} & Timestampable>;
   };
 }
+
+export interface HaulCyclesSummary extends Summary {}
 
 export interface PlanAreaSummary extends Summary {
   materialObservationForPlanArea: string;
@@ -182,6 +184,8 @@ export type SupportEquipmentSummary = EquipmentSummary & {equipment: Equipment};
 export type WaterTruckSummary = EquipmentSummary & {
   equipment: Equipment;
   waterLevelPercent: number;
+  totalVolume: number;
+  waterTankCapacity: number;
 };
 export type RouteSummary = Summary & {route: Route};
 
@@ -189,10 +193,10 @@ export namespace EquipmentSummaryUtils {
   export function findStopReasonTypeIdAtTime(
     equipmentSummary: EquipmentSummary,
     atTime: number,
-  ): string | undefined {
+  ): string | null | undefined {
     let findFunction = (value: Timeline) =>
       value.startTime <= atTime && value.endTime >= atTime;
-    let timeLine: Timeline | undefined;
+    let timeLine: Timeline | null | undefined = null;
     if (equipmentSummary.maintenanceTimeline.length) {
       timeLine = equipmentSummary.maintenanceTimeline.find(findFunction);
       if (timeLine) {
@@ -211,7 +215,7 @@ export namespace EquipmentSummaryUtils {
         return timeLine.stopReasonTypeId;
       }
     }
-    return undefined;
+    return null;
   }
 }
 

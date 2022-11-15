@@ -1,3 +1,5 @@
+import {units} from 'minestar-units';
+
 import {ConfigItemName} from './cat/config-item';
 import {Person} from './cat/person';
 
@@ -26,3 +28,8 @@ export type CatColumn = {
   key: string;
   unit: string;
 };
+
+export interface MaterialLegend {
+  id: string;
+  quantity: units.Quantity;
+}

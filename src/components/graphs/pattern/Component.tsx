@@ -10,10 +10,10 @@ import {patterns} from './patterns';
 import {PatternType} from './types';
 
 export const Pattern: React.FC<PatternType> = props => {
-  const {background, foreground, pattern: patternId = 'none'} = props;
+  const {background, foreground, pattern: patternId} = props;
 
   const id = getPatternId(background, patternId, foreground);
-  const pattern = patterns[patternId];
+  const pattern = patterns[patternId ?? 'none'];
 
   if (pattern) {
     pattern.id(id);
