@@ -26,7 +26,15 @@ export const transformSummaries = (
     ),
     routeSummaries: summaries.routeSummaries.map(routeSummary => ({
       ...transformSiteSummary(routeSummary, materials, defaultUnit),
-      route: {name: routeSummary.route.name},
+      route: routeSummary.route,
+    })),
+    loadAreaSummaries: summaries.loadAreaSummaries.map(loadAreaSummary => ({
+      ...transformSiteSummary(loadAreaSummary, materials, defaultUnit),
+      loadArea: loadAreaSummary.loadArea,
+    })),
+    dumpSummaries: summaries.dumpSummaries.map(dumpSummary => ({
+      ...transformSiteSummary(dumpSummary, materials, defaultUnit),
+      dumpArea: dumpSummary.dumpArea,
     })),
   };
 };

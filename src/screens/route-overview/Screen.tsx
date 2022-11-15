@@ -18,13 +18,21 @@ import {
   formatLabel,
   formatMinutesOnly,
   formatMinutesOnlyFromMillis,
+  formatNumber,
   formatUnit,
 } from '../../utils/format';
+import {Surface} from 'react-native-paper';
+import CatTextWithIcon from '../../components/text-with-icon';
+import {currentRouteAreasSelector} from './selectors';
+import CatTextWithLabel from '../../components/text-with-label';
 
 const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
   const {t} = useTranslation();
   const dispatch = useCatDispatch();
   const currentRouteSummary = useCatSelector(currentRouteSelector);
+  const currentRoute = currentRouteSummary?.route;
+  const routeAreas = useCatSelector(currentRouteAreasSelector);
+
   const {colors} = useCatTheme();
 
   useEffect(() => {
@@ -33,7 +41,7 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
     }
   }, [currentRouteSummary, navigation]);
 
-  if (!currentRouteSummary) {
+  if (!currentRouteSummary || !currentRoute) {
     return null;
   }
 
@@ -90,12 +98,41 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
           fill={colors.text}
         />
         <CatText variant={'bodyLarge'} style={styles.titleText}>
-          {currentRouteSummary.route.name}
+          {currentRoute.name}
         </CatText>
       </View>
       <View style={styles.productionContainer}>
         {kpiRow1}
         {kpiRow2}
+        <CatText variant={'headlineMedium'}>{t('cat.areas')}</CatText>
+        <View style={styles.cardsContainer}>
+          {routeAreas.map(routeArea => (
+            <Surface
+              key={routeArea.summary.id}
+              elevation={2}
+              style={styles.cardContainer}>
+              <View style={styles.cardItem}>
+                <CatTextWithIcon
+                  style={styles.areaText}
+                  iconNode={
+                    <View style={styles.areaIconContainer}>
+                      {React.createElement(routeArea.icon, {
+                        fill: '#FFF',
+                        width: 28,
+                        height: 28,
+                      })}
+                    </View>
+                  }>
+                  {routeArea.name}
+                </CatTextWithIcon>
+              </View>
+              <CatTextWithLabel label={t('cat.production_currentRate')}>
+                {formatNumber(routeArea.summary.currentRateValue)}{' '}
+                {t(routeArea.summary.currentRateUnit)}
+              </CatTextWithLabel>
+            </Surface>
+          ))}
+        </View>
       </View>
     </CatScreen>
   );
