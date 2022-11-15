@@ -1,6 +1,6 @@
 // Copy from Caterpillar Web App: src/common/providers/person/person.ts
 
-import {ColourPaletteItem, ColourUtils} from './colors';
+import {ColourUtils} from './colors';
 import {PERSON_COLOUR_PALETTE} from './color_palettes';
 
 export interface Person {
@@ -59,7 +59,7 @@ export namespace Person {
       return Person.DEFAULT_LIGHT_TEXT_COLOR;
     }
 
-    const item: ColourPaletteItem | undefined = ColourUtils.findColourByHexCode(
+    const item = ColourUtils.findColourByHexCode(
       PERSON_COLOUR_PALETTE,
       backgroundColor,
     );

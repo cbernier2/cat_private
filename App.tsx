@@ -9,6 +9,9 @@ import {persistor, store} from './src/redux';
 import useCatSelector from './src/hooks/useCatSelector';
 import {emulateOfflineSelector} from './src/redux/app/app-selectors';
 import './src/locales';
+import {onConfigChange} from './src/api/config';
+import useCatDispatch from './src/hooks/useCatDispatch';
+import {startBackgroundFetchAsyncAction} from './src/redux/site/background-fetch';
 
 const App = () => {
   return (
@@ -19,9 +22,16 @@ const App = () => {
 };
 
 const InnerApp = () => {
+  const dispatch = useCatDispatch();
   const isEmulatingOffline = useCatSelector(emulateOfflineSelector);
   const offlineUrl = 'https://www.a.ca';
   const onlineUrl = 'https://www.google.com';
+
+  const onPersistGateLift = () => {
+    const state = store.getState();
+    onConfigChange(state.site.siteConfig);
+    dispatch(startBackgroundFetchAsyncAction());
+  };
 
   return (
     <ReduxNetworkProvider
@@ -32,7 +42,10 @@ const InnerApp = () => {
       pingOnlyIfOffline={false}
       pingTimeout={1000}
       shouldPing={true}>
-      <PersistGate loading={null} persistor={persistor}>
+      <PersistGate
+        loading={null}
+        persistor={persistor}
+        onBeforeLift={onPersistGateLift}>
         <SafeAreaProvider>
           <CatNavigation />
         </SafeAreaProvider>

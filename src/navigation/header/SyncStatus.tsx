@@ -16,11 +16,12 @@ import {
   useNetInfo,
 } from '@react-native-community/netinfo';
 import CatTextWithLabel from '../../components/text-with-label';
+import {lastUpdateSelector} from '../../redux/site/site-selectors';
 
 const CatSyncStatus: React.FC = () => {
   const {t} = useTranslation();
   const netInfo = useNetInfo();
-  const lastSyncTime = new Date();
+  const lastSyncTime = useCatSelector(lastUpdateSelector);
   const isConnected = useCatSelector(networkIsConnectedSelector);
 
   const lastSyncText = lastSyncTime
@@ -54,6 +55,7 @@ const CatSyncStatus: React.FC = () => {
   return (
     <View style={styles.statusContainer}>
       <CatTextWithLabel
+        style={styles.statusDate}
         label={t('cat.last_updated')}
         labelProps={{variant: 'labelSmall'}}>
         {lastSyncText}

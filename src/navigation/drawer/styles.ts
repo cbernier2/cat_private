@@ -1,9 +1,6 @@
 import {StyleSheet} from 'react-native';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 export const useStyles = () => {
-  const safeArea = useSafeAreaInsets();
-
   return StyleSheet.create({
     container: {
       flex: 1,
@@ -17,8 +14,7 @@ export const useStyles = () => {
     },
     menuHeaderContainer: {
       flexDirection: 'column',
-      paddingTop: 16 + safeArea.top,
-      paddingBottom: 8,
+      paddingVertical: 8,
       paddingLeft: 20,
       paddingRight: 20,
     },

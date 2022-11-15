@@ -22,11 +22,14 @@ import CatDrawer from './drawer';
 import CatDrawerIcon from './header/DrawerIcon';
 import CatHeader from './header';
 import CatSyncStatus from './header/SyncStatus';
+import RouteOverviewScreen from '../screens/route-overview';
+import {ThemeProp} from 'react-native-paper/src/types';
 
 const SummaryStack = createStackNavigator();
 const SummaryNavigator = () => (
   <SummaryStack.Navigator screenOptions={{headerShown: false}}>
     <SummaryStack.Screen name="Dashboard" component={DashboardScreen} />
+    <SummaryStack.Screen name="RouteOverview" component={RouteOverviewScreen} />
   </SummaryStack.Navigator>
 );
 
@@ -107,7 +110,7 @@ const CatNavigation = () => {
   //console.log('Nav', JSON.stringify({userToken, selectedSite}));
 
   return (
-    <PaperProvider theme={theme}>
+    <PaperProvider theme={theme as ThemeProp}>
       <NavigationContainer theme={theme}>
         <MainStack.Navigator screenOptions={{headerShown: false}}>
           {userToken === null ? (

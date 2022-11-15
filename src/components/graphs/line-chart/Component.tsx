@@ -1,11 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {useSelector} from 'react-redux';
 import {Dimensions} from 'react-native';
 import Svg from 'react-native-svg';
 import * as scale from 'd3-scale';
 import moment from 'moment-timezone';
-
-import {siteTimezoneSelector} from '../../../redux/site/site-selectors';
 
 import {NowMarker} from '../common/now-marker/Component';
 
@@ -21,22 +18,20 @@ const window = Dimensions.get('window');
 //  Therefore, offsets have been omitted for this iteration
 export const LineChart: React.FC<LineChartType> = props => {
   const {
-    endTime,
+    endTime = 0,
     maxThreshold = [],
     minThreshold = [],
     projected = [],
-    startTime,
+    startTime = 0,
     target = [],
-    values,
+    values = [],
   } = props;
-
-  const timezone = useSelector(siteTimezoneSelector);
 
   const height = 225;
   const chartHeight = 200;
   const y_labelsWidth = 50;
   const [width, setWidth] = useState(window.width - 30);
-  const now = moment.tz(timezone).valueOf();
+  const now = moment().valueOf();
 
   const maxValue = getMaxValue(maxThreshold, target, values, projected);
 

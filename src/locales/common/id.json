@@ -489,6 +489,7 @@
   "personnel_operator_login_id_hint": "ID masuk log operator ",
   "personnel_preferred_equipment_hint": "Pilih peralatan yang disukai",
   "personnel_company_hint": "Masukkan nama perusahaan (Opsional)",
+  "personnel_company_hint_v2": "Masukkan nama perusahaan",
   "personnel_external_id_hint": "Masukkan ID Eksternal (ID Perusahaan - misalnya 46532 atau email perusahaan)",
   "personnel_duplicate_name_error": "Seseorang dengan nama dan nama belakang yang sama, serta nama yang dipilih telah ada",
   "personnel_duplicate_operator_login_id_error": "${person} memiliki id masuk log operator yang sama",
@@ -1396,5 +1397,6 @@
   "legal_para_3" : "DENGAN MENANDATANGANI PERJANJIAN INI ATAU PERSETUJUAN PEMBELIAN LANGGANAN BERSAMA CATERPILLAR ATAU SATU DEALER, DENGAN MENGKLIK \"TERIMA\" PERJANJIAN INI, ATAU DENGAN MENGAKSES ATAU MENGGUNAKAN PERANGKAT LUNAK DENGAN KAPASITAS APA PUN, (1) ANDA MENEGASKAN BAHWA ANDA BERUSIA DEWASA DAN MEMILIKI KAPASITAS HUKUM UNTUK MEMBUAT PERSETUJUAN INI, DAN (2) ANDA SETUJU UNTUK TERIKAT OLEH PERJANJIAN INI SEJAK TANGGAL PALING AWAL ANDA MELAKUKAN TINDAKAN TERSEBUT (\"TANGGAL BERLAKU\"). JIKA ANDA MEMBUAT PERJANJIAN INI ATAS NAMA SUATU ENTITAS, SEPERTI PERUSAHAAN TEMPAT ANDA BEKERJA, ANDA MENUNJUKKAN KEPADA Caterpillar BAHWA ANDA MEMILIKI OTORITAS HUKUM UNTUK MENGIKAT ENTITAS TERSEBUT.",
   "legal_para_4" : "PERJANJIAN INI MENGANDUNG ARBITRASE WAJIB UNTUK SYARAT SENGKETA DI BAGIAN 13.8 YANG MENGHARUSKAN PENGGUNAAN ARBITRASE PADA BASIS PERORANGAN UNTUK MENYELESAIKAN SENGKETA, DARIPADA SIDANG JURI ATAU GUGATAN PERWAKILAN KELOMPOK.",
   "in_full" : " secara penuh.",
-  "user_manual": "Buku Petunjuk Bagi Pengguna"
+  "user_manual": "Buku Petunjuk Bagi Pengguna",
+  "observation": "Observasi"
 }

@@ -10,7 +10,6 @@ export const key = 'user';
 
 export interface UserState {
   password?: string;
-  name?: string;
   auth: AuthorizeResult | null;
   isLogin: boolean;
   loginError: string | null;

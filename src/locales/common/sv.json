@@ -489,6 +489,7 @@
   "personnel_operator_login_id_hint": "Inloggnings-ID operatör ",
   "personnel_preferred_equipment_hint": "Välj favoritutrustning",
   "personnel_company_hint": "Ange företagsnamn (alternativ)",
+  "personnel_company_hint_v2": "Ange företagsnamn",
   "personnel_external_id_hint": "Ange externt ID (företags-ID - t.ex. 46532 eller e-post till företag)",
   "personnel_duplicate_name_error": "Det finns redan en person med samma förnamn, efternamn och favoritnamn",
   "personnel_duplicate_operator_login_id_error": "${person} har samma inloggnings-ID för operatör",
@@ -1019,7 +1020,7 @@
   "equipment_observation_stop_no_reason": "Stopp utan anledning",
   "equipment_observation_operator": "Operatör",
   "equipment_observation_maintenance": "Underhåll",
-  "equipment_observation_standby": "Standby",
+  "equipment_observation_standby": "Vänteläge",
   "equipment_observation_operational_delay": "Arbetsfördröjning",
 
   "equipment_manage": "Hantera",
@@ -1097,7 +1098,7 @@
   "operators_people": "Personer",
   "operators_operator_name": "Operatör",
   "operators_equipment": "Utrustning",
-  "operators_equipment_standby": "Standby",
+  "operators_equipment_standby": "Vänteläge",
   "operators_location": "Arbetsområde",
 
   "site_total_production": "Total produktion för platsen",
@@ -1248,7 +1249,7 @@
   "non_operational_time": "Ej arbetstid",
   "down_time": "Ej i drift",
   "operational_delay": "Arbetsfördröjning",
-  "standby": "Standby",
+  "standby": "Vänteläge",
   "sche_maintenance": "Schema. Underhåll",
   "unsche_maintenance": "Inte schema. Underhåll",
   "hrs": "H",
@@ -1396,5 +1397,6 @@
   "legal_para_3" : "GENOM ATT SKRIVA PÅ DETTA AVTAL ELLER AVTAL OM KÖP AV PRENUMERATION MED CATERPILLAR ELLER EN ÅTERFÖRSÄLJARE, KLICKA PÅ ”GODKÄNNER” AVTALET, ÖPPNAR ELLER ANVÄNDER MJUKVARAN PÅ NÅGOT VIS (1) BEKRÄFTAR DU ATT DU ÄR MYNDIG OCH HAR RÄTTSHANDLINGSFÖRMÅGA ATT INGÅ DETTA AVTAL OCH (2) SAMTYCKER TILL ATT LYDA UNDER DETTA AVTAL FRÅN OCH MED DEN FÖRSTA TIDPUNKTEN DÅ DU UTFÖR NÅGON AV DESSA HANDLINGAR ”GILTIGHETSDATUM”). OM DU INGÅR DETTA AVTAL Å EN ENHETS VÄGNAR, SOM TILL EXEMPEL BOLAGET SOM DU ARBETAR FÖR, BEDYRAR DU FÖR CATERPILLAR ATT DU HAR LAGLIG BEFOGENHET ATT FÖRPLIKTIGA ENHETEN ATT FÖLJA AVTALET.",
   "legal_para_4" : "DETTA AVTAL INNEHÅLLER BESTÄMMELSER OM OBLIGATORISKT SKILJEDOMSFÖRFARANDE I AVSNITT 13.8 I FALL ATT SKILJEDOMSFÖRFARANDE BEHÖVER TILLÄMPAS I ETT ENSKILT FALL FÖR ATT BILÄGGA TVISTER SNARARE ÄN DOMSTOSLFÖRHANDLINGAR ELLER GRUPPTALAN.",
   "in_full" : " fullständigt",
-  "user_manual": "Användarmanual"
+  "user_manual": "Användarmanual",
+  "observation": "Observation"
 }

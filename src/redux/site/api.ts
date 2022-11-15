@@ -1,7 +1,7 @@
 import {BaseQueryFn, createApi} from '@reduxjs/toolkit/query/react';
 import {sub as dateSub} from 'date-fns';
 
-import {CatQueryFnParams, CatSiteConfig} from '../../api/types';
+import {CatPersons, CatQueryFnParams, CatSiteConfig} from '../../api/types';
 import {Material} from '../../api/types/cat/material';
 import {ProductionSummary} from '../../api/types/cat/production';
 import {Shift} from '../../api/types/cat/shift';
@@ -9,6 +9,7 @@ import {findMostRecentShift} from '../../api/shift';
 
 import {RootState} from '../index';
 import {invalidateToken, refreshTokenAsyncAction} from '../user/user-slice';
+import {Person} from '../../api/types/cat/person';
 
 export const apiResult = async <T extends {error?: unknown; data?: unknown}>(
   dispatchResult: Promise<T>,
@@ -27,14 +28,22 @@ const catBaseQuery: BaseQueryFn<CatQueryFnParams> = async (
   {method, path, queryParams},
   {getState, dispatch},
 ) => {
-  let auth = (getState() as RootState).user.auth;
+  const state = () => getState() as RootState;
+  const sitesList = state().sitesList;
+  const selectedSite = sitesList.sites.find(
+    site => site.id === sitesList.selectedSiteId,
+  );
+  if (selectedSite === undefined) {
+    return {error: {status: -1, data: new Error('Site not selected')}};
+  }
+  let auth = state().user.auth;
   if (auth) {
     if (
       new Date(auth.accessTokenExpirationDate) <
       dateSub(new Date(), {minutes: 1})
     ) {
       await dispatch(refreshTokenAsyncAction());
-      auth = (getState() as RootState).user.auth;
+      auth = state().user.auth;
     }
   }
   try {
@@ -48,7 +57,7 @@ const catBaseQuery: BaseQueryFn<CatQueryFnParams> = async (
     }
     const response = await fetch(
       //TODO: Use the current site URL
-      `https://stage.minestar.com/rasvalleyclone/core/site/mobile_api/v1/${path}${urlParams}`,
+      `${selectedSite.siteUrl}/core/site/mobile_api/v1/${path}${urlParams}`,
       {
         method,
         headers: {
@@ -87,6 +96,19 @@ export const catApi = createApi({
 
     getSiteConfiguration: builder.query<CatSiteConfig[] | null, void>({
       query: () => ({path: 'config/find', method: 'GET'}),
+    }),
+
+    getPersons: builder.query<CatPersons, void>({
+      query: () => ({path: 'person/find', method: 'GET'}),
+      transformResponse: (persons: Person[]) => {
+        const result: CatPersons = {};
+        persons.forEach(person => {
+          if (person.userName) {
+            result[person.userName] = person;
+          }
+        });
+        return result;
+      },
     }),
 
     productionSummaryForShift: builder.query<

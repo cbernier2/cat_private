@@ -489,6 +489,7 @@
   "personnel_operator_login_id_hint": "Operatör oturum açma kimliği ",
   "personnel_preferred_equipment_hint": "Tercih edilen ekipmanı seçin",
   "personnel_company_hint": "Şirket ismini girin (İsteğe bağlı)",
+  "personnel_company_hint_v2": "Şirket ismini girin İsteğe bağlı",
   "personnel_external_id_hint": "Harici kimlik girin (Şirket Kimliği - ör. 46532 veya şirket e-postası)",
   "personnel_duplicate_name_error": "Adı, soyadı ve tercih edilen adı aynı olan bir kişi zaten var",
   "personnel_duplicate_operator_login_id_error": "${person} aynı operatör oturum açma kimliğine sahiptir",
@@ -1396,5 +1397,6 @@
   "legal_para_3" : "CATERPILLAR VEYA BİR BAYİYLE BU SÖZLEŞMEYİ VEYA BİR ABONELİK SATIN ALMA SÖZLEŞMESİ İMZALAYARAK, BU SÖZLEŞMEYİ “KABUL ET”E TIKLAYARAK VEYA YAZILIMA HERHANGİ BİR KAPASİTE ERİŞEREK VEYA KULLANARAK, (1) REŞİT OLDUĞUNUZU VE BU SÖZLEŞMEYE TARAF OLMAK İÇİN YASAL KAPASİTEYE SAHİP OLDUĞUNUZU KABUL EDERSİNİZ, VE (2) BU TÜR İŞLEMLERİ YAPTIĞINIZ EN ERKEN TARİH (\"YÜRÜRLÜK TARİHİ\") İTİBARİYLE YÜRÜRLÜKTE OLAN BU SÖZLEŞMENİN GEÇERLİ OLDUĞUNU KABUL EDERSİNİZ. BU SÖZLEŞMEYE, ÖRNEĞİN ÇALIŞTIĞINIZ ŞİRKET GİBİ BİR KURUM ADINA TARAF OLUYORSANIZ CATERPILLAR'A, BU KURULUŞUN BAĞLAYICI TARAF OLMASI İÇİN YASAL YETKİYE SAHİP OLDUĞUNUZU BEYAN ETMİŞ OLURSUNUZ.",
   "legal_para_4" : "BU SÖZLEŞME, BÖLÜM 13.8'DEKİ, JÜRİ DAVALARI VEYA TOPLU DAVALAR DEĞİL, ANLAŞMAZLIKLARI ÇÖZMEK İÇİN BİREYSEL OLARAK TAHKİM KULLANILMASINI GEREKTİREN UYUŞMAZLIK HÜKÜMLERİNİN ZORUNLU TAHKİMİNİ İÇERMEKTEDİR.",
   "in_full" : " tamamen.",
-  "user_manual": "Kullanıcı Kılavuzu"
+  "user_manual": "Kullanıcı Kılavuzu",
+  "observation": "Gözlem"
 }

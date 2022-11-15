@@ -11,6 +11,9 @@ const styles = StyleSheet.create({
     zIndex: 1000,
     right: 0,
   },
+  scrollViewContent: {
+    marginBottom: 16,
+  },
 });
 
 export default styles;

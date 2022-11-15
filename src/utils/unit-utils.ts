@@ -5,8 +5,8 @@
 
 import {units} from 'minestar-units';
 import {ObjectUtils} from './object-utils';
-import {UnitType} from '../api/types/cat/common';
 import Unit = units.Unit;
+import {UnitType} from '../api/types/cat/common';
 
 export class UnitUtils {
   public static DEFAULT_LOCAL_UNIT_SYSTEM: string = units.MINING_SI.name;
@@ -64,7 +64,7 @@ export class UnitUtils {
   public static toLocalUnitValue(
     storageValue: number,
     storageUnitNameOrSymbol: string,
-  ): number | undefined {
+  ) {
     if (storageUnitNameOrSymbol) {
       let storageUnit: units.Unit = units.Unit.of(storageUnitNameOrSymbol);
       let localUnit: units.Unit = units.MINING_SI.preferredUnit(
@@ -165,7 +165,7 @@ export class UnitUtils {
     if (toSymbol) {
       key += '_symbol';
     }
-    return key;
+    return 'cat.' + key;
   }
 
   /**
@@ -349,7 +349,10 @@ export class UnitUtils {
    * @param unitNameOrSymbol the unit name or symbol to be converted.
    * @returns the base unit for the specified unit name or symbol.
    */
-  public static toBaseUnit(unitNameOrSymbol: string): units.Unit | null {
+  public static toBaseUnit(unitNameOrSymbol?: string): units.Unit | null {
+    if (!unitNameOrSymbol) {
+      return null;
+    }
     let quantityType: units.QuantityType =
       units.Unit.of(unitNameOrSymbol).quantityType;
     switch (quantityType) {

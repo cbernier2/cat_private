@@ -18,7 +18,7 @@ export const lightTheme: typeof darkTheme = {
   ...base,
   dark: false,
   roundness: 10,
-  version: 3,
+  version: 3, // RNP components sometimes use this to know how to render. Until we're at least on the official RNP.5 release we should leave this there.
   fonts: {
     ...darkTheme.fonts,
     ...base.fonts,

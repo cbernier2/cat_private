@@ -21,13 +21,15 @@ import {
 
 import {SitesListTypes} from './types';
 import styles from './styles';
+import {siteIsLoadingSelector} from '../../redux/site/site-selectors';
 
 export const SitesListScreen: React.FC<SitesListTypes> = props => {
   const root = Boolean(props.route.params?.root);
   const {t} = useTranslation();
   const dispatch = useCatDispatch();
   const error = useCatSelector(sitesErrorSelector);
-  const loading = useCatSelector(sitesLoadingSelector);
+  const loadingSites = useCatSelector(sitesLoadingSelector);
+  const loadingSelectedSite = useCatSelector(siteIsLoadingSelector);
   const sites = useCatSelector(sitesSitesSelector);
   const [filter, setFilter] = useState<string>('');
   const [filteredSites, setFilteredSites] = useState<Site[]>([]);
@@ -71,12 +73,10 @@ export const SitesListScreen: React.FC<SitesListTypes> = props => {
         <List.Section>
           <List.Subheader>{t('my_sites')}</List.Subheader>
           <ScrollView>
-            <ActivityIndicator animating={loading} />
-            <CatError
-              style={styles.mh}
-              visible={Boolean(error)}
-              message={error}
+            <ActivityIndicator
+              animating={loadingSites || loadingSelectedSite}
             />
+            <CatError style={styles.mh} message={error?.message} />
             {/* TODO hide while loading? */}
             {filteredSites.map((site: Site) => (
               <List.Item

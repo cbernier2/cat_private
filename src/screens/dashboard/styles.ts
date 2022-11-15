@@ -16,19 +16,11 @@ export const useStyles = () => {
     activeWorkTitle: {
       marginHorizontal: 16,
     },
-    productionRow: {
+    kpiRow: {
       marginBottom: 16,
     },
-    valuesRowContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'flex-start',
-    },
-    valuesRowText: {
-      fontWeight: 'bold',
-    },
     cardContainer: {
-      width: 220,
+      width: 250,
       padding: 16,
       borderRadius: 16,
       flexDirection: 'column',
@@ -40,6 +32,8 @@ export const useStyles = () => {
     },
     cardTitle: {
       marginBottom: 24,
+      paddingRight: 12,
+      minHeight: 50,
     },
     cardRowsSpacer: {
       height: 8,

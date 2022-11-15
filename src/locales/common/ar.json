@@ -466,6 +466,7 @@
     "personnel_operator_hint": "هذا الفرد مُشَغِل",
     "personnel_preferred_equipment_hint": "اختر المعدة المفضلة",
     "personnel_company_hint": "أدخل اسم الشركة (اختياري)",
+    "personnel_company_hint_v2": "أدخل اسم الشركة",
     "personnel_external_id_hint": "أدخل المعرف الخارجي (هوية الشركة – مثل؛46532 أو عنوان البريد الإلكتروني للشركة)",
     "personnel_duplicate_name_error": "يوجد بالفعل فرد بنفس الاسم الأول والاسم الأخير والاسم المفضل",
     "personnel_archived_person_warning": "تم أرشفة شخص بنفس الاسم الأول والاسم الأخير والاسم المفضل. هل تريد استعادة الفرد الذي تمت أرشفته؟",
@@ -1395,5 +1396,6 @@
     "design_converter_caes_tin_write_error": "خطأ كتابة TIN",
     "on_board_display_stop_icon": "أيقونة التوقف على شاشة العرض داخل الماكينة",
     "coordinate_system_DCCAL_current": "تم استيراد الملف",
-    "geo_design_error_download": "فشل تنزيل الملف، قم بتنظيف البيانات الاصطناعية المتبقية على جهاز USB لتجنب استخدام بيانات اصطناعية جزئية/تالفة"
+    "geo_design_error_download": "فشل تنزيل الملف، قم بتنظيف البيانات الاصطناعية المتبقية على جهاز USB لتجنب استخدام بيانات اصطناعية جزئية/تالفة",
+    "observation": "ملاحظة"
 }

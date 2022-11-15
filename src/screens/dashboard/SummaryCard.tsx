@@ -1,60 +1,61 @@
 import React from 'react';
 import {CatSummaryCardType} from './types';
 import {Surface} from 'react-native-paper';
-import ValuesRow from './ValuesRow';
-import {View, ViewStyle} from 'react-native';
+import {Pressable, View, ViewStyle} from 'react-native';
 import {useStyles} from './styles';
-import {useTranslation} from 'react-i18next';
-import {numberWithCommas, unitTranslateKey} from '../../utils/units';
 import CatTextWithIcon from '../../components/text-with-icon';
+import {formatLabel, formatUnit} from '../../utils/format';
+import CatValuesRow from '../../components/value-row';
 
 const CatSummaryCard: React.FC<CatSummaryCardType> = ({
   title,
-  total,
-  projected,
-  target,
-  unit,
+  summary,
   hasError,
+  onPress,
 }) => {
   const styles = useStyles();
-  const {t} = useTranslation();
 
   const containerStyle: ViewStyle[] = [styles.cardContainer];
   if (hasError) {
     containerStyle.push(styles.cardContainerError);
   }
   return (
-    <Surface elevation={2} style={containerStyle}>
-      <CatTextWithIcon style={styles.cardTitle} {...title} />
-      <ValuesRow
-        values={[
-          {
-            label:
-              t('cat.production_secondary_total') +
-              ' ' +
-              t(unitTranslateKey(unit)),
-            isDown: false,
-            children: numberWithCommas(total),
-            isPrimary: true,
-          },
-        ]}
-      />
-      <View style={styles.cardRowsSpacer} />
-      <ValuesRow
-        values={[
-          {
-            label: t('cat.production_projected'),
-            isDown: false,
-            children: numberWithCommas(projected),
-          },
-          {
-            label: t('cat.production_target'),
-            isDown: hasError,
-            children: numberWithCommas(target),
-          },
-        ]}
-      />
-    </Surface>
+    <Pressable onPress={onPress}>
+      <Surface elevation={2} style={containerStyle}>
+        <View style={styles.cardTitle}>
+          <CatTextWithIcon {...title} />
+        </View>
+        <CatValuesRow
+          values={[
+            {
+              label: formatLabel(
+                'cat.production_secondary_total',
+                summary.totalLoadsUnit,
+              ),
+              children: formatUnit(summary.totalValue),
+              isPrimary: true,
+            },
+          ]}
+        />
+        <View style={styles.cardRowsSpacer} />
+        <CatValuesRow
+          values={[
+            {
+              label: formatLabel(
+                'production_projected_short',
+                summary.projectedUnit,
+              ),
+              children: formatUnit(summary.projectedValue),
+            },
+            {
+              label: formatLabel('cat.production_target', summary.targetUnit),
+              children: formatUnit(summary.targetValue),
+              isDown: hasError,
+            },
+          ]}
+        />
+      </Surface>
+    </Pressable>
   );
 };
 

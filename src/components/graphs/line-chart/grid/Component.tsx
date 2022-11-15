@@ -6,7 +6,6 @@ import moment from 'moment-timezone';
 import {
   shiftNominalOperationalTimelineSelector,
   siteClockIs24HourSelector,
-  siteTimezoneSelector,
 } from '../../../../redux/site/site-selectors';
 
 import {GridType} from './types';
@@ -17,7 +16,6 @@ export const Grid: React.FC<GridType> = props => {
   const nominalOperationalTime = useSelector(
     shiftNominalOperationalTimelineSelector,
   );
-  const timezone = useSelector(siteTimezoneSelector);
   const clockIs24 = useSelector(siteClockIs24HourSelector);
 
   const timeFormat = clockIs24 ? 'HH:mm' : 'ha';
@@ -43,7 +41,7 @@ export const Grid: React.FC<GridType> = props => {
   const x_step_length = (end - start) / x_steps;
   const verticalLines = Array.apply(null, Array(x_steps + 1)).map((_, i) => {
     const value = firstHour + i * x_step_length;
-    const hour = moment(value).tz(timezone).format(timeFormat);
+    const hour = moment(value).format(timeFormat);
     return {
       x: x_scale(value),
       value: i % 2 ? hour : '',
@@ -59,14 +57,13 @@ export const Grid: React.FC<GridType> = props => {
     value: value,
   }));
 
-  const backgroundTimeline: string[] = nominalOperationalTime.map(
-    (operation: any) => {
+  const backgroundTimeline: string[] =
+    nominalOperationalTime?.map((operation: any) => {
       const x1 = x_scale(operation.startTime);
       const x2 = x_scale(operation.endTime);
 
       return `${x1},0 ${x1},${y_0} ${x2},${y_0} ${x2},0`;
-    },
-  );
+    }) ?? [];
 
   return (
     <G>

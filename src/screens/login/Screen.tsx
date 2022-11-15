@@ -45,7 +45,7 @@ const LoginScreen: React.FC<LoginScreenType> = () => {
           {t('cat.login_sign_in')}
         </CatText>
 
-        <CatError visible={Boolean(loginError)} message={loginError} />
+        <CatError message={loginError} />
 
         <CatButton disabled={isLogin} onPress={login} style={styles.submit}>
           {buttonLabel}

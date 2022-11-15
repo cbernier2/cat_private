@@ -14,7 +14,6 @@ export const transformSummaries = (
   }
 
   return {
-    ...summaries,
     siteSummary: transformSiteSummary(
       summaries.siteSummary,
       materials,
@@ -25,5 +24,9 @@ export const transformSummaries = (
       materials,
       defaultUnit,
     ),
+    routeSummaries: summaries.routeSummaries.map(routeSummary => ({
+      ...transformSiteSummary(routeSummary, materials, defaultUnit),
+      route: {name: routeSummary.route.name},
+    })),
   };
 };

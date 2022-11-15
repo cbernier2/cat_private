@@ -466,6 +466,7 @@
     "personnel_operator_hint": "Esta persona es un operador",
     "personnel_preferred_equipment_hint": "Seleccionar equipo preferido",
     "personnel_company_hint": "Ingresar el nombre de la empresa (opcional)",
+    "personnel_company_hint_v2": "Ingresar el nombre de la empresa",
     "personnel_external_id_hint": "Ingresar ID externa (ID de empresa, por ej., 46532 o el correo electrónico de la empresa)",
     "personnel_duplicate_name_error": "Ya existe una persona con el mismo nombre, apellido y nombre preferido",
     "personnel_archived_person_warning": "Se ha archivado una persona con el mismo nombre, apellido y nombre preferido. ¿Desea restaurar la persona archivada?",
@@ -1395,5 +1396,6 @@
     "design_converter_caes_tin_write_error": "Error de escritura TIN",
     "on_board_display_stop_icon": "Ícono de parada de la pantalla de a bordo",
     "coordinate_system_DCCAL_current": "Archivo importado",
-    "geo_design_error_download": "Error en la descarga de archivos, limpie los artefactos residuales en la memoria USB para evitar el uso de artefactos parciales o dañados"
+    "geo_design_error_download": "Error en la descarga de archivos, limpie los artefactos residuales en la memoria USB para evitar el uso de artefactos parciales o dañados",
+    "observation": "Observación"
 }

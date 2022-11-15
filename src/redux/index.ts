@@ -3,7 +3,7 @@ import user from './user/user-slice';
 import app, {offlineQueueTest} from './app/app-slice';
 import sitesList from './sites-list/sites-slice';
 import site from './site/site-slice';
-import {createTransform, persistReducer, persistStore} from 'redux-persist';
+import {persistReducer, persistStore} from 'redux-persist';
 import thunk from 'redux-thunk';
 import {
   reducer as network,
@@ -11,64 +11,25 @@ import {
 } from 'react-native-offline';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {catApi} from './site/api';
+import {networkTransform} from '../utils/offline';
 
-const offlineActions = {offlineQueueTest};
+const combinedReducer = combineReducers({
+  user,
+  app,
+  network,
+  site,
+  sitesList,
+  [catApi.reducerPath]: catApi.reducer,
+});
 
 export const rootReducer = persistReducer(
   {
     key: 'root',
     storage: AsyncStorage,
     blacklist: ['user', 'app', 'site', 'sitesList', catApi.reducerPath],
-    transforms: [
-      createTransform(
-        (inboundState: any) => {
-          const actionQueue: any[] = [];
-          console.log('inbound', JSON.stringify(inboundState));
-
-          inboundState.actionQueue.forEach((action: any) => {
-            if (typeof action === 'function') {
-              actionQueue.push({
-                function: action.meta.name,
-                args: action.meta.args,
-              });
-            } else if (typeof action === 'object') {
-              actionQueue.push(action);
-            }
-          });
-
-          return {
-            ...inboundState,
-            actionQueue,
-          };
-        },
-        (outboundState: any) => {
-          const actionQueue: any[] = [];
-          console.log('outbound', JSON.stringify(outboundState));
-
-          outboundState.actionQueue.forEach((action: any) => {
-            if (action.function) {
-              // @ts-ignore
-              const actionFunction = offlineActions[action.function];
-              actionQueue.push(actionFunction(...action.args));
-            } else {
-              actionQueue.push(action);
-            }
-          });
-
-          return {...outboundState, actionQueue};
-        },
-        {whitelist: ['network']},
-      ),
-    ],
+    transforms: [networkTransform({offlineQueueTest})],
   },
-  combineReducers({
-    user,
-    app,
-    network,
-    site,
-    sitesList,
-    [catApi.reducerPath]: catApi.reducer,
-  }),
+  combinedReducer,
 );
 
 const networkMiddleware = createNetworkMiddleware({
@@ -77,7 +38,7 @@ const networkMiddleware = createNetworkMiddleware({
 });
 
 export const store = configureStore({
-  reducer: rootReducer,
+  reducer: rootReducer as typeof combinedReducer,
   middleware: getDefaultMiddleware => [
     networkMiddleware,
     ...getDefaultMiddleware({

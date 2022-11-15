@@ -2,6 +2,8 @@
 
 import {Material} from './material';
 
+export const UNDEFINED_VALUE = '--';
+
 /**
  * Unit system constants used in the site which represent unit.UnitSystem
  * instances of the 'MINING_SI' and 'MINING_IMPERIAL' constant unit systems

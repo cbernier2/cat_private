@@ -28,6 +28,7 @@ export interface Timeline {
 export interface Summary {
   id: string;
   name: string;
+  '@type': string;
   startTime: number;
   endTime: number;
   deleted: boolean;
@@ -112,9 +113,13 @@ export interface Summary {
   averageSlopeDistanceEmpty: number;
   averageSlopeDistanceFull: number;
   lengthUnit: string;
-
-  // missing from source
+  target: number;
   targetUnit: string;
+  currentHourLoads: number;
+  preferredProdVolumetricFlowRateUnit: string;
+  preferredProdVolumeUnit: string;
+  averageQueuingDurationEmpty: number;
+  averageQueuingDurationFull: number;
   cumulativeTarget: Labelable & {
     values: Array<{value: number} & Timestampable>;
   };

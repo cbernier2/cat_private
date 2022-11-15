@@ -1,11 +1,11 @@
 import {TimeData} from '../types';
 
 export interface LineChartType {
-  endTime: number;
+  endTime?: number;
   maxThreshold?: TimeData[];
   minThreshold?: TimeData[];
   projected?: TimeData[];
-  startTime: number;
+  startTime?: number;
   target?: TimeData[];
-  values: TimeData[];
+  values?: TimeData[];
 }

@@ -1,26 +1,17 @@
 import {MaterialBottomTabNavigationProp} from '@react-navigation/material-bottom-tabs';
 import {ReactNode} from 'react';
-import {ViewStyle} from 'react-native';
-import {units} from 'minestar-units';
-import {CatTextWithLabelType} from '../../components/text-with-label/types';
 import {CatTextWithIconType} from '../../components/text-with-icon/types';
+import {CatSiteSummary} from '../../redux/site/helpers/transformSiteSummary';
 
 export type ScreenType = {
   navigation: MaterialBottomTabNavigationProp<any>;
 };
 
-export type CatValuesRowType = {
-  style?: ViewStyle;
-  values: CatTextWithLabelType[];
-};
-
 export type CatSummaryCardType = {
   title: CatTextWithIconType;
   hasError: boolean;
-  total: number;
-  projected: number;
-  target: number;
-  unit: units.Unit;
+  summary: CatSiteSummary;
+  onPress: () => void;
 };
 
 export type CatActiveItemsSectionType = {

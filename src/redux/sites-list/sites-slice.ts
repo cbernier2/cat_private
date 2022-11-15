@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {sleep} from '../../utils/promise';
 
 import {logoutAsyncAction} from '../user/user-slice';
-import {fetchSiteAsyncAction} from '../site/site-slice';
+import {fetchSiteAsyncAction, actions as siteActions} from '../site/site-slice';
 
 export const key = 'sitesList';
 
@@ -35,12 +35,12 @@ const mockSitesList: Site[] = [
   {
     id: 'rasvalleyclone',
     name: 'Rasmussen Valley Clone',
-    siteUrl: 'https://stage.minestar.com/rasvalleyclone/',
+    siteUrl: 'https://stage.minestar.com/rasvalleyclone',
   },
   {
     id: 'floridacanyonclone',
     name: 'Florida Canyon Clone',
-    siteUrl: 'https://dev.minestar.com/floridacanyonclone/',
+    siteUrl: 'https://dev.minestar.com/floridacanyonclone',
   },
 ];
 export const fetchSitesAsyncAction = createAsyncThunk(
@@ -55,6 +55,7 @@ export const fetchSitesAsyncAction = createAsyncThunk(
 export const selectSiteAsyncAction = createAsyncThunk<void, Site | null>(
   `${key}/selectSite`,
   async (_, {dispatch}) => {
+    await dispatch(siteActions.siteSelected());
     await dispatch(fetchSiteAsyncAction());
   },
 );
