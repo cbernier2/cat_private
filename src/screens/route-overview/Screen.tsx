@@ -116,11 +116,14 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
                   style={styles.areaText}
                   iconNode={
                     <View style={styles.areaIconContainer}>
-                      {React.createElement(routeArea.icon, {
-                        fill: '#FFF',
-                        width: 28,
-                        height: 28,
-                      })}
+                      {
+                        /* TODO: Use the EquipmentIcon component */
+                        React.createElement(routeArea.icon, {
+                          fill: '#FFF',
+                          width: 28,
+                          height: 28,
+                        })
+                      }
                     </View>
                   }>
                   {routeArea.name}
