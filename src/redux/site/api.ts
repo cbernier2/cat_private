@@ -10,6 +10,7 @@ import {findMostRecentShift} from '../../api/shift';
 import {RootState} from '../index';
 import {invalidateToken, refreshTokenAsyncAction} from '../user/user-slice';
 import {Person} from '../../api/types/cat/person';
+import {CatHaulCycle} from '../../api/types/haul-cycle';
 
 export const apiResult = async <T extends {error?: unknown; data?: unknown}>(
   dispatchResult: Promise<T>,
@@ -122,6 +123,14 @@ export const catApi = createApi({
       transformResponse: (productionSummaries: ProductionSummary[]) => {
         return productionSummaries.length ? productionSummaries[0] : null;
       },
+    }),
+
+    cyclesForShift: builder.query<CatHaulCycle[], {shiftId: string}>({
+      query: queryParams => ({
+        path: 'production/cycles/findForShift',
+        method: 'GET',
+        queryParams,
+      }),
     }),
   }),
 });

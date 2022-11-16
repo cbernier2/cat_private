@@ -4,7 +4,10 @@ import {RootState} from '../../redux';
 import {SvgProps} from 'react-native-svg';
 import LoadAreaSvg from 'assets/icons/load_area.svg';
 import DumpAreaSvg from 'assets/icons/dump.svg';
-import {currentRouteSelector} from '../../redux/site/site-selectors';
+import {
+  currentRouteHaulCycles,
+  currentRouteSelector,
+} from '../../redux/site/site-selectors';
 import {CatSiteSummary} from '../../redux/site/helpers/transformSiteSummary';
 
 export const currentRouteAreasSelector = createSelector(
@@ -42,5 +45,41 @@ export const currentRouteAreasSelector = createSelector(
       });
     }
     return routeAreas;
+  },
+);
+
+export const currentRouteEquipmentsSelector = createSelector(
+  currentRouteHaulCycles,
+  (state: RootState) => state.site.productionSummary?.loadEquipSummaries,
+  (state: RootState) => state.site.productionSummary?.haulEquipSummaries,
+  (haulCycles, loadEquipSummaries, haulEquipSummaries) => {
+    const loadEquipmentsIds = new Set();
+    const haulEquipmentsIds = new Set();
+    haulCycles.forEach(haulCycle => {
+      loadEquipmentsIds.add(haulCycle.loadEquipment);
+      haulEquipmentsIds.add(haulCycle.haulEquipment);
+    });
+    return [
+      ...(
+        loadEquipSummaries?.filter(loadEquipSummary =>
+          loadEquipmentsIds.has(loadEquipSummary.equipment?.id),
+        ) ?? []
+      )
+        .sort((a, b) => a.equipment!.name.localeCompare(b.equipment!.name))
+        .map(loadEquipSummary => ({
+          ...loadEquipSummary,
+          isLoad: true,
+        })),
+      ...(
+        haulEquipSummaries?.filter(haulEquipSummary =>
+          haulEquipmentsIds.has(haulEquipSummary.equipment?.id),
+        ) ?? []
+      )
+        .sort((a, b) => a.equipment!.name.localeCompare(b.equipment!.name))
+        .map(haulEquipSummary => ({
+          ...haulEquipSummary,
+          isLoad: false,
+        })),
+    ];
   },
 );

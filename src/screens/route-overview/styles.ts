@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   cardsContainer: {
-    marginVertical: 12,
+    marginTop: 12,
   },
   cardContainer: {
     width: '100%',
@@ -43,6 +43,9 @@ const styles = StyleSheet.create({
     marginRight: 8,
     borderRadius: 16,
     backgroundColor: 'black',
+  },
+  equipTitle: {
+    marginTop: 20,
   },
 });
 

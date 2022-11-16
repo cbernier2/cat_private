@@ -18,6 +18,7 @@ import {apiResult, catApi} from './api';
 import {transformConfig} from './helpers/transformConfig';
 import {transformSummaries} from './helpers/transformSummaries';
 import moment from 'moment';
+import {CatHaulCycle} from '../../api/types/haul-cycle';
 
 export const key = 'site';
 
@@ -29,6 +30,7 @@ export interface SiteState {
   currentShift: Shift | null;
   materials: Material[];
   productionSummary: ReturnType<typeof transformSummaries> | null;
+  haulCycles: CatHaulCycle[];
   siteConfig: SiteConfig;
 }
 
@@ -40,6 +42,7 @@ const initialState: SiteState = {
   currentShift: null,
   materials: [],
   productionSummary: null,
+  haulCycles: [],
   siteConfig: {},
 };
 
@@ -80,7 +83,20 @@ export const fetchSiteAsyncAction = createAsyncThunk(
           ),
         );
       }
-      return {currentShift, materials, productionSummary, siteConfig};
+      const haulCycles = await apiResult(
+        dispatch(
+          catApi.endpoints.cyclesForShift.initiate({
+            shiftId: currentShift.id,
+          }),
+        ),
+      );
+      return {
+        currentShift,
+        materials,
+        productionSummary,
+        haulCycles,
+        siteConfig,
+      };
     } catch (e) {
       return rejectWithValue(e);
     }
@@ -96,6 +112,7 @@ const slice = createSlice({
       state.materials = [];
       state.currentShift = null;
       state.productionSummary = null;
+      state.haulCycles = [];
       state.lastUpdate = null;
       state.persons = {};
     },
@@ -121,6 +138,7 @@ const slice = createSlice({
 
         state.currentShift = action.payload.currentShift;
         state.materials = action.payload.materials;
+        state.haulCycles = action.payload.haulCycles;
         state.siteConfig = config;
 
         state.productionSummary =
