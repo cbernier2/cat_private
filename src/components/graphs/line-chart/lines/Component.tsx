@@ -19,7 +19,7 @@ export const Lines: React.FC<LinesType> = props => {
     y_scale,
   } = props;
 
-  if (!target.length || !projected.length) {
+  if (!values.length || !projected.length) {
     return null;
   }
 

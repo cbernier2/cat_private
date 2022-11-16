@@ -1,23 +1,24 @@
+import {CatColumn, MaterialLegend} from '../../../api/types';
 import {TimeData} from '../../../components/graphs/types';
 import {UnitType} from '../../../api/types/cat/common';
-import {CatColumn} from '../../../api/types';
 
 export type UnitData = {
-  cumulativeValues: TimeData[];
-  projectedCumulativeValues: TimeData[];
-  totalValue: number;
-  totalUnit: string;
-  averageValue: number;
   averageUnit: string;
-  projectedValue: number;
-  projectedUnit: string;
-  currentHourValue: number;
+  averageValue: number;
+  cumulativeValues: TimeData[];
   currentHourUnit: string;
-  variationValue: number;
-  variationUnit: string;
-  targetValue: number;
+  currentHourValue: number;
+  materialLegend: MaterialLegend[];
+  projectedCumulativeValues: TimeData[];
+  projectedUnit: string;
+  projectedValue: number;
   targetUnit: string;
+  targetValue: number;
   totalLoadsUnit: string;
+  totalUnit: string;
+  totalValue: number;
+  variationUnit: string;
+  variationValue: number;
   currentRateValue: number;
   currentRateUnit: string;
 };

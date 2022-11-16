@@ -4,8 +4,8 @@ export type Pattern = keyof typeof patterns;
 
 export interface PatternType {
   background: string;
-  foreground?: string;
-  pattern?: Pattern;
+  foreground?: string | null;
+  pattern?: Pattern | null;
 }
 
 export interface FlatType {

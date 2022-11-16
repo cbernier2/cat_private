@@ -48,9 +48,8 @@ export const Grid: React.FC<GridType> = props => {
     };
   });
 
-  const y_ticks: number[] = y_scale
-    .ticks(3)
-    .filter(tick => !y_scale.domain().includes(tick));
+  const y_ticks: number[] =
+    y_scale.ticks(3).filter(tick => !y_scale.domain().includes(tick)) ?? [];
 
   const horizontalLines = y_ticks.map(value => ({
     y: y_scale(value),
