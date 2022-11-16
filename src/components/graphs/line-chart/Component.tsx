@@ -43,6 +43,10 @@ export const LineChart: React.FC<LineChartType> = props => {
     return () => subscription?.remove();
   }, [setWidth]);
 
+  if (props.showIf === false) {
+    return null;
+  }
+
   if (!values || !values.length) {
     return (
       <View style={styles.noData}>

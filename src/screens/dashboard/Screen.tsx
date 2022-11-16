@@ -10,10 +10,6 @@ import CatSwitch from '../../components/switch';
 import CatAccordion from '../../components/accordion';
 import useCatSelector from '../../hooks/useCatSelector';
 import {
-  shiftEndTimeSelector,
-  shiftStartTimeSelector,
-} from '../../redux/site/site-selectors';
-import {
   formatLabel,
   formatMinutesOnly,
   formatNumber,
@@ -23,8 +19,8 @@ import {CatTextWithLabelType} from '../../components/text-with-label/types';
 import CatValuesRow from '../../components/value-row';
 import {actions as siteActions} from '../../redux/site/site-slice';
 import useCatDispatch from '../../hooks/useCatDispatch';
-import {LineChart} from '../../components/graphs/line-chart/Component';
 import {sitesSelectedSiteSelector} from '../../redux/sites-list/sites-selectors';
+import {SummaryGraphs} from '../../components/summary-graphs/Component';
 
 import {ScreenType} from './types';
 import {useStyles} from './styles';
@@ -39,8 +35,6 @@ const DashboardScreen: React.FC<ScreenType> = ({navigation}) => {
   const {colors} = useCatTheme();
   const styles = useStyles();
   const selectedSite = useCatSelector(sitesSelectedSiteSelector);
-  const shiftEndTime = useCatSelector(shiftEndTimeSelector);
-  const shiftStartTime = useCatSelector(shiftStartTimeSelector);
   const productionSummary = useCatSelector(
     state => state.site.productionSummary,
   );
@@ -49,14 +43,6 @@ const DashboardScreen: React.FC<ScreenType> = ({navigation}) => {
     : productionSummary?.siteSummary;
   const routeSummaries = productionSummary?.routeSummaries || [];
   const workSummaryCount = routeSummaries.length;
-
-  const cumulativeTargetMaxThreshold = summary?.cumulativeTargetMaxThreshold;
-  const cumulativeTargetMinThreshold = summary?.cumulativeTargetMinThreshold;
-  const cumulativeTarget = summary?.cumulativeTarget;
-  const cumulativeValues = summary?.cumulativeValues;
-  const projectedCumulativeValues = summary?.projectedCumulativeValues;
-  const materialLegend = summary?.materialLegend;
-  const materialTimeSeries = summary?.materialTimeSeries;
 
   const kpiRowJSX = (values: CatTextWithLabelType[]) => (
     <CatValuesRow style={styles.kpiRow} values={values} />
@@ -139,17 +125,7 @@ const DashboardScreen: React.FC<ScreenType> = ({navigation}) => {
         {kpiRow1}
         <CatAccordion>
           {kpiRow2}
-          <LineChart
-            endTime={shiftEndTime}
-            materialLegend={materialLegend}
-            materialTime={materialTimeSeries}
-            maxThreshold={cumulativeTargetMaxThreshold}
-            minThreshold={cumulativeTargetMinThreshold}
-            projected={projectedCumulativeValues}
-            startTime={shiftStartTime}
-            target={cumulativeTarget}
-            values={cumulativeValues}
-          />
+          <SummaryGraphs summary={summary!} />
         </CatAccordion>
       </View>
       <CatText style={styles.activeWorkTitle} variant={'headlineSmall'}>

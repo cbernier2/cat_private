@@ -9,6 +9,7 @@ export interface LineChartType {
   maxThreshold?: TimeData[];
   minThreshold?: TimeData[];
   projected?: TimeData[];
+  showIf?: boolean;
   startTime?: number;
   target?: TimeData[];
   values?: TimeData[];
