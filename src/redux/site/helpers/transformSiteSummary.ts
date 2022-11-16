@@ -144,6 +144,15 @@ const getUnitData = (
       summary,
       SUMMARY_COLUMNS.total[UnitType.LOAD].unit,
     ),
+    currentRateValue: UnitUtils.toDisplayValue(
+      summary,
+      SUMMARY_COLUMNS.currentRate[unitType].key,
+      SUMMARY_COLUMNS.currentRate[unitType].unit,
+    ),
+    currentRateUnit: UnitUtils.toDisplayUnit(
+      summary,
+      SUMMARY_COLUMNS.currentRate[unitType].unit,
+    ),
   };
 };
 

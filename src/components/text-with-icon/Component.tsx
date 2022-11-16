@@ -9,6 +9,7 @@ const CatTextWithIcon: React.FC<CatTextWithIconType> = props => {
   const {colors} = useCatTheme();
 
   const {
+    iconNode,
     icon,
     iconColor = colors.label,
     iconSize = 24,
@@ -19,11 +20,13 @@ const CatTextWithIcon: React.FC<CatTextWithIconType> = props => {
 
   return (
     <View style={styles.container}>
-      {React.createElement(icon, {
-        fill: iconColor,
-        width: iconSize,
-        height: iconSize,
-      })}
+      {icon !== undefined &&
+        React.createElement(icon, {
+          fill: iconColor,
+          width: iconSize,
+          height: iconSize,
+        })}
+      {iconNode !== undefined && iconNode}
       <CatText
         variant={variant}
         style={[styles.text, textStyle]}

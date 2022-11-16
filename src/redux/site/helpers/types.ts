@@ -19,6 +19,8 @@ export type UnitData = {
   totalValue: number;
   variationUnit: string;
   variationValue: number;
+  currentRateValue: number;
+  currentRateUnit: string;
 };
 
 // Base on Cat's web app: src/common/pages/site-board/bottom-panel/bottom-panel-summary-abstract.card.ts
@@ -60,10 +62,13 @@ const summaryColumns = {
     },
     [UnitType.LOAD]: {key: 'variationLoads', unit: 'loadUnit'},
   },
-  shiftToDate: {
-    [UnitType.MASS]: {key: 'totalMass', unit: 'massUnit'},
-    [UnitType.VOLUME]: {key: 'totalVolume', unit: 'preferredProdVolumeUnit'},
-    [UnitType.LOAD]: {key: 'totalLoads', unit: 'loadUnit'},
+  currentRate: {
+    [UnitType.MASS]: {key: 'currentMassRate', unit: 'massFlowRateUnit'},
+    [UnitType.VOLUME]: {
+      key: 'currentVolumeRate',
+      unit: 'preferredProdVolumetricFlowRateUnit',
+    },
+    [UnitType.LOAD]: {key: 'currentLoadRate', unit: 'loadRateUnit'},
   },
 };
 

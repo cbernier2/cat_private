@@ -4,7 +4,8 @@ import {SvgProps} from 'react-native-svg';
 import {ColorValue} from 'react-native';
 
 export type CatTextWithIconType = ComponentProps<typeof Text> & {
-  icon: React.FC<SvgProps>;
+  iconNode?: React.ReactNode;
+  icon?: React.FC<SvgProps>;
   iconSize?: number;
   iconColor?: ColorValue;
 };
