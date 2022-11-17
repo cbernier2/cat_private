@@ -3,8 +3,7 @@
 import {Shift} from './shift';
 import {CategoryType, EquipmentOperationalStatus} from './common';
 import {EquipmentType as UnifiedEquipmentType} from 'minestar-equipment-defs';
-
-declare var moment: any;
+import moment from 'moment';
 
 /**
  * Although these are explicitly 'Vehicle types' vehicles are a classified

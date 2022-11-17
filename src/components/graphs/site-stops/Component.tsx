@@ -4,7 +4,6 @@ import Svg, {Circle, Defs, G, Line} from 'react-native-svg';
 import * as scale from 'd3-scale';
 
 import useCatTheme from '../../../hooks/useCatTheme';
-import {IEquipment} from '../../../redux/equipments/types';
 import {IStop} from '../../../redux/stops/types';
 
 import {Pattern} from '../pattern/Component';
@@ -16,12 +15,13 @@ import StopsMock from './stops.mock.json';
 import {SiteStopsEquipments} from './equipments/Component';
 import {SiteStopsHeader} from './header/Component';
 import {SiteStopsStops} from './stops/Component';
+import {Equipment} from '../../../api/types/cat/equipment';
 
 const window = Dimensions.get('window');
 
 export const SiteStopsChart: React.FC<SiteStopsChartType> = () => {
   const theme = useCatTheme();
-  const equipments = EquipmentsMock as IEquipment[];
+  const equipments = EquipmentsMock as Equipment[];
   const stops = StopsMock as IStop[];
 
   const rowHeight = 50;

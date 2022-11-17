@@ -4,7 +4,7 @@ import moment from 'moment';
 import {sleep} from '../../utils/promise';
 import {RootState} from '../index';
 
-const CAT_SITE_REFRESH_FREQUENCY_SECONDS = 60 * 5;
+const CAT_SITE_REFRESH_FREQUENCY_SECONDS = 60 * 15;
 const CAT_SITE_REFRESH_FREQUENCY_MS = CAT_SITE_REFRESH_FREQUENCY_SECONDS * 1000;
 
 let isBackgroundFetchStarted = false;

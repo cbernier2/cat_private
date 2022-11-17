@@ -1,13 +1,9 @@
 import {createIconSet} from 'react-native-vector-icons';
-import {glyphMap} from './glyph-map';
+import {minestarIconsMap} from './icons-map';
 import React from 'react';
-import {IconProps} from 'react-native-vector-icons/Icon';
+import {MinestarIconProps} from './types';
 
-export interface MinestarIconProps extends IconProps {
-  name: keyof typeof glyphMap;
-}
-
-const Icon = createIconSet(glyphMap, 'minestar-icons');
+const Icon = createIconSet(minestarIconsMap, 'minestar-icons');
 
 export const MinestarIcon: React.FC<MinestarIconProps> = props => (
   <Icon {...props} />

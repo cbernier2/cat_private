@@ -1,10 +1,16 @@
-import {IEquipment} from '../../redux/equipments/types';
+import {MinestarIconName} from '../minestar-icon/types';
+import {ColorValue} from 'react-native';
 
 export interface EquipmentIconType {
-  equipment: IEquipment;
-  height?: number;
-  width?: number;
+  name: MinestarIconName;
+  iconSize?: number;
+  padding?: number;
+  borderWidth?: number;
+  badgeRadius?: number;
   badge?: number;
+  iconColor: ColorValue;
+  fillColor?: ColorValue;
+  borderColor?: ColorValue;
 }
 
 export interface ForeignEquipmentIconType extends EquipmentIconType {

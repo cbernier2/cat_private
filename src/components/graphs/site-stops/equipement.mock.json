@@ -2,9 +2,6 @@
   {
     "id": "5937ab6c-b397-42b5-b15a-30b0314dd5df",
     "name": "05-726",
-    "startTime": 1643744608892,
-    "endTime": 9007199254740991,
-    "deleted": false,
     "type": "Dozer",
     "length": 8.229999542236328,
     "subscriptions": [
@@ -16,9 +13,6 @@
   {
     "id": "b7e38d23-da6c-48f8-a380-7001977b20af",
     "name": " 13-593",
-    "startTime": 1618279205933,
-    "endTime": 9007199254740991,
-    "deleted": false,
     "type": "Scraper",
     "length": 10.0,
     "subscriptions": [
@@ -30,9 +24,6 @@
   {
     "id": "a7c60f75-2288-4d21-818a-1f05504a85dc",
     "name": "13-596",
-    "startTime": 1618279207241,
-    "endTime": 9007199254740991,
-    "deleted": false,
     "type": "Scraper",
     "length": 10.0,
     "subscriptions": [
@@ -44,9 +35,6 @@
   {
     "id": "ec050415-5bc5-421a-9d9e-7f61c2387f0e",
     "name": "FILL-IN D",
-    "startTime": 1618279224500,
-    "endTime": 9007199254740991,
-    "deleted": false,
     "type": "LightVehicle",
     "length": 10.0,
     "subscriptions": [
@@ -58,9 +46,6 @@
   {
     "id": "9684b7c6-ba44-4025-9a5d-8f97f0bc7444",
     "name": "DB4",
-    "startTime": 1618279221141,
-    "endTime": 9007199254740991,
-    "deleted": false,
     "type": "LightVehicle",
     "length": 10.0,
     "subscriptions": [],
