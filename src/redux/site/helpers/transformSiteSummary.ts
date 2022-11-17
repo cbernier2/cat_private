@@ -193,7 +193,12 @@ export const transformSiteSummary = (
     ? UnitUtils.toBaseUnit(summary.targetUnit)?.name ?? ''
     : '';
 
-  let hourlyTargetData = {};
+  let hourlyTargetData: {
+    hourlyTarget?: number;
+    hourlyTargetMaxThreshold?: number;
+    hourlyTargetMinThreshold?: number;
+  } = {};
+
   if (
     summary.target &&
     summary.targetUnit &&
