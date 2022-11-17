@@ -24,6 +24,7 @@ import CatDrawer from './drawer';
 import CatDrawerIcon from './header/DrawerIcon';
 import CatHeader from './header';
 import CatSyncStatus from './header/SyncStatus';
+import { StatusBar } from "react-native";
 
 const SummaryStack = createStackNavigator();
 const SummaryNavigator = () => (
@@ -111,6 +112,7 @@ const CatNavigation = () => {
 
   return (
     <PaperProvider theme={theme as ThemeProp}>
+      <StatusBar barStyle={theme.dark ? 'light-content' : 'dark-content'} />
       <NavigationContainer theme={theme}>
         <MainStack.Navigator screenOptions={{headerShown: false}}>
           {userToken === null ? (
