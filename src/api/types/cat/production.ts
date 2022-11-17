@@ -116,6 +116,8 @@ export interface Summary {
   averageSlopeDistanceFull: number;
   lengthUnit: string;
   target: number;
+  targetMaxThreshold: number;
+  targetMinThreshold: number;
   targetUnit: string;
   currentHourLoads: number;
   averageQueuingDurationEmpty: number;

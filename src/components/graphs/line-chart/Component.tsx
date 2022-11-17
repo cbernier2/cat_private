@@ -1,27 +1,28 @@
-import React, {useEffect, useState} from 'react';
-import {Dimensions, View} from 'react-native';
+import React from 'react';
+import {View} from 'react-native';
 import Svg from 'react-native-svg';
 import * as scale from 'd3-scale';
 import moment from 'moment-timezone';
 import {useTranslation} from 'react-i18next';
 
-import CatText from '../../text';
+import {useWidth} from '../../../hooks/useWidth';
 
+import CatText from '../../text';
+import {withShowIf} from '../../with-show-if/Component';
+
+import {Grid} from '../common/grid/Component';
 import {NowMarker} from '../common/now-marker/Component';
 import {MaterialTimeLine} from '../material-time-line/Component';
 
 import {getMaxValue} from './functions';
-import {Grid} from './grid/Component';
 import {Lines} from './lines/Component';
 import {LineChartType} from './types';
 import {styles} from './styles';
 
-const window = Dimensions.get('window');
-
 // TODO some line-charts can have an offset (whatever that means)
 //  but this is not something that can happen with siteLoad and siteDump summaries.
 //  Therefore, offsets have been omitted for this iteration
-export const LineChart: React.FC<LineChartType> = props => {
+export const LineChart = withShowIf((props: LineChartType) => {
   const {
     endTime = 0,
     materialLegend = [],
@@ -35,17 +36,7 @@ export const LineChart: React.FC<LineChartType> = props => {
   } = props;
 
   const {t} = useTranslation();
-  const [width, setWidth] = useState(window.width - 30);
-  useEffect(() => {
-    const subscription = Dimensions.addEventListener('change', d => {
-      setWidth(d.window.width - 30);
-    });
-    return () => subscription?.remove();
-  }, [setWidth]);
-
-  if (props.showIf === false) {
-    return null;
-  }
+  const width = useWidth();
 
   if (!values || !values.length) {
     return (
@@ -98,4 +89,4 @@ export const LineChart: React.FC<LineChartType> = props => {
       />
     </>
   );
-};
+});

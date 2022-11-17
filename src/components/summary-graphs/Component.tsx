@@ -37,7 +37,18 @@ export const SummaryGraphs: React.FC<SummaryGraphsType> = props => {
           target={summary.cumulativeTarget}
           values={summary.cumulativeValues}
         />
-        <BarChart showIf={isView('bar')} />
+        <BarChart
+          average={summary.averageHourlyValue}
+          endTime={shiftEndTime}
+          materialLegend={summary.materialLegend}
+          materialTime={summary.materialTimeSeries}
+          maxThreshold={summary.hourlyTargetMaxThreshold}
+          minThreshold={summary.hourlyTargetMinThreshold}
+          showIf={isView('bar')}
+          startTime={shiftStartTime}
+          target={summary.hourlyTarget}
+          values={summary.hourlyValues}
+        />
       </View>
     </TouchableWithoutFeedback>
   );

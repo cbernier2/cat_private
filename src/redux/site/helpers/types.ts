@@ -3,6 +3,8 @@ import {TimeData} from '../../../components/graphs/types';
 import {UnitType} from '../../../api/types/cat/common';
 
 export type UnitData = {
+  averageHourlyValue?: number;
+  hourlyValues: TimeData[];
   averageUnit: string;
   averageValue: number;
   cumulativeValues: TimeData[];
