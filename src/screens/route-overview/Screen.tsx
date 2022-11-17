@@ -27,7 +27,7 @@ import {
 } from './selectors';
 import CatTextWithLabel from '../../components/text-with-label';
 import CatRouteItem from './RouteItem';
-import {EquipmentIcon} from '../../components/equipment-icon/Component';
+import {CircledIcon} from '../../components/circled-icon/Component';
 import {EquipmentIconUtils} from '../../api/types/cat/equipment';
 import {MinestarIconName} from '../../components/minestar-icon/types';
 
@@ -116,7 +116,8 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
               key={routeArea.summary.id}
               name={routeArea.name}
               icon={
-                <EquipmentIcon
+                <CircledIcon
+                  size={40}
                   name={routeArea.icon}
                   iconColor={colors.grey100}
                   fillColor={colors.grey0}
@@ -137,7 +138,7 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
             <CatRouteItem
               key={routeEquipment.id}
               icon={
-                <EquipmentIcon
+                <CircledIcon
                   name={
                     EquipmentIconUtils.getIcon(
                       routeEquipment.equipment.type,
