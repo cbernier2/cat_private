@@ -27,11 +27,15 @@ export const CircledIcon: React.FC<CircledIconType> = props => {
     badge,
   } = props;
 
-  const iconXY = 25 - iconSize / 2;
+  const viewBox = 50;
+  const center = viewBox / 2;
+
+  const iconXY = center - iconSize / 2;
+  const radius = center - borderWidth;
 
   return (
     <View style={{width: size, height: size}}>
-      <Svg width={size} height={size} viewBox="0 0 50 50">
+      <Svg width={size} height={size} viewBox={`0 0 ${viewBox} ${viewBox}`}>
         {(fillColor || borderColor) && (
           <Circle
             cx="50%"
@@ -39,7 +43,7 @@ export const CircledIcon: React.FC<CircledIconType> = props => {
             fill={fillColor ?? 'transparent'}
             stroke={borderColor ?? 'transparent'}
             strokeWidth={borderWidth}
-            r={21}
+            r={radius}
           />
         )}
         <ForeignObject x={iconXY} y={iconXY}>
