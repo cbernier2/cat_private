@@ -21,10 +21,13 @@ import {
   formatNumber,
   formatUnit,
 } from '../../utils/format';
-import {Surface} from 'react-native-paper';
-import CatTextWithIcon from '../../components/text-with-icon';
-import {currentRouteAreasSelector} from './selectors';
+import {
+  currentRouteAreasSelector,
+  currentRouteEquipmentsSelector,
+} from './selectors';
 import CatTextWithLabel from '../../components/text-with-label';
+import CatRouteItem from './RouteItem';
+import {UNDEFINED_VALUE} from '../../api/types/cat/common';
 
 const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
   const {t} = useTranslation();
@@ -32,6 +35,7 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
   const currentRouteSummary = useCatSelector(currentRouteSelector);
   const currentRoute = currentRouteSummary?.route;
   const routeAreas = useCatSelector(currentRouteAreasSelector);
+  const routeEquipments = useCatSelector(currentRouteEquipmentsSelector);
 
   const {colors} = useCatTheme();
 
@@ -107,33 +111,49 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
         <CatText variant={'headlineMedium'}>{t('cat.areas')}</CatText>
         <View style={styles.cardsContainer}>
           {routeAreas.map(routeArea => (
-            <Surface
+            <CatRouteItem
               key={routeArea.summary.id}
-              elevation={2}
-              style={styles.cardContainer}>
-              <View style={styles.cardItem}>
-                <CatTextWithIcon
-                  style={styles.areaText}
-                  iconNode={
-                    <View style={styles.areaIconContainer}>
-                      {
-                        /* TODO: Use the EquipmentIcon component */
-                        React.createElement(routeArea.icon, {
-                          fill: '#FFF',
-                          width: 28,
-                          height: 28,
-                        })
-                      }
-                    </View>
-                  }>
-                  {routeArea.name}
-                </CatTextWithIcon>
-              </View>
+              name={routeArea.name}
+              icon={
+                <View style={styles.areaIconContainer}>
+                  {
+                    /* TODO: Use the EquipmentIcon component */
+                    React.createElement(routeArea.icon, {
+                      fill: '#FFF',
+                      width: 28,
+                      height: 28,
+                    })
+                  }
+                </View>
+              }>
               <CatTextWithLabel label={t('cat.production_currentRate')}>
                 {formatNumber(routeArea.summary.currentRateValue)}{' '}
                 {t(routeArea.summary.currentRateUnit)}
               </CatTextWithLabel>
-            </Surface>
+            </CatRouteItem>
+          ))}
+        </View>
+        <CatText variant={'headlineMedium'} style={styles.equipTitle}>
+          {t('route_equipment', {num: routeEquipments.length})}
+        </CatText>
+        <View style={styles.cardsContainer}>
+          {routeEquipments.map(routeEquipment => (
+            <CatRouteItem
+              key={routeEquipment.id}
+              icon={/* TODO: Use the EquipmentIcon component */ <></>}
+              name={routeEquipment.equipment?.name ?? UNDEFINED_VALUE}>
+              {routeEquipment.isLoad && (
+                <CatTextWithLabel label={t('cat.production_currentRate')}>
+                  {formatNumber(routeEquipment.currentRateValue)}{' '}
+                  {t(routeEquipment.currentRateUnit)}
+                </CatTextWithLabel>
+              )}
+              {!routeEquipment.isLoad && (
+                <CatTextWithLabel label={t('cat.average_cycle_time')}>
+                  {formatMinutesOnly(routeEquipment.averageCycleTime)}
+                </CatTextWithLabel>
+              )}
+            </CatRouteItem>
           ))}
         </View>
       </View>

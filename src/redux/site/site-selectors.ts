@@ -5,6 +5,7 @@ import {CommonConstants} from '../../api/types/cat/common';
 import moment from 'moment';
 import {Material} from '../../api/types/cat/material';
 import {SiteConfig} from '../../api/types';
+import {RouteUtils} from '../../utils/route';
 
 export const lastUpdateSelector = createSelector(
   (state: RootState) => state.site.lastUpdate,
@@ -22,6 +23,19 @@ export const currentRouteSelector = createSelector(
     } else {
       return undefined;
     }
+  },
+);
+
+export const currentRouteHaulCycles = createSelector(
+  currentRouteSelector,
+  (state: RootState) => state.site.haulCycles,
+  (currentRouteSummary, haulCycles) => {
+    if (!currentRouteSummary?.route) {
+      return [];
+    }
+    return haulCycles.filter(haulCycle =>
+      RouteUtils.isOnRoute(currentRouteSummary.route, haulCycle),
+    );
   },
 );
 

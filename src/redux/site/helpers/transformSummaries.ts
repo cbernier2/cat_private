@@ -3,6 +3,7 @@ import {ProductionSummary} from '../../../api/types/cat/production';
 import {transformSiteSummary} from './transformSiteSummary';
 import {Material} from '../../../api/types/cat/material';
 import {UnitType} from '../../../api/types/cat/common';
+import {transformEquipSummary} from './transformEquipSummary';
 
 export const transformSummaries = (
   summaries: ProductionSummary,
@@ -36,5 +37,37 @@ export const transformSummaries = (
       ...transformSiteSummary(dumpSummary, materials, defaultUnit),
       dumpArea: dumpSummary.dumpArea,
     })),
+    loadEquipSummaries: summaries.loadEquipSummaries.map(equipSummary =>
+      transformEquipSummary(
+        equipSummary,
+        equipSummary.loader,
+        materials,
+        defaultUnit,
+      ),
+    ),
+    haulEquipSummaries: summaries.haulEquipSummaries.map(equipSummary =>
+      transformEquipSummary(
+        equipSummary,
+        equipSummary.truck,
+        materials,
+        defaultUnit,
+      ),
+    ),
+    supportEquipSummaries: summaries.supportEquipSummaries.map(equipSummary =>
+      transformEquipSummary(
+        equipSummary,
+        equipSummary.equipment,
+        materials,
+        defaultUnit,
+      ),
+    ),
+    waterTruckSummaries: summaries.waterTruckSummaries.map(equipSummary =>
+      transformEquipSummary(
+        equipSummary,
+        equipSummary.equipment,
+        materials,
+        defaultUnit,
+      ),
+    ),
   };
 };
