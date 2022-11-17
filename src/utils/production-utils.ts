@@ -88,3 +88,34 @@ export function toTimeData(values: any[], unit: string): TimeData[] {
   }
   return result;
 }
+/**
+ * Sourced
+ * https://gitgis.ecorp.cat.com/minestar/pitsupervisor/minestar-core/-/blob/develop/app-web/src/common/providers/production/production.service.ts#L276
+ */
+export function toStackedTimeData(
+  timeSeries1: any[],
+  timeSeries2: any[],
+  unit: string,
+  isCompareTimeSeries: boolean = true,
+): TimeData[] {
+  /** isCompareTimeSeries defined whether to compare the timeseries1 and timeseries2 arrays
+   * For water truck it would be false since water truck doesn't support target or average values
+   * Other PR equipments would allow both timeseries1 and timeseries2 same
+   **/
+  if (isCompareTimeSeries && timeSeries1.length !== timeSeries2.length) {
+    throw Error('timeSeries1 and timeSeries1 arrays must be the same length');
+  }
+  let result: TimeData[] = [];
+  for (let i = 0; i < timeSeries1.length; i++) {
+    let entry1 = timeSeries1[i];
+    let entry2 = isCompareTimeSeries ? timeSeries2[i] : null;
+    result.push({
+      time: entry1.timestamp,
+      value: UnitUtils.toLocalUnitValue(entry1.value, unit),
+      value2: isCompareTimeSeries
+        ? UnitUtils.toLocalUnitValue(entry2.value, unit)
+        : null,
+    });
+  }
+  return result;
+}

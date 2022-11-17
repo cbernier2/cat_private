@@ -29,7 +29,7 @@ export const Lines: React.FC<LinesType> = props => {
   const metStroke = '#21e33ccc';
   const notMetStroke = '#f44336cc';
   const projectedFill = '#03a9f41e';
-  const targetStroke = '#ffffff';
+  const targetStroke = '#f0f5fa';
   const thresholdFill = '#d8d8d833';
 
   const draw = (data: TimeData[]): string =>

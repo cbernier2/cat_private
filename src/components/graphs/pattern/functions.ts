@@ -1,4 +1,4 @@
-import {Pattern} from './types';
+import {Pattern, PatternType} from './types';
 
 export const getPatternId = (
   background: string,
@@ -14,4 +14,10 @@ export const getPatternId = (
   }
 
   return id;
+};
+
+export const getPatternFromId = (id: string): PatternType => {
+  const [background, pattern = 'none', foreground] = id.split('-');
+
+  return {background, foreground, pattern: pattern as Pattern};
 };

@@ -3,6 +3,7 @@ import {units} from 'minestar-units';
 import {Summary} from '../../../api/types/cat/production';
 import {
   getPreferredMeasurementBasis,
+  toStackedTimeData,
   toTimeData,
 } from '../../../utils/production-utils';
 import {Material} from '../../../api/types/cat/material';
@@ -26,8 +27,17 @@ const getTimeUnitData = (summary: Summary, unitType: UnitType) => {
   switch (unitType) {
     case UnitType.LOAD:
       return {
+        averageHourlyValue: UnitUtils.toLocalUnitValue(
+          summary.averageLoadRate,
+          summary.loadRateUnit,
+        ),
         cumulativeValues: toTimeData(
           summary.cumulativeLoads?.values ?? [],
+          summary.loadUnit,
+        ),
+        hourlyValues: toStackedTimeData(
+          summary.hourlyLoads.values ?? [],
+          summary.hourlyScheduledBreakLoads.values ?? [],
           summary.loadUnit,
         ),
         materialLegend: transformMaterialQuantity(
@@ -42,8 +52,17 @@ const getTimeUnitData = (summary: Summary, unitType: UnitType) => {
 
     case UnitType.MASS:
       return {
+        averageHourlyValue: UnitUtils.toLocalUnitValue(
+          summary.averageMassRate,
+          summary.massFlowRateUnit,
+        ),
         cumulativeValues: toTimeData(
           summary.cumulativeMass?.values ?? [],
+          summary.massUnit,
+        ),
+        hourlyValues: toStackedTimeData(
+          summary.hourlyMass.values ?? [],
+          summary.hourlyScheduledBreakMass.values ?? [],
           summary.massUnit,
         ),
         materialLegend: transformMaterialQuantity(
@@ -58,8 +77,17 @@ const getTimeUnitData = (summary: Summary, unitType: UnitType) => {
 
     default:
       return {
+        averageHourlyValue: UnitUtils.toLocalUnitValue(
+          summary.averageVolumeRate,
+          summary.volumetricFlowRateUnit,
+        ),
         cumulativeValues: toTimeData(
           summary.cumulativeVolume?.values ?? [],
+          summary.volumeUnit,
+        ),
+        hourlyValues: toStackedTimeData(
+          summary.hourlyVolume.values ?? [],
+          summary.hourlyScheduledBreakVolume.values ?? [],
           summary.volumeUnit,
         ),
         materialLegend: transformMaterialQuantity(
@@ -165,6 +193,28 @@ export const transformSiteSummary = (
     ? UnitUtils.toBaseUnit(summary.targetUnit)?.name ?? ''
     : '';
 
+  let hourlyTargetData = {};
+  if (
+    summary.target &&
+    summary.targetUnit &&
+    UnitUtils.isRate(summary.targetUnit)
+  ) {
+    hourlyTargetData = {
+      hourlyTarget: UnitUtils.toLocalUnitValue(
+        summary.target,
+        summary.targetUnit,
+      ),
+      hourlyTargetMaxThreshold: UnitUtils.toLocalUnitValue(
+        summary.targetMaxThreshold,
+        summary.targetUnit,
+      ),
+      hourlyTargetMinThreshold: UnitUtils.toLocalUnitValue(
+        summary.targetMinThreshold,
+        summary.targetUnit,
+      ),
+    };
+  }
+
   // TODO replicated transformations found in the web app, but numbers don't see to match what we see in it
   //  e.g.: 527.1040744695023 volume does not change on mobile but shows 689 on web...
   const commonData = {
@@ -211,6 +261,7 @@ export const transformSiteSummary = (
     averageCycleTime: summary.averageCycleTime,
     averageQueuingDurationEmpty: summary.averageQueuingDurationEmpty,
     ...commonData,
+    ...hourlyTargetData,
     ...getUnitData(summary, materials, defaultUnit),
     // TODO add anything else that is needed for other views
   };
