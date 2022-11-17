@@ -1,6 +1,6 @@
 import React from 'react';
 import {View} from 'react-native';
-import Svg, {Circle, ForeignObject, G, Text} from 'react-native-svg';
+import Svg, {Circle, ForeignObject, Text} from 'react-native-svg';
 
 import useCatTheme from '../../hooks/useCatTheme';
 
