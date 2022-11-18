@@ -1,4 +1,5 @@
 import React from 'react';
+import {StatusBar} from 'react-native';
 import {Provider as PaperProvider} from 'react-native-paper';
 import {ThemeProp} from 'react-native-paper/src/types';
 import {useTranslation} from 'react-i18next';
@@ -24,7 +25,6 @@ import CatDrawer from './drawer';
 import CatDrawerIcon from './header/DrawerIcon';
 import CatHeader from './header';
 import CatSyncStatus from './header/SyncStatus';
-import { StatusBar } from "react-native";
 
 const SummaryStack = createStackNavigator();
 const SummaryNavigator = () => (
