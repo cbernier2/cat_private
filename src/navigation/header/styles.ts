@@ -6,10 +6,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  title: {
-    fontSize: 20,
-    marginLeft: 16,
-  },
   statusContainer: {
     flexDirection: 'row',
     marginRight: 10,
