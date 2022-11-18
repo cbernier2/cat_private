@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {ScrollView, View} from 'react-native';
 import {ActivityIndicator, List} from 'react-native-paper';
 import {useTranslation} from 'react-i18next';
@@ -36,7 +36,6 @@ export const SitesListScreen: React.FC<SitesListTypes> = props => {
   const loadingSelectedSite = useCatSelector(siteIsLoadingSelector);
   const sites = useCatSelector(sitesSitesSelector);
   const [filter, setFilter] = useState<string>('');
-  const [filteredSites, setFilteredSites] = useState<Site[]>([]);
 
   useEffect(() => {
     dispatch(fetchSitesAsyncAction());
@@ -50,12 +49,9 @@ export const SitesListScreen: React.FC<SitesListTypes> = props => {
     }
   }, [dispatch, store, root]);
 
-  useEffect(() => {
-    // TODO refine filter method depending object format and filter requirements
-    setFilteredSites(
-      sites.filter((site: Site) =>
-        site.name.toLowerCase().includes(filter.toLowerCase()),
-      ),
+  const filteredSites = useMemo(() => {
+    return sites.filter((site: Site) =>
+      site.name.toLowerCase().includes(filter.toLowerCase()),
     );
   }, [filter, sites]);
 
