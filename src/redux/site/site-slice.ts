@@ -23,6 +23,7 @@ import {CatHaulCycle} from '../../api/types/haul-cycle';
 export const key = 'site';
 
 export interface SiteState {
+  error: unknown | null;
   loading: boolean;
   lastUpdate: number | null;
   currentRouteId: string | null;
@@ -35,6 +36,7 @@ export interface SiteState {
 }
 
 const initialState: SiteState = {
+  error: null,
   loading: false,
   lastUpdate: null,
   currentRouteId: null,
@@ -127,11 +129,13 @@ const slice = createSlice({
       })
       .addCase(fetchSiteAsyncAction.rejected, (state, action) => {
         // TODO stop app from going past site selection screen if there is no already loaded data in store
-        console.error(action);
+        console.log(action);
+        state.error = action.payload;
         state.loading = false;
       })
       .addCase(fetchSiteAsyncAction.fulfilled, (state, action) => {
         state.loading = false;
+        state.error = null;
         state.lastUpdate = moment().valueOf();
 
         const config = transformConfig(action.payload.siteConfig);
@@ -160,7 +164,7 @@ const sitesReducer = persistReducer(
   {
     key,
     storage: AsyncStorage,
-    blacklist: ['loading'],
+    blacklist: ['error', 'loading'],
   },
   typedReducer,
 );
