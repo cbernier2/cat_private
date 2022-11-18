@@ -139,6 +139,7 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
               key={routeEquipment.id}
               icon={
                 <CircledIcon
+                  size={40}
                   name={
                     EquipmentIconUtils.getIcon(
                       routeEquipment.equipment.type,
