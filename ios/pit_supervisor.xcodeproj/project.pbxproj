@@ -26,6 +26,9 @@
 		DC3C89FA37334407B5C65BF3 /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 054B774FE6A44EF18DB9E0BE /* Roboto-Light.ttf */; };
 		E764A7406847483191C7454B /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 472477AC52324C0792E039EB /* Roboto-Thin.ttf */; };
 		FD5C9F21C25142678CA0AD0A /* Roboto-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 668C74E79A544830A2D59883 /* Roboto-BlackItalic.ttf */; };
+		9FDFCE38275B41318950F10F /* minestar-icons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D1E741C26DEE45439EBF1DFE /* minestar-icons.ttf */; };
+		E50772A4B4D54658B6DAB70E /* minestar-icons.woff in Resources */ = {isa = PBXBuildFile; fileRef = 8447D371347C48F397F39B69 /* minestar-icons.woff */; };
+		2AA59ECEFC0A4CB4A54BDFAD /* minestar-icons.woff2 in Resources */ = {isa = PBXBuildFile; fileRef = F43B541D18234462AE8E404A /* minestar-icons.woff2 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +71,9 @@
 		B2CDC863BD624EA182102B01 /* Roboto-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Bold.ttf"; path = "../assets/fonts/Roboto-Bold.ttf"; sourceTree = "<group>"; };
 		BD963F3F4C1C460CA9FECCD4 /* Roboto-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-ThinItalic.ttf"; path = "../assets/fonts/Roboto-ThinItalic.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		D1E741C26DEE45439EBF1DFE /* minestar-icons.ttf */ = {isa = PBXFileReference; name = "minestar-icons.ttf"; path = "../node_modules/minestar-icons/fonts/minestar-icons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		8447D371347C48F397F39B69 /* minestar-icons.woff */ = {isa = PBXFileReference; name = "minestar-icons.woff"; path = "../node_modules/minestar-icons/fonts/minestar-icons.woff"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		F43B541D18234462AE8E404A /* minestar-icons.woff2 */ = {isa = PBXFileReference; name = "minestar-icons.woff2"; path = "../node_modules/minestar-icons/fonts/minestar-icons.woff2"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +151,9 @@
 				54F76BC7C3314EF3A2BDAFBD /* Roboto-Regular.ttf */,
 				472477AC52324C0792E039EB /* Roboto-Thin.ttf */,
 				BD963F3F4C1C460CA9FECCD4 /* Roboto-ThinItalic.ttf */,
+				D1E741C26DEE45439EBF1DFE /* minestar-icons.ttf */,
+				8447D371347C48F397F39B69 /* minestar-icons.woff */,
+				F43B541D18234462AE8E404A /* minestar-icons.woff2 */,
 			);
 			name = Resources;
 			path = "";
@@ -301,6 +310,9 @@
 				6334B48C64764DA7A74931F3 /* Roboto-Regular.ttf in Resources */,
 				E764A7406847483191C7454B /* Roboto-Thin.ttf in Resources */,
 				51774F929FD44747B6DCBBD3 /* Roboto-ThinItalic.ttf in Resources */,
+				9FDFCE38275B41318950F10F /* minestar-icons.ttf in Resources */,
+				E50772A4B4D54658B6DAB70E /* minestar-icons.woff in Resources */,
+				2AA59ECEFC0A4CB4A54BDFAD /* minestar-icons.woff2 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

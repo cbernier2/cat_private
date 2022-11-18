@@ -25,7 +25,8 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 16,
+    paddingVertical: 16,
+    paddingHorizontal: 12,
     borderRadius: 10,
     marginVertical: 4,
   },
@@ -34,15 +35,9 @@ const styles = StyleSheet.create({
   },
   areaText: {
     marginRight: 8,
+    marginLeft: 8,
     flexShrink: 1,
-  },
-  areaIconContainer: {
-    width: 32,
-    height: 32,
-    alignItems: 'center',
-    marginRight: 8,
-    borderRadius: 16,
-    backgroundColor: 'black',
+    alignSelf: 'center',
   },
   equipTitle: {
     marginTop: 20,

@@ -48,6 +48,18 @@
     {
       "path": "assets/fonts/Roboto-ThinItalic.ttf",
       "sha1": "cc79d5a23bd0ec08b1d99f5390bf33cacc3082f4"
+    },
+    {
+      "path": "node_modules/minestar-icons/fonts/minestar-icons.ttf",
+      "sha1": "d032749fbc4f05815856318acb35bfe9b6e05bb2"
+    },
+    {
+      "path": "node_modules/minestar-icons/fonts/minestar-icons.woff",
+      "sha1": "b1f9fcdecc3de5e36ea400f02b644f09048c23c5"
+    },
+    {
+      "path": "node_modules/minestar-icons/fonts/minestar-icons.woff2",
+      "sha1": "1b47b8e9e34749771ead51e9262413136c1c97f6"
     }
   ]
 }

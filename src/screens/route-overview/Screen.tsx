@@ -27,7 +27,9 @@ import {
 } from './selectors';
 import CatTextWithLabel from '../../components/text-with-label';
 import CatRouteItem from './RouteItem';
-import {UNDEFINED_VALUE} from '../../api/types/cat/common';
+import {CircledIcon} from '../../components/circled-icon/Component';
+import {EquipmentIconUtils} from '../../api/types/cat/equipment';
+import {MinestarIconName} from '../../components/minestar-icon/types';
 
 const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
   const {t} = useTranslation();
@@ -36,7 +38,6 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
   const currentRoute = currentRouteSummary?.route;
   const routeAreas = useCatSelector(currentRouteAreasSelector);
   const routeEquipments = useCatSelector(currentRouteEquipmentsSelector);
-
   const {colors} = useCatTheme();
 
   useEffect(() => {
@@ -115,16 +116,12 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
               key={routeArea.summary.id}
               name={routeArea.name}
               icon={
-                <View style={styles.areaIconContainer}>
-                  {
-                    /* TODO: Use the EquipmentIcon component */
-                    React.createElement(routeArea.icon, {
-                      fill: '#FFF',
-                      width: 28,
-                      height: 28,
-                    })
-                  }
-                </View>
+                <CircledIcon
+                  size={40}
+                  name={routeArea.icon}
+                  iconColor={colors.grey100}
+                  fillColor={colors.grey0}
+                />
               }>
               <CatTextWithLabel label={t('cat.production_currentRate')}>
                 {formatNumber(routeArea.summary.currentRateValue)}{' '}
@@ -140,8 +137,19 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
           {routeEquipments.map(routeEquipment => (
             <CatRouteItem
               key={routeEquipment.id}
-              icon={/* TODO: Use the EquipmentIcon component */ <></>}
-              name={routeEquipment.equipment?.name ?? UNDEFINED_VALUE}>
+              icon={
+                <CircledIcon
+                  size={40}
+                  name={
+                    EquipmentIconUtils.getIcon(
+                      routeEquipment.equipment.type,
+                    ) as MinestarIconName
+                  }
+                  iconColor={colors.grey100}
+                  fillColor={colors.grey0}
+                />
+              }
+              name={routeEquipment.equipment.name}>
               {routeEquipment.isLoad && (
                 <CatTextWithLabel label={t('cat.production_currentRate')}>
                   {formatNumber(routeEquipment.currentRateValue)}{' '}

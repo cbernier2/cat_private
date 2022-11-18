@@ -1,9 +1,8 @@
 import {ScaleBand} from 'd3';
-
-import {IEquipment} from '../../../../redux/equipments/types';
+import {Equipment} from '../../../../api/types/cat/equipment';
 
 export interface SiteStopsEquipmentsType {
-  equipments: IEquipment[];
+  equipments: Equipment[];
   headerHeight: number;
   rowHeight: number;
   scale: ScaleBand<any>;
