@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View} from 'react-native';
 import styles from './styles';
 import {useTranslation} from 'react-i18next';
@@ -10,13 +10,22 @@ import {lastUpdateSelector} from '../../redux/site/site-selectors';
 import useCatTheme from '../../hooks/useCatTheme';
 import {MinestarIconName} from '../../components/minestar-icon/types';
 import {MinestarIcon} from '../../components/minestar-icon';
+import {fetchSiteIfNeededAsyncAction} from '../../redux/site/background-fetch';
+import useCatDispatch from '../../hooks/useCatDispatch';
 
 const CatSyncStatus: React.FC = () => {
   const {t} = useTranslation();
-  const netInfo = useNetInfo();
+  const dispatch = useCatDispatch();
+  const isConnected = useNetInfo().isConnected;
   const lastSyncTime = useCatSelector(lastUpdateSelector);
   const {colors} = useCatTheme();
   const networkError = useCatSelector(state => state.site.error);
+
+  useEffect(() => {
+    if (isConnected) {
+      dispatch(fetchSiteIfNeededAsyncAction());
+    }
+  }, [dispatch, isConnected]);
 
   const lastSyncText = lastSyncTime
     ? format(lastSyncTime, t('status_date_format'))
@@ -24,11 +33,11 @@ const CatSyncStatus: React.FC = () => {
 
   let iconColor = colors.secondary;
   let iconName: MinestarIconName = 'edge_network_strength_high';
-  if (!netInfo.isConnected) {
-    iconColor = colors.errorCaution0;
+  if (isConnected === false) {
+    iconColor = colors.errorWarning0;
     iconName = 'edge_no_network_connection';
   } else if (networkError !== null) {
-    iconColor = colors.errorWarning0;
+    iconColor = colors.errorCaution0;
     iconName = 'edge_hotspot_error';
   }
 
