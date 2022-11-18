@@ -1,4 +1,5 @@
 import React from 'react';
+import {StatusBar} from 'react-native';
 import {Provider as PaperProvider} from 'react-native-paper';
 import {ThemeProp} from 'react-native-paper/src/types';
 import {useTranslation} from 'react-i18next';
@@ -111,6 +112,7 @@ const CatNavigation = () => {
 
   return (
     <PaperProvider theme={theme as ThemeProp}>
+      <StatusBar barStyle={theme.dark ? 'light-content' : 'dark-content'} />
       <NavigationContainer theme={theme}>
         <MainStack.Navigator screenOptions={{headerShown: false}}>
           {userToken === null ? (
