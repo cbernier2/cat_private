@@ -23,14 +23,13 @@ import {
 import {SitesListTypes} from './types';
 import styles from './styles';
 import {siteIsLoadingSelector} from '../../redux/site/site-selectors';
-import {useStore} from 'react-redux';
-import {RootState} from '../../redux';
+import useCatStore from '../../hooks/useCatStore';
 
 export const SitesListScreen: React.FC<SitesListTypes> = props => {
   const root = Boolean(props.route.params?.root);
   const {t} = useTranslation();
   const dispatch = useCatDispatch();
-  const store = useStore<RootState>();
+  const store = useCatStore();
   const error = useCatSelector(sitesErrorSelector);
   const loadingSites = useCatSelector(sitesLoadingSelector);
   const loadingSelectedSite = useCatSelector(siteIsLoadingSelector);
