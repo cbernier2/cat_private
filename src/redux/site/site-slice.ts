@@ -129,7 +129,7 @@ const slice = createSlice({
       })
       .addCase(fetchSiteAsyncAction.rejected, (state, action) => {
         // TODO stop app from going past site selection screen if there is no already loaded data in store
-        console.log(action);
+        console.error(action);
         state.error = action.payload;
         state.loading = false;
       })

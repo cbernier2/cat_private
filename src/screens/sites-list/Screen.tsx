@@ -11,6 +11,7 @@ import useCatSelector from '../../hooks/useCatSelector';
 import {
   sitesErrorSelector,
   sitesLoadingSelector,
+  sitesSelectedSiteSelector,
   sitesSitesSelector,
 } from '../../redux/sites-list/sites-selectors';
 import {
@@ -22,11 +23,14 @@ import {
 import {SitesListTypes} from './types';
 import styles from './styles';
 import {siteIsLoadingSelector} from '../../redux/site/site-selectors';
+import {useStore} from 'react-redux';
+import {RootState} from '../../redux';
 
 export const SitesListScreen: React.FC<SitesListTypes> = props => {
   const root = Boolean(props.route.params?.root);
   const {t} = useTranslation();
   const dispatch = useCatDispatch();
+  const store = useStore<RootState>();
   const error = useCatSelector(sitesErrorSelector);
   const loadingSites = useCatSelector(sitesLoadingSelector);
   const loadingSelectedSite = useCatSelector(siteIsLoadingSelector);
@@ -36,14 +40,15 @@ export const SitesListScreen: React.FC<SitesListTypes> = props => {
 
   useEffect(() => {
     dispatch(fetchSitesAsyncAction());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
-    if (root && sites.length === 1) {
-      dispatch(selectSiteAsyncAction(sites[0]));
+    const selectedSite = sitesSelectedSiteSelector(store.getState());
+    const currentSites = sitesSitesSelector(store.getState());
+    if (root && currentSites.length === 1 && selectedSite === null) {
+      dispatch(selectSiteAsyncAction(currentSites[0]));
     }
-  }, [dispatch, root, sites]);
+  }, [dispatch, store, root]);
 
   useEffect(() => {
     // TODO refine filter method depending object format and filter requirements
@@ -55,7 +60,10 @@ export const SitesListScreen: React.FC<SitesListTypes> = props => {
   }, [filter, sites]);
 
   const onSelect = async (site: Site) => {
-    await dispatch(selectSiteAsyncAction(site));
+    const selectedSite = sitesSelectedSiteSelector(store.getState());
+    if (site.id !== selectedSite?.id) {
+      await dispatch(selectSiteAsyncAction(site));
+    }
     if (!root) {
       props.navigation.navigate('Dashboard');
     }
