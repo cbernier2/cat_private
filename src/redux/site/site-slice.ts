@@ -1,6 +1,7 @@
 import {
   createAsyncThunk,
   createSlice,
+  Draft,
   PayloadAction,
   Reducer,
 } from '@reduxjs/toolkit';
@@ -19,10 +20,12 @@ import {transformConfig} from './helpers/transformConfig';
 import {transformSummaries} from './helpers/transformSummaries';
 import moment from 'moment';
 import {CatHaulCycle} from '../../api/types/haul-cycle';
+import {logoutAsyncAction} from '../user/user-slice';
 
 export const key = 'site';
 
 export interface SiteState {
+  error: unknown | null;
   loading: boolean;
   lastUpdate: number | null;
   currentRouteId: string | null;
@@ -35,6 +38,7 @@ export interface SiteState {
 }
 
 const initialState: SiteState = {
+  error: null,
   loading: false,
   lastUpdate: null,
   currentRouteId: null,
@@ -103,18 +107,22 @@ export const fetchSiteAsyncAction = createAsyncThunk(
   },
 );
 
+const clearSiteData = (state: Draft<SiteState>) => {
+  state.siteConfig = {};
+  state.materials = [];
+  state.currentShift = null;
+  state.productionSummary = null;
+  state.haulCycles = [];
+  state.lastUpdate = null;
+  state.persons = {};
+};
+
 const slice = createSlice({
   name: key,
   initialState,
   reducers: {
     siteSelected: state => {
-      state.siteConfig = {};
-      state.materials = [];
-      state.currentShift = null;
-      state.productionSummary = null;
-      state.haulCycles = [];
-      state.lastUpdate = null;
-      state.persons = {};
+      clearSiteData(state);
     },
     setCurrentRouteId: (state, action: PayloadAction<string | null>) => {
       state.currentRouteId = action.payload;
@@ -122,16 +130,21 @@ const slice = createSlice({
   },
   extraReducers: builder => {
     builder
+      .addCase(logoutAsyncAction.pending, state => {
+        clearSiteData(state);
+      })
       .addCase(fetchSiteAsyncAction.pending, state => {
         state.loading = true;
       })
       .addCase(fetchSiteAsyncAction.rejected, (state, action) => {
         // TODO stop app from going past site selection screen if there is no already loaded data in store
         console.error(action);
+        state.error = action.payload;
         state.loading = false;
       })
       .addCase(fetchSiteAsyncAction.fulfilled, (state, action) => {
         state.loading = false;
+        state.error = null;
         state.lastUpdate = moment().valueOf();
 
         const config = transformConfig(action.payload.siteConfig);
@@ -160,7 +173,7 @@ const sitesReducer = persistReducer(
   {
     key,
     storage: AsyncStorage,
-    blacklist: ['loading'],
+    blacklist: ['error', 'loading'],
   },
   typedReducer,
 );

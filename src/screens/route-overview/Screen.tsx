@@ -93,6 +93,7 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
     <CatScreen title={t('route_overview_title')}>
       <View style={styles.titleContainer}>
         <TouchableOpacity
+          hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
           onPress={() => dispatch(siteActions.setCurrentRouteId(null))}>
           <BackArrowSvg width={16} height={16} fill={colors.text} />
         </TouchableOpacity>

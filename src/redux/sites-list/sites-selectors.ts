@@ -13,11 +13,10 @@ export const sitesLoadingSelector = createSelector(
 );
 
 export const sitesSelectedSiteSelector = createSelector(
-  (state: RootState) => state.sitesList,
-  siteState =>
-    siteState.sites.find(
-      (site: Site) => site.id === siteState.selectedSiteId,
-    ) ?? null,
+  (state: RootState) => state.sitesList.sites,
+  (state: RootState) => state.sitesList.selectedSiteId,
+  (sites, selectedSiteId) =>
+    sites.find((site: Site) => site.id === selectedSiteId) ?? null,
 );
 
 export const sitesSitesSelector = createSelector(

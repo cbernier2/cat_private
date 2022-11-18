@@ -116,6 +116,8 @@ const DashboardScreen: React.FC<ScreenType> = ({navigation}) => {
       <View style={styles.siteNameContainer}>
         <CatText variant={'titleMedium'}>{selectedSite?.name}</CatText>
         <CatSwitch
+          thumbColor={colors.secondary}
+          trackColor={{true: colors.secondary, false: colors.secondary}}
           label={t(isLoad ? 'cat.production_loads' : 'cat.production_dumps')}
           value={isLoad}
           onValueChange={val => setIsLoad(val)}
