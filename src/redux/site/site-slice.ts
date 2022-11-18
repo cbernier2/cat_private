@@ -1,6 +1,7 @@
 import {
   createAsyncThunk,
   createSlice,
+  Draft,
   PayloadAction,
   Reducer,
 } from '@reduxjs/toolkit';
@@ -19,6 +20,7 @@ import {transformConfig} from './helpers/transformConfig';
 import {transformSummaries} from './helpers/transformSummaries';
 import moment from 'moment';
 import {CatHaulCycle} from '../../api/types/haul-cycle';
+import {logoutAsyncAction} from '../user/user-slice';
 
 export const key = 'site';
 
@@ -105,18 +107,22 @@ export const fetchSiteAsyncAction = createAsyncThunk(
   },
 );
 
+const clearSiteData = (state: Draft<SiteState>) => {
+  state.siteConfig = {};
+  state.materials = [];
+  state.currentShift = null;
+  state.productionSummary = null;
+  state.haulCycles = [];
+  state.lastUpdate = null;
+  state.persons = {};
+};
+
 const slice = createSlice({
   name: key,
   initialState,
   reducers: {
     siteSelected: state => {
-      state.siteConfig = {};
-      state.materials = [];
-      state.currentShift = null;
-      state.productionSummary = null;
-      state.haulCycles = [];
-      state.lastUpdate = null;
-      state.persons = {};
+      clearSiteData(state);
     },
     setCurrentRouteId: (state, action: PayloadAction<string | null>) => {
       state.currentRouteId = action.payload;
@@ -124,6 +130,9 @@ const slice = createSlice({
   },
   extraReducers: builder => {
     builder
+      .addCase(logoutAsyncAction.pending, state => {
+        clearSiteData(state);
+      })
       .addCase(fetchSiteAsyncAction.pending, state => {
         state.loading = true;
       })

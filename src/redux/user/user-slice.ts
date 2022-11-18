@@ -90,11 +90,7 @@ export const logoutAsyncAction = createAsyncThunk(
 const slice = createSlice({
   name: key,
   initialState,
-  reducers: {
-    invalidateToken: state => {
-      state.auth = null;
-    },
-  },
+  reducers: {},
   extraReducers: builder => {
     builder
       .addCase(loginAsyncAction.pending, state => {
@@ -148,6 +144,6 @@ const userReducer = persistReducer(
   typedReducer,
 );
 
-export const {invalidateToken} = slice.actions;
+export const {actions} = slice;
 
 export default userReducer;

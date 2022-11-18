@@ -8,7 +8,7 @@ import {Shift} from '../../api/types/cat/shift';
 import {findMostRecentShift} from '../../api/shift';
 
 import {RootState} from '../index';
-import {invalidateToken, refreshTokenAsyncAction} from '../user/user-slice';
+import {logoutAsyncAction, refreshTokenAsyncAction} from '../user/user-slice';
 import {Person} from '../../api/types/cat/person';
 import {CatHaulCycle} from '../../api/types/haul-cycle';
 
@@ -69,7 +69,7 @@ const catBaseQuery: BaseQueryFn<CatQueryFnParams> = async (
       return {data: await response.json()};
     } else {
       if (response.status === 401) {
-        dispatch(invalidateToken());
+        await dispatch(logoutAsyncAction());
       }
       return {error: {status: response.status, data: response}};
     }
