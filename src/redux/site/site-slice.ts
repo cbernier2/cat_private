@@ -109,7 +109,7 @@ export const fetchSiteAsyncAction = createOfflineAsyncThunk(
   {
     offlineOptions: {
       meta: {
-        dismiss: ['user/logout/pending'],
+        dismiss: [logoutAsyncAction.pending.type],
       },
     },
   },

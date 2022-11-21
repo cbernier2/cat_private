@@ -2,7 +2,7 @@ import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import user from './user/user-slice';
 import app, {offlineQueueTest} from './app/app-slice';
 import sitesList from './sites-list/sites-slice';
-import site from './site/site-slice';
+import site, {fetchSiteAsyncAction} from './site/site-slice';
 import {persistReducer, persistStore} from 'redux-persist';
 import thunk from 'redux-thunk';
 import {
@@ -33,7 +33,7 @@ export const rootReducer = persistReducer(
 );
 
 const networkMiddleware = createNetworkMiddleware({
-  actionTypes: ['app/offlineQueueTest', 'site/FetchSite'],
+  actionTypes: ['app/offlineQueueTest', fetchSiteAsyncAction.typePrefix],
   queueReleaseThrottle: 200,
 });
 
