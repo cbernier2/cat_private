@@ -20,7 +20,7 @@ export const Pattern: React.FC<PatternType> = props => {
     pattern.background(background);
     pattern.stroke(foreground);
     if (pattern.fill) {
-      pattern.fill(foreground);
+      pattern.fill(foreground ?? '#000');
     }
 
     const {name, ...params} = pattern.serialize();
