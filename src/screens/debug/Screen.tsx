@@ -28,12 +28,10 @@ const DebugScreen: React.FC<DebugScreenType> = props => {
 
   const cancel = async () => {
     await dispatch(offlineCancelTest());
-    props.navigation.navigate('Dashboard');
   };
 
   const queue = async () => {
     await dispatch(offlineQueueTest());
-    props.navigation.navigate('Dashboard');
   };
 
   const clearSiteSelection = async () => {

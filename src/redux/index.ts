@@ -33,7 +33,7 @@ export const rootReducer = persistReducer(
 );
 
 const networkMiddleware = createNetworkMiddleware({
-  actionTypes: ['app/offlineQueueTest'],
+  actionTypes: ['app/offlineQueueTest', 'site/FetchSite'],
   queueReleaseThrottle: 200,
 });
 

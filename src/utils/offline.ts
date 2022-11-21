@@ -1,7 +1,8 @@
-import type {AsyncThunkPayloadCreator} from '@reduxjs/toolkit';
-import {createAsyncThunk} from '@reduxjs/toolkit';
 import type {Dispatch} from 'redux';
 import {createTransform} from 'redux-persist';
+import type {AsyncThunkPayloadCreator} from '@reduxjs/toolkit';
+import {createAsyncThunk} from '@reduxjs/toolkit';
+import {AsyncThunk} from '@reduxjs/toolkit/src/createAsyncThunk';
 
 declare type AsyncThunkConfig = {
   state?: unknown;
@@ -42,7 +43,7 @@ export const createOfflineAsyncThunk = <
     asyncOptions?: any;
     offlineOptions?: OfflineOptions;
   },
-) => {
+): AsyncThunk<Returned, ThunkArg, ThunkApiConfig> => {
   const thunk = createAsyncThunk<Returned, ThunkArg, ThunkApiConfig>(
     typePrefix,
     payloadCreator,
@@ -64,7 +65,7 @@ export const createOfflineAsyncThunk = <
         },
       },
     ) as typeof thunk;
-  }, thunk);
+  }, thunk) as typeof thunk;
 };
 
 export const networkTransform = (actions: object) =>
