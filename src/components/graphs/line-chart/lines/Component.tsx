@@ -49,7 +49,7 @@ export const Lines: React.FC<LinesType> = props => {
       return minAt <= data.value;
     }
 
-    return false;
+    return true;
   };
 
   const lastValue = values[values.length - 1] ?? [];
@@ -92,7 +92,7 @@ export const Lines: React.FC<LinesType> = props => {
 
   return (
     <>
-      <Path d={currentLine} stroke={currentStroke} strokeWidth="1" />
+      <Path d={currentLine} stroke={currentStroke} strokeWidth="2" />
       <Path d={currentArea} fill={currentFill} />
       <Path d={projectedArea} fill={projectedFill} />
 
