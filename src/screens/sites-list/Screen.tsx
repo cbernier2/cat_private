@@ -1,5 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {ScrollView, View} from 'react-native';
+import {ScrollView} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {ActivityIndicator, List} from 'react-native-paper';
 import {useTranslation} from 'react-i18next';
 
@@ -65,8 +66,8 @@ export const SitesListScreen: React.FC<SitesListTypes> = props => {
   };
 
   return (
-    <CatScreen title={t('my_sites')}>
-      <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <CatScreen title={t('my_sites')}>
         <CatTextInput
           style={styles.mh}
           label={t('cat.button_search')}
@@ -90,7 +91,7 @@ export const SitesListScreen: React.FC<SitesListTypes> = props => {
             ))}
           </ScrollView>
         </List.Section>
-      </View>
-    </CatScreen>
+      </CatScreen>
+    </SafeAreaView>
   );
 };

@@ -6,6 +6,7 @@ import {
   shiftEndTimeSelector,
   shiftStartTimeSelector,
 } from '../../redux/site/site-selectors';
+import {CatSiteSummary} from '../../redux/site/helpers/transformSiteSummary';
 
 import {BarChart} from '../graphs/bar-chart/Component';
 import {LineChart} from '../graphs/line-chart/Component';
@@ -13,7 +14,8 @@ import {LineChart} from '../graphs/line-chart/Component';
 import {GraphType, SummaryGraphsType} from './types';
 
 export const SummaryGraphs: React.FC<SummaryGraphsType> = props => {
-  const {defaultView = 'line', summary} = props;
+  // TODO this won't always necessarily be a siteSummary
+  const {defaultView = 'line', summary = {} as CatSiteSummary} = props;
 
   const [view, setView] = useState<GraphType>(defaultView);
   const shiftEndTime = useCatSelector(shiftEndTimeSelector);
