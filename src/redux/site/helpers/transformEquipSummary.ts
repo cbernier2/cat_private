@@ -6,7 +6,7 @@ import {transformSiteSummary} from './transformSiteSummary';
 
 export const transformEquipSummary = (
   equipSummary: EquipmentSummary,
-  equipment: Equipment,
+  equipment: Equipment | undefined,
   materials: Material[],
   defaultUnit: UnitType,
 ) => {

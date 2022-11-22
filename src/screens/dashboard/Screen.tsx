@@ -27,6 +27,7 @@ import {useStyles} from './styles';
 import CatSummaryCard from './SummaryCard';
 import CatActiveItemsSection from './ActiveItemsSection';
 import {isAttentionRequired} from './functions';
+import {activeRoutesSelector} from './selectors';
 
 const DashboardScreen: React.FC<ScreenType> = ({navigation}) => {
   const {t} = useTranslation();
@@ -41,7 +42,7 @@ const DashboardScreen: React.FC<ScreenType> = ({navigation}) => {
   const summary = isLoad
     ? productionSummary?.siteLoadSummary
     : productionSummary?.siteSummary;
-  const routeSummaries = productionSummary?.routeSummaries || [];
+  const routeSummaries = useCatSelector(activeRoutesSelector);
   const workSummaryCount = routeSummaries.length;
 
   const kpiRowJSX = (values: CatTextWithLabelType[]) => (

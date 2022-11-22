@@ -37,45 +37,37 @@ export const transformSummaries = (
       ...transformSiteSummary(dumpSummary, materials, defaultUnit),
       dumpArea: dumpSummary.dumpArea,
     })),
-    loadEquipSummaries: summaries.loadEquipSummaries
-      .filter(equipSummary => equipSummary.loader !== undefined)
-      .map(equipSummary =>
-        transformEquipSummary(
-          equipSummary,
-          equipSummary.loader,
-          materials,
-          defaultUnit,
-        ),
+    loadEquipSummaries: summaries.loadEquipSummaries.map(equipSummary =>
+      transformEquipSummary(
+        equipSummary,
+        equipSummary.loader,
+        materials,
+        defaultUnit,
       ),
-    haulEquipSummaries: summaries.haulEquipSummaries
-      .filter(equipSummary => equipSummary.truck !== undefined)
-      .map(equipSummary =>
-        transformEquipSummary(
-          equipSummary,
-          equipSummary.truck,
-          materials,
-          defaultUnit,
-        ),
+    ),
+    haulEquipSummaries: summaries.haulEquipSummaries.map(equipSummary =>
+      transformEquipSummary(
+        equipSummary,
+        equipSummary.truck,
+        materials,
+        defaultUnit,
       ),
-    supportEquipSummaries: summaries.supportEquipSummaries
-      .filter(equipSummary => equipSummary.equipment !== undefined)
-      .map(equipSummary =>
-        transformEquipSummary(
-          equipSummary,
-          equipSummary.equipment,
-          materials,
-          defaultUnit,
-        ),
+    ),
+    supportEquipSummaries: summaries.supportEquipSummaries.map(equipSummary =>
+      transformEquipSummary(
+        equipSummary,
+        equipSummary.equipment,
+        materials,
+        defaultUnit,
       ),
-    waterTruckSummaries: summaries.waterTruckSummaries
-      .filter(equipSummary => equipSummary.equipment !== undefined)
-      .map(equipSummary =>
-        transformEquipSummary(
-          equipSummary,
-          equipSummary.equipment,
-          materials,
-          defaultUnit,
-        ),
+    ),
+    waterTruckSummaries: summaries.waterTruckSummaries.map(equipSummary =>
+      transformEquipSummary(
+        equipSummary,
+        equipSummary.equipment,
+        materials,
+        defaultUnit,
       ),
+    ),
   };
 };
