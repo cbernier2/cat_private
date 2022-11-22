@@ -1,19 +1,24 @@
 import React, {useEffect} from 'react';
-import CatScreen from '../../components/screen';
-import {ScreenType} from './types';
+import {TouchableOpacity, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
+
 import BackArrowSvg from 'assets/icons/edge_arrow_back_ios.svg';
 import RouteSvg from 'assets/icons/route.svg';
-import {TouchableOpacity, View} from 'react-native';
+
+import CatScreen from '../../components/screen';
 import {currentRouteSelector} from '../../redux/site/site-selectors';
 import useCatSelector from '../../hooks/useCatSelector';
 import useCatDispatch from '../../hooks/useCatDispatch';
 import {actions as siteActions} from '../../redux/site/site-slice';
-import styles from './styles';
 import CatText from '../../components/text';
 import useCatTheme from '../../hooks/useCatTheme';
 import {CatTextWithLabelType} from '../../components/text-with-label/types';
 import CatValuesRow from '../../components/value-row';
+import CatTextWithLabel from '../../components/text-with-label';
+import {CircledIcon} from '../../components/circled-icon/Component';
+import {EquipmentIconUtils} from '../../api/types/cat/equipment';
+import {MinestarIconName} from '../../components/minestar-icon/types';
+import {SummaryGraphs} from '../../components/summary-graphs/Component';
 import {
   formatLabel,
   formatMinutesOnly,
@@ -21,15 +26,14 @@ import {
   formatNumber,
   formatUnit,
 } from '../../utils/format';
+
+import styles from './styles';
+import {ScreenType} from './types';
+import CatRouteItem from './RouteItem';
 import {
   currentRouteAreasSelector,
   currentRouteEquipmentsSelector,
 } from './selectors';
-import CatTextWithLabel from '../../components/text-with-label';
-import CatRouteItem from './RouteItem';
-import {CircledIcon} from '../../components/circled-icon/Component';
-import {EquipmentIconUtils} from '../../api/types/cat/equipment';
-import {MinestarIconName} from '../../components/minestar-icon/types';
 
 const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
   const {t} = useTranslation();
@@ -110,6 +114,7 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
       <View style={styles.productionContainer}>
         {kpiRow1}
         {kpiRow2}
+        <SummaryGraphs summary={currentRouteSummary!} />
         <CatText variant={'headlineMedium'}>{t('cat.areas')}</CatText>
         <View style={styles.cardsContainer}>
           {routeAreas.map(routeArea => (
