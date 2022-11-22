@@ -4,6 +4,7 @@ import {
   Draft,
   PayloadAction,
   Reducer,
+  ThunkDispatch,
 } from '@reduxjs/toolkit';
 import {persistReducer} from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -11,17 +12,18 @@ import moment from 'moment';
 
 import {ConfigItemName} from '../../api/types/cat/config-item';
 import {Material} from '../../api/types/cat/material';
-import {ProductionSummary} from '../../api/types/cat/production';
 import {Shift} from '../../api/types/cat/shift';
 import {CatPersons, SiteConfig} from '../../api/types';
 import {UnitType} from '../../api/types/cat/common';
 import {CatHaulCycle} from '../../api/types/haul-cycle';
 import {createOfflineAsyncThunk} from '../../utils/offline';
 
+import {RootState} from '../index';
+import {logoutAsyncAction} from '../user/user-slice';
+
 import {apiResult, catApi} from './api';
 import {transformConfig} from './helpers/transformConfig';
 import {transformSummaries} from './helpers/transformSummaries';
-import {logoutAsyncAction} from '../user/user-slice';
 
 export const key = 'site';
 
@@ -32,6 +34,7 @@ export interface SiteState {
   currentRouteId: string | null;
   persons: CatPersons;
   currentShift: Shift | null;
+  latestShifts: Shift[] | null;
   materials: Material[];
   productionSummary: ReturnType<typeof transformSummaries> | null;
   haulCycles: CatHaulCycle[];
@@ -45,6 +48,7 @@ const initialState: SiteState = {
   currentRouteId: null,
   persons: {},
   currentShift: null,
+  latestShifts: null,
   materials: [],
   productionSummary: null,
   haulCycles: [],
@@ -62,45 +66,51 @@ export const fetchPersonsAsyncAction = createAsyncThunk(
   },
 );
 
+export const fetchShiftDataAsyncAction = createAsyncThunk(
+  `${key}/fetchShiftData`,
+  async (_, {dispatch, getState, rejectWithValue}) => {
+    try {
+      const state = getState() as RootState;
+
+      return await getShiftData(state.site.currentShift, dispatch);
+    } catch (e) {
+      return rejectWithValue(e);
+    }
+  },
+);
+
 export const fetchSiteAsyncAction = createOfflineAsyncThunk(
   `${key}/fetchSite`,
-  async (_, {dispatch, rejectWithValue}) => {
+  async (_, {dispatch, getState, rejectWithValue}) => {
     // No await because it is a slow query
     dispatch(fetchPersonsAsyncAction());
+    const state = getState() as RootState;
+    const selectedShift = state.site.currentShift;
 
     try {
       const siteConfig = await apiResult(
         dispatch(catApi.endpoints.getSiteConfiguration.initiate()),
       );
-      const currentShift = await apiResult(
+      const latestShifts = await apiResult(
         dispatch(catApi.endpoints.getCurrentShifts.initiate()),
       );
+
       const materials = await apiResult(
         dispatch(catApi.endpoints.getMaterials.initiate()),
       );
-      let productionSummary: ProductionSummary | null = null;
-      if (currentShift) {
-        productionSummary = await apiResult(
-          dispatch(
-            catApi.endpoints.productionSummaryForShift.initiate({
-              shiftId: currentShift.id,
-            }),
-          ),
-        );
-      }
-      const haulCycles = await apiResult(
-        dispatch(
-          catApi.endpoints.cyclesForShift.initiate({
-            shiftId: currentShift.id,
-          }),
-        ),
-      );
+
+      const currentShift =
+        latestShifts.find(shift => shift.id === selectedShift?.id) ??
+        latestShifts[0] ??
+        null;
+      const shiftData = await getShiftData(currentShift, dispatch);
+
       return {
         currentShift,
+        latestShifts,
         materials,
-        productionSummary,
-        haulCycles,
         siteConfig,
+        ...shiftData,
       };
     } catch (e) {
       return rejectWithValue(e);
@@ -114,6 +124,33 @@ export const fetchSiteAsyncAction = createOfflineAsyncThunk(
     },
   },
 );
+
+const getShiftData = async (
+  shift: Shift | null,
+  dispatch: ThunkDispatch<any, any, any>,
+) => {
+  if (!shift) {
+    return {haulCycles: null, productionSummary: null};
+  }
+
+  const productionSummary = await apiResult(
+    dispatch(
+      catApi.endpoints.productionSummaryForShift.initiate({
+        shiftId: shift.id,
+      }),
+    ),
+  );
+
+  const haulCycles = await apiResult(
+    dispatch(
+      catApi.endpoints.cyclesForShift.initiate({
+        shiftId: shift.id,
+      }),
+    ),
+  );
+
+  return {haulCycles, productionSummary};
+};
 
 const clearSiteData = (state: Draft<SiteState>) => {
   state.siteConfig = {};
@@ -134,6 +171,9 @@ const slice = createSlice({
     },
     setCurrentRouteId: (state, action: PayloadAction<string | null>) => {
       state.currentRouteId = action.payload;
+    },
+    selectShift: (state, action: PayloadAction<Shift>) => {
+      state.currentShift = action.payload;
     },
   },
   extraReducers: builder => {
@@ -160,6 +200,7 @@ const slice = createSlice({
           const config = transformConfig(action.payload.siteConfig);
 
           state.currentShift = action.payload.currentShift;
+          state.latestShifts = action.payload.latestShifts;
           state.materials = action.payload.materials;
           state.haulCycles = action.payload.haulCycles;
           state.siteConfig = config;
@@ -170,6 +211,19 @@ const slice = createSlice({
               action.payload.productionSummary,
               action.payload.materials,
               config[ConfigItemName.PRODUCTION_UNIT_TYPE] as UnitType,
+            );
+        },
+      )
+      .addCase(
+        fetchShiftDataAsyncAction.fulfilled,
+        (state, action: PayloadAction<any>) => {
+          state.haulCycles = action.payload.haulCycles;
+          state.productionSummary =
+            action.payload.productionSummary &&
+            transformSummaries(
+              action.payload.productionSummary,
+              state.materials as Material[],
+              state.siteConfig[ConfigItemName.PRODUCTION_UNIT_TYPE] as UnitType,
             );
         },
       )

@@ -6,11 +6,11 @@ import {Material} from '../../api/types/cat/material';
 import {ProductionSummary} from '../../api/types/cat/production';
 import {Shift} from '../../api/types/cat/shift';
 import {findMostRecentShift} from '../../api/shift';
+import {Person} from '../../api/types/cat/person';
+import {CatHaulCycle} from '../../api/types/haul-cycle';
 
 import {RootState} from '../index';
 import {logoutAsyncAction, refreshTokenAsyncAction} from '../user/user-slice';
-import {Person} from '../../api/types/cat/person';
-import {CatHaulCycle} from '../../api/types/haul-cycle';
 
 export const apiResult = async <T extends {error?: unknown; data?: unknown}>(
   dispatchResult: Promise<T>,
@@ -83,7 +83,7 @@ export const catApi = createApi({
   baseQuery: catBaseQuery,
   refetchOnMountOrArgChange: true,
   endpoints: builder => ({
-    getCurrentShifts: builder.query<Shift | null, void>({
+    getCurrentShifts: builder.query<Shift[] | null, void>({
       query: () => ({path: 'shift/find', method: 'GET'}),
       transformResponse: (shifts: Shift[]) => {
         return findMostRecentShift(shifts);

@@ -1,5 +1,6 @@
 import React from 'react';
 import {ScrollView} from 'react-native';
+import {RadioButton} from 'react-native-paper';
 import {useTranslation} from 'react-i18next';
 
 import CatScreen from '../../components/screen';
@@ -15,6 +16,10 @@ import {
 import useCatDispatch from '../../hooks/useCatDispatch';
 import {emulateOfflineSelector} from '../../redux/app/app-selectors';
 import {selectSiteAsyncAction} from '../../redux/sites-list/sites-slice';
+import {
+  actions as siteActions,
+  fetchShiftDataAsyncAction,
+} from '../../redux/site/site-slice';
 
 import {DebugScreenType} from './types';
 
@@ -23,6 +28,8 @@ const DebugScreen: React.FC<DebugScreenType> = props => {
   const actionQueue = useCatSelector(state => state.network.actionQueue);
   const {t} = useTranslation();
   const isThemeDark = useCatSelector(state => state.app.isThemeDark);
+  const currentShift = useCatSelector(state => state.site.currentShift);
+  const latestShifts = useCatSelector(state => state.site.latestShifts);
 
   const isEmulatingOffline = useCatSelector(emulateOfflineSelector);
 
@@ -37,6 +44,12 @@ const DebugScreen: React.FC<DebugScreenType> = props => {
   const clearSiteSelection = async () => {
     await dispatch(selectSiteAsyncAction(null));
     props.navigation.popToTop();
+  };
+
+  const changeShift = (shiftId: string) => {
+    const shift = latestShifts?.find(s => s.id === shiftId)!;
+    dispatch(siteActions.selectShift(shift));
+    dispatch(fetchShiftDataAsyncAction());
   };
 
   console.log(JSON.stringify(actionQueue));
@@ -59,6 +72,17 @@ const DebugScreen: React.FC<DebugScreenType> = props => {
         </CatButton>
 
         <CatButton onPress={clearSiteSelection}>Clear site selection</CatButton>
+        <RadioButton.Group
+          onValueChange={changeShift}
+          value={currentShift?.id ?? ''}>
+          {latestShifts?.map(shift => (
+            <RadioButton.Item
+              key={shift.id}
+              label={shift.name}
+              value={shift.id}
+            />
+          ))}
+        </RadioButton.Group>
       </ScrollView>
     </CatScreen>
   );
