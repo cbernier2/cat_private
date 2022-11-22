@@ -145,6 +145,30 @@ stages:
           PathtoPublish: $(build.artifactstagingdirectory)
           ArtifactName: MobileApps
           
+      - task: AppCenterDistribute@3
+        displayName: AppCenterDistribute Android
+        inputs:
+          serverEndpoint: 'AppCenterAndroid'
+          appSlug: 'cbernier-spiria.com/Pit-Supervisor-Android'
+          appFile: 'android/app/build/outputs/bundle/release/app-release.aab'
+          symbolsOption: 'Android'
+          releaseNotesOption: 'file'
+          releaseNotesFile: 'change-log.txt'
+          destinationType: 'groups'
+          
+      - task: AppCenterDistribute@3
+        displayName: AppCenterDistribute iOS
+        inputs:
+          serverEndpoint: 'AppCenterIOS'
+          appSlug: 'cbernier-spiria.com/Pit-Supervisor'
+          appFile: 'ios/build/appstore/pit_supervisor.ipa'
+          symbolsOption: Apple
+          symbolsDsymFiles: 'ios/build/appstore/pit_supervisor.xcarchive/dSYMs'
+          symbolsIncludeParentDirectory: false
+          releaseNotesOption: 'file'
+          releaseNotesFile: 'change-log.txt'
+          destinationType: 'groups'
+          
       - task: AppStoreRelease@1
         env:
           ITMSTRANSPORTER_FORCE_ITMS_PACKAGE_UPLOAD: true
