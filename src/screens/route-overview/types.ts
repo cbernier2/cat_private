@@ -7,6 +7,6 @@ export type ScreenType = {
 
 export type CatRouteItemType = {
   icon: React.ReactNode;
-  name: string;
+  name?: string;
   children: React.ReactNode;
 };

@@ -6,6 +6,7 @@ import {
 } from '../../redux/site/site-selectors';
 import {CatSiteSummary} from '../../redux/site/helpers/transformSiteSummary';
 import {MinestarIconName} from '../../components/minestar-icon/types';
+import {CommonConstants} from '../../api/types/cat/common';
 
 export const currentRouteAreasSelector = createSelector(
   currentRouteSelector,
@@ -22,10 +23,14 @@ export const currentRouteAreasSelector = createSelector(
       return routeAreas;
     }
     const loadAreaSummary = loadAreaSummaries?.find(
-      area => area.id === currentRoute.sourceArea?.id,
+      area =>
+        area.id ===
+        (currentRoute.sourceArea?.id ?? CommonConstants.UNDEFINED_UUID),
     );
     const dumpAreaSummary = dumpAreaSummaries?.find(
-      area => area.id === currentRoute.destinationArea?.id,
+      area =>
+        area.id ===
+        (currentRoute.destinationArea?.id ?? CommonConstants.UNDEFINED_UUID),
     );
     if (loadAreaSummary) {
       routeAreas.push({
@@ -56,27 +61,27 @@ export const currentRouteEquipmentsSelector = createSelector(
       loadEquipmentsIds.add(haulCycle.loadEquipment);
       haulEquipmentsIds.add(haulCycle.haulEquipment);
     });
+    const getEquipSummaries = (
+      ids: typeof loadEquipmentsIds,
+      summaries: typeof loadEquipSummaries,
+      isLoad: boolean,
+    ) => {
+      return (
+        summaries?.filter(summary =>
+          ids.has(summary.equipment?.id ?? CommonConstants.UNDEFINED_UUID),
+        ) ?? []
+      )
+        .sort((a, b) =>
+          (a.equipment?.name ?? '').localeCompare(b.equipment?.name ?? ''),
+        )
+        .map(summary => ({
+          ...summary,
+          isLoad,
+        }));
+    };
     return [
-      ...(
-        loadEquipSummaries?.filter(loadEquipSummary =>
-          loadEquipmentsIds.has(loadEquipSummary.equipment.id),
-        ) ?? []
-      )
-        .sort((a, b) => a.equipment!.name.localeCompare(b.equipment.name))
-        .map(loadEquipSummary => ({
-          ...loadEquipSummary,
-          isLoad: true,
-        })),
-      ...(
-        haulEquipSummaries?.filter(haulEquipSummary =>
-          haulEquipmentsIds.has(haulEquipSummary.equipment.id),
-        ) ?? []
-      )
-        .sort((a, b) => a.equipment.name.localeCompare(b.equipment.name))
-        .map(haulEquipSummary => ({
-          ...haulEquipSummary,
-          isLoad: false,
-        })),
+      ...getEquipSummaries(loadEquipmentsIds, loadEquipSummaries, true),
+      ...getEquipSummaries(haulEquipmentsIds, haulEquipSummaries, false),
     ];
   },
 );

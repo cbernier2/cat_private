@@ -7,11 +7,18 @@ import {Route} from '../api/types/cat/route';
 import {CatHaulCycle} from '../api/types/haul-cycle';
 import {HaulCycle} from '../api/types/cat/haul-cycle';
 import {HaulCycleUtils} from './haul-cycle';
+import {CommonConstants} from '../api/types/cat/common';
 
 export class RouteUtils {
-  public static generateIdFromCatHaulCycle(route: CatHaulCycle) {
-    return [route.sourceArea, route.loadEquipment, route.destinationArea]
-      .map(entity => entity ?? '')
+  public static generateIdFromCatHaulCycle(haulCycle: CatHaulCycle) {
+    return [
+      haulCycle.sourceArea,
+      haulCycle.loadEquipment,
+      haulCycle.destinationArea,
+    ]
+      .map(entity =>
+        entity && entity !== CommonConstants.UNDEFINED_UUID ? entity : '',
+      )
       .join(',');
   }
 

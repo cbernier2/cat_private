@@ -16,7 +16,7 @@ import {CatTextWithLabelType} from '../../components/text-with-label/types';
 import CatValuesRow from '../../components/value-row';
 import CatTextWithLabel from '../../components/text-with-label';
 import {CircledIcon} from '../../components/circled-icon/Component';
-import {EquipmentIconUtils} from '../../api/types/cat/equipment';
+import {EquipmentIconUtils, EquipmentType} from '../../api/types/cat/equipment';
 import {MinestarIconName} from '../../components/minestar-icon/types';
 import {SummaryGraphs} from '../../components/summary-graphs/Component';
 import {
@@ -148,14 +148,15 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
                   size={40}
                   name={
                     EquipmentIconUtils.getIcon(
-                      routeEquipment.equipment.type,
+                      routeEquipment.equipment?.type ??
+                        EquipmentType.HYDRAULIC_MINING_SHOVEL,
                     ) as MinestarIconName
                   }
                   iconColor={colors.grey100}
                   fillColor={colors.grey0}
                 />
               }
-              name={routeEquipment.equipment.name}>
+              name={routeEquipment.equipment?.name}>
               {routeEquipment.isLoad && (
                 <CatTextWithLabel label={t('cat.production_currentRate')}>
                   {formatNumber(routeEquipment.currentRateValue)}{' '}
