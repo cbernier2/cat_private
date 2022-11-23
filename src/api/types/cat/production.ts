@@ -43,6 +43,7 @@ export interface Summary {
   volumetricFlowRateUnit: string;
   preferredProdVolumeUnit: string;
   preferredProdVolumetricFlowRateUnit: string;
+  fuelLevelPercent?: number;
   totalLoads: number;
   averageLoadRate: number;
   loadRateByHour: Labelable & {

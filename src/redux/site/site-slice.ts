@@ -14,7 +14,7 @@ import {ConfigItemName} from '../../api/types/cat/config-item';
 import {Material} from '../../api/types/cat/material';
 import {Shift} from '../../api/types/cat/shift';
 import {CatPersons, SiteConfig} from '../../api/types';
-import {UnitType} from '../../api/types/cat/common';
+import {CategoryType, UnitType} from '../../api/types/cat/common';
 import {CatHaulCycle} from '../../api/types/haul-cycle';
 import {createOfflineAsyncThunk} from '../../utils/offline';
 
@@ -31,8 +31,15 @@ export interface SiteState {
   error: unknown | null;
   loading: boolean;
   lastUpdate: number | null;
-  currentRouteId: string | null;
+
+  /**
+   * The ID seems to be changing as the route gets updated so the app keeps going back to the dashboard,
+   * using the name as identifier should fix it while still being unique enough
+   */
+  currentRouteName: string | null;
+  currentEquipment: {name: string | undefined; category: CategoryType} | null;
   persons: CatPersons;
+
   currentShift: Shift | null;
   latestShifts: Shift[] | null;
   materials: Material[];
@@ -45,7 +52,8 @@ const initialState: SiteState = {
   error: null,
   loading: false,
   lastUpdate: null,
-  currentRouteId: null,
+  currentRouteName: null,
+  currentEquipment: null,
   persons: {},
   currentShift: null,
   latestShifts: null,
@@ -169,8 +177,14 @@ const slice = createSlice({
     siteSelected: state => {
       clearSiteData(state);
     },
-    setCurrentRouteId: (state, action: PayloadAction<string | null>) => {
-      state.currentRouteId = action.payload;
+    setCurrentRouteName: (state, action: PayloadAction<string | null>) => {
+      state.currentRouteName = action.payload;
+    },
+    setCurrentEquipment: (
+      state,
+      action: PayloadAction<SiteState['currentEquipment']>,
+    ) => {
+      state.currentEquipment = action.payload;
     },
     selectShift: (state, action: PayloadAction<Shift>) => {
       state.currentShift = action.payload;

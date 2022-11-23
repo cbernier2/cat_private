@@ -14,5 +14,6 @@
     "production_projected_short": "Proj.",
     "average_cycle_time_short": "Avg Cycle Time",
     "route_overview_title": "Route Overview",
-    "route_equipment": "Equipment ({{num}})"
+    "route_equipment": "Equipment ({{num}})",
+    "equipment_details_title": "Equipment"
 }

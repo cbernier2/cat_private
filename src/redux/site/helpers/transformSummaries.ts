@@ -2,7 +2,7 @@ import {ProductionSummary} from '../../../api/types/cat/production';
 
 import {transformSiteSummary} from './transformSiteSummary';
 import {Material} from '../../../api/types/cat/material';
-import {UnitType} from '../../../api/types/cat/common';
+import {CategoryType, UnitType} from '../../../api/types/cat/common';
 import {transformEquipSummary} from './transformEquipSummary';
 
 export const transformSummaries = (
@@ -39,6 +39,7 @@ export const transformSummaries = (
     })),
     loadEquipSummaries: summaries.loadEquipSummaries.map(equipSummary =>
       transformEquipSummary(
+        CategoryType.LOAD_EQUIPMENT,
         equipSummary,
         equipSummary.loader,
         materials,
@@ -47,6 +48,7 @@ export const transformSummaries = (
     ),
     haulEquipSummaries: summaries.haulEquipSummaries.map(equipSummary =>
       transformEquipSummary(
+        CategoryType.HAUL_EQUIPMENT,
         equipSummary,
         equipSummary.truck,
         materials,
@@ -55,6 +57,7 @@ export const transformSummaries = (
     ),
     supportEquipSummaries: summaries.supportEquipSummaries.map(equipSummary =>
       transformEquipSummary(
+        CategoryType.SUPPORT_EQUIPMENT,
         equipSummary,
         equipSummary.equipment,
         materials,
@@ -63,6 +66,7 @@ export const transformSummaries = (
     ),
     waterTruckSummaries: summaries.waterTruckSummaries.map(equipSummary =>
       transformEquipSummary(
+        CategoryType.WATER_TRUCK_EQUIPMENT,
         equipSummary,
         equipSummary.equipment,
         materials,
@@ -71,3 +75,5 @@ export const transformSummaries = (
     ),
   };
 };
+
+export type CatSummaries = ReturnType<typeof transformSummaries>;

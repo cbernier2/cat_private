@@ -1,17 +1,6 @@
 import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    margin: 16,
-  },
-  titleIcon: {
-    marginHorizontal: 16,
-  },
-  titleText: {
-    flexShrink: 1,
-  },
   productionContainer: {
     margin: 16,
   },
@@ -25,7 +14,6 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 16,
     paddingHorizontal: 12,
     borderRadius: 10,
     marginVertical: 4,
