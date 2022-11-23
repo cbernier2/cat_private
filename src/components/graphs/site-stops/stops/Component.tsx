@@ -1,9 +1,8 @@
 import React from 'react';
 import {G, Text, Defs, Mask, Rect, ForeignObject} from 'react-native-svg';
 
-import NoReason from '../../../../../assets/icons/stop_reason_unknown.svg';
-
 import {SiteStopsStopsType} from './types';
+import {MinestarIcon} from '../../../minestar-icon';
 
 export const SiteStopsStops: React.FC<SiteStopsStopsType> = props => {
   const fontSize = 12;
@@ -19,7 +18,6 @@ export const SiteStopsStops: React.FC<SiteStopsStopsType> = props => {
         const yAdjust = top ? 5 : thinBar ? 40 : 15;
         const barHeight = thinBar ? 5 : 30;
         const label = 'REASON VWXYZ';
-        const Icon = NoReason;
 
         const y = props.y_scale(stop.stoppedEquipmentId)!;
         const x0 = props.x_scale(stop.startTime);
@@ -64,7 +62,7 @@ export const SiteStopsStops: React.FC<SiteStopsStopsType> = props => {
                 y={y + yAdjust + 3}
                 // @ts-ignore
                 display={display(length < 40)}>
-                <Icon width={24} height={24} />
+                <MinestarIcon name="stop_reason_no_work" size={24} />
               </ForeignObject>
               <Text
                 x={x0 + 35}

@@ -2,9 +2,6 @@ import React, {useEffect} from 'react';
 import {TouchableOpacity, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 
-import BackArrowSvg from 'assets/icons/edge_arrow_back_ios.svg';
-import RouteSvg from 'assets/icons/route.svg';
-
 import CatScreen from '../../components/screen';
 import {currentRouteSelector} from '../../redux/site/site-selectors';
 import useCatSelector from '../../hooks/useCatSelector';
@@ -34,6 +31,7 @@ import {
   currentRouteAreasSelector,
   currentRouteEquipmentsSelector,
 } from './selectors';
+import {MinestarIcon} from '../../components/minestar-icon';
 
 const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
   const {t} = useTranslation();
@@ -99,13 +97,17 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
         <TouchableOpacity
           hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
           onPress={() => dispatch(siteActions.setCurrentRouteId(null))}>
-          <BackArrowSvg width={16} height={16} fill={colors.text} />
+          <MinestarIcon
+            name="edge_arrow_back_ios"
+            size={16}
+            color={colors.text}
+          />
         </TouchableOpacity>
-        <RouteSvg
+        <MinestarIcon
+          name="route"
           style={styles.titleIcon}
-          width={24}
-          height={24}
-          fill={colors.text}
+          size={24}
+          color={colors.text}
         />
         <CatText variant={'bodyLarge'} style={styles.titleText}>
           {currentRoute.name}
