@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {View} from 'react-native';
 import {useTranslation} from 'react-i18next';
-import RouteSvg from 'node_modules/minestar-icons/svg/route.svg';
 
 import useCatTheme from '../../hooks/useCatTheme';
 import CatScreen from '../../components/screen';
@@ -97,7 +96,7 @@ const DashboardScreen: React.FC<ScreenType> = ({navigation}) => {
         <CatSummaryCard
           hasError={attentionRequired}
           title={{
-            icon: RouteSvg,
+            icon: 'route',
             iconColor: colors.label,
             children: routeSummary.route.name,
           }}

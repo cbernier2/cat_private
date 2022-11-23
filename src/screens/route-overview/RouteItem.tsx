@@ -18,7 +18,7 @@ const CatRouteItem: React.FC<CatRouteItemType> = ({name, icon, children}) => {
   return (
     <Surface elevation={2} style={styles.cardContainer}>
       <View style={styles.cardItem}>
-        <CatTextWithIcon style={[styles.areaText, extraStyle]} iconNode={icon}>
+        <CatTextWithIcon style={[styles.areaText, extraStyle]} icon={icon}>
           {name ?? t('cat.undefined')}
         </CatTextWithIcon>
       </View>
