@@ -29,9 +29,15 @@ export interface SiteState {
   error: unknown | null;
   loading: boolean;
   lastUpdate: number | null;
+
+  /**
+   * The ID seems to be changing as the route gets updated so the app keeps going back to the dashboard,
+   * using the name as identifier should fix it while still being unique enough
+   */
   currentRouteName: string | null;
   currentEquipment: {name: string | undefined; category: CategoryType} | null;
   persons: CatPersons;
+
   currentShift: Shift | null;
   materials: Material[];
   productionSummary: ReturnType<typeof transformSummaries> | null;
