@@ -1,11 +1,11 @@
 import React from 'react';
 import {CatSummaryCardType} from './types';
-import {Surface} from 'react-native-paper';
 import {Pressable, View, ViewStyle} from 'react-native';
 import {useStyles} from './styles';
 import CatTextWithIcon from '../../components/text-with-icon';
 import {formatLabel, formatUnit} from '../../utils/format';
 import CatValuesRow from '../../components/value-row';
+import CatCard from '../../components/card';
 
 const CatSummaryCard: React.FC<CatSummaryCardType> = ({
   title,
@@ -21,7 +21,7 @@ const CatSummaryCard: React.FC<CatSummaryCardType> = ({
   }
   return (
     <Pressable onPress={onPress}>
-      <Surface elevation={2} style={containerStyle}>
+      <CatCard style={containerStyle}>
         <View style={styles.cardTitle}>
           <CatTextWithIcon {...title} />
         </View>
@@ -54,7 +54,7 @@ const CatSummaryCard: React.FC<CatSummaryCardType> = ({
             },
           ]}
         />
-      </Surface>
+      </CatCard>
     </Pressable>
   );
 };

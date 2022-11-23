@@ -21,8 +21,6 @@ export const useStyles = () => {
     },
     cardContainer: {
       width: 250,
-      padding: 16,
-      borderRadius: 16,
       flexDirection: 'column',
       justifyContent: 'space-between',
     },

@@ -1,24 +1,57 @@
 import {createSelector} from '@reduxjs/toolkit';
 import {RootState} from '../index';
 import {ConfigItemName} from '../../api/types/cat/config-item';
-import {CommonConstants} from '../../api/types/cat/common';
+import {CategoryType, CommonConstants} from '../../api/types/cat/common';
 import moment from 'moment';
 import {Material} from '../../api/types/cat/material';
 import {SiteConfig} from '../../api/types';
 import {RouteUtils} from '../../utils/route';
+import {CatSummaries} from './helpers/transformSummaries';
 
 export const lastUpdateSelector = createSelector(
   (state: RootState) => state.site.lastUpdate,
   lastUpdate => lastUpdate && moment(lastUpdate).toDate(),
 );
 
+const equipmentTypeToSummary = (
+  productionSummary: CatSummaries | undefined,
+  categoryType: CategoryType,
+) => {
+  switch (categoryType) {
+    case CategoryType.LOAD_EQUIPMENT:
+      return productionSummary?.loadEquipSummaries;
+    case CategoryType.HAUL_EQUIPMENT:
+      return productionSummary?.haulEquipSummaries;
+    case CategoryType.SUPPORT_EQUIPMENT:
+      return productionSummary?.supportEquipSummaries;
+    case CategoryType.WATER_TRUCK_EQUIPMENT:
+      return productionSummary?.waterTruckSummaries;
+  }
+  return undefined;
+};
+
+export const currentEquipmentSelector = createSelector(
+  (state: RootState) => state.site.productionSummary,
+  (state: RootState) => state.site.currentEquipment,
+  (productionSummary, currentEquipment) => {
+    if (productionSummary && currentEquipment) {
+      return equipmentTypeToSummary(
+        productionSummary,
+        currentEquipment.category,
+      )?.find(summary => summary.equipment?.name === currentEquipment.name);
+    } else {
+      return undefined;
+    }
+  },
+);
+
 export const currentRouteSelector = createSelector(
   (state: RootState) => state.site.productionSummary?.routeSummaries,
-  (state: RootState) => state.site.currentRouteId,
+  (state: RootState) => state.site.currentRouteName,
   (routeSummaries, selectedRoute) => {
     if (routeSummaries && selectedRoute) {
       return routeSummaries.find(
-        routeSummary => routeSummary.id === selectedRoute,
+        routeSummary => routeSummary.route.name === selectedRoute,
       );
     } else {
       return undefined;

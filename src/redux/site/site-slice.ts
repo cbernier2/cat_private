@@ -14,7 +14,7 @@ import {Material} from '../../api/types/cat/material';
 import {ProductionSummary} from '../../api/types/cat/production';
 import {Shift} from '../../api/types/cat/shift';
 import {CatPersons, SiteConfig} from '../../api/types';
-import {UnitType} from '../../api/types/cat/common';
+import {CategoryType, UnitType} from '../../api/types/cat/common';
 import {CatHaulCycle} from '../../api/types/haul-cycle';
 import {createOfflineAsyncThunk} from '../../utils/offline';
 
@@ -29,7 +29,8 @@ export interface SiteState {
   error: unknown | null;
   loading: boolean;
   lastUpdate: number | null;
-  currentRouteId: string | null;
+  currentRouteName: string | null;
+  currentEquipment: {name: string | undefined; category: CategoryType} | null;
   persons: CatPersons;
   currentShift: Shift | null;
   materials: Material[];
@@ -42,7 +43,8 @@ const initialState: SiteState = {
   error: null,
   loading: false,
   lastUpdate: null,
-  currentRouteId: null,
+  currentRouteName: null,
+  currentEquipment: null,
   persons: {},
   currentShift: null,
   materials: [],
@@ -132,8 +134,14 @@ const slice = createSlice({
     siteSelected: state => {
       clearSiteData(state);
     },
-    setCurrentRouteId: (state, action: PayloadAction<string | null>) => {
-      state.currentRouteId = action.payload;
+    setCurrentRouteName: (state, action: PayloadAction<string | null>) => {
+      state.currentRouteName = action.payload;
+    },
+    setCurrentEquipment: (
+      state,
+      action: PayloadAction<SiteState['currentEquipment']>,
+    ) => {
+      state.currentEquipment = action.payload;
     },
   },
   extraReducers: builder => {

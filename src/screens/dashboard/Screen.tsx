@@ -97,12 +97,12 @@ const DashboardScreen: React.FC<ScreenType> = ({navigation}) => {
           hasError={attentionRequired}
           title={{
             icon: 'route',
-            iconColor: colors.label,
+            iconColor: colors.text,
             children: routeSummary.route.name,
           }}
           summary={routeSummary}
           onPress={() => {
-            dispatch(siteActions.setCurrentRouteId(routeSummary.id));
+            dispatch(siteActions.setCurrentRouteName(routeSummary.route.name));
             navigation.navigate('RouteOverview');
           }}
         />

@@ -3,7 +3,7 @@
  * src/common/components/cell-display/cell-display.ts
  */
 
-import i18n from 'i18next';
+import i18n, {t} from 'i18next';
 import {UNDEFINED_VALUE} from '../api/types/cat/common';
 import {DateUtils} from './date-utils';
 
@@ -35,7 +35,10 @@ export const formatUnit = (value?: number) => {
   return value ? formatNumber(value) : UNDEFINED_VALUE;
 };
 
+export const formatPercent = (value: number) => {
+  return formatUnit(value) + (value ? t('cat.unit_percent') : '');
+};
+
 export const formatLabel = (baseLabel: string, unit?: string) => {
-  const t = i18n.t;
   return t(baseLabel) + (unit ? ' ' + t(unit) : '');
 };

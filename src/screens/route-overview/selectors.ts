@@ -6,7 +6,7 @@ import {
 } from '../../redux/site/site-selectors';
 import {CatSiteSummary} from '../../redux/site/helpers/transformSiteSummary';
 import {MinestarIconName} from '../../components/minestar-icon/types';
-import {CommonConstants} from '../../api/types/cat/common';
+import {CategoryType, CommonConstants} from '../../api/types/cat/common';
 
 export const currentRouteAreasSelector = createSelector(
   currentRouteSelector,
@@ -64,7 +64,7 @@ export const currentRouteEquipmentsSelector = createSelector(
     const getEquipSummaries = (
       ids: typeof loadEquipmentsIds,
       summaries: typeof loadEquipSummaries,
-      isLoad: boolean,
+      categoryType: CategoryType,
     ) => {
       return (
         summaries?.filter(summary =>
@@ -76,12 +76,20 @@ export const currentRouteEquipmentsSelector = createSelector(
         )
         .map(summary => ({
           ...summary,
-          isLoad,
+          categoryType,
         }));
     };
     return [
-      ...getEquipSummaries(loadEquipmentsIds, loadEquipSummaries, true),
-      ...getEquipSummaries(haulEquipmentsIds, haulEquipSummaries, false),
+      ...getEquipSummaries(
+        loadEquipmentsIds,
+        loadEquipSummaries,
+        CategoryType.LOAD_EQUIPMENT,
+      ),
+      ...getEquipSummaries(
+        haulEquipmentsIds,
+        haulEquipSummaries,
+        CategoryType.HAUL_EQUIPMENT,
+      ),
     ];
   },
 );

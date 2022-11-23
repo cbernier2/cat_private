@@ -1,21 +1,16 @@
 import React, {useEffect} from 'react';
-import {TouchableOpacity, View} from 'react-native';
+import {View} from 'react-native';
 import {useTranslation} from 'react-i18next';
-
-import CatScreen from '../../components/screen';
 import {currentRouteSelector} from '../../redux/site/site-selectors';
 import useCatSelector from '../../hooks/useCatSelector';
-import useCatDispatch from '../../hooks/useCatDispatch';
-import {actions as siteActions} from '../../redux/site/site-slice';
 import CatText from '../../components/text';
 import useCatTheme from '../../hooks/useCatTheme';
 import {CatTextWithLabelType} from '../../components/text-with-label/types';
 import CatValuesRow from '../../components/value-row';
 import CatTextWithLabel from '../../components/text-with-label';
 import {CircledIcon} from '../../components/circled-icon/Component';
-import {EquipmentIconUtils, EquipmentType} from '../../api/types/cat/equipment';
-import {MinestarIconName} from '../../components/minestar-icon/types';
 import {SummaryGraphs} from '../../components/summary-graphs/Component';
+import {actions as siteActions} from '../../redux/site/site-slice';
 import {
   formatLabel,
   formatMinutesOnly,
@@ -31,7 +26,10 @@ import {
   currentRouteAreasSelector,
   currentRouteEquipmentsSelector,
 } from './selectors';
-import {MinestarIcon} from '../../components/minestar-icon';
+import CatChildScreen from '../../components/child-screen';
+import useCatDispatch from '../../hooks/useCatDispatch';
+import {getEquipmentIcon} from '../../api/types/equipment';
+import {CategoryType} from '../../api/types/cat/common';
 
 const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
   const {t} = useTranslation();
@@ -92,27 +90,10 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
   ]);
 
   return (
-    <CatScreen title={t('route_overview_title')}>
-      <View style={styles.titleContainer}>
-        <TouchableOpacity
-          hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
-          onPress={() => dispatch(siteActions.setCurrentRouteId(null))}>
-          <MinestarIcon
-            name="edge_arrow_back_ios"
-            size={16}
-            color={colors.text}
-          />
-        </TouchableOpacity>
-        <MinestarIcon
-          name="route"
-          style={styles.titleIcon}
-          size={24}
-          color={colors.text}
-        />
-        <CatText variant={'bodyLarge'} style={styles.titleText}>
-          {currentRoute.name}
-        </CatText>
-      </View>
+    <CatChildScreen
+      title={t('route_overview_title')}
+      childTitle={currentRoute.name}
+      iconName={'route'}>
       <View style={styles.productionContainer}>
         {kpiRow1}
         {kpiRow2}
@@ -145,27 +126,34 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
           {routeEquipments.map(routeEquipment => (
             <CatRouteItem
               key={routeEquipment.id}
+              onPress={() => {
+                dispatch(
+                  siteActions.setCurrentEquipment({
+                    name: routeEquipment.equipment?.name,
+                    category: routeEquipment.categoryType,
+                  }),
+                );
+                navigation.navigate('EquipmentDetails');
+              }}
               icon={
                 <CircledIcon
                   size={40}
-                  name={
-                    EquipmentIconUtils.getIcon(
-                      routeEquipment.equipment?.type ??
-                        EquipmentType.HYDRAULIC_MINING_SHOVEL,
-                    ) as MinestarIconName
-                  }
+                  name={getEquipmentIcon(
+                    routeEquipment.equipment,
+                    routeEquipment.categoryType,
+                  )}
                   iconColor={colors.grey100}
                   fillColor={colors.grey0}
                 />
               }
               name={routeEquipment.equipment?.name}>
-              {routeEquipment.isLoad && (
+              {routeEquipment.categoryType === CategoryType.LOAD_EQUIPMENT && (
                 <CatTextWithLabel label={t('cat.production_currentRate')}>
                   {formatNumber(routeEquipment.currentRateValue)}{' '}
                   {t(routeEquipment.currentRateUnit)}
                 </CatTextWithLabel>
               )}
-              {!routeEquipment.isLoad && (
+              {routeEquipment.categoryType === CategoryType.HAUL_EQUIPMENT && (
                 <CatTextWithLabel label={t('cat.average_cycle_time')}>
                   {formatMinutesOnly(routeEquipment.averageCycleTime)}
                 </CatTextWithLabel>
@@ -174,7 +162,7 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
           ))}
         </View>
       </View>
-    </CatScreen>
+    </CatChildScreen>
   );
 };
 
