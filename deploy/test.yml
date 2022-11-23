@@ -9,8 +9,7 @@ stages:
   jobs:
   - job: test
     timeoutInMinutes: 300
-    pool:
-      vmImage: 'macOS-latest'
+    pool: Spiria-OSX
     steps:
       - checkout: self
       
