@@ -26,10 +26,11 @@ import {
   currentRouteAreasSelector,
   currentRouteEquipmentsSelector,
 } from './selectors';
-import CatChildScreen from '../../components/child-screen';
 import useCatDispatch from '../../hooks/useCatDispatch';
 import {getEquipmentIcon} from '../../api/types/equipment';
 import {CategoryType} from '../../api/types/cat/common';
+import CatScreen from '../../components/screen';
+import {PageTitle} from '../../components/page-title/Component';
 
 const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
   const {t} = useTranslation();
@@ -90,10 +91,8 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
   ]);
 
   return (
-    <CatChildScreen
-      title={t('route_overview_title')}
-      childTitle={currentRoute.name}
-      iconName={'route'}>
+    <CatScreen title={t('route_overview_title')}>
+      <PageTitle icon={'route'} title={currentRoute.name} />
       <View style={styles.productionContainer}>
         {kpiRow1}
         {kpiRow2}
@@ -162,7 +161,7 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
           ))}
         </View>
       </View>
-    </CatChildScreen>
+    </CatScreen>
   );
 };
 

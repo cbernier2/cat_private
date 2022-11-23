@@ -14,9 +14,10 @@ import {
 
 import styles from './styles';
 import {ScreenType} from './types';
-import CatChildScreen from '../../components/child-screen';
 import CatCard from '../../components/card';
 import {getEquipmentIcon} from '../../api/types/equipment';
+import {PageTitle} from '../../components/page-title/Component';
+import CatScreen from '../../components/screen';
 
 const EquipmentDetailsScreen: React.FC<ScreenType> = ({navigation}) => {
   const {t} = useTranslation();
@@ -90,13 +91,14 @@ const EquipmentDetailsScreen: React.FC<ScreenType> = ({navigation}) => {
   ]);
 
   return (
-    <CatChildScreen
-      title={t('equipment_details_title')}
-      childTitle={currentEquipmentSummary.equipment?.name}
-      iconName={getEquipmentIcon(
-        currentEquipmentSummary.equipment,
-        currentEquipmentSummary.categoryType,
-      )}>
+    <CatScreen title={t('equipment_details_title')}>
+      <PageTitle
+        icon={getEquipmentIcon(
+          currentEquipmentSummary.equipment,
+          currentEquipmentSummary.categoryType,
+        )}
+        title={currentEquipmentSummary.equipment?.name}
+      />
       <View style={styles.productionContainer}>
         <CatCard style={styles.kpiCard}>
           {kpiRow1}
@@ -104,7 +106,7 @@ const EquipmentDetailsScreen: React.FC<ScreenType> = ({navigation}) => {
           {kpiRow3}
         </CatCard>
       </View>
-    </CatChildScreen>
+    </CatScreen>
   );
 };
 
