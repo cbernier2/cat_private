@@ -19,7 +19,7 @@ export const Lines: React.FC<LinesType> = props => {
     y_scale,
   } = props;
 
-  if (!values.length || !projected.length) {
+  if (!values.length) {
     return null;
   }
 
@@ -37,7 +37,11 @@ export const Lines: React.FC<LinesType> = props => {
       .y(d => y_scale(d.value))
       .x(d => x_scale(d.time))(data)!;
 
-  const targetMet = (data: TimeData): boolean => {
+  const targetMet = (data: TimeData | null): boolean => {
+    if (!data) {
+      return false;
+    }
+
     if (data.time && minThreshold.length) {
       const minAt = MathUtils.getTimeSeriesValueAt(data.time, minThreshold)!;
 
@@ -52,8 +56,10 @@ export const Lines: React.FC<LinesType> = props => {
     return true;
   };
 
-  const lastValue = values[values.length - 1] ?? [];
-  const lastProjected = projected[projected.length - 1] ?? [];
+  const lastValue = values[values.length - 1];
+  const lastProjected = projected.length
+    ? projected[projected.length - 1]
+    : null;
   const currentStroke =
     targetMet(lastValue) || targetMet(lastProjected) ? metStroke : notMetStroke;
 
@@ -61,13 +67,15 @@ export const Lines: React.FC<LinesType> = props => {
   const lineData = [{time: values[0].time, value: y_min}, ...values];
   // Start and end fill polies on y_min, so they close properly.
   const fillData = [...lineData, {time: lastValue.time, value: y_min}];
-  const projectedData = [
-    // Make sure projected properly connects with current.
-    {time: lastValue.time, value: y_min},
-    lastValue,
-    ...projected,
-    {time: lastProjected.time, value: y_min},
-  ];
+  const projectedData = lastProjected
+    ? [
+        // Make sure projected properly connects with current.
+        {time: lastValue.time, value: y_min},
+        lastValue,
+        ...projected,
+        {time: lastProjected.time, value: y_min},
+      ]
+    : [];
 
   const currentLine = draw(lineData);
   const currentArea = draw(fillData);
