@@ -90,6 +90,16 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
     {label: '', children: ''},
   ]);
 
+  const navigateToArea = (area: any) => {
+    dispatch(
+      siteActions.setCurrentArea({
+        id: area.summary.id,
+        type: area.summary.type,
+      }),
+    );
+    navigation.navigate('AreaDetails');
+  };
+
   return (
     <CatScreen title={t('route_overview_title')}>
       <PageTitle icon={'route'} title={currentRoute.name} />
@@ -102,6 +112,7 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
           {routeAreas.map(routeArea => (
             <CatRouteItem
               key={routeArea.summary.id}
+              onPress={() => navigateToArea(routeArea)}
               name={routeArea.name}
               icon={
                 <CircledIcon

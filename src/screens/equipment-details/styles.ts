@@ -1,6 +1,10 @@
 import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
+  graphContainer: {
+    margin: 8,
+    marginTop: 16,
+  },
   productionContainer: {
     margin: 8,
   },

@@ -137,6 +137,7 @@ export interface Summary {
 export interface HaulCyclesSummary extends Summary {}
 
 export interface PlanAreaSummary extends Summary {
+  area: PlanArea;
   materialObservationForPlanArea: string;
 }
 

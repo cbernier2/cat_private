@@ -219,6 +219,8 @@ export const enum CategoryType {
   ROUTE = 'route',
 }
 
+export type AreaType = CategoryType.LOAD_AREA | CategoryType.DUMP_AREA;
+
 /**
  * A category class used to hold common category details used by the UI
  */

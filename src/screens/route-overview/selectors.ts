@@ -34,14 +34,14 @@ export const currentRouteAreasSelector = createSelector(
     );
     if (loadAreaSummary) {
       routeAreas.push({
-        name: loadAreaSummary.loadArea.name,
+        name: loadAreaSummary.area.name,
         summary: loadAreaSummary,
         icon: 'load_area',
       });
     }
     if (dumpAreaSummary) {
       routeAreas.push({
-        name: dumpAreaSummary.dumpArea.name,
+        name: dumpAreaSummary.area.name,
         summary: dumpAreaSummary,
         icon: 'dump',
       });

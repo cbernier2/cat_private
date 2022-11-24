@@ -14,7 +14,7 @@ import {ConfigItemName} from '../../api/types/cat/config-item';
 import {Material} from '../../api/types/cat/material';
 import {Shift} from '../../api/types/cat/shift';
 import {CatPersons, SiteConfig} from '../../api/types';
-import {CategoryType, UnitType} from '../../api/types/cat/common';
+import {AreaType, CategoryType, UnitType} from '../../api/types/cat/common';
 import {CatHaulCycle} from '../../api/types/haul-cycle';
 import {createOfflineAsyncThunk} from '../../utils/offline';
 
@@ -27,6 +27,8 @@ import {transformSummaries} from './helpers/transformSummaries';
 
 export const key = 'site';
 
+export type CurrentArea = {id: string; type: AreaType};
+
 export interface SiteState {
   error: unknown | null;
   loading: boolean;
@@ -37,6 +39,7 @@ export interface SiteState {
    * using the name as identifier should fix it while still being unique enough
    */
   currentRouteName: string | null;
+  currentArea: CurrentArea | null;
   currentEquipment: {name: string | undefined; category: CategoryType} | null;
   persons: CatPersons;
 
@@ -53,6 +56,7 @@ const initialState: SiteState = {
   loading: false,
   lastUpdate: null,
   currentRouteName: null,
+  currentArea: null,
   currentEquipment: null,
   persons: {},
   currentShift: null,
@@ -179,6 +183,9 @@ const slice = createSlice({
     },
     setCurrentRouteName: (state, action: PayloadAction<string | null>) => {
       state.currentRouteName = action.payload;
+    },
+    setCurrentArea: (state, action: PayloadAction<CurrentArea | null>) => {
+      state.currentArea = action.payload;
     },
     setCurrentEquipment: (
       state,

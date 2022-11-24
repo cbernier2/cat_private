@@ -1,15 +1,46 @@
 import {ProductionSummary} from '../../../api/types/cat/production';
 
-import {transformSiteSummary} from './transformSiteSummary';
 import {Material} from '../../../api/types/cat/material';
-import {CategoryType, UnitType} from '../../../api/types/cat/common';
+import {AreaType, CategoryType, UnitType} from '../../../api/types/cat/common';
+import {PlanArea} from '../../../api/types/cat/plan-area';
+import {Route} from '../../../api/types/cat/route';
+import {Equipment} from '../../../api/types/cat/equipment';
+
 import {transformEquipSummary} from './transformEquipSummary';
+import {CatSiteSummary, transformSiteSummary} from './transformSiteSummary';
+
+export type CatEquipmentSummary = CatSiteSummary & {
+  categoryType: CategoryType;
+  equipment: Equipment | undefined;
+  fuelLevelPercent: number;
+};
+
+export type CatAreaSummary = CatSiteSummary & {
+  area: PlanArea;
+  type: AreaType;
+};
+
+export type CatRouteSummary = CatSiteSummary & {
+  route: Route;
+};
+
+export interface CatSummaries {
+  siteSummary: CatSiteSummary;
+  siteLoadSummary: CatSiteSummary;
+  routeSummaries: Array<CatRouteSummary>;
+  loadAreaSummaries: Array<CatAreaSummary>;
+  dumpSummaries: Array<CatAreaSummary>;
+  loadEquipSummaries: Array<CatEquipmentSummary>;
+  haulEquipSummaries: Array<CatEquipmentSummary>;
+  supportEquipSummaries: Array<CatEquipmentSummary>;
+  waterTruckSummaries: Array<CatEquipmentSummary>;
+}
 
 export const transformSummaries = (
   summaries: ProductionSummary,
   materials: Material[],
   defaultUnit: UnitType,
-) => {
+): CatSummaries | null => {
   if (!summaries) {
     return null;
   }
@@ -31,11 +62,13 @@ export const transformSummaries = (
     })),
     loadAreaSummaries: summaries.loadAreaSummaries.map(loadAreaSummary => ({
       ...transformSiteSummary(loadAreaSummary, materials, defaultUnit),
-      loadArea: loadAreaSummary.loadArea,
+      type: CategoryType.LOAD_AREA,
+      area: loadAreaSummary.loadArea,
     })),
     dumpSummaries: summaries.dumpSummaries.map(dumpSummary => ({
       ...transformSiteSummary(dumpSummary, materials, defaultUnit),
-      dumpArea: dumpSummary.dumpArea,
+      type: CategoryType.DUMP_AREA,
+      area: dumpSummary.dumpArea,
     })),
     loadEquipSummaries: summaries.loadEquipSummaries.map(equipSummary =>
       transformEquipSummary(
@@ -75,5 +108,3 @@ export const transformSummaries = (
     ),
   };
 };
-
-export type CatSummaries = ReturnType<typeof transformSummaries>;
