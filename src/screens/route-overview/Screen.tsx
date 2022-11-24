@@ -90,7 +90,7 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
     {label: '', children: ''},
   ]);
 
-  const navigateToArea = (area: any) => {
+  const navigateToArea = (area: typeof routeAreas[number]) => {
     dispatch(
       siteActions.setCurrentArea({
         id: area.summary.id,
@@ -98,6 +98,18 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
       }),
     );
     navigation.navigate('AreaDetails');
+  };
+
+  const navigateToEquipment = (
+    routeEquipment: typeof routeEquipments[number],
+  ) => {
+    dispatch(
+      siteActions.setCurrentEquipment({
+        name: routeEquipment.equipment?.name,
+        category: routeEquipment.categoryType,
+      }),
+    );
+    navigation.navigate('EquipmentDetails');
   };
 
   return (
@@ -136,15 +148,7 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
           {routeEquipments.map(routeEquipment => (
             <CatRouteItem
               key={routeEquipment.id}
-              onPress={() => {
-                dispatch(
-                  siteActions.setCurrentEquipment({
-                    name: routeEquipment.equipment?.name,
-                    category: routeEquipment.categoryType,
-                  }),
-                );
-                navigation.navigate('EquipmentDetails');
-              }}
+              onPress={() => navigateToEquipment(routeEquipment)}
               icon={
                 <CircledIcon
                   size={40}
