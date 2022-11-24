@@ -20,18 +20,20 @@ import useCatSelector from '../hooks/useCatSelector';
 import {userAuthTokenSelector} from '../redux/user/user-selectors';
 import {sitesSelectedSiteSelector} from '../redux/sites-list/sites-selectors';
 import RouteOverviewScreen from '../screens/route-overview';
+import EquipmentDetailsScreen from '../screens/equipment-details';
+import {AreaOverviewScreen} from '../screens/area-overview/Screen';
 
 import CatDrawer from './drawer';
 import CatDrawerIcon from './header/DrawerIcon';
 import CatHeader from './header';
 import CatSyncStatus from './header/SyncStatus';
-import EquipmentDetailsScreen from '../screens/equipment-details';
 
 const SummaryStack = createStackNavigator();
 const SummaryNavigator = () => (
   <SummaryStack.Navigator screenOptions={{headerShown: false}}>
     <SummaryStack.Screen name="Dashboard" component={DashboardScreen} />
     <SummaryStack.Screen name="RouteOverview" component={RouteOverviewScreen} />
+    <SummaryStack.Screen name="AreaDetails" component={AreaOverviewScreen} />
     <SummaryStack.Screen
       name="EquipmentDetails"
       component={EquipmentDetailsScreen}

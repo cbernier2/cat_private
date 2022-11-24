@@ -1,16 +1,50 @@
 import {createSelector} from '@reduxjs/toolkit';
-import {RootState} from '../index';
+import moment from 'moment';
+
 import {ConfigItemName} from '../../api/types/cat/config-item';
 import {CategoryType, CommonConstants} from '../../api/types/cat/common';
-import moment from 'moment';
 import {Material} from '../../api/types/cat/material';
 import {SiteConfig} from '../../api/types';
 import {RouteUtils} from '../../utils/route';
-import {CatSummaries} from './helpers/transformSummaries';
+
+import {RootState} from '../index';
+
+import {CatAreaSummary, CatSummaries} from './helpers/transformSummaries';
 
 export const lastUpdateSelector = createSelector(
   (state: RootState) => state.site.lastUpdate,
   lastUpdate => lastUpdate && moment(lastUpdate).toDate(),
+);
+
+export const currentAreaSelector = createSelector(
+  (state: RootState) => {
+    if (!state.site.currentArea) {
+      return null;
+    }
+
+    const {id, type} = state.site.currentArea;
+    let summaries: CatAreaSummary[] = [];
+    switch (type) {
+      // case CategoryType.CRUSHER_AREA:
+      //   summaries =
+      //     (state.site.productionSummary
+      //       ?.crusherSummaries as unknown as CatAreaSummary[]) ?? [];
+      //   break;
+      case CategoryType.DUMP_AREA:
+        summaries =
+          (state.site.productionSummary
+            ?.dumpSummaries as unknown as CatAreaSummary[]) ?? [];
+        break;
+      case CategoryType.LOAD_AREA:
+        summaries =
+          (state.site.productionSummary
+            ?.loadAreaSummaries as unknown as CatAreaSummary[]) ?? [];
+        break;
+    }
+
+    return summaries?.find((summary: any) => summary.id === id) ?? null;
+  },
+  summary => summary,
 );
 
 const equipmentTypeToSummary = (

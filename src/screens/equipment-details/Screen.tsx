@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import {View} from 'react-native';
 import {useTranslation} from 'react-i18next';
+
 import {currentEquipmentSelector} from '../../redux/site/site-selectors';
 import useCatSelector from '../../hooks/useCatSelector';
 import {CatTextWithLabelType} from '../../components/text-with-label/types';
@@ -11,13 +12,14 @@ import {
   formatMinutesOnlyFromMillis,
   formatUnit,
 } from '../../utils/format';
-
-import styles from './styles';
-import {ScreenType} from './types';
 import CatCard from '../../components/card';
 import {getEquipmentIcon} from '../../api/types/equipment';
 import {PageTitle} from '../../components/page-title/Component';
 import CatScreen from '../../components/screen';
+import {SummaryGraphs} from '../../components/summary-graphs/Component';
+
+import styles from './styles';
+import {ScreenType} from './types';
 
 const EquipmentDetailsScreen: React.FC<ScreenType> = ({navigation}) => {
   const {t} = useTranslation();
@@ -105,6 +107,9 @@ const EquipmentDetailsScreen: React.FC<ScreenType> = ({navigation}) => {
           {kpiRow2}
           {kpiRow3}
         </CatCard>
+      </View>
+      <View style={styles.graphContainer}>
+        <SummaryGraphs summary={currentEquipmentSummary} />
       </View>
     </CatScreen>
   );

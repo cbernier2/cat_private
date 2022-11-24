@@ -4,9 +4,9 @@ import {
   currentRouteHaulCycles,
   currentRouteSelector,
 } from '../../redux/site/site-selectors';
-import {CatSiteSummary} from '../../redux/site/helpers/transformSiteSummary';
 import {MinestarIconName} from '../../components/minestar-icon/types';
 import {CategoryType, CommonConstants} from '../../api/types/cat/common';
+import {CatAreaSummary} from '../../redux/site/helpers/transformSummaries';
 
 export const currentRouteAreasSelector = createSelector(
   currentRouteSelector,
@@ -15,7 +15,7 @@ export const currentRouteAreasSelector = createSelector(
   (currentRouteSummary, loadAreaSummaries, dumpAreaSummaries) => {
     const routeAreas: {
       name: string;
-      summary: CatSiteSummary;
+      summary: CatAreaSummary;
       icon: MinestarIconName;
     }[] = [];
     const currentRoute = currentRouteSummary?.route;
@@ -34,14 +34,14 @@ export const currentRouteAreasSelector = createSelector(
     );
     if (loadAreaSummary) {
       routeAreas.push({
-        name: loadAreaSummary.loadArea.name,
+        name: loadAreaSummary.area.name,
         summary: loadAreaSummary,
         icon: 'load_area',
       });
     }
     if (dumpAreaSummary) {
       routeAreas.push({
-        name: dumpAreaSummary.dumpArea.name,
+        name: dumpAreaSummary.area.name,
         summary: dumpAreaSummary,
         icon: 'dump',
       });
