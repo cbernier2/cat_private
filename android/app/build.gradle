@@ -228,7 +228,6 @@ android {
             keyPassword 'android'
         }
     }
-    namespace 'com.pit_supervisor'
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
