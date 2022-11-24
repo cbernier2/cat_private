@@ -1,5 +1,6 @@
 import React from 'react';
 import {View} from 'react-native';
+import {useTranslation} from 'react-i18next';
 import Svg, {Circle, Defs} from 'react-native-svg';
 
 import {UnitUtils} from '../../../../../utils/unit-utils';
@@ -12,6 +13,8 @@ import {styles} from './styles';
 
 export const LegendItem: React.FC<LegendItemType> = props => {
   const {name = '', pattern, patternId, quantity} = props;
+
+  const {t} = useTranslation();
 
   const getQtyLabel = () => {
     if (quantity) {
@@ -29,6 +32,8 @@ export const LegendItem: React.FC<LegendItemType> = props => {
     return '';
   };
 
+  const label = name === 'Undefined' ? t('cat.undefined') : name;
+
   return (
     <View style={styles.container}>
       <Svg width={17} height={16}>
@@ -38,7 +43,7 @@ export const LegendItem: React.FC<LegendItemType> = props => {
         <Circle cx={5} cy={8} r={5} fill={`url(#${patternId})`} />
       </Svg>
       <CatText variant={'bodySmall'} style={styles.labelText}>
-        {name}
+        {label}
       </CatText>
       <CatText variant={'bodySmall'} style={styles.unitText}>
         {getQtyLabel()}
