@@ -58,7 +58,7 @@ const initialState: SiteState = {
   currentRouteName: null,
   currentArea: null,
   currentEquipment: null,
-  persons: {},
+  persons: [],
   currentShift: null,
   latestShifts: null,
   materials: [],
@@ -171,7 +171,7 @@ const clearSiteData = (state: Draft<SiteState>) => {
   state.productionSummary = null;
   state.haulCycles = [];
   state.lastUpdate = null;
-  state.persons = {};
+  state.persons = [];
 };
 
 const slice = createSlice({

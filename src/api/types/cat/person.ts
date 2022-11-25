@@ -21,7 +21,7 @@ export interface Person {
   companyName?: string;
   externalId?: string;
   color?: string;
-  initials: string;
+  initials?: string;
   lastUpdated?: number;
 }
 

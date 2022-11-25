@@ -14,13 +14,15 @@ import {Pattern} from '../pattern/Component';
 
 import {Legend} from './legend/Component';
 import {MaterialTimeLineType, MaterialWithMeta, Segment} from './types';
+import {findMaterials} from '../../../api/material';
 
 export const MaterialTimeLine: React.FC<MaterialTimeLineType> = props => {
   const {legend, now = moment().valueOf(), timeline, width, x_scale} = props;
 
   const clockIs24 = useSelector(siteClockIs24HourSelector);
-  const materials = useSelector(
-    materialsSelector(legend.map(material => material.id)),
+  const materials = findMaterials(
+    useSelector(materialsSelector),
+    legend.map(material => material.id),
   ).map(m => ({
     ...m,
     ...legend.find(l => l.id === m.id),

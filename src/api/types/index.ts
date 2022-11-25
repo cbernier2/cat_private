@@ -23,7 +23,7 @@ export type CatSiteConfig = {
 };
 
 export type SiteConfig = {[key in ConfigItemName]?: any};
-export type CatPersons = {[key: string]: Person};
+export type CatPersons = Person[];
 export type CatColumn = {
   key: string;
   unit: string;

@@ -6,7 +6,6 @@ import {Material} from '../../api/types/cat/material';
 import {ProductionSummary} from '../../api/types/cat/production';
 import {Shift} from '../../api/types/cat/shift';
 import {findMostRecentShift} from '../../api/shift';
-import {Person} from '../../api/types/cat/person';
 import {CatHaulCycle} from '../../api/types/haul-cycle';
 
 import {RootState} from '../index';
@@ -100,15 +99,6 @@ export const catApi = createApi({
 
     getPersons: builder.query<CatPersons, void>({
       query: () => ({path: 'person/find', method: 'GET'}),
-      transformResponse: (persons: Person[]) => {
-        const result: CatPersons = {};
-        persons.forEach(person => {
-          if (person.userName) {
-            result[person.userName] = person;
-          }
-        });
-        return result;
-      },
     }),
 
     productionSummaryForShift: builder.query<

@@ -13,6 +13,11 @@ export type CatEquipmentSummary = CatSiteSummary & {
   categoryType: CategoryType;
   equipment: Equipment | undefined;
   fuelLevelPercent: number;
+  lastObservedOperatorId?: string;
+  lastObservedLoadAreaId?: string;
+  lastObservedDumpAreaId?: string;
+  lastObservedMaterialId?: string;
+  lastObservedDestinationAreaId?: string;
 };
 
 export type CatAreaSummary = CatSiteSummary & {
