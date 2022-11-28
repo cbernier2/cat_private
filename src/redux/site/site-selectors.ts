@@ -4,7 +4,7 @@ import moment from 'moment';
 import {ConfigItemName} from '../../api/types/cat/config-item';
 import {CategoryType, CommonConstants} from '../../api/types/cat/common';
 import {Material} from '../../api/types/cat/material';
-import {SiteConfig} from '../../api/types';
+import {CatPersons, SiteConfig} from '../../api/types';
 import {RouteUtils} from '../../utils/route';
 
 import {RootState} from '../index';
@@ -14,6 +14,26 @@ import {CatAreaSummary, CatSummaries} from './helpers/transformSummaries';
 export const lastUpdateSelector = createSelector(
   (state: RootState) => state.site.lastUpdate,
   lastUpdate => lastUpdate && moment(lastUpdate).toDate(),
+);
+
+export const routesSelector = createSelector(
+  (state: RootState) => state.site.productionSummary?.routeSummaries ?? [],
+  routes => routes,
+);
+
+export const equipmentsSelector = createSelector(
+  (state: RootState) => state.site.productionSummary?.loadEquipSummaries ?? [],
+  (state: RootState) => state.site.productionSummary?.haulEquipSummaries ?? [],
+  (state: RootState) =>
+    state.site.productionSummary?.supportEquipSummaries ?? [],
+  (state: RootState) => state.site.productionSummary?.waterTruckSummaries ?? [],
+  (load, haul, support, water) => [...load, ...haul, ...support, ...water],
+);
+
+export const areasSelector = createSelector(
+  (state: RootState) => state.site.productionSummary?.loadAreaSummaries ?? [],
+  (state: RootState) => state.site.productionSummary?.dumpSummaries ?? [],
+  (load, dump) => [...load, ...dump],
 );
 
 export const currentAreaSelector = createSelector(
@@ -109,6 +129,20 @@ export const currentRouteHaulCycles = createSelector(
 export const personsSelector = createSelector(
   (state: RootState) => state.site.persons,
   persons => persons,
+);
+
+export const operatorsSelector = createSelector(
+  personsSelector,
+  (state: RootState) => state.site.operatorInfo,
+  (persons, operatorInfo): CatPersons =>
+    Object.fromEntries(
+      Object.entries(persons)
+        .filter(person => person[1].isOperator)
+        .map(person => [
+          ...person,
+          {...person[1], operatorInfo: operatorInfo[person[1].id]},
+        ]),
+    ),
 );
 
 export const siteIsLoadingSelector = createSelector(

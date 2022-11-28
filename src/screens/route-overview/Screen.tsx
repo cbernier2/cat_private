@@ -1,16 +1,21 @@
 import React, {useEffect} from 'react';
 import {View} from 'react-native';
 import {useTranslation} from 'react-i18next';
+
 import {currentRouteSelector} from '../../redux/site/site-selectors';
 import useCatSelector from '../../hooks/useCatSelector';
 import CatText from '../../components/text';
-import useCatTheme from '../../hooks/useCatTheme';
 import {CatTextWithLabelType} from '../../components/text-with-label/types';
 import CatValuesRow from '../../components/value-row';
 import CatTextWithLabel from '../../components/text-with-label';
 import {CircledIcon} from '../../components/circled-icon/Component';
 import {SummaryGraphs} from '../../components/summary-graphs/Component';
 import {actions as siteActions} from '../../redux/site/site-slice';
+import useCatDispatch from '../../hooks/useCatDispatch';
+import {getEquipmentIcon} from '../../api/types/equipment';
+import {CategoryType} from '../../api/types/cat/common';
+import CatScreen from '../../components/screen';
+import {PageTitle} from '../../components/page-title/Component';
 import {
   formatLabel,
   formatMinutesOnly,
@@ -26,11 +31,6 @@ import {
   currentRouteAreasSelector,
   currentRouteEquipmentsSelector,
 } from './selectors';
-import useCatDispatch from '../../hooks/useCatDispatch';
-import {getEquipmentIcon} from '../../api/types/equipment';
-import {CategoryType} from '../../api/types/cat/common';
-import CatScreen from '../../components/screen';
-import {PageTitle} from '../../components/page-title/Component';
 
 const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
   const {t} = useTranslation();
@@ -39,7 +39,6 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
   const currentRoute = currentRouteSummary?.route;
   const routeAreas = useCatSelector(currentRouteAreasSelector);
   const routeEquipments = useCatSelector(currentRouteEquipmentsSelector);
-  const {colors} = useCatTheme();
 
   useEffect(() => {
     if (!currentRouteSummary) {
@@ -106,7 +105,7 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
     dispatch(
       siteActions.setCurrentEquipment({
         name: routeEquipment.equipment?.name,
-        category: routeEquipment.categoryType,
+        category: routeEquipment.type,
       }),
     );
     navigation.navigate('EquipmentDetails');
@@ -126,14 +125,7 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
               key={routeArea.summary.id}
               onPress={() => navigateToArea(routeArea)}
               name={routeArea.name}
-              icon={
-                <CircledIcon
-                  size={40}
-                  name={routeArea.icon}
-                  iconColor={colors.grey100}
-                  fillColor={colors.grey0}
-                />
-              }>
+              icon={<CircledIcon size={40} name={routeArea.icon} />}>
               <CatTextWithLabel label={t('cat.production_currentRate')}>
                 {formatNumber(routeArea.summary.currentRateValue)}{' '}
                 {t(routeArea.summary.currentRateUnit)}
@@ -154,20 +146,18 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
                   size={40}
                   name={getEquipmentIcon(
                     routeEquipment.equipment,
-                    routeEquipment.categoryType,
+                    routeEquipment.type,
                   )}
-                  iconColor={colors.grey100}
-                  fillColor={colors.grey0}
                 />
               }
               name={routeEquipment.equipment?.name}>
-              {routeEquipment.categoryType === CategoryType.LOAD_EQUIPMENT && (
+              {routeEquipment.type === CategoryType.LOAD_EQUIPMENT && (
                 <CatTextWithLabel label={t('cat.production_currentRate')}>
                   {formatNumber(routeEquipment.currentRateValue)}{' '}
                   {t(routeEquipment.currentRateUnit)}
                 </CatTextWithLabel>
               )}
-              {routeEquipment.categoryType === CategoryType.HAUL_EQUIPMENT && (
+              {routeEquipment.type === CategoryType.HAUL_EQUIPMENT && (
                 <CatTextWithLabel label={t('cat.average_cycle_time')}>
                   {formatMinutesOnly(routeEquipment.averageCycleTime)}
                 </CatTextWithLabel>

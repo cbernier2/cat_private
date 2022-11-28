@@ -16,5 +16,6 @@
     "area_overview_title": "Area Overview",
     "route_overview_title": "Route Overview",
     "route_equipment": "Equipment ({{num}})",
-    "equipment_details_title": "Equipment"
+    "equipment_details_title": "Equipment",
+    "search_no_results": "No results found"
 }

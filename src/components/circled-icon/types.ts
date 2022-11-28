@@ -6,7 +6,7 @@ export interface CircledIconType {
   borderColor?: ColorValue;
   borderWidth?: number;
   fillColor?: ColorValue;
-  iconColor: ColorValue;
+  iconColor?: ColorValue;
   iconSize?: number;
   name: MinestarIconName;
   size?: number;

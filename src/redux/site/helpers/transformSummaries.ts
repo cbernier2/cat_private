@@ -1,7 +1,12 @@
 import {ProductionSummary} from '../../../api/types/cat/production';
 
 import {Material} from '../../../api/types/cat/material';
-import {AreaType, CategoryType, UnitType} from '../../../api/types/cat/common';
+import {
+  AreaType,
+  CategoryType,
+  EquipmentType,
+  UnitType,
+} from '../../../api/types/cat/common';
 import {PlanArea} from '../../../api/types/cat/plan-area';
 import {Route} from '../../../api/types/cat/route';
 import {Equipment} from '../../../api/types/cat/equipment';
@@ -10,9 +15,9 @@ import {transformEquipSummary} from './transformEquipSummary';
 import {CatSiteSummary, transformSiteSummary} from './transformSiteSummary';
 
 export type CatEquipmentSummary = CatSiteSummary & {
-  categoryType: CategoryType;
   equipment: Equipment | undefined;
   fuelLevelPercent: number;
+  type: EquipmentType;
 };
 
 export type CatAreaSummary = CatSiteSummary & {
@@ -22,6 +27,7 @@ export type CatAreaSummary = CatSiteSummary & {
 
 export type CatRouteSummary = CatSiteSummary & {
   route: Route;
+  type: CategoryType.ROUTE;
 };
 
 export interface CatSummaries {
@@ -58,6 +64,7 @@ export const transformSummaries = (
     ),
     routeSummaries: summaries.routeSummaries.map(routeSummary => ({
       ...transformSiteSummary(routeSummary, materials, defaultUnit),
+      type: CategoryType.ROUTE,
       route: routeSummary.route,
     })),
     loadAreaSummaries: summaries.loadAreaSummaries.map(loadAreaSummary => ({

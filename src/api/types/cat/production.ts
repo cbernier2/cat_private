@@ -25,6 +25,25 @@ export interface Timeline {
   fuelingOccurred?: boolean;
 }
 
+/**
+ * TimelineEntry Interface sourced from
+ * https://gitgis.ecorp.cat.com/minestar/pitsupervisor/minestar-core/-/blob/develop/app-web/src/common/providers/common/timeline-entry.ts
+ */
+export interface TimelineEntry {
+  classification: string;
+  startTime: number;
+  endTime: number;
+  loginTime?: number;
+  logoutTime?: number;
+  duration: number;
+  iconName?: string;
+  additionalIconNamesMap?: Map<string, string>;
+  auxLabel?: string;
+  isOnGoing?: boolean;
+  showDataProcessingDelay?: boolean;
+  toolTipDescription?: string;
+}
+
 export interface Summary {
   id: string;
   name: string;

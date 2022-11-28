@@ -2,6 +2,7 @@
 
 import {ColourUtils} from './colors';
 import {PERSON_COLOUR_PALETTE} from './color_palettes';
+import {OperatorInfo} from './operator-info';
 
 export interface Person {
   id: string;
@@ -23,6 +24,7 @@ export interface Person {
   color?: string;
   initials: string;
   lastUpdated?: number;
+  operatorInfo?: OperatorInfo;
 }
 
 export namespace Person {
