@@ -192,6 +192,9 @@ export interface EquipmentSummary extends Summary {
   nominalPayloadUnit: string;
   lastAssignedLoaderProductionSummary: any;
   lastAssignedPlanAreaId?: number;
+  lastObservedOperatorId?: string;
+  lastObservedLoadAreaId?: string;
+  lastObservedDumpAreaId?: string;
 }
 
 export type MaterialSummary = Summary & {materialId: string};

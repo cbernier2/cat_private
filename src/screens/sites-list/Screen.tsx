@@ -25,6 +25,7 @@ import {SitesListTypes} from './types';
 import styles from './styles';
 import {siteIsLoadingSelector} from '../../redux/site/site-selectors';
 import useCatStore from '../../hooks/useCatStore';
+import {fetchSiteAsyncAction} from '../../redux/site/site-slice';
 
 export const SitesListScreen: React.FC<SitesListTypes> = props => {
   const root = Boolean(props.route.params?.root);
@@ -59,6 +60,8 @@ export const SitesListScreen: React.FC<SitesListTypes> = props => {
     const selectedSite = sitesSelectedSiteSelector(store.getState());
     if (site.id !== selectedSite?.id) {
       await dispatch(selectSiteAsyncAction(site));
+    } else {
+      await dispatch(fetchSiteAsyncAction());
     }
     if (!root) {
       props.navigation.navigate('Dashboard');

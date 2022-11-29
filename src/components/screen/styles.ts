@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
   },
   scrollViewContent: {
     marginBottom: 16,
+    flexGrow: 1,
   },
 });
 

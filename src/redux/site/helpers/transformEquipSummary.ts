@@ -14,7 +14,15 @@ export const transformEquipSummary = (
 ) => {
   return {
     ...transformSiteSummary(equipSummary, materials, defaultUnit),
-    ...pick(equipSummary, 'fuelLevelPercent'),
+    ...pick(
+      equipSummary,
+      'fuelLevelPercent',
+      'lastObservedLoadAreaId',
+      'lastObservedDumpAreaId',
+      'lastObservedOperatorId',
+      'lastObservedMaterialId',
+      'lastObservedDestinationAreaId',
+    ),
     type,
     equipment,
   };

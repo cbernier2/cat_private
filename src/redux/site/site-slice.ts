@@ -59,7 +59,7 @@ const initialState: SiteState = {
   currentRouteName: null,
   currentArea: null,
   currentEquipment: null,
-  persons: {},
+  persons: [],
   operatorInfo: {},
   currentShift: null,
   latestShifts: null,
@@ -170,7 +170,7 @@ const clearSiteData = (state: Draft<SiteState>) => {
   state.productionSummary = null;
   state.haulCycles = [];
   state.lastUpdate = null;
-  state.persons = {};
+  state.persons = [];
   state.operatorInfo = {};
 };
 

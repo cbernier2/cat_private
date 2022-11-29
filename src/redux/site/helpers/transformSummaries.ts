@@ -17,6 +17,11 @@ import {CatSiteSummary, transformSiteSummary} from './transformSiteSummary';
 export type CatEquipmentSummary = CatSiteSummary & {
   equipment: Equipment | undefined;
   fuelLevelPercent: number;
+  lastObservedOperatorId?: string;
+  lastObservedLoadAreaId?: string;
+  lastObservedDumpAreaId?: string;
+  lastObservedMaterialId?: string;
+  lastObservedDestinationAreaId?: string;
   type: EquipmentType;
 };
 

@@ -127,7 +127,7 @@ const DashboardScreen: React.FC<ScreenType> = ({navigation}) => {
         {kpiRow1}
         <CatAccordion>
           {kpiRow2}
-          <SummaryGraphs summary={summary!} />
+          {summary !== undefined && <SummaryGraphs summary={summary} />}
         </CatAccordion>
       </View>
       <CatText style={styles.activeWorkTitle} variant={'headlineSmall'}>
