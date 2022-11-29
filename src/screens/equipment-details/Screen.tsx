@@ -34,7 +34,7 @@ const EquipmentDetailsScreen: React.FC<ScreenType> = ({navigation}) => {
       <PageTitle
         icon={getEquipmentIcon(
           currentEquipmentSummary.equipment,
-          currentEquipmentSummary.categoryType,
+          currentEquipmentSummary.type,
         )}
         title={currentEquipmentSummary.equipment?.name}
       />

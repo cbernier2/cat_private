@@ -99,7 +99,7 @@ const CatEquipmentDetails = () => {
   const kpiRow4 = kpiRowJSX([
     {
       label:
-        currentEquipment?.categoryType === CategoryType.LOAD_EQUIPMENT
+        currentEquipment?.type === CategoryType.LOAD_EQUIPMENT
           ? t('cat.production_loadArea')
           : t('cat.production_dumpArea'),
       children: areaSummary?.area.name ?? UNDEFINED_VALUE,

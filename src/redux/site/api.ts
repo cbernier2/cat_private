@@ -1,7 +1,13 @@
 import {BaseQueryFn, createApi} from '@reduxjs/toolkit/query/react';
 import {sub as dateSub} from 'date-fns';
 
-import {CatPersons, CatQueryFnParams, CatSiteConfig} from '../../api/types';
+import {
+  CatOperatorInfo,
+  CatPersons,
+  CatQueryFnParams,
+  CatSiteConfig,
+} from '../../api/types';
+import {OperatorInfo} from '../../api/types/cat/operator-info';
 import {Material} from '../../api/types/cat/material';
 import {ProductionSummary} from '../../api/types/cat/production';
 import {Shift} from '../../api/types/cat/shift';
@@ -99,6 +105,24 @@ export const catApi = createApi({
 
     getPersons: builder.query<CatPersons, void>({
       query: () => ({path: 'person/find', method: 'GET'}),
+    }),
+
+    getOperatorInfo: builder.query<CatOperatorInfo | null, {shiftId: string}>({
+      query: queryParams => ({
+        path: 'operatorInfo/findForShift',
+        method: 'GET',
+        queryParams,
+      }),
+      transformResponse: (response: {operatorInfos: OperatorInfo[]}[]) => {
+        const operatorInfos = response[0].operatorInfos;
+        const result: CatOperatorInfo = {};
+        operatorInfos.forEach(info => {
+          if (info.id) {
+            result[info.id] = info;
+          }
+        });
+        return result;
+      },
     }),
 
     productionSummaryForShift: builder.query<

@@ -13,7 +13,7 @@ import moment from 'moment';
 import {ConfigItemName} from '../../api/types/cat/config-item';
 import {Material} from '../../api/types/cat/material';
 import {Shift} from '../../api/types/cat/shift';
-import {CatPersons, SiteConfig} from '../../api/types';
+import {CatOperatorInfo, CatPersons, SiteConfig} from '../../api/types';
 import {AreaType, CategoryType, UnitType} from '../../api/types/cat/common';
 import {CatHaulCycle} from '../../api/types/haul-cycle';
 import {createOfflineAsyncThunk} from '../../utils/offline';
@@ -42,6 +42,7 @@ export interface SiteState {
   currentArea: CurrentArea | null;
   currentEquipment: {name: string | undefined; category: CategoryType} | null;
   persons: CatPersons;
+  operatorInfo: CatOperatorInfo;
 
   currentShift: Shift | null;
   latestShifts: Shift[] | null;
@@ -59,6 +60,7 @@ const initialState: SiteState = {
   currentArea: null,
   currentEquipment: null,
   persons: [],
+  operatorInfo: {},
   currentShift: null,
   latestShifts: null,
   materials: [],
@@ -142,26 +144,23 @@ const getShiftData = async (
   dispatch: ThunkDispatch<any, any, any>,
 ) => {
   if (!shift) {
-    return {haulCycles: null, productionSummary: null};
+    return {haulCycles: null, operatorInfo: null, productionSummary: null};
   }
+  const params = {shiftId: shift.id};
 
   const productionSummary = await apiResult(
-    dispatch(
-      catApi.endpoints.productionSummaryForShift.initiate({
-        shiftId: shift.id,
-      }),
-    ),
+    dispatch(catApi.endpoints.productionSummaryForShift.initiate(params)),
   );
 
   const haulCycles = await apiResult(
-    dispatch(
-      catApi.endpoints.cyclesForShift.initiate({
-        shiftId: shift.id,
-      }),
-    ),
+    dispatch(catApi.endpoints.cyclesForShift.initiate(params)),
   );
 
-  return {haulCycles, productionSummary};
+  const operatorInfo = await apiResult(
+    dispatch(catApi.endpoints.getOperatorInfo.initiate(params)),
+  );
+
+  return {haulCycles, operatorInfo, productionSummary};
 };
 
 const clearSiteData = (state: Draft<SiteState>) => {
@@ -172,6 +171,7 @@ const clearSiteData = (state: Draft<SiteState>) => {
   state.haulCycles = [];
   state.lastUpdate = null;
   state.persons = [];
+  state.operatorInfo = {};
 };
 
 const slice = createSlice({
@@ -225,6 +225,7 @@ const slice = createSlice({
           state.materials = action.payload.materials;
           state.haulCycles = action.payload.haulCycles;
           state.siteConfig = config;
+          state.operatorInfo = action.payload.operatorInfo;
 
           state.productionSummary =
             action.payload.productionSummary &&
@@ -239,6 +240,7 @@ const slice = createSlice({
         fetchShiftDataAsyncAction.fulfilled,
         (state, action: PayloadAction<any>) => {
           state.haulCycles = action.payload.haulCycles;
+          state.operatorInfo = action.payload.operatorInfo;
           state.productionSummary =
             action.payload.productionSummary &&
             transformSummaries(

@@ -1,12 +1,12 @@
 import {EquipmentSummary} from '../../../api/types/cat/production';
 import {Material} from '../../../api/types/cat/material';
-import {CategoryType, UnitType} from '../../../api/types/cat/common';
+import {EquipmentType, UnitType} from '../../../api/types/cat/common';
 import {Equipment} from '../../../api/types/cat/equipment';
 import {transformSiteSummary} from './transformSiteSummary';
 import {pick} from 'lodash';
 
 export const transformEquipSummary = (
-  categoryType: CategoryType,
+  type: EquipmentType,
   equipSummary: EquipmentSummary,
   equipment: Equipment | undefined,
   materials: Material[],
@@ -23,7 +23,7 @@ export const transformEquipSummary = (
       'lastObservedMaterialId',
       'lastObservedDestinationAreaId',
     ),
-    categoryType,
+    type,
     equipment,
   };
 };

@@ -77,7 +77,7 @@ export const SitesListScreen: React.FC<SitesListTypes> = props => {
           value={filter}
           onChangeText={value => setFilter(value)}
         />
-        <List.Section>
+        <List.Section style={styles.mh}>
           <List.Subheader>{t('my_sites')}</List.Subheader>
           <ScrollView>
             <ActivityIndicator

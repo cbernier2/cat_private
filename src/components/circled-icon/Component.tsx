@@ -4,16 +4,18 @@ import Svg, {Circle, ForeignObject, Text} from 'react-native-svg';
 
 import useCatTheme from '../../hooks/useCatTheme';
 
-import {CircledIconType, ForeignCircledIconType} from './types';
 import {MinestarIcon} from '../minestar-icon';
+
+import {CircledIconType, ForeignCircledIconType} from './types';
+import {getKey} from './functions';
 
 export const CircledIcon: React.FC<CircledIconType> = props => {
   const {colors} = useCatTheme();
 
   const {
     name,
-    iconColor = colors.label,
-    fillColor,
+    iconColor = colors.grey100,
+    fillColor = colors.grey0,
     borderColor,
     borderWidth = 3,
     size = 28,
@@ -46,7 +48,7 @@ export const CircledIcon: React.FC<CircledIconType> = props => {
             r={radius}
           />
         )}
-        <ForeignObject x={iconXY} y={iconXY}>
+        <ForeignObject key={getKey(props)} x={iconXY} y={iconXY}>
           <MinestarIcon name={name} color={iconColor} size={iconSize} />
         </ForeignObject>
         {badge !== undefined && (
@@ -73,7 +75,7 @@ export const ForeignCircledIcon: React.FC<ForeignCircledIconType> = props => {
   const {x, y, ...rest} = props;
   return (
     <>
-      <ForeignObject x={x} y={y}>
+      <ForeignObject key={getKey(rest)} x={x} y={y}>
         <CircledIcon {...rest} />
       </ForeignObject>
     </>

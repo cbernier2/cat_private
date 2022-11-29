@@ -220,6 +220,11 @@ export const enum CategoryType {
 }
 
 export type AreaType = CategoryType.LOAD_AREA | CategoryType.DUMP_AREA;
+export type EquipmentType =
+  | CategoryType.LOAD_EQUIPMENT
+  | CategoryType.HAUL_EQUIPMENT
+  | CategoryType.SUPPORT_EQUIPMENT
+  | CategoryType.WATER_TRUCK_EQUIPMENT;
 
 /**
  * A category class used to hold common category details used by the UI
