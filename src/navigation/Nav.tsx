@@ -100,6 +100,9 @@ const DrawerNavigator = () => {
       screenOptions={{
         headerTintColor: colors.onSurface,
         headerTitle: props => <CatHeader {...props} />,
+        headerTitleContainerStyle: {
+          marginLeft: 0,
+        },
         headerTitleAlign: 'left',
         headerRight: () => <CatSyncStatus />,
         headerLeft: () => <CatDrawerIcon />,

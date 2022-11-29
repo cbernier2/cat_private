@@ -5,6 +5,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    marginLeft: 10,
+  },
+  title: {
+    marginLeft: 10,
   },
   statusContainer: {
     flexDirection: 'row',
@@ -19,7 +23,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   drawerIcon: {
-    marginLeft: 8,
+    marginLeft: 6,
   },
 });
 
