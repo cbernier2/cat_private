@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
   },
   productionContainer: {
     margin: 8,
+    paddingVertical: 12,
   },
   kpiCard: {
     paddingBottom: 0,

@@ -5,7 +5,11 @@ import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {ScrollView, TouchableWithoutFeedback, View} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 
-const CatScreen: React.FC<CatScreenType> = ({children, title}) => {
+const CatScreen: React.FC<CatScreenType> = ({
+  children,
+  title,
+  scroll = true,
+}) => {
   const navigation = useNavigation<StackNavigationProp<any>>();
 
   useFocusEffect(
@@ -46,9 +50,13 @@ const CatScreen: React.FC<CatScreenType> = ({children, title}) => {
       <TouchableWithoutFeedback onPress={onPressTrigger}>
         <View style={styles.triggerContainer} />
       </TouchableWithoutFeedback>
-      <ScrollView alwaysBounceVertical={false}>
-        <View style={styles.scrollViewContent}>{children}</View>
-      </ScrollView>
+      {scroll ? (
+        <ScrollView alwaysBounceVertical={false}>
+          <View style={styles.scrollViewContent}>{children}</View>
+        </ScrollView>
+      ) : (
+        <>{children}</>
+      )}
     </View>
   );
 };
