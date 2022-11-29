@@ -17,23 +17,27 @@ export const lastUpdateSelector = createSelector(
 );
 
 export const routesSelector = createSelector(
-  (state: RootState) => state.site.productionSummary?.routeSummaries ?? [],
-  routes => routes,
+  (state: RootState) => state.site.productionSummary?.routeSummaries,
+  routes => routes ?? [],
 );
 
 export const equipmentsSelector = createSelector(
-  (state: RootState) => state.site.productionSummary?.loadEquipSummaries ?? [],
-  (state: RootState) => state.site.productionSummary?.haulEquipSummaries ?? [],
-  (state: RootState) =>
-    state.site.productionSummary?.supportEquipSummaries ?? [],
-  (state: RootState) => state.site.productionSummary?.waterTruckSummaries ?? [],
-  (load, haul, support, water) => [...load, ...haul, ...support, ...water],
+  (state: RootState) => state.site.productionSummary?.loadEquipSummaries,
+  (state: RootState) => state.site.productionSummary?.haulEquipSummaries,
+  (state: RootState) => state.site.productionSummary?.supportEquipSummaries,
+  (state: RootState) => state.site.productionSummary?.waterTruckSummaries,
+  (load, haul, support, water) => [
+    ...(load ?? []),
+    ...(haul ?? []),
+    ...(support ?? []),
+    ...(water ?? []),
+  ],
 );
 
 export const areasSelector = createSelector(
-  (state: RootState) => state.site.productionSummary?.loadAreaSummaries ?? [],
-  (state: RootState) => state.site.productionSummary?.dumpSummaries ?? [],
-  (load, dump) => [...load, ...dump],
+  (state: RootState) => state.site.productionSummary?.loadAreaSummaries,
+  (state: RootState) => state.site.productionSummary?.dumpSummaries,
+  (load, dump) => [...(load ?? []), ...(dump ?? [])],
 );
 
 export const currentAreaSelector = createSelector(

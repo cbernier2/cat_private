@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {ScrollView} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {List} from 'react-native-paper';
@@ -24,8 +24,6 @@ import styles from './styles';
 const SearchScreen: React.FC<ScreenType> = () => {
   const {t} = useTranslation();
   const [filter, setFilter] = useState<string>('');
-  const [error, setError] = useState<string>('');
-  const [results, setResults] = useState<SearchItem[]>([]);
 
   const areas = useSelector(areasSelector);
   const equipments = useSelector(equipmentsSelector);
@@ -36,52 +34,47 @@ const SearchScreen: React.FC<ScreenType> = () => {
     return Category.findByCategoryType(type)?.icon as MinestarIconName;
   };
 
-  useEffect(() => {
+  const {error, results} = useMemo(() => {
     if (!filter) {
-      setResults([]);
-      setError('');
-    } else {
-      const equipmentIdsFromOperators = Object.entries(operators)
-        .filter(entry => entry[0].toLowerCase().includes(filter.toLowerCase()))
-        .map(entry => entry[1].operatorInfo?.operatorAssignments)
-        .flat()
-        .map(assignment => assignment?.equipmentId ?? '')
-        .filter(id => id !== '');
-
-      const filteredAreas: SearchItem[] =
-        areas
-          ?.filter(item =>
-            item.area.name.toLowerCase().includes(filter.toLowerCase()),
-          )
-          .map(item => ({...item, label: item.area.name})) ?? [];
-
-      const filteredEquipments: SearchItem[] =
-        equipments
-          ?.filter(
-            item =>
-              item.equipment?.name
-                .toLowerCase()
-                .includes(filter.toLowerCase()) ||
-              equipmentIdsFromOperators.includes(item.equipment?.id ?? ''),
-          )
-          .map(item => ({...item, label: item.equipment!.name})) ?? [];
-
-      const filteredRoutes: SearchItem[] =
-        routes
-          ?.filter(item =>
-            item.route.name.toLowerCase().includes(filter.toLowerCase()),
-          )
-          .map(item => ({...item, label: item.route.name})) ?? [];
-
-      const items = [
-        ...filteredAreas,
-        ...filteredEquipments,
-        ...filteredRoutes,
-      ];
-
-      setError(items.length ? '' : t('search_no_results'));
-      setResults(items);
+      return {error: '', results: []};
     }
+
+    const equipmentIdsFromOperators = Object.entries(operators)
+      .filter(entry => entry[0].toLowerCase().includes(filter.toLowerCase()))
+      .map(entry => entry[1].operatorInfo?.operatorAssignments)
+      .flat()
+      .map(assignment => assignment?.equipmentId ?? '')
+      .filter(id => id !== '');
+
+    const filteredAreas: SearchItem[] =
+      areas
+        ?.filter(item =>
+          item.area.name.toLowerCase().includes(filter.toLowerCase()),
+        )
+        .map(item => ({...item, label: item.area.name})) ?? [];
+
+    const filteredEquipments: SearchItem[] =
+      equipments
+        ?.filter(
+          item =>
+            item.equipment?.name.toLowerCase().includes(filter.toLowerCase()) ||
+            equipmentIdsFromOperators.includes(item.equipment?.id ?? ''),
+        )
+        .map(item => ({...item, label: item.equipment!.name})) ?? [];
+
+    const filteredRoutes: SearchItem[] =
+      routes
+        ?.filter(item =>
+          item.route.name.toLowerCase().includes(filter.toLowerCase()),
+        )
+        .map(item => ({...item, label: item.route.name})) ?? [];
+
+    const items = [...filteredAreas, ...filteredEquipments, ...filteredRoutes];
+
+    return {
+      error: items.length ? '' : t('search_no_results'),
+      results: items,
+    };
   }, [areas, equipments, filter, operators, routes, t]);
 
   return (

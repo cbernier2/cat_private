@@ -171,6 +171,7 @@ const clearSiteData = (state: Draft<SiteState>) => {
   state.haulCycles = [];
   state.lastUpdate = null;
   state.persons = {};
+  state.operatorInfo = {};
 };
 
 const slice = createSlice({

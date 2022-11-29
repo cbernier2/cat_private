@@ -119,11 +119,12 @@ export const catApi = createApi({
 
     getOperatorInfo: builder.query<CatOperatorInfo | null, {shiftId: string}>({
       query: queryParams => ({
-        path: 'operatorInfo/findForshift',
+        path: 'operatorInfo/findForShift',
         method: 'GET',
         queryParams,
       }),
-      transformResponse: ({operatorInfos}: {operatorInfos: OperatorInfo[]}) => {
+      transformResponse: (response: {operatorInfos: OperatorInfo[]}[]) => {
+        const operatorInfos = response[0].operatorInfos;
         const result: CatOperatorInfo = {};
         operatorInfos.forEach(info => {
           if (info.id) {
