@@ -1,12 +1,11 @@
 import React from 'react';
 import {SafeAreaView, View} from 'react-native';
-import {Avatar, Drawer} from 'react-native-paper';
+import {Drawer} from 'react-native-paper';
 import {useTranslation} from 'react-i18next';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import MineStarLogo from '../../../assets/MineStarLogo.svg';
 
-import CatText from '../../components/text';
 import useCatTheme from '../../hooks/useCatTheme';
 import {logoutAsyncAction} from '../../redux/user/user-slice';
 import useCatDispatch from '../../hooks/useCatDispatch';
@@ -20,7 +19,8 @@ import {CatMenuItem} from './MenuItem';
 import {useStyles} from './styles';
 import {userNameSelector} from '../../redux/user/user-selectors';
 import {personsSelector} from '../../redux/site/site-selectors';
-import {Person} from '../../api/types/cat/person';
+import CatUserBanner from '../../components/user-banner';
+import {findPersonByUserName} from '../../api/person';
 
 const CatDrawer: React.FC<CatDrawerType> = ({navigation}) => {
   const dispatch = useCatDispatch();
@@ -29,7 +29,7 @@ const CatDrawer: React.FC<CatDrawerType> = ({navigation}) => {
   const selectedSite = useCatSelector(sitesSelectedSiteSelector);
   const userName = useCatSelector(userNameSelector);
   const persons = useCatSelector(personsSelector);
-  const person: Person = persons[userName] || {};
+  const person = findPersonByUserName(persons, userName);
   const styles = useStyles();
   const siteName = selectedSite?.name ?? '';
 
@@ -47,12 +47,7 @@ const CatDrawer: React.FC<CatDrawerType> = ({navigation}) => {
       </View>
 
       <View style={styles.menuBodyContainer}>
-        <View style={styles.menuUserNameContainer}>
-          <Avatar.Text size={40} label={person.initials} />
-          <CatText variant={'titleMedium'} style={styles.userName}>
-            {person.name}
-          </CatText>
-        </View>
+        <CatUserBanner style={styles.menuUserNameContainer} person={person} />
         <Drawer.Section title={siteName}>
           <CatMenuItem
             onPress={() => navigation.navigate('SwitchSite')}

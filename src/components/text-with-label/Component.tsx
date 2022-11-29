@@ -35,11 +35,15 @@ const CatTextWithLabel: React.FC<CatTextWithLabelType> = ({
           size={24}
         />
       )}
-      <CatText
-        variant={variant}
-        style={[textStyle, valueStyle]}
-        {...textProps}
-      />
+      {React.isValidElement(textProps.children) ? (
+        textProps.children
+      ) : (
+        <CatText
+          variant={variant}
+          style={[textStyle, valueStyle]}
+          {...textProps}
+        />
+      )}
     </View>
   );
 };

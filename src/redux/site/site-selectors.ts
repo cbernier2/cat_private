@@ -3,7 +3,6 @@ import moment from 'moment';
 
 import {ConfigItemName} from '../../api/types/cat/config-item';
 import {CategoryType, CommonConstants} from '../../api/types/cat/common';
-import {Material} from '../../api/types/cat/material';
 import {SiteConfig} from '../../api/types';
 import {RouteUtils} from '../../utils/route';
 
@@ -121,17 +120,10 @@ export const currentShiftSelector = createSelector(
   currentShift => currentShift,
 );
 
-export const materialsSelector = (ids?: string[]) =>
-  createSelector(
-    (state: RootState) => state.site.materials,
-    (materials: Material[]) => {
-      if (ids && ids.length) {
-        return materials.filter(material => ids.includes(material.id)) ?? [];
-      }
-
-      return materials;
-    },
-  );
+export const materialsSelector = createSelector(
+  (state: RootState) => state.site.materials,
+  materials => materials,
+);
 
 export const shiftNominalOperationalTimelineSelector = createSelector(
   currentShiftSelector,

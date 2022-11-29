@@ -118,7 +118,7 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
       <View style={styles.productionContainer}>
         {kpiRow1}
         {kpiRow2}
-        <SummaryGraphs summary={currentRouteSummary!} />
+        <SummaryGraphs summary={currentRouteSummary} />
         <CatText variant={'headlineMedium'}>{t('cat.areas')}</CatText>
         <View style={styles.cardsContainer}>
           {routeAreas.map(routeArea => (

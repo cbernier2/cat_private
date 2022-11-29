@@ -22,12 +22,7 @@ export const useStyles = () => {
       flexGrow: 1,
     },
     menuUserNameContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
       padding: 16,
-    },
-    userName: {
-      marginLeft: 14,
     },
     menuItemContainer: {
       flexDirection: 'row',
