@@ -20,7 +20,7 @@ export const currentEquipmentAreaSelector = createSelector(
   currentEquipmentSelector,
   (state: RootState) => state.site.productionSummary,
   (currentEquipment, equipmentSummary, summaries) => {
-    if (currentEquipment?.categoryType === CategoryType.LOAD_EQUIPMENT) {
+    if (currentEquipment?.type === CategoryType.LOAD_EQUIPMENT) {
       return summaries?.loadAreaSummaries.find(
         loadAreaSummary =>
           loadAreaSummary.area.id === equipmentSummary?.lastObservedLoadAreaId,

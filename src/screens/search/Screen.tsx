@@ -39,9 +39,11 @@ const SearchScreen: React.FC<ScreenType> = () => {
       return {error: '', results: []};
     }
 
-    const equipmentIdsFromOperators = Object.entries(operators)
-      .filter(entry => entry[0].toLowerCase().includes(filter.toLowerCase()))
-      .map(entry => entry[1].operatorInfo?.operatorAssignments)
+    const equipmentIdsFromOperators = operators
+      .filter(operator =>
+        operator.name?.toLowerCase().includes(filter.toLowerCase()),
+      )
+      .map(operator => operator.operatorInfo?.operatorAssignments)
       .flat()
       .map(assignment => assignment?.equipmentId ?? '')
       .filter(id => id !== '');

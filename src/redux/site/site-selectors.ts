@@ -138,14 +138,9 @@ export const operatorsSelector = createSelector(
   personsSelector,
   (state: RootState) => state.site.operatorInfo,
   (persons, operatorInfo): CatPersons =>
-    Object.fromEntries(
-      Object.entries(persons)
-        .filter(person => person[1].isOperator)
-        .map(person => [
-          ...person,
-          {...person[1], operatorInfo: operatorInfo[person[1].id]},
-        ]),
-    ),
+    persons
+      .filter(person => person.isOperator)
+      .map(person => ({...person, operatorInfo: operatorInfo[person.id]})),
 );
 
 export const siteIsLoadingSelector = createSelector(
