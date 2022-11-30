@@ -1,6 +1,6 @@
 {
     "summary_title": "Summary",
-    "status_date_format": "d/L, HH:mm",
+    "status_date_format": "L/d, HH:mm",
     "status_not_available": "--",
     "my_sites": "My sites",
     "theme_switch": "Change to {{name}} Mode",
