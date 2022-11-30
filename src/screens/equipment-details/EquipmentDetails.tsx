@@ -19,7 +19,10 @@ import CatCard from '../../components/card';
 import CatUserBanner from '../../components/user-banner';
 import {SummaryGraphs} from '../../components/summary-graphs/Component';
 import useCatSelector from '../../hooks/useCatSelector';
-import {currentEquipmentSelector} from '../../redux/site/site-selectors';
+import {
+  currentEquipmentSelector,
+  searchEquipmentSelector,
+} from '../../redux/site/site-selectors';
 import {
   currentEquipmentAreaSelector,
   currentEquipmentMaterialSelector,
@@ -27,15 +30,24 @@ import {
 } from './selectors';
 import {useTranslation} from 'react-i18next';
 
-const CatEquipmentDetails = () => {
+const CatEquipmentDetails = (props: any) => {
   const {t} = useTranslation();
-  const currentEquipmentSummary = useCatSelector(currentEquipmentSelector);
-  const currentEquipment = useCatSelector(currentEquipmentSelector);
-  const person = useCatSelector(currentEquipmentPersonSelector);
-  const areaSummary = useCatSelector(currentEquipmentAreaSelector);
-  const material = useCatSelector(currentEquipmentMaterialSelector);
+  const isSearch = Boolean(props.route.isSearch);
+  const equipmentSelector = isSearch
+    ? searchEquipmentSelector
+    : currentEquipmentSelector;
+  const selectedEquipmentSummary = useCatSelector(equipmentSelector);
+  const person = useCatSelector(
+    currentEquipmentPersonSelector(equipmentSelector),
+  );
+  const areaSummary = useCatSelector(
+    currentEquipmentAreaSelector(equipmentSelector),
+  );
+  const material = useCatSelector(
+    currentEquipmentMaterialSelector(equipmentSelector),
+  );
 
-  if (!currentEquipmentSummary) {
+  if (!selectedEquipmentSummary) {
     return null;
   }
 
@@ -47,38 +59,38 @@ const CatEquipmentDetails = () => {
     {
       label: formatLabel(
         'cat.production_target',
-        currentEquipmentSummary.targetUnit,
+        selectedEquipmentSummary.targetUnit,
       ),
-      children: formatUnit(currentEquipmentSummary.targetValue),
+      children: formatUnit(selectedEquipmentSummary.targetValue),
     },
     {
       label: t('cat.production_shiftToDate'),
-      children: formatUnit(currentEquipmentSummary.totalValue),
+      children: formatUnit(selectedEquipmentSummary.totalValue),
     },
     {
       label: formatLabel(
         'production_projected_short',
-        currentEquipmentSummary.projectedUnit,
+        selectedEquipmentSummary.projectedUnit,
       ),
-      children: formatUnit(currentEquipmentSummary.projectedValue),
+      children: formatUnit(selectedEquipmentSummary.projectedValue),
     },
   ]);
 
   const kpiRow2 = kpiRowJSX([
     {
       label: t('cat.production_currentRate'),
-      children: formatMinutesOnly(currentEquipmentSummary.currentRateValue),
+      children: formatMinutesOnly(selectedEquipmentSummary.currentRateValue),
     },
     {
       label: formatLabel(
         'cat.production_secondary_total',
-        currentEquipmentSummary.totalLoadsUnit,
+        selectedEquipmentSummary.totalLoadsUnit,
       ),
-      children: formatUnit(currentEquipmentSummary.totalLoadsValue),
+      children: formatUnit(selectedEquipmentSummary.totalLoadsValue),
     },
     {
       label: t('average_cycle_time_short'),
-      children: formatMinutesOnly(currentEquipmentSummary.averageCycleTime),
+      children: formatMinutesOnly(selectedEquipmentSummary.averageCycleTime),
     },
   ]);
 
@@ -86,12 +98,12 @@ const CatEquipmentDetails = () => {
     {
       label: t('cat.production_secondary_averageQueuingDurationEmpty'),
       children: formatMinutesOnlyFromMillis(
-        currentEquipmentSummary.averageQueuingDurationEmpty,
+        selectedEquipmentSummary.averageQueuingDurationEmpty,
       ),
     },
     {
       label: formatLabel('cat.equipment_fuelLevelPercent'),
-      children: formatPercent(currentEquipmentSummary.fuelLevelPercent),
+      children: formatPercent(selectedEquipmentSummary.fuelLevelPercent),
     },
     {label: '', children: ''},
   ]);
@@ -99,7 +111,7 @@ const CatEquipmentDetails = () => {
   const kpiRow4 = kpiRowJSX([
     {
       label:
-        currentEquipment?.type === CategoryType.LOAD_EQUIPMENT
+        selectedEquipmentSummary?.type === CategoryType.LOAD_EQUIPMENT
           ? t('cat.production_loadArea')
           : t('cat.production_dumpArea'),
       children: areaSummary?.area.name ?? UNDEFINED_VALUE,
@@ -160,7 +172,7 @@ const CatEquipmentDetails = () => {
           </CatCard>
         </View>
         <View style={styles.graphContainer}>
-          <SummaryGraphs summary={currentEquipmentSummary} />
+          <SummaryGraphs summary={selectedEquipmentSummary} />
         </View>
       </View>
     </ScrollView>

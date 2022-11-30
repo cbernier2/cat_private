@@ -39,36 +39,41 @@ export const areasSelector = createSelector(
   (load, dump) => [...(load ?? []), ...(dump ?? [])],
 );
 
-export const currentAreaSelector = createSelector(
-  (state: RootState) => {
-    if (!state.site.currentArea) {
-      return null;
-    }
+export const currentAreaSelector = (isSearch: boolean) =>
+  createSelector(
+    (state: RootState) => {
+      const selectedArea = isSearch
+        ? state.site.searchArea
+        : state.site.currentArea;
 
-    const {id, type} = state.site.currentArea;
-    let summaries: CatAreaSummary[] = [];
-    switch (type) {
-      // case CategoryType.CRUSHER_AREA:
-      //   summaries =
-      //     (state.site.productionSummary
-      //       ?.crusherSummaries as unknown as CatAreaSummary[]) ?? [];
-      //   break;
-      case CategoryType.DUMP_AREA:
-        summaries =
-          (state.site.productionSummary
-            ?.dumpSummaries as unknown as CatAreaSummary[]) ?? [];
-        break;
-      case CategoryType.LOAD_AREA:
-        summaries =
-          (state.site.productionSummary
-            ?.loadAreaSummaries as unknown as CatAreaSummary[]) ?? [];
-        break;
-    }
+      if (!selectedArea) {
+        return null;
+      }
 
-    return summaries?.find((summary: any) => summary.id === id) ?? null;
-  },
-  summary => summary,
-);
+      const {id, type} = selectedArea;
+      let summaries: CatAreaSummary[] = [];
+      switch (type) {
+        // case CategoryType.CRUSHER_AREA:
+        //   summaries =
+        //     (state.site.productionSummary
+        //       ?.crusherSummaries as unknown as CatAreaSummary[]) ?? [];
+        //   break;
+        case CategoryType.DUMP_AREA:
+          summaries =
+            (state.site.productionSummary
+              ?.dumpSummaries as unknown as CatAreaSummary[]) ?? [];
+          break;
+        case CategoryType.LOAD_AREA:
+          summaries =
+            (state.site.productionSummary
+              ?.loadAreaSummaries as unknown as CatAreaSummary[]) ?? [];
+          break;
+      }
+
+      return summaries?.find((summary: any) => summary.id === id) ?? null;
+    },
+    summary => summary,
+  );
 
 const equipmentTypeToSummary = (
   productionSummary: CatSummaries | undefined,
@@ -102,6 +107,25 @@ export const currentEquipmentSelector = createSelector(
   },
 );
 
+export const searchEquipmentSelector = createSelector(
+  (state: RootState) => state.site.productionSummary,
+  (state: RootState) => state.site.searchEquipment,
+  (productionSummary, searchEquipment) => {
+    if (productionSummary && searchEquipment) {
+      return equipmentTypeToSummary(
+        productionSummary,
+        searchEquipment.category,
+      )?.find(summary => summary.equipment?.name === searchEquipment.name);
+    } else {
+      return undefined;
+    }
+  },
+);
+
+export type EquipmentSelector =
+  | typeof currentEquipmentSelector
+  | typeof searchEquipmentSelector;
+
 export const currentRouteSelector = createSelector(
   (state: RootState) => state.site.productionSummary?.routeSummaries,
   (state: RootState) => state.site.currentRouteName,
@@ -116,18 +140,37 @@ export const currentRouteSelector = createSelector(
   },
 );
 
-export const currentRouteHaulCycles = createSelector(
-  currentRouteSelector,
-  (state: RootState) => state.site.haulCycles,
-  (currentRouteSummary, haulCycles) => {
-    if (!currentRouteSummary?.route) {
-      return [];
+export const searchRouteSelector = createSelector(
+  (state: RootState) => state.site.productionSummary?.routeSummaries,
+  (state: RootState) => state.site.searchRouteName,
+  (routeSummaries, selectedRoute) => {
+    if (routeSummaries && selectedRoute) {
+      return routeSummaries.find(
+        routeSummary => routeSummary.route.name === selectedRoute,
+      );
+    } else {
+      return undefined;
     }
-    return haulCycles.filter(haulCycle =>
-      RouteUtils.isOnRoute(currentRouteSummary.route, haulCycle),
-    );
   },
 );
+
+export type RouteSelector =
+  | typeof currentRouteSelector
+  | typeof searchRouteSelector;
+
+export const currentRouteHaulCycles = (routeSelector: RouteSelector) =>
+  createSelector(
+    routeSelector,
+    (state: RootState) => state.site.haulCycles,
+    (selectedRouteSummary, haulCycles) => {
+      if (!selectedRouteSummary?.route) {
+        return [];
+      }
+      return haulCycles.filter(haulCycle =>
+        RouteUtils.isOnRoute(selectedRouteSummary.route, haulCycle),
+      );
+    },
+  );
 
 export const personsSelector = createSelector(
   (state: RootState) => state.site.persons,

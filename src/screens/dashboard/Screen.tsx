@@ -102,7 +102,9 @@ const DashboardScreen: React.FC<ScreenType> = ({navigation}) => {
           }}
           summary={routeSummary}
           onPress={() => {
-            dispatch(siteActions.setCurrentRouteName(routeSummary.route.name));
+            dispatch(
+              siteActions.setCurrentRouteName({name: routeSummary.route.name}),
+            );
             navigation.navigate('RouteOverview');
           }}
         />

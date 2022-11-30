@@ -1,6 +1,9 @@
 import React, {useEffect} from 'react';
 
-import {currentEquipmentSelector} from '../../redux/site/site-selectors';
+import {
+  currentEquipmentSelector,
+  searchEquipmentSelector,
+} from '../../redux/site/site-selectors';
 import useCatSelector from '../../hooks/useCatSelector';
 import {ScreenType} from './types';
 import CatEquipmentDetails from './EquipmentDetails';
@@ -15,17 +18,22 @@ const pages = {
   schedule: () => <></>,
 };
 
-const EquipmentDetailsScreen: React.FC<ScreenType> = ({navigation}) => {
+const EquipmentDetailsScreen = (props: ScreenType) => {
+  const {navigation} = props;
+  const isSearch = Boolean(props.route.params?.search);
   const {t} = useTranslation();
-  const currentEquipmentSummary = useCatSelector(currentEquipmentSelector);
+  const equipmentSelector = isSearch
+    ? searchEquipmentSelector
+    : currentEquipmentSelector;
+  const selectedEquipmentSummary = useCatSelector(equipmentSelector);
 
   useEffect(() => {
-    if (!currentEquipmentSummary) {
+    if (!selectedEquipmentSummary) {
       navigation.goBack();
     }
-  }, [currentEquipmentSummary, navigation]);
+  }, [selectedEquipmentSummary, navigation]);
 
-  if (!currentEquipmentSummary) {
+  if (!selectedEquipmentSummary) {
     return null;
   }
 
@@ -33,12 +41,12 @@ const EquipmentDetailsScreen: React.FC<ScreenType> = ({navigation}) => {
     <CatScreen scroll={false} title={t('equipment_details_title')}>
       <PageTitle
         icon={getEquipmentIcon(
-          currentEquipmentSummary.equipment,
-          currentEquipmentSummary.type,
+          selectedEquipmentSummary.equipment,
+          selectedEquipmentSummary.type,
         )}
-        title={currentEquipmentSummary.equipment?.name}
+        title={selectedEquipmentSummary.equipment?.name}
       />
-      <CatTabView pages={pages} />
+      <CatTabView extraParams={{isSearch}} pages={pages} />
     </CatScreen>
   );
 };
