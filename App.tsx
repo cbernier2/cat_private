@@ -12,7 +12,7 @@ import './src/locales';
 import {onConfigChange} from './src/api/config';
 import useCatDispatch from './src/hooks/useCatDispatch';
 import {startBackgroundFetchAsyncAction} from './src/redux/site/background-fetch';
-import SplashScreen from 'react-native-splash-screen'
+import SplashScreen from 'react-native-splash-screen';
 
 const App = () => {
   return (
