@@ -8,7 +8,13 @@ import {RouteUtils} from '../../utils/route';
 
 import {RootState} from '../index';
 
-import {CatAreaSummary, CatSummaries} from './helpers/transformSummaries';
+import {
+  CatAreaSummary,
+  CatEquipmentSummary,
+  CatRouteSummary,
+  CatSummaries,
+} from './helpers/transformSummaries';
+import {CurrentArea, CurrentEquipment} from './site-slice';
 
 export const lastUpdateSelector = createSelector(
   (state: RootState) => state.site.lastUpdate,
@@ -39,41 +45,42 @@ export const areasSelector = createSelector(
   (load, dump) => [...(load ?? []), ...(dump ?? [])],
 );
 
-export const currentAreaSelector = (isSearch: boolean) =>
-  createSelector(
-    (state: RootState) => {
-      const selectedArea = isSearch
-        ? state.site.searchArea
-        : state.site.currentArea;
+const returnArea = (
+  selectedArea: CurrentArea | null,
+  productionSummary: CatSummaries | null,
+): CatAreaSummary | null => {
+  if (!selectedArea || !productionSummary) {
+    return null;
+  }
 
-      if (!selectedArea) {
-        return null;
-      }
+  const {id, type} = selectedArea;
+  let summaries: CatAreaSummary[] = [];
+  switch (type) {
+    case CategoryType.DUMP_AREA:
+      summaries =
+        (productionSummary.dumpSummaries as unknown as CatAreaSummary[]) ?? [];
+      break;
+    case CategoryType.LOAD_AREA:
+      summaries =
+        (productionSummary.loadAreaSummaries as unknown as CatAreaSummary[]) ??
+        [];
+      break;
+  }
 
-      const {id, type} = selectedArea;
-      let summaries: CatAreaSummary[] = [];
-      switch (type) {
-        // case CategoryType.CRUSHER_AREA:
-        //   summaries =
-        //     (state.site.productionSummary
-        //       ?.crusherSummaries as unknown as CatAreaSummary[]) ?? [];
-        //   break;
-        case CategoryType.DUMP_AREA:
-          summaries =
-            (state.site.productionSummary
-              ?.dumpSummaries as unknown as CatAreaSummary[]) ?? [];
-          break;
-        case CategoryType.LOAD_AREA:
-          summaries =
-            (state.site.productionSummary
-              ?.loadAreaSummaries as unknown as CatAreaSummary[]) ?? [];
-          break;
-      }
+  return summaries?.find((summary: any) => summary.id === id) ?? null;
+};
 
-      return summaries?.find((summary: any) => summary.id === id) ?? null;
-    },
-    summary => summary,
-  );
+export const currentAreaSelector = createSelector(
+  (state: RootState) => state.site.currentArea,
+  (state: RootState) => state.site.productionSummary,
+  returnArea,
+);
+
+export const searchAreaSelector = createSelector(
+  (state: RootState) => state.site.searchArea,
+  (state: RootState) => state.site.productionSummary,
+  returnArea,
+);
 
 const equipmentTypeToSummary = (
   productionSummary: CatSummaries | undefined,
@@ -92,66 +99,59 @@ const equipmentTypeToSummary = (
   return undefined;
 };
 
+const returnEquipment = (
+  productionSummary: CatSummaries | null,
+  selectedEquipment: CurrentEquipment | null,
+): CatEquipmentSummary | undefined => {
+  if (productionSummary && selectedEquipment) {
+    return equipmentTypeToSummary(
+      productionSummary,
+      selectedEquipment.category,
+    )?.find(summary => summary.equipment?.name === selectedEquipment.name);
+  } else {
+    return undefined;
+  }
+};
+
 export const currentEquipmentSelector = createSelector(
   (state: RootState) => state.site.productionSummary,
   (state: RootState) => state.site.currentEquipment,
-  (productionSummary, currentEquipment) => {
-    if (productionSummary && currentEquipment) {
-      return equipmentTypeToSummary(
-        productionSummary,
-        currentEquipment.category,
-      )?.find(summary => summary.equipment?.name === currentEquipment.name);
-    } else {
-      return undefined;
-    }
-  },
+  returnEquipment,
 );
 
 export const searchEquipmentSelector = createSelector(
   (state: RootState) => state.site.productionSummary,
   (state: RootState) => state.site.searchEquipment,
-  (productionSummary, searchEquipment) => {
-    if (productionSummary && searchEquipment) {
-      return equipmentTypeToSummary(
-        productionSummary,
-        searchEquipment.category,
-      )?.find(summary => summary.equipment?.name === searchEquipment.name);
-    } else {
-      return undefined;
-    }
-  },
+  returnEquipment,
 );
 
 export type EquipmentSelector =
   | typeof currentEquipmentSelector
   | typeof searchEquipmentSelector;
 
+const returnRoute = (
+  routeSummaries: CatRouteSummary[] | undefined,
+  selectedRoute: string | null,
+): CatRouteSummary | undefined => {
+  if (routeSummaries && selectedRoute) {
+    return routeSummaries.find(
+      routeSummary => routeSummary.route.name === selectedRoute,
+    );
+  } else {
+    return undefined;
+  }
+};
+
 export const currentRouteSelector = createSelector(
   (state: RootState) => state.site.productionSummary?.routeSummaries,
   (state: RootState) => state.site.currentRouteName,
-  (routeSummaries, selectedRoute) => {
-    if (routeSummaries && selectedRoute) {
-      return routeSummaries.find(
-        routeSummary => routeSummary.route.name === selectedRoute,
-      );
-    } else {
-      return undefined;
-    }
-  },
+  returnRoute,
 );
 
 export const searchRouteSelector = createSelector(
   (state: RootState) => state.site.productionSummary?.routeSummaries,
   (state: RootState) => state.site.searchRouteName,
-  (routeSummaries, selectedRoute) => {
-    if (routeSummaries && selectedRoute) {
-      return routeSummaries.find(
-        routeSummary => routeSummary.route.name === selectedRoute,
-      );
-    } else {
-      return undefined;
-    }
-  },
+  returnRoute,
 );
 
 export type RouteSelector =

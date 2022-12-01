@@ -3,7 +3,10 @@ import {View} from 'react-native';
 import {useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 
-import {currentAreaSelector} from '../../redux/site/site-selectors';
+import {
+  currentAreaSelector,
+  searchAreaSelector,
+} from '../../redux/site/site-selectors';
 import CatScreen from '../../components/screen';
 import {PageTitle} from '../../components/page-title/Component';
 import {CatTextWithLabelType} from '../../components/text-with-label/types';
@@ -19,7 +22,8 @@ export const AreaOverviewScreen = (props: ScreenType) => {
   const isSearch = Boolean(props.route.params?.search);
 
   const {t} = useTranslation();
-  const selectedArea = useSelector(currentAreaSelector(isSearch));
+  const areaSelector = isSearch ? searchAreaSelector : currentAreaSelector;
+  const selectedArea = useSelector(areaSelector);
 
   useEffect(() => {
     if (!selectedArea) {

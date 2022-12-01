@@ -78,7 +78,7 @@ export const currentRouteEquipmentsSelector = (routeSelector: RouteSelector) =>
           )
           .map(summary => ({
             ...summary,
-            categoryType,
+            type: categoryType,
           }));
       };
       return [
