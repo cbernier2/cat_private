@@ -27,7 +27,13 @@ import {transformSummaries} from './helpers/transformSummaries';
 
 export const key = 'site';
 
-export type CurrentArea = {id: string; type: AreaType};
+export type CurrentArea = {id: string; type: AreaType; isSearch?: boolean};
+export type CurrentEquipment = {
+  name: string | undefined;
+  category: CategoryType;
+  isSearch?: boolean;
+};
+export type ProductionSummary = ReturnType<typeof transformSummaries>;
 
 export interface SiteState {
   error: unknown | null;
@@ -40,14 +46,17 @@ export interface SiteState {
    */
   currentRouteName: string | null;
   currentArea: CurrentArea | null;
-  currentEquipment: {name: string | undefined; category: CategoryType} | null;
+  currentEquipment: CurrentEquipment | null;
+  searchRouteName: string | null;
+  searchArea: CurrentArea | null;
+  searchEquipment: CurrentEquipment | null;
   persons: CatPersons;
   operatorInfo: CatOperatorInfo;
 
   currentShift: Shift | null;
   latestShifts: Shift[] | null;
   materials: Material[];
-  productionSummary: ReturnType<typeof transformSummaries> | null;
+  productionSummary: ProductionSummary | null;
   haulCycles: CatHaulCycle[];
   siteConfig: SiteConfig;
 }
@@ -66,6 +75,9 @@ const initialState: SiteState = {
   materials: [],
   productionSummary: null,
   haulCycles: [],
+  searchRouteName: null,
+  searchArea: null,
+  searchEquipment: null,
   siteConfig: {},
 };
 
@@ -181,17 +193,32 @@ const slice = createSlice({
     siteSelected: state => {
       clearSiteData(state);
     },
-    setCurrentRouteName: (state, action: PayloadAction<string | null>) => {
-      state.currentRouteName = action.payload;
+    setCurrentRouteName: (
+      state,
+      action: PayloadAction<{name: string | null; isSearch?: boolean} | null>,
+    ) => {
+      if (action.payload?.isSearch) {
+        state.searchRouteName = action.payload.name ?? null;
+      } else {
+        state.currentRouteName = action.payload?.name ?? null;
+      }
     },
     setCurrentArea: (state, action: PayloadAction<CurrentArea | null>) => {
-      state.currentArea = action.payload;
+      if (action.payload?.isSearch) {
+        state.searchArea = action.payload;
+      } else {
+        state.currentArea = action.payload;
+      }
     },
     setCurrentEquipment: (
       state,
       action: PayloadAction<SiteState['currentEquipment']>,
     ) => {
-      state.currentEquipment = action.payload;
+      if (action.payload?.isSearch) {
+        state.searchEquipment = action.payload;
+      } else {
+        state.currentEquipment = action.payload;
+      }
     },
     selectShift: (state, action: PayloadAction<Shift>) => {
       state.currentShift = action.payload;

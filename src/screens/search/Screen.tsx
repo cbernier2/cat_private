@@ -10,7 +10,14 @@ import CatScreen from '../../components/screen';
 import CatTextInput from '../../components/text-input';
 import {CircledIcon} from '../../components/circled-icon/Component';
 import {Category, CategoryType} from '../../api/types/cat/common';
+import {
+  CatAreaSummary,
+  CatEquipmentSummary,
+  CatRouteSummary,
+} from '../../redux/site/helpers/transformSummaries';
 import {MinestarIconName} from '../../components/minestar-icon/types';
+import useCatDispatch from '../../hooks/useCatDispatch';
+import {actions as siteActions} from '../../redux/site/site-slice';
 import {
   areasSelector,
   equipmentsSelector,
@@ -21,8 +28,11 @@ import {
 import {ScreenType, SearchItem} from './types';
 import styles from './styles';
 
-const SearchScreen: React.FC<ScreenType> = () => {
+const SearchScreen = (props: ScreenType) => {
+  const {navigation} = props;
+
   const {t} = useTranslation();
+  const dispatch = useCatDispatch();
   const [filter, setFilter] = useState<string>('');
 
   const areas = useSelector(areasSelector);
@@ -32,6 +42,38 @@ const SearchScreen: React.FC<ScreenType> = () => {
 
   const getIcon = (type: CategoryType): MinestarIconName => {
     return Category.findByCategoryType(type)?.icon as MinestarIconName;
+  };
+
+  const goToArea = (item: SearchItem) => {
+    const area = item as CatAreaSummary;
+    dispatch(
+      siteActions.setCurrentArea({
+        id: area.area.id,
+        type: area.type,
+        isSearch: true,
+      }),
+    );
+    navigation.navigate('AreaDetails');
+  };
+
+  const goToEquipment = (item: SearchItem) => {
+    const equipment = item as CatEquipmentSummary;
+    dispatch(
+      siteActions.setCurrentEquipment({
+        name: equipment.equipment?.name,
+        category: equipment.type,
+        isSearch: true,
+      }),
+    );
+    navigation.navigate('EquipmentDetails');
+  };
+
+  const goToRoute = (item: SearchItem) => {
+    const route = item as CatRouteSummary;
+    dispatch(
+      siteActions.setCurrentRouteName({name: route.route.name, isSearch: true}),
+    );
+    navigation.navigate('RouteOverview');
   };
 
   const {error, results} = useMemo(() => {
@@ -53,7 +95,11 @@ const SearchScreen: React.FC<ScreenType> = () => {
         ?.filter(item =>
           item.area.name.toLowerCase().includes(filter.toLowerCase()),
         )
-        .map(item => ({...item, label: item.area.name})) ?? [];
+        .map(item => ({
+          ...item,
+          label: item.area.name,
+          onPress: goToArea,
+        })) ?? [];
 
     const filteredEquipments: SearchItem[] =
       equipments
@@ -62,14 +108,22 @@ const SearchScreen: React.FC<ScreenType> = () => {
             item.equipment?.name.toLowerCase().includes(filter.toLowerCase()) ||
             equipmentIdsFromOperators.includes(item.equipment?.id ?? ''),
         )
-        .map(item => ({...item, label: item.equipment!.name})) ?? [];
+        .map(item => ({
+          ...item,
+          label: item.equipment!.name,
+          onPress: goToEquipment,
+        })) ?? [];
 
     const filteredRoutes: SearchItem[] =
       routes
         ?.filter(item =>
           item.route.name.toLowerCase().includes(filter.toLowerCase()),
         )
-        .map(item => ({...item, label: item.route.name})) ?? [];
+        .map(item => ({
+          ...item,
+          label: item.route.name,
+          onPress: goToRoute,
+        })) ?? [];
 
     const items = [...filteredAreas, ...filteredEquipments, ...filteredRoutes];
 
@@ -77,6 +131,7 @@ const SearchScreen: React.FC<ScreenType> = () => {
       error: items.length ? '' : t('search_no_results'),
       results: items,
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [areas, equipments, filter, operators, routes, t]);
 
   return (
@@ -95,7 +150,7 @@ const SearchScreen: React.FC<ScreenType> = () => {
               <List.Item
                 key={`r${i}`}
                 title={item.label}
-                onPress={() => console.log(item.id, item.type)}
+                onPress={() => item.onPress(item)}
                 left={() => <CircledIcon name={getIcon(item.type)} />}
               />
             ))}

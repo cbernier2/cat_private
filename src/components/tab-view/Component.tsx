@@ -6,7 +6,9 @@ import {SceneMap, TabView} from 'react-native-tab-view';
 import {useStyles} from './styles';
 import useCatTheme from '../../hooks/useCatTheme';
 
-const CatTabView: React.FC<CatTabViewType> = ({pages}) => {
+const CatTabView = (props: CatTabViewType) => {
+  const {extraParams = {}, pages} = props;
+
   const layout = useWindowDimensions();
   const {colors} = useCatTheme();
   const styles = useStyles();
@@ -16,7 +18,10 @@ const CatTabView: React.FC<CatTabViewType> = ({pages}) => {
     return SceneMap(pages);
   }, [pages]);
 
-  const routes = Object.keys(pages).map(iconName => ({key: iconName}));
+  const routes = Object.keys(pages).map(iconName => ({
+    key: iconName,
+    ...extraParams,
+  }));
 
   return (
     <TabView

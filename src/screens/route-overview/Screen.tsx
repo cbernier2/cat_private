@@ -2,7 +2,10 @@ import React, {useEffect} from 'react';
 import {View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 
-import {currentRouteSelector} from '../../redux/site/site-selectors';
+import {
+  currentRouteSelector,
+  searchRouteSelector,
+} from '../../redux/site/site-selectors';
 import useCatSelector from '../../hooks/useCatSelector';
 import CatText from '../../components/text';
 import {CatTextWithLabelType} from '../../components/text-with-label/types';
@@ -32,21 +35,26 @@ import {
   currentRouteEquipmentsSelector,
 } from './selectors';
 
-const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
+const RouteOverviewScreen = (props: ScreenType) => {
+  const {navigation} = props;
+  const isSearch = Boolean(props.route.params?.search);
   const {t} = useTranslation();
   const dispatch = useCatDispatch();
-  const currentRouteSummary = useCatSelector(currentRouteSelector);
-  const currentRoute = currentRouteSummary?.route;
-  const routeAreas = useCatSelector(currentRouteAreasSelector);
-  const routeEquipments = useCatSelector(currentRouteEquipmentsSelector);
+  const routeSelector = isSearch ? searchRouteSelector : currentRouteSelector;
+  const selectedRouteSummary = useCatSelector(routeSelector);
+  const selectedRoute = selectedRouteSummary?.route;
+  const routeAreas = useCatSelector(currentRouteAreasSelector(routeSelector));
+  const routeEquipments = useCatSelector(
+    currentRouteEquipmentsSelector(routeSelector),
+  );
 
   useEffect(() => {
-    if (!currentRouteSummary) {
+    if (!selectedRouteSummary) {
       navigation.goBack();
     }
-  }, [currentRouteSummary, navigation]);
+  }, [selectedRouteSummary, navigation]);
 
-  if (!currentRouteSummary || !currentRoute) {
+  if (!selectedRouteSummary || !selectedRoute) {
     return null;
   }
 
@@ -58,32 +66,32 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
     {
       label: formatLabel(
         'cat.production_target',
-        currentRouteSummary.targetUnit,
+        selectedRouteSummary.targetUnit,
       ),
-      children: formatUnit(currentRouteSummary.targetValue),
+      children: formatUnit(selectedRouteSummary.targetValue),
     },
     {
       label: t('cat.production_shiftToDate'),
-      children: formatUnit(currentRouteSummary.totalValue),
+      children: formatUnit(selectedRouteSummary.totalValue),
     },
     {
       label: formatLabel(
         'cat.production_secondary_total',
-        currentRouteSummary.totalLoadsUnit,
+        selectedRouteSummary.totalLoadsUnit,
       ),
-      children: formatUnit(currentRouteSummary.totalLoadsValue),
+      children: formatUnit(selectedRouteSummary.totalLoadsValue),
     },
   ]);
 
   const kpiRow2 = kpiRowJSX([
     {
       label: t('average_cycle_time_short'),
-      children: formatMinutesOnly(currentRouteSummary.averageCycleTime),
+      children: formatMinutesOnly(selectedRouteSummary.averageCycleTime),
     },
     {
       label: t('cat.production_secondary_averageQueuingDurationEmpty'),
       children: formatMinutesOnlyFromMillis(
-        currentRouteSummary.averageQueuingDurationEmpty,
+        selectedRouteSummary.averageQueuingDurationEmpty,
       ),
     },
     {label: '', children: ''},
@@ -94,6 +102,7 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
       siteActions.setCurrentArea({
         id: area.summary.id,
         type: area.summary.type,
+        isSearch,
       }),
     );
     navigation.navigate('AreaDetails');
@@ -106,6 +115,7 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
       siteActions.setCurrentEquipment({
         name: routeEquipment.equipment?.name,
         category: routeEquipment.type,
+        isSearch,
       }),
     );
     navigation.navigate('EquipmentDetails');
@@ -113,16 +123,16 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
 
   return (
     <CatScreen title={t('route_overview_title')}>
-      <PageTitle icon={'route'} title={currentRoute.name} />
+      <PageTitle icon={'route'} title={selectedRoute.name} />
       <View style={styles.productionContainer}>
         {kpiRow1}
         {kpiRow2}
-        <SummaryGraphs summary={currentRouteSummary} />
+        <SummaryGraphs summary={selectedRouteSummary} />
         <CatText variant={'headlineMedium'}>{t('cat.areas')}</CatText>
         <View style={styles.cardsContainer}>
-          {routeAreas.map(routeArea => (
+          {routeAreas.map((routeArea, i) => (
             <CatRouteItem
-              key={routeArea.summary.id}
+              key={`r${i}`}
               onPress={() => navigateToArea(routeArea)}
               name={routeArea.name}
               icon={<CircledIcon size={40} name={routeArea.icon} />}>
@@ -137,9 +147,9 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
           {t('route_equipment', {num: routeEquipments.length})}
         </CatText>
         <View style={styles.cardsContainer}>
-          {routeEquipments.map(routeEquipment => (
+          {routeEquipments.map((routeEquipment, i) => (
             <CatRouteItem
-              key={routeEquipment.id}
+              key={`e${i}`}
               onPress={() => navigateToEquipment(routeEquipment)}
               icon={
                 <CircledIcon

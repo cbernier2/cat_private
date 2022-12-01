@@ -14,4 +14,4 @@ export type SearchItem = (
   | CatAreaSummary
   | CatEquipmentSummary
   | CatRouteSummary
-) & {label: string};
+) & {label: string; onPress: (item: SearchItem) => void};

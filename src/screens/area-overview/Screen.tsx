@@ -3,7 +3,10 @@ import {View} from 'react-native';
 import {useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 
-import {currentAreaSelector} from '../../redux/site/site-selectors';
+import {
+  currentAreaSelector,
+  searchAreaSelector,
+} from '../../redux/site/site-selectors';
 import CatScreen from '../../components/screen';
 import {PageTitle} from '../../components/page-title/Component';
 import {CatTextWithLabelType} from '../../components/text-with-label/types';
@@ -16,21 +19,23 @@ import {styles} from './styles';
 
 export const AreaOverviewScreen = (props: ScreenType) => {
   const {navigation} = props;
+  const isSearch = Boolean(props.route.params?.search);
 
   const {t} = useTranslation();
-  const summary = useSelector(currentAreaSelector);
+  const areaSelector = isSearch ? searchAreaSelector : currentAreaSelector;
+  const selectedArea = useSelector(areaSelector);
 
   useEffect(() => {
-    if (!summary) {
+    if (!selectedArea) {
       navigation.goBack();
     }
-  }, [summary, navigation]);
+  }, [selectedArea, navigation]);
 
-  if (!summary || !summary.area) {
+  if (!selectedArea || !selectedArea.area) {
     return null;
   }
 
-  const iconName = summary.type === 'loadArea' ? 'load_area' : 'dump';
+  const iconName = selectedArea.type === 'loadArea' ? 'load_area' : 'dump';
 
   const kpiRowJSX = (values: CatTextWithLabelType[]) => (
     <CatValuesRow style={styles.kpiRow} values={values} />
@@ -38,16 +43,16 @@ export const AreaOverviewScreen = (props: ScreenType) => {
 
   const kpiRow1 = kpiRowJSX([
     {
-      label: formatLabel('cat.production_target', summary.targetUnit),
-      children: formatUnit(summary.targetValue),
+      label: formatLabel('cat.production_target', selectedArea.targetUnit),
+      children: formatUnit(selectedArea.targetValue),
     },
     {
       label: t('cat.production_shiftToDate'),
-      children: formatUnit(summary.totalValue),
+      children: formatUnit(selectedArea.totalValue),
     },
     {
       label: t('cat.production_projected'),
-      children: formatUnit(summary.projectedValue),
+      children: formatUnit(selectedArea.projectedValue),
     },
   ]);
 
@@ -55,27 +60,27 @@ export const AreaOverviewScreen = (props: ScreenType) => {
     {
       label: formatLabel(
         'cat.production_secondary_averageRate',
-        summary.averageUnit,
+        selectedArea.averageUnit,
       ),
-      children: formatUnit(summary.averageValue),
+      children: formatUnit(selectedArea.averageValue),
     },
     {
       label: t('average_cycle_time_short'),
-      children: formatMinutesOnly(summary.averageCycleTime),
+      children: formatMinutesOnly(selectedArea.averageCycleTime),
     },
     {
       label: formatLabel(
         'cat.production_secondary_total',
-        summary.totalLoadsUnit,
+        selectedArea.totalLoadsUnit,
       ),
-      children: formatUnit(summary.totalLoadsValue),
+      children: formatUnit(selectedArea.totalLoadsValue),
     },
   ]);
 
   const kpiRow3 = kpiRowJSX([
     {
       label: t('cat.production_currentRate'),
-      children: formatUnit(summary.currentRateValue),
+      children: formatUnit(selectedArea.currentRateValue),
     },
     {label: '', children: ''},
     {label: '', children: ''},
@@ -83,12 +88,12 @@ export const AreaOverviewScreen = (props: ScreenType) => {
 
   return (
     <CatScreen title={t('area_overview_title')}>
-      <PageTitle icon={iconName} title={summary.area.name} />
+      <PageTitle icon={iconName} title={selectedArea.area.name} />
       <View style={styles.productionContainer}>
         {kpiRow1}
         {kpiRow2}
         {kpiRow3}
-        <SummaryGraphs summary={summary} />
+        <SummaryGraphs summary={selectedArea} />
       </View>
     </CatScreen>
   );

@@ -52,6 +52,21 @@ const SearchStack = createStackNavigator();
 const SearchNavigator = () => (
   <SearchStack.Navigator screenOptions={{headerShown: false}}>
     <SearchStack.Screen name="Search" component={SearchScreen} />
+    <SearchStack.Screen
+      name="RouteOverview"
+      component={RouteOverviewScreen}
+      initialParams={{search: true}}
+    />
+    <SearchStack.Screen
+      name="AreaDetails"
+      component={AreaOverviewScreen}
+      initialParams={{search: true}}
+    />
+    <SearchStack.Screen
+      name="EquipmentDetails"
+      component={EquipmentDetailsScreen}
+      initialParams={{search: true}}
+    />
   </SearchStack.Navigator>
 );
 
