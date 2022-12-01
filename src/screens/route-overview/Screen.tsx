@@ -1,8 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {View} from 'react-native';
 import {useTranslation} from 'react-i18next';
-import {useFocusEffect} from '@react-navigation/native';
-import moment from 'moment/moment';
 
 import {currentRouteSelector} from '../../redux/site/site-selectors';
 import useCatSelector from '../../hooks/useCatSelector';
@@ -41,12 +39,6 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
   const currentRoute = currentRouteSummary?.route;
   const routeAreas = useCatSelector(currentRouteAreasSelector);
   const routeEquipments = useCatSelector(currentRouteEquipmentsSelector);
-
-  const [key, setKey] = useState<string>('');
-
-  useFocusEffect(() => {
-    setKey(String(moment().unix()));
-  });
 
   useEffect(() => {
     if (!currentRouteSummary) {
@@ -128,18 +120,12 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
         <SummaryGraphs summary={currentRouteSummary} />
         <CatText variant={'headlineMedium'}>{t('cat.areas')}</CatText>
         <View style={styles.cardsContainer}>
-          {routeAreas.map((routeArea, i) => (
+          {routeAreas.map(routeArea => (
             <CatRouteItem
               key={routeArea.summary.id}
               onPress={() => navigateToArea(routeArea)}
               name={routeArea.name}
-              icon={
-                <CircledIcon
-                  key={`${key}${i}`}
-                  size={40}
-                  name={routeArea.icon}
-                />
-              }>
+              icon={<CircledIcon size={40} name={routeArea.icon} />}>
               <CatTextWithLabel label={t('cat.production_currentRate')}>
                 {formatNumber(routeArea.summary.currentRateValue)}{' '}
                 {t(routeArea.summary.currentRateUnit)}
@@ -151,13 +137,12 @@ const RouteOverviewScreen: React.FC<ScreenType> = ({navigation}) => {
           {t('route_equipment', {num: routeEquipments.length})}
         </CatText>
         <View style={styles.cardsContainer}>
-          {routeEquipments.map((routeEquipment, i) => (
+          {routeEquipments.map(routeEquipment => (
             <CatRouteItem
               key={routeEquipment.id}
               onPress={() => navigateToEquipment(routeEquipment)}
               icon={
                 <CircledIcon
-                  key={`${key}${i}`}
                   size={40}
                   name={getEquipmentIcon(
                     routeEquipment.equipment,

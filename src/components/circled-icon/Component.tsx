@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View} from 'react-native';
 import Svg, {Circle, ForeignObject, Text} from 'react-native-svg';
+import {useFocusEffect} from '@react-navigation/native';
+import moment from 'moment/moment';
 
 import useCatTheme from '../../hooks/useCatTheme';
 
@@ -11,6 +13,13 @@ import {getKey} from './functions';
 
 export const CircledIcon: React.FC<CircledIconType> = props => {
   const {colors} = useCatTheme();
+  const [iOSFix, setiOSFix] = useState<string>('');
+
+  useFocusEffect(() => {
+    // iOS additionally requires the icon to be re-rendered
+    //  after the screen hosting it leaves and re-enters focus
+    setiOSFix(String(moment().unix()));
+  });
 
   const {
     name,
@@ -48,7 +57,7 @@ export const CircledIcon: React.FC<CircledIconType> = props => {
             r={radius}
           />
         )}
-        <ForeignObject key={getKey(props)} x={iconXY} y={iconXY}>
+        <ForeignObject key={getKey(props, iOSFix)} x={iconXY} y={iconXY}>
           <MinestarIcon name={name} color={iconColor} size={iconSize} />
         </ForeignObject>
         {badge !== undefined && (
@@ -75,7 +84,7 @@ export const ForeignCircledIcon: React.FC<ForeignCircledIconType> = props => {
   const {x, y, ...rest} = props;
   return (
     <>
-      <ForeignObject key={getKey(rest)} x={x} y={y}>
+      <ForeignObject x={x} y={y}>
         <CircledIcon {...rest} />
       </ForeignObject>
     </>
