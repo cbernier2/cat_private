@@ -6,7 +6,6 @@ import {
   formatLabel,
   formatMinutesOnly,
   formatMinutesOnlyFromMillis,
-  formatNumber,
   formatPercent,
   formatUnit,
 } from '../../utils/format';
@@ -54,10 +53,7 @@ const CatEquipmentDetails = () => {
     },
     {
       label: t('cat.production_shiftToDate'),
-      children:
-        formatUnit(currentEquipmentSummary.totalValue) +
-        ' ' +
-        t(currentEquipmentSummary.totalUnit),
+      children: formatUnit(currentEquipmentSummary.totalValue),
     },
     {
       label: formatLabel(
@@ -71,10 +67,7 @@ const CatEquipmentDetails = () => {
   const kpiRow2 = kpiRowJSX([
     {
       label: t('cat.production_currentRate'),
-      children:
-        formatNumber(currentEquipmentSummary.currentRateValue) +
-        ' ' +
-        t(currentEquipmentSummary.currentRateUnit),
+      children: formatMinutesOnly(currentEquipmentSummary.currentRateValue),
     },
     {
       label: formatLabel(
