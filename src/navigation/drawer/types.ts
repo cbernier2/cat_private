@@ -4,7 +4,7 @@ export type CatDrawerType = DrawerContentComponentProps & {};
 
 export type MenuItemType = {
   label: string;
-  onPress: () => void;
+  onPress?: () => void;
   icon?: string;
 };
 

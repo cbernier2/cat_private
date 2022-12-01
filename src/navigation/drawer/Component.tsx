@@ -1,37 +1,54 @@
-import React from 'react';
+import React, {useEffect, useState}  from 'react';
 import {SafeAreaView, View} from 'react-native';
 import {Drawer} from 'react-native-paper';
 import {useTranslation} from 'react-i18next';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import moment from 'moment-timezone';
 
 import MineStarLogo from '../../../assets/MineStarLogo.svg';
 
+import {userNameSelector} from '../../redux/user/user-selectors';
+import CatUserBanner from '../../components/user-banner';
+import {findPersonByUserName} from '../../api/person';
 import useCatTheme from '../../hooks/useCatTheme';
 import {logoutAsyncAction} from '../../redux/user/user-slice';
 import useCatDispatch from '../../hooks/useCatDispatch';
 import useCatSelector from '../../hooks/useCatSelector';
 import {sitesSelectedSiteSelector} from '../../redux/sites-list/sites-selectors';
+import {
+  currentShiftSelector,
+  personsSelector,
+} from '../../redux/site/site-selectors';
 
 import {CatDrawerType} from './types';
 
 import {CatExternalLink} from './external-link';
 import {CatMenuItem} from './MenuItem';
 import {useStyles} from './styles';
-import {userNameSelector} from '../../redux/user/user-selectors';
-import {personsSelector} from '../../redux/site/site-selectors';
-import CatUserBanner from '../../components/user-banner';
-import {findPersonByUserName} from '../../api/person';
 
 const CatDrawer: React.FC<CatDrawerType> = ({navigation}) => {
+  const [shiftLabel, setShiftLabel] = useState<string>('no_shifts');
   const dispatch = useCatDispatch();
   const {t} = useTranslation();
   const {colors} = useCatTheme();
+  const currentShift = useCatSelector(currentShiftSelector);
   const selectedSite = useCatSelector(sitesSelectedSiteSelector);
   const userName = useCatSelector(userNameSelector);
   const persons = useCatSelector(personsSelector);
   const person = findPersonByUserName(persons, userName);
   const styles = useStyles();
   const siteName = selectedSite?.siteName ?? '';
+
+  useEffect(() => {
+    if (!currentShift) {
+      setShiftLabel('no_shifts');
+    } else {
+      const date = moment(currentShift.startTime).format('DD MMM');
+      setShiftLabel(
+        `${date} ${currentShift.templateName} (${currentShift.crew})`,
+      );
+    }
+  }, [currentShift]);
 
   return (
     <SafeAreaView style={styles.menuContainer}>
@@ -49,6 +66,7 @@ const CatDrawer: React.FC<CatDrawerType> = ({navigation}) => {
       <View style={styles.menuBodyContainer}>
         <CatUserBanner style={styles.menuUserNameContainer} person={person} />
         <Drawer.Section title={siteName}>
+          <CatMenuItem label={shiftLabel} icon={'date-range'} />
           <CatMenuItem
             onPress={() => navigation.navigate('SwitchSite')}
             label={t('side_menu_switch_site')}
