@@ -1,10 +1,9 @@
 import {createSlice, Reducer} from '@reduxjs/toolkit';
-import {persistReducer} from 'redux-persist';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {createOfflineAsyncThunk} from '../../utils/offline';
 import {offlineActionTypes} from 'react-native-offline';
 import {sleep} from '../../utils/promise';
 import {darkTheme} from '../../themes/darkTheme';
+import {catPersistReducer} from '../utils';
 
 export const key = 'app';
 
@@ -59,10 +58,9 @@ export const slice = createSlice({
 });
 
 const typedReducer: Reducer<typeof initialState> = slice.reducer;
-const appReducer = persistReducer(
+const appReducer = catPersistReducer(
   {
     key,
-    storage: AsyncStorage,
     blacklist: ['password', 'isLogin'],
   },
   typedReducer,

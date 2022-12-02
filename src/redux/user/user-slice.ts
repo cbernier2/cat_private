@@ -1,10 +1,9 @@
 import {createAsyncThunk, createSlice, Reducer} from '@reduxjs/toolkit';
-import {persistReducer} from 'redux-persist';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import i18n from 'i18next';
 import * as OAuth from 'react-native-app-auth';
 import {AuthorizeResult} from 'react-native-app-auth';
 import {RootState} from '../index';
+import {catPersistReducer} from '../utils';
 
 export const key = 'user';
 
@@ -135,10 +134,9 @@ const slice = createSlice({
 });
 
 const typedReducer: Reducer<typeof initialState> = slice.reducer;
-const userReducer = persistReducer(
+const userReducer = catPersistReducer(
   {
     key,
-    storage: AsyncStorage,
     blacklist: ['password', 'isLogin', 'loginError', 'selectedSite'],
   },
   typedReducer,
