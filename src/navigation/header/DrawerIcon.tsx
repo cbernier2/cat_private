@@ -15,7 +15,7 @@ const CatDrawerIcon: React.FC = () => {
       <MaterialIcons
         name={'menu'}
         color={colors.text}
-        size={28}
+        size={32}
         style={styles.drawerIcon}
       />
     </TouchableOpacity>

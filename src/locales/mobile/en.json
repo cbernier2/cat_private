@@ -1,6 +1,6 @@
 {
     "summary_title": "Summary",
-    "status_date_format": "d/L, HH:mm",
+    "status_date_format": "L/d, HH:mm",
     "status_not_available": "--",
     "my_sites": "My sites",
     "theme_switch": "Change to {{name}} Mode",
@@ -13,8 +13,8 @@
     "summary_attention_required": "Attention Required",
     "production_projected_short": "Proj.",
     "average_cycle_time_short": "Avg Cycle Time",
-    "area_overview_title": "Area Overview",
-    "route_overview_title": "Route Overview",
+    "area_overview_title": "Area",
+    "route_overview_title": "Route",
     "route_equipment": "Equipment ({{num}})",
     "equipment_details_title": "Equipment",
     "search_no_results": "No results found"

@@ -12,6 +12,7 @@ import './src/locales';
 import {onConfigChange} from './src/api/config';
 import useCatDispatch from './src/hooks/useCatDispatch';
 import {startBackgroundFetchAsyncAction} from './src/redux/site/background-fetch';
+import SplashScreen from 'react-native-splash-screen';
 
 const App = () => {
   return (
@@ -31,6 +32,7 @@ const InnerApp = () => {
     const state = store.getState();
     onConfigChange(state.site.siteConfig);
     dispatch(startBackgroundFetchAsyncAction());
+    SplashScreen.hide();
   };
 
   return (
