@@ -31,7 +31,7 @@ const CatDrawer: React.FC<CatDrawerType> = ({navigation}) => {
   const persons = useCatSelector(personsSelector);
   const person = findPersonByUserName(persons, userName);
   const styles = useStyles();
-  const siteName = selectedSite?.name ?? '';
+  const siteName = selectedSite?.siteName ?? '';
 
   return (
     <SafeAreaView style={styles.menuContainer}>

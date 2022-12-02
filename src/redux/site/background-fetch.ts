@@ -11,7 +11,7 @@ export const fetchSiteIfNeededAsyncAction = createAsyncThunk(
   `${key}/fetchSiteIfNeededAsyncAction`,
   async (_, {getState, dispatch}) => {
     const state = getState() as RootState;
-    if (!state.sitesList.selectedSiteId || state.site.loading) {
+    if (!state.sitesList.selectedSiteUrl || state.site.loading) {
       return CAT_SITE_REFRESH_FREQUENCY_MS;
     } else {
       const elapsed = moment.utc().valueOf() - (state.site.lastUpdate || 0);

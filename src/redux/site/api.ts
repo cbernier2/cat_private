@@ -37,7 +37,7 @@ const catBaseQuery: BaseQueryFn<CatQueryFnParams> = async (
   const state = () => getState() as RootState;
   const sitesList = state().sitesList;
   const selectedSite = sitesList.sites.find(
-    site => site.id === sitesList.selectedSiteId,
+    site => site.siteUrl === sitesList.selectedSiteUrl,
   );
   if (selectedSite === undefined) {
     return {error: {status: -1, data: new Error('Site not selected')}};

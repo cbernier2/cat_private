@@ -14,9 +14,9 @@ export const sitesLoadingSelector = createSelector(
 
 export const sitesSelectedSiteSelector = createSelector(
   (state: RootState) => state.sitesList.sites,
-  (state: RootState) => state.sitesList.selectedSiteId,
-  (sites, selectedSiteId) =>
-    sites.find((site: Site) => site.id === selectedSiteId) ?? null,
+  (state: RootState) => state.sitesList.selectedSiteUrl,
+  (sites, selectedSiteUrl) =>
+    sites.find((site: Site) => site.siteUrl === selectedSiteUrl) ?? null,
 );
 
 export const sitesSitesSelector = createSelector(

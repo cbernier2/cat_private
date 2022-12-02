@@ -133,7 +133,6 @@ const CatNavigation = () => {
   const {t} = useTranslation();
   const userToken = useCatSelector(userAuthTokenSelector);
   const selectedSite = useCatSelector(sitesSelectedSiteSelector);
-  //console.log('Nav', JSON.stringify({userToken, selectedSite}));
 
   return (
     <PaperProvider theme={theme as ThemeProp}>

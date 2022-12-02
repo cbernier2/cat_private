@@ -11,6 +11,7 @@ import {
 } from 'react-native-offline';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {catApi} from './site/api';
+import {sitesApi} from './sites-list/api';
 import {networkTransform} from '../utils/offline';
 
 const combinedReducer = combineReducers({
@@ -20,13 +21,21 @@ const combinedReducer = combineReducers({
   site,
   sitesList,
   [catApi.reducerPath]: catApi.reducer,
+  [sitesApi.reducerPath]: sitesApi.reducer,
 });
 
 export const rootReducer = persistReducer(
   {
     key: 'root',
     storage: AsyncStorage,
-    blacklist: ['user', 'app', 'site', 'sitesList', catApi.reducerPath],
+    blacklist: [
+      'user',
+      'app',
+      'site',
+      'sitesList',
+      catApi.reducerPath,
+      sitesApi.reducerPath,
+    ],
     transforms: [networkTransform({offlineQueueTest})],
   },
   combinedReducer,
@@ -47,6 +56,7 @@ export const store = configureStore({
     }),
     thunk,
     catApi.middleware,
+    sitesApi.middleware,
   ],
 });
 
