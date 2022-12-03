@@ -3,15 +3,15 @@ import user from './user/user-slice';
 import app, {offlineQueueTest} from './app/app-slice';
 import sitesList from './sites-list/sites-slice';
 import site, {fetchSiteAsyncAction} from './site/site-slice';
-import {persistReducer, persistStore} from 'redux-persist';
+import {persistStore} from 'redux-persist';
 import thunk from 'redux-thunk';
 import {
   reducer as network,
   createNetworkMiddleware,
 } from 'react-native-offline';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {catApi} from './site/api';
 import {networkTransform} from '../utils/offline';
+import {catPersistReducer} from './utils';
 
 const combinedReducer = combineReducers({
   user,
@@ -22,10 +22,9 @@ const combinedReducer = combineReducers({
   [catApi.reducerPath]: catApi.reducer,
 });
 
-export const rootReducer = persistReducer(
+export const rootReducer = catPersistReducer(
   {
     key: 'root',
-    storage: AsyncStorage,
     blacklist: ['user', 'app', 'site', 'sitesList', catApi.reducerPath],
     transforms: [networkTransform({offlineQueueTest})],
   },

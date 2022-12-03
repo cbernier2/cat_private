@@ -1,11 +1,10 @@
 import {createAsyncThunk, createSlice, Reducer} from '@reduxjs/toolkit';
-import {persistReducer} from 'redux-persist';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {sleep} from '../../utils/promise';
 
 import {logoutAsyncAction} from '../user/user-slice';
 import {fetchSiteAsyncAction, actions as siteActions} from '../site/site-slice';
+import {catPersistReducer} from '../utils';
 
 export const key = 'sitesList';
 
@@ -90,10 +89,9 @@ const slice = createSlice({
 });
 
 const typedReducer: Reducer<typeof initialState> = slice.reducer;
-const sitesReducer = persistReducer(
+const sitesReducer = catPersistReducer(
   {
     key,
-    storage: AsyncStorage,
     blacklist: ['sites', 'selectedSite'],
   },
   typedReducer,
