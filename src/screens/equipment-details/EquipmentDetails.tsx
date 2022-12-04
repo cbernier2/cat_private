@@ -38,14 +38,14 @@ const CatEquipmentDetails = (props: any) => {
     ? searchEquipmentSelector
     : currentEquipmentSelector;
   const selectedEquipmentSummary = useCatSelector(equipmentSelector);
-  const person = useCatSelector(
-    currentEquipmentPersonSelector(equipmentSelector),
+  const person = useCatSelector(state =>
+    currentEquipmentPersonSelector(state, equipmentSelector),
   );
-  const areaSummary = useCatSelector(
-    currentEquipmentAreaSelector(equipmentSelector),
+  const areaSummary = useCatSelector(state =>
+    currentEquipmentAreaSelector(state, equipmentSelector),
   );
-  const material = useCatSelector(
-    currentEquipmentMaterialSelector(equipmentSelector),
+  const material = useCatSelector(state =>
+    currentEquipmentMaterialSelector(state, equipmentSelector),
   );
 
   if (!selectedEquipmentSummary) {
