@@ -1,10 +1,7 @@
-import {sub as dateSub} from 'date-fns';
 import {BaseQueryFn, createApi} from '@reduxjs/toolkit/query/react';
-
-import {logoutAsyncAction, refreshTokenAsyncAction} from '../user/user-slice';
-import {RootState} from '../index';
-
 import {Site} from './sites-slice';
+import {catBaseQuery} from '../api';
+import {CatQueryFnParams} from '../../api/types';
 
 // Because the sites endpoint is on `dev.` and rasvalleyclone is on `stage.`,
 //  rasvalleyclone is not returned in the response.
@@ -19,44 +16,19 @@ const mockSitesList: Site[] = [
   },
 ];
 
-const baseQuery: BaseQueryFn = async (_, {getState, dispatch}) => {
-  const state = () => getState() as RootState;
-  let auth = state().user.auth;
-
-  if (auth) {
-    if (
-      new Date(auth.accessTokenExpirationDate) <
-      dateSub(new Date(), {minutes: 1})
-    ) {
-      await dispatch(refreshTokenAsyncAction());
-      auth = state().user.auth;
-    }
-  }
-
+const baseQuery: BaseQueryFn<CatQueryFnParams> = async (params, api) => {
   // TODO create constants for the various envs we'll support or set in ENV/BUILD vars
   //  dev: 'dev', staging: 'stage', prod: 'edge'
-  try {
-    const response = await fetch(
-      'https://dev.minestar.com/landing/mobile_api/v1/security/authorizedSites',
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `${auth?.tokenType} ${auth?.accessToken}`,
-        },
-      },
-    );
-    if (response.status >= 200 && response.status <= 299) {
-      // TODO remove temp extra mock data
-      return {data: [...mockSitesList, ...(await response.json())]};
-    } else {
-      if (response.status === 401) {
-        await dispatch(logoutAsyncAction());
-      }
-      return {error: {status: response.status, data: response}};
-    }
-  } catch (e) {
-    return {error: {status: -1, data: e}};
+  const result = await catBaseQuery(
+    'https://dev.minestar.com/landing/mobile_api/v1',
+    params,
+    api,
+  );
+  if (!result.error) {
+    // TODO remove temp extra mock data
+    result.data = [...mockSitesList, ...result.data];
   }
+  return result;
 };
 
 export const sitesApi = createApi({
@@ -65,7 +37,7 @@ export const sitesApi = createApi({
   refetchOnMountOrArgChange: true,
   endpoints: builder => ({
     fetchAuthorizedSites: builder.query<Site[] | null, void>({
-      query: () => '',
+      query: () => ({path: 'security/authorizedSites', method: 'GET'}),
       transformResponse: (sites: Site[]) =>
         sites
           .filter(site => site.siteUrl) // Filter out the unlikely cases where siteUrl would be null or empty
