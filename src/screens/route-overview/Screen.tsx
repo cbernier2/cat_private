@@ -43,9 +43,11 @@ const RouteOverviewScreen = (props: ScreenType) => {
   const routeSelector = isSearch ? searchRouteSelector : currentRouteSelector;
   const selectedRouteSummary = useCatSelector(routeSelector);
   const selectedRoute = selectedRouteSummary?.route;
-  const routeAreas = useCatSelector(currentRouteAreasSelector(routeSelector));
-  const routeEquipments = useCatSelector(
-    currentRouteEquipmentsSelector(routeSelector),
+  const routeAreas = useCatSelector(state =>
+    currentRouteAreasSelector(state, routeSelector),
+  );
+  const routeEquipments = useCatSelector(state =>
+    currentRouteEquipmentsSelector(state, routeSelector),
   );
 
   useEffect(() => {
