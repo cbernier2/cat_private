@@ -28,6 +28,8 @@ export const useStyles = () => {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
+      marginRight: 0,
+      marginLeft: 10,
     },
   });
 };
