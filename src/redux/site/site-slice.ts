@@ -23,6 +23,7 @@ import {apiResult, catApi} from './api';
 import {transformConfig} from './helpers/transformConfig';
 import {transformSummaries} from './helpers/transformSummaries';
 import {catPersistReducer} from '../utils';
+import {ObservationDO} from '../../api/types/cat/observation';
 
 export const key = 'site';
 
@@ -57,6 +58,7 @@ export interface SiteState {
   materials: Material[];
   productionSummary: ProductionSummary | null;
   haulCycles: CatHaulCycle[];
+  observations: ObservationDO[];
   siteConfig: SiteConfig;
 }
 
@@ -74,6 +76,7 @@ const initialState: SiteState = {
   materials: [],
   productionSummary: null,
   haulCycles: [],
+  observations: [],
   searchRouteName: null,
   searchArea: null,
   searchEquipment: null,
@@ -171,7 +174,16 @@ const getShiftData = async (
     dispatch(catApi.endpoints.getOperatorInfo.initiate(params)),
   );
 
-  return {haulCycles, operatorInfo, productionSummary};
+  const observations = await apiResult(
+    dispatch(
+      catApi.endpoints.observationsByTimeRange.initiate({
+        startTime: shift.startTime,
+        endTime: shift.endTime,
+      }),
+    ),
+  );
+
+  return {haulCycles, operatorInfo, observations, productionSummary};
 };
 
 const clearSiteData = (state: Draft<SiteState>) => {
@@ -179,6 +191,7 @@ const clearSiteData = (state: Draft<SiteState>) => {
   state.materials = [];
   state.currentShift = null;
   state.productionSummary = null;
+  state.observations = [];
   state.haulCycles = [];
   state.lastUpdate = null;
   state.persons = [];
@@ -250,6 +263,7 @@ const slice = createSlice({
           state.latestShifts = action.payload.latestShifts;
           state.materials = action.payload.materials;
           state.haulCycles = action.payload.haulCycles;
+          state.observations = action.payload.observations;
           state.siteConfig = config;
           state.operatorInfo = action.payload.operatorInfo;
 
@@ -266,6 +280,7 @@ const slice = createSlice({
         fetchShiftDataAsyncAction.fulfilled,
         (state, action: PayloadAction<any>) => {
           state.haulCycles = action.payload.haulCycles;
+          state.observations = action.payload.observations;
           state.operatorInfo = action.payload.operatorInfo;
           state.productionSummary =
             action.payload.productionSummary &&
