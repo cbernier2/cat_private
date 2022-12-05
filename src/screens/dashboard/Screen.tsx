@@ -116,7 +116,7 @@ const DashboardScreen: React.FC<ScreenType> = ({navigation}) => {
   return (
     <CatScreen title={t('summary_title')}>
       <View style={styles.siteNameContainer}>
-        <CatText variant={'titleMedium'}>{selectedSite?.name}</CatText>
+        <CatText variant={'titleMedium'}>{selectedSite?.siteName}</CatText>
         <CatSwitch
           thumbColor={colors.secondary}
           trackColor={{true: colors.secondary, false: colors.secondary}}

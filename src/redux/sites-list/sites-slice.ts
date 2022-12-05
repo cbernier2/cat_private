@@ -1,53 +1,47 @@
 import {createAsyncThunk, createSlice, Reducer} from '@reduxjs/toolkit';
 
-import {sleep} from '../../utils/promise';
-
 import {logoutAsyncAction} from '../user/user-slice';
 import {fetchSiteAsyncAction, actions as siteActions} from '../site/site-slice';
+import {apiResult} from '../site/api';
 import {catPersistReducer} from '../utils';
+
+import {sitesApi} from './api';
 
 export const key = 'sitesList';
 
-// TODO review when API is ready
 export interface Site {
-  id: string;
-  name: string;
-  siteUrl: string;
+  companyName: string | null;
+  country: string | null;
+  siteId: string | null; // Yes, id CAN be null...
+  siteName: string; // Not unique
+  siteUrl: string; // Best choice for a unique identifier so far
 }
 
-// TODO review when API is ready
 export interface SitesState {
   error: Error | null;
   loading: boolean;
   sites: Site[];
-  selectedSiteId: string | null;
+  selectedSiteUrl: string | null;
 }
 
 const initialState: SitesState = {
   error: null,
   loading: false,
   sites: [],
-  selectedSiteId: null,
+  selectedSiteUrl: null,
 };
 
-const mockSitesList: Site[] = [
-  {
-    id: 'rasvalleyclone',
-    name: 'Rasmussen Valley Clone',
-    siteUrl: 'https://stage.minestar.com/rasvalleyclone',
-  },
-  {
-    id: 'floridacanyonclone',
-    name: 'Florida Canyon Clone',
-    siteUrl: 'https://dev.minestar.com/floridacanyonclone',
-  },
-];
 export const fetchSitesAsyncAction = createAsyncThunk(
   `${key}/fetchSites`,
-  // TODO add required parameters based on API endpoint; hit endpoint
-  async () => {
-    await sleep(500);
-    return mockSitesList;
+  async (_, {dispatch, rejectWithValue}) => {
+    try {
+      // return mockSitesList;
+      return await apiResult(
+        dispatch(sitesApi.endpoints.fetchAuthorizedSites.initiate()),
+      );
+    } catch (e) {
+      return rejectWithValue(e);
+    }
   },
 );
 
@@ -68,13 +62,14 @@ const slice = createSlice({
       .addCase(logoutAsyncAction.pending, state => {
         // TODO clear this when signing in with a different user than
         //  the one that's persisted instead of onLogout?
-        state.selectedSiteId = null;
+        state.selectedSiteUrl = null;
       })
       .addCase(fetchSitesAsyncAction.pending, state => {
         state.error = null;
         state.loading = true;
       })
-      .addCase(fetchSitesAsyncAction.rejected, state => {
+      .addCase(fetchSitesAsyncAction.rejected, (state, action) => {
+        console.error(action);
         state.error = new Error('genericErrorMessage');
         state.loading = false;
       })
@@ -83,7 +78,7 @@ const slice = createSlice({
         state.sites = action.payload;
       })
       .addCase(selectSiteAsyncAction.pending, (state, action) => {
-        state.selectedSiteId = action.meta.arg?.id || null;
+        state.selectedSiteUrl = action.meta.arg?.siteUrl || null;
       });
   },
 });

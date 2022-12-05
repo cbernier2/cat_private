@@ -10,6 +10,7 @@ import {
   createNetworkMiddleware,
 } from 'react-native-offline';
 import {catApi} from './site/api';
+import {sitesApi} from './sites-list/api';
 import {networkTransform} from '../utils/offline';
 import {catPersistReducer} from './utils';
 
@@ -20,12 +21,20 @@ const combinedReducer = combineReducers({
   site,
   sitesList,
   [catApi.reducerPath]: catApi.reducer,
+  [sitesApi.reducerPath]: sitesApi.reducer,
 });
 
 export const rootReducer = catPersistReducer(
   {
     key: 'root',
-    blacklist: ['user', 'app', 'site', 'sitesList', catApi.reducerPath],
+    blacklist: [
+      'user',
+      'app',
+      'site',
+      'sitesList',
+      catApi.reducerPath,
+      sitesApi.reducerPath,
+    ],
     transforms: [networkTransform({offlineQueueTest})],
   },
   combinedReducer,
@@ -46,6 +55,7 @@ export const store = configureStore({
     }),
     thunk,
     catApi.middleware,
+    sitesApi.middleware,
   ],
 });
 

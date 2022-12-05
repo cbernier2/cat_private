@@ -51,14 +51,14 @@ export const SitesListScreen: React.FC<SitesListTypes> = props => {
   }, [dispatch, store, root]);
 
   const filteredSites = useMemo(() => {
-    return sites.filter((site: Site) =>
-      site.name.toLowerCase().includes(filter.toLowerCase()),
+    return sites.filter(site =>
+      site.siteName.toLowerCase().includes(filter.toLowerCase()),
     );
   }, [filter, sites]);
 
   const onSelect = async (site: Site) => {
     const selectedSite = sitesSelectedSiteSelector(store.getState());
-    if (site.id !== selectedSite?.id) {
+    if (site.siteUrl !== selectedSite?.siteUrl) {
       await dispatch(selectSiteAsyncAction(site));
     } else {
       await dispatch(fetchSiteAsyncAction());
@@ -85,10 +85,10 @@ export const SitesListScreen: React.FC<SitesListTypes> = props => {
             />
             <CatError style={styles.mh} message={error?.message} />
             {/* TODO hide while loading? */}
-            {filteredSites.map((site: Site) => (
+            {filteredSites.map((site, i) => (
               <List.Item
-                key={site.id}
-                title={site.name}
+                key={`s${i}`}
+                title={site.siteName}
                 onPress={() => onSelect(site)}
               />
             ))}
