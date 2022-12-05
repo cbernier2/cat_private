@@ -17,5 +17,6 @@
     "route_overview_title": "Route",
     "route_equipment": "Equipment ({{num}})",
     "equipment_details_title": "Equipment",
-    "search_no_results": "No results found"
+    "search_no_results": "No results found",
+    "no_shifts": "No shifts selected"
 }

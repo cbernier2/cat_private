@@ -1,9 +1,8 @@
-import React, {useEffect, useState}  from 'react';
+import React from 'react';
 import {SafeAreaView, View} from 'react-native';
 import {Drawer} from 'react-native-paper';
 import {useTranslation} from 'react-i18next';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import moment from 'moment-timezone';
 
 import MineStarLogo from '../../../assets/MineStarLogo.svg';
 
@@ -16,7 +15,7 @@ import useCatDispatch from '../../hooks/useCatDispatch';
 import useCatSelector from '../../hooks/useCatSelector';
 import {sitesSelectedSiteSelector} from '../../redux/sites-list/sites-selectors';
 import {
-  currentShiftSelector,
+  currentShiftLabelSelector,
   personsSelector,
 } from '../../redux/site/site-selectors';
 
@@ -27,28 +26,17 @@ import {CatMenuItem} from './MenuItem';
 import {useStyles} from './styles';
 
 const CatDrawer: React.FC<CatDrawerType> = ({navigation}) => {
-  const [shiftLabel, setShiftLabel] = useState<string>('no_shifts');
   const dispatch = useCatDispatch();
   const {t} = useTranslation();
   const {colors} = useCatTheme();
-  const currentShift = useCatSelector(currentShiftSelector);
   const selectedSite = useCatSelector(sitesSelectedSiteSelector);
   const userName = useCatSelector(userNameSelector);
   const persons = useCatSelector(personsSelector);
   const person = findPersonByUserName(persons, userName);
   const styles = useStyles();
   const siteName = selectedSite?.siteName ?? '';
-
-  useEffect(() => {
-    if (!currentShift) {
-      setShiftLabel('no_shifts');
-    } else {
-      const date = moment(currentShift.startTime).format('DD MMM');
-      setShiftLabel(
-        `${date} ${currentShift.templateName} (${currentShift.crew})`,
-      );
-    }
-  }, [currentShift]);
+  const shiftLabel: string =
+    useCatSelector(currentShiftLabelSelector) ?? t('no_shifts');
 
   return (
     <SafeAreaView style={styles.menuContainer}>

@@ -196,6 +196,17 @@ export const currentShiftSelector = createSelector(
   currentShift => currentShift,
 );
 
+export const currentShiftLabelSelector = createSelector(
+  (state: RootState) => state.site.currentShift,
+  currentShift => {
+    if (currentShift) {
+      const date = moment(currentShift.startTime).format('DD MMM');
+      return `${date} ${currentShift.templateName} (${currentShift.crew})`;
+    }
+    return null;
+  },
+);
+
 export const materialsSelector = createSelector(
   (state: RootState) => state.site.materials,
   materials => materials,
