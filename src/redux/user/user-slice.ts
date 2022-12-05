@@ -28,7 +28,6 @@ const authConfig = {
   redirectUrl: 'msauth.com.spiria.pitsupervisor://auth/', //'msauth.com.cat.pitsupervisor://auth',
   scopes: ['openid', 'offline_access', authClientId],
 };
-OAuth.prefetchConfiguration(authConfig).then().catch();
 
 let pendingOAuthRefresh: Promise<OAuth.RefreshResult> | null = null;
 export const refreshTokenAsyncAction = createAsyncThunk(

@@ -4,7 +4,6 @@ import moment from 'moment';
 import {ConfigItemName} from '../../api/types/cat/config-item';
 import {CategoryType, CommonConstants} from '../../api/types/cat/common';
 import {CatPersons, SiteConfig} from '../../api/types';
-import {RouteUtils} from '../../utils/route';
 
 import {RootState} from '../index';
 
@@ -157,20 +156,6 @@ export const searchRouteSelector = createSelector(
 export type RouteSelector =
   | typeof currentRouteSelector
   | typeof searchRouteSelector;
-
-export const currentRouteHaulCycles = (routeSelector: RouteSelector) =>
-  createSelector(
-    routeSelector,
-    (state: RootState) => state.site.haulCycles,
-    (selectedRouteSummary, haulCycles) => {
-      if (!selectedRouteSummary?.route) {
-        return [];
-      }
-      return haulCycles.filter(haulCycle =>
-        RouteUtils.isOnRoute(selectedRouteSummary.route, haulCycle),
-      );
-    },
-  );
 
 export const personsSelector = createSelector(
   (state: RootState) => state.site.persons,
