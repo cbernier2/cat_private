@@ -6,8 +6,6 @@ import {
   Reducer,
   ThunkDispatch,
 } from '@reduxjs/toolkit';
-import {persistReducer} from 'redux-persist';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import moment from 'moment';
 
 import {ConfigItemName} from '../../api/types/cat/config-item';
@@ -24,6 +22,7 @@ import {logoutAsyncAction} from '../user/user-slice';
 import {apiResult, catApi} from './api';
 import {transformConfig} from './helpers/transformConfig';
 import {transformSummaries} from './helpers/transformSummaries';
+import {catPersistReducer} from '../utils';
 
 export const key = 'site';
 
@@ -284,10 +283,9 @@ const slice = createSlice({
 });
 
 const typedReducer: Reducer<typeof initialState> = slice.reducer;
-const sitesReducer = persistReducer(
+const sitesReducer = catPersistReducer(
   {
     key,
-    storage: AsyncStorage,
     blacklist: ['error', 'loading'],
   },
   typedReducer,

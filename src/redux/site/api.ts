@@ -1,5 +1,4 @@
 import {BaseQueryFn, createApi} from '@reduxjs/toolkit/query/react';
-import {sub as dateSub} from 'date-fns';
 
 import {
   CatOperatorInfo,
@@ -15,7 +14,7 @@ import {findMostRecentShift} from '../../api/shift';
 import {CatHaulCycle} from '../../api/types/haul-cycle';
 
 import {RootState} from '../index';
-import {logoutAsyncAction, refreshTokenAsyncAction} from '../user/user-slice';
+import {catBaseQuery} from '../api';
 
 export const apiResult = async <T extends {error?: unknown; data?: unknown}>(
   dispatchResult: Promise<T>,
@@ -30,11 +29,8 @@ export const apiResult = async <T extends {error?: unknown; data?: unknown}>(
   }
 };
 
-const catBaseQuery: BaseQueryFn<CatQueryFnParams> = async (
-  {method, path, queryParams},
-  {getState, dispatch},
-) => {
-  const state = () => getState() as RootState;
+const baseQuery: BaseQueryFn<CatQueryFnParams> = async (params, api) => {
+  const state = () => api.getState() as RootState;
   const sitesList = state().sitesList;
   const selectedSite = sitesList.sites.find(
     site => site.siteUrl === sitesList.selectedSiteUrl,
@@ -42,50 +38,16 @@ const catBaseQuery: BaseQueryFn<CatQueryFnParams> = async (
   if (selectedSite === undefined) {
     return {error: {status: -1, data: new Error('Site not selected')}};
   }
-  let auth = state().user.auth;
-  if (auth) {
-    if (
-      new Date(auth.accessTokenExpirationDate) <
-      dateSub(new Date(), {minutes: 1})
-    ) {
-      await dispatch(refreshTokenAsyncAction());
-      auth = state().user.auth;
-    }
-  }
-  try {
-    let urlParams = '';
-    if (queryParams) {
-      const urlParamsObj: Record<string, string> = {};
-      Object.keys(queryParams).forEach(key => {
-        urlParamsObj[key] = String(queryParams[key]);
-      });
-      urlParams = '?' + new URLSearchParams(urlParamsObj);
-    }
-    const response = await fetch(
-      `${selectedSite.siteUrl}/core/site/mobile_api/v1/${path}${urlParams}`,
-      {
-        method,
-        headers: {
-          Authorization: `${auth?.tokenType} ${auth?.accessToken}`,
-        },
-      },
-    );
-    if (response.status >= 200 && response.status <= 299) {
-      return {data: await response.json()};
-    } else {
-      if (response.status === 401) {
-        await dispatch(logoutAsyncAction());
-      }
-      return {error: {status: response.status, data: response}};
-    }
-  } catch (e) {
-    return {error: {status: -1, data: e}};
-  }
+  return await catBaseQuery(
+    `${selectedSite.siteUrl}/core/site/mobile_api/v1`,
+    params,
+    api,
+  );
 };
 
 export const catApi = createApi({
   reducerPath: 'catApi',
-  baseQuery: catBaseQuery,
+  baseQuery: baseQuery,
   refetchOnMountOrArgChange: true,
   endpoints: builder => ({
     getCurrentShifts: builder.query<Shift[] | null, void>({
