@@ -15,6 +15,7 @@ import {CatHaulCycle} from '../../api/types/haul-cycle';
 
 import {RootState} from '../index';
 import {catBaseQuery} from '../api';
+import {ObservationDO} from '../../api/types/cat/observation';
 
 export const apiResult = async <T extends {error?: unknown; data?: unknown}>(
   dispatchResult: Promise<T>,
@@ -104,6 +105,17 @@ export const catApi = createApi({
     cyclesForShift: builder.query<CatHaulCycle[], {shiftId: string}>({
       query: queryParams => ({
         path: 'production/cycles/findForShift',
+        method: 'GET',
+        queryParams,
+      }),
+    }),
+
+    observationsByTimeRange: builder.query<
+      ObservationDO[],
+      {startTime: number; endTime: number}
+    >({
+      query: queryParams => ({
+        path: 'observation/findByTimeRange',
         method: 'GET',
         queryParams,
       }),
