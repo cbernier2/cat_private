@@ -1,4 +1,5 @@
 // Copy from Caterpillar Web App: src/common/providers/production/production-summary.ts
+// Edit: define EquipmentTimeline to call findStopReasonTypeIdAtTime witih a CatEquipmentSummary
 
 import {Route} from './route';
 import {PlanArea} from './plan-area';
@@ -215,9 +216,15 @@ export type WaterTruckSummary = EquipmentSummary & {
 };
 export type RouteSummary = Summary & {route: Route};
 
+export type EquipmentTimeline = {
+  maintenanceTimeline: Array<Timeline>;
+  standbyTimeline: Array<Timeline>;
+  operationalDelayTimeline: Array<Timeline>;
+};
+
 export namespace EquipmentSummaryUtils {
   export function findStopReasonTypeIdAtTime(
-    equipmentSummary: EquipmentSummary,
+    equipmentSummary: EquipmentTimeline,
     atTime: number,
   ): string | null | undefined {
     let findFunction = (value: Timeline) =>

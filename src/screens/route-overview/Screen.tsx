@@ -156,6 +156,7 @@ const RouteOverviewScreen = (props: ScreenType) => {
               icon={
                 <CircledIcon
                   size={40}
+                  iconColor={routeEquipment.statusColor}
                   name={getEquipmentIcon(
                     routeEquipment.equipment,
                     routeEquipment.type,

@@ -16,6 +16,7 @@ import {CatHaulCycle} from '../../api/types/haul-cycle';
 import {RootState} from '../index';
 import {catBaseQuery} from '../api';
 import {ObservationDO} from '../../api/types/cat/observation';
+import {StopReasonTypeDO} from '../../api/types/cat/stop-reason';
 
 export const apiResult = async <T extends {error?: unknown; data?: unknown}>(
   dispatchResult: Promise<T>,
@@ -118,6 +119,13 @@ export const catApi = createApi({
         path: 'observation/findByTimeRange',
         method: 'GET',
         queryParams,
+      }),
+    }),
+
+    getStopReasonTypes: builder.query<StopReasonTypeDO[], void>({
+      query: () => ({
+        path: 'stop_reason_type/find',
+        method: 'GET',
       }),
     }),
   }),
