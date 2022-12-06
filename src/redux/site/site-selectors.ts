@@ -186,6 +186,12 @@ export const materialsSelector = createSelector(
   materials => materials,
 );
 
+export const observationsSelector = (state: RootState) =>
+  state.site.observations;
+
+export const stopReasonTypesSelector = (state: RootState) =>
+  state.site.stopReasonTypes;
+
 export const shiftNominalOperationalTimelineSelector = createSelector(
   currentShiftSelector,
   currentShift => currentShift?.nominalOperationalTimeline ?? [],

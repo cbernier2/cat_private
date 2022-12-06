@@ -1,10 +1,17 @@
 import {createSelector} from '@reduxjs/toolkit';
 import {RootState} from '../../redux';
-import {RouteSelector} from '../../redux/site/site-selectors';
+import {
+  currentShiftSelector,
+  observationsSelector,
+  RouteSelector,
+  stopReasonTypesSelector,
+} from '../../redux/site/site-selectors';
 import {MinestarIconName} from '../../components/minestar-icon/types';
 import {CategoryType, CommonConstants} from '../../api/types/cat/common';
 import {CatAreaSummary} from '../../redux/site/helpers/transformSummaries';
 import {RouteUtils} from '../../utils/route';
+import {getEquipmentStatusColor} from '../../api/equipment';
+import {themeSelector} from '../../redux/app/app-selectors';
 
 export const currentRouteHaulCycles = createSelector(
   (state: RootState, routeSelector: RouteSelector) => routeSelector(state),
@@ -64,9 +71,21 @@ export const currentRouteAreasSelector = createSelector(
 export const currentRouteEquipmentsSelector = createSelector(
   (state: RootState, routeSelector: RouteSelector) =>
     currentRouteHaulCycles(state, routeSelector),
+  currentShiftSelector,
   (state: RootState) => state.site.productionSummary?.loadEquipSummaries,
   (state: RootState) => state.site.productionSummary?.haulEquipSummaries,
-  (haulCycles, loadEquipSummaries, haulEquipSummaries) => {
+  observationsSelector,
+  stopReasonTypesSelector,
+  themeSelector,
+  (
+    haulCycles,
+    currentShift,
+    loadEquipSummaries,
+    haulEquipSummaries,
+    observations,
+    stopReasonTypes,
+    theme,
+  ) => {
     const loadEquipmentsIds = new Set();
     const haulEquipmentsIds = new Set();
     haulCycles.forEach(haulCycle => {
@@ -89,6 +108,13 @@ export const currentRouteEquipmentsSelector = createSelector(
         .map(summary => ({
           ...summary,
           type: categoryType,
+          statusColor: getEquipmentStatusColor(
+            summary,
+            currentShift,
+            observations,
+            stopReasonTypes,
+            theme,
+          ),
         }));
     };
     return [

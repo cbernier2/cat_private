@@ -1,5 +1,7 @@
-import {ProductionSummary} from '../../../api/types/cat/production';
-
+import {
+  EquipmentTimeline,
+  ProductionSummary,
+} from '../../../api/types/cat/production';
 import {Material} from '../../../api/types/cat/material';
 import {
   AreaType,
@@ -14,16 +16,17 @@ import {Equipment} from '../../../api/types/cat/equipment';
 import {transformEquipSummary} from './transformEquipSummary';
 import {CatSiteSummary, transformSiteSummary} from './transformSiteSummary';
 
-export type CatEquipmentSummary = CatSiteSummary & {
-  equipment: Equipment | undefined;
-  fuelLevelPercent: number;
-  lastObservedOperatorId?: string;
-  lastObservedLoadAreaId?: string;
-  lastObservedDumpAreaId?: string;
-  lastObservedMaterialId?: string;
-  lastObservedDestinationAreaId?: string;
-  type: EquipmentType;
-};
+export type CatEquipmentSummary = CatSiteSummary &
+  EquipmentTimeline & {
+    equipment: Equipment | undefined;
+    fuelLevelPercent: number;
+    lastObservedOperatorId?: string;
+    lastObservedLoadAreaId?: string;
+    lastObservedDumpAreaId?: string;
+    lastObservedMaterialId?: string;
+    lastObservedDestinationAreaId?: string;
+    type: EquipmentType;
+  };
 
 export type CatAreaSummary = CatSiteSummary & {
   area: PlanArea;
