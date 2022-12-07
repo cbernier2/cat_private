@@ -7,13 +7,16 @@ import CatText from '../text';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const CatUserBanner: React.FC<CatUserBannerType> = ({person, style}) => {
+  let avatarStyle = {backgroundColor: person?.color};
+
   return (
     <View style={[styles.container, style]}>
       {person.initials !== undefined && person.initials.length > 0 ? (
-        <Avatar.Text size={40} label={person.initials} />
+        <Avatar.Text size={40} label={person.initials} style={avatarStyle} />
       ) : (
         <Avatar.Icon
           size={40}
+          style={avatarStyle}
           icon={props => <MaterialIcons name={'person-outline'} {...props} />}
         />
       )}
