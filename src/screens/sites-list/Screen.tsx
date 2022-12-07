@@ -83,7 +83,7 @@ export const SitesListScreen: React.FC<SitesListTypes> = props => {
             <ActivityIndicator
               animating={loadingSites || loadingSelectedSite}
             />
-            <CatError style={styles.mh} message={error?.message} />
+            <CatError style={styles.mh} message={error && t(error)} />
             {/* TODO hide while loading? */}
             {filteredSites.map((site, i) => (
               <List.Item
