@@ -1,19 +1,31 @@
 import {createSelector} from '@reduxjs/toolkit';
 import {
   EquipmentSelector,
+  observationsSelector,
   personsSelector,
 } from '../../redux/site/site-selectors';
 import {RootState} from '../../redux';
 import {findMaterial} from '../../api/material';
 import {findPersonById} from '../../api/person';
 import {CategoryType} from '../../api/types/cat/common';
+import {ObservationUtils} from '../../api/observation';
+import moment from 'moment';
 
 export const currentEquipmentPersonSelector = createSelector(
   (state: RootState, equipmentsSelector: EquipmentSelector) =>
     equipmentsSelector(state),
+  observationsSelector,
   personsSelector,
-  (equipmentSummary, persons) =>
-    findPersonById(persons, equipmentSummary?.lastObservedOperatorId),
+  (equipmentSummary, observations, persons) => {
+    const operatorId = equipmentSummary?.equipment?.id
+      ? ObservationUtils.findEquipmentOperatorId(
+          observations,
+          equipmentSummary.equipment.id,
+          moment().valueOf(),
+        )
+      : undefined;
+    return findPersonById(persons, operatorId);
+  },
 );
 
 export const currentEquipmentAreaSelector = createSelector(
