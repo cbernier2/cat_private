@@ -15,7 +15,6 @@ import {CircledIcon} from '../../components/circled-icon/Component';
 import {SummaryGraphs} from '../../components/summary-graphs/Component';
 import {actions as siteActions} from '../../redux/site/site-slice';
 import useCatDispatch from '../../hooks/useCatDispatch';
-import {getEquipmentIcon} from '../../api/types/equipment';
 import {CategoryType} from '../../api/types/cat/common';
 import CatScreen from '../../components/screen';
 import {PageTitle} from '../../components/page-title/Component';
@@ -34,6 +33,7 @@ import {
   currentRouteAreasSelector,
   currentRouteEquipmentsSelector,
 } from './selectors';
+import {CatEquipmentIcon} from '../../components/equipment-icon';
 
 const RouteOverviewScreen = (props: ScreenType) => {
   const {navigation} = props;
@@ -154,13 +154,9 @@ const RouteOverviewScreen = (props: ScreenType) => {
               key={`e${i}`}
               onPress={() => navigateToEquipment(routeEquipment)}
               icon={
-                <CircledIcon
-                  size={40}
-                  iconColor={routeEquipment.statusColor}
-                  name={getEquipmentIcon(
-                    routeEquipment.equipment,
-                    routeEquipment.type,
-                  )}
+                <CatEquipmentIcon
+                  equipmentSummary={routeEquipment}
+                  type={routeEquipment.categoryType}
                 />
               }
               name={routeEquipment.equipment?.name}>
