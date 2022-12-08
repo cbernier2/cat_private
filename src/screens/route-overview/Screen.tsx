@@ -4,7 +4,6 @@ import {useTranslation} from 'react-i18next';
 
 import {
   currentRouteSelector,
-  haulCyclesEquipmentSelector,
   searchRouteSelector,
 } from '../../redux/site/site-selectors';
 import useCatSelector from '../../hooks/useCatSelector';
@@ -16,6 +15,8 @@ import {CircledIcon} from '../../components/circled-icon/Component';
 import {SummaryGraphs} from '../../components/summary-graphs/Component';
 import {actions as siteActions} from '../../redux/site/site-slice';
 import useCatDispatch from '../../hooks/useCatDispatch';
+import {getEquipmentIcon} from '../../api/types/equipment';
+import {CategoryType} from '../../api/types/cat/common';
 import CatScreen from '../../components/screen';
 import {PageTitle} from '../../components/page-title/Component';
 import {
@@ -28,9 +29,11 @@ import {
 
 import styles from './styles';
 import {ScreenType} from './types';
-import {currentRouteAreasSelector, currentRouteHaulCycles} from './selectors';
-import CatProductionListItem from '../../components/production-list-item';
-import CatEquipmentList from '../../components/equipment-list';
+import CatRouteItem from './RouteItem';
+import {
+  currentRouteAreasSelector,
+  currentRouteEquipmentsSelector,
+} from './selectors';
 
 const RouteOverviewScreen = (props: ScreenType) => {
   const {navigation} = props;
@@ -41,13 +44,10 @@ const RouteOverviewScreen = (props: ScreenType) => {
   const selectedRouteSummary = useCatSelector(routeSelector);
   const selectedRoute = selectedRouteSummary?.route;
   const routeAreas = useCatSelector(state =>
-    currentRouteAreasSelector(state, selectedRouteSummary),
+    currentRouteAreasSelector(state, routeSelector),
   );
   const routeEquipments = useCatSelector(state =>
-    haulCyclesEquipmentSelector(
-      state,
-      currentRouteHaulCycles(state, selectedRouteSummary),
-    ),
+    currentRouteEquipmentsSelector(state, routeSelector),
   );
 
   useEffect(() => {
@@ -110,6 +110,19 @@ const RouteOverviewScreen = (props: ScreenType) => {
     navigation.navigate('AreaDetails');
   };
 
+  const navigateToEquipment = (
+    routeEquipment: typeof routeEquipments[number],
+  ) => {
+    dispatch(
+      siteActions.setCurrentEquipment({
+        name: routeEquipment.equipment?.name,
+        category: routeEquipment.type,
+        isSearch,
+      }),
+    );
+    navigation.navigate('EquipmentDetails');
+  };
+
   return (
     <CatScreen title={t('route_overview_title')}>
       <PageTitle icon={'route'} title={selectedRoute.name} />
@@ -120,7 +133,7 @@ const RouteOverviewScreen = (props: ScreenType) => {
         <CatText variant={'headlineMedium'}>{t('cat.areas')}</CatText>
         <View style={styles.cardsContainer}>
           {routeAreas.map((routeArea, i) => (
-            <CatProductionListItem
+            <CatRouteItem
               key={`r${i}`}
               onPress={() => navigateToArea(routeArea)}
               name={routeArea.name}
@@ -129,10 +142,42 @@ const RouteOverviewScreen = (props: ScreenType) => {
                 {formatNumber(routeArea.summary.currentRateValue)}{' '}
                 {t(routeArea.summary.currentRateUnit)}
               </CatTextWithLabel>
-            </CatProductionListItem>
+            </CatRouteItem>
           ))}
         </View>
-        <CatEquipmentList equipment={routeEquipments} isSearch={isSearch} />
+        <CatText variant={'headlineMedium'} style={styles.equipTitle}>
+          {t('route_equipment', {num: routeEquipments.length})}
+        </CatText>
+        <View style={styles.cardsContainer}>
+          {routeEquipments.map((routeEquipment, i) => (
+            <CatRouteItem
+              key={`e${i}`}
+              onPress={() => navigateToEquipment(routeEquipment)}
+              icon={
+                <CircledIcon
+                  size={40}
+                  iconColor={routeEquipment.statusColor}
+                  name={getEquipmentIcon(
+                    routeEquipment.equipment,
+                    routeEquipment.type,
+                  )}
+                />
+              }
+              name={routeEquipment.equipment?.name}>
+              {routeEquipment.type === CategoryType.LOAD_EQUIPMENT && (
+                <CatTextWithLabel label={t('cat.production_currentRate')}>
+                  {formatNumber(routeEquipment.currentRateValue)}{' '}
+                  {t(routeEquipment.currentRateUnit)}
+                </CatTextWithLabel>
+              )}
+              {routeEquipment.type === CategoryType.HAUL_EQUIPMENT && (
+                <CatTextWithLabel label={t('cat.average_cycle_time')}>
+                  {formatMinutesOnly(routeEquipment.averageCycleTime)}
+                </CatTextWithLabel>
+              )}
+            </CatRouteItem>
+          ))}
+        </View>
       </View>
     </CatScreen>
   );
