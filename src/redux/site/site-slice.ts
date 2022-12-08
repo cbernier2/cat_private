@@ -24,6 +24,7 @@ import {transformConfig} from './helpers/transformConfig';
 import {transformSummaries} from './helpers/transformSummaries';
 import {catPersistReducer} from '../utils';
 import {ObservationDO} from '../../api/types/cat/observation';
+import {StopReasonTypeDO} from '../../api/types/cat/stop-reason';
 
 export const key = 'site';
 
@@ -56,6 +57,7 @@ export interface SiteState {
   currentShift: Shift | null;
   latestShifts: Shift[] | null;
   materials: Material[];
+  stopReasonTypes: StopReasonTypeDO[];
   productionSummary: ProductionSummary | null;
   haulCycles: CatHaulCycle[];
   observations: ObservationDO[];
@@ -74,6 +76,7 @@ const initialState: SiteState = {
   currentShift: null,
   latestShifts: null,
   materials: [],
+  stopReasonTypes: [],
   productionSummary: null,
   haulCycles: [],
   observations: [],
@@ -127,6 +130,10 @@ export const fetchSiteAsyncAction = createOfflineAsyncThunk(
         dispatch(catApi.endpoints.getMaterials.initiate()),
       );
 
+      const stopReasonTypes = await apiResult(
+        dispatch(catApi.endpoints.getStopReasonTypes.initiate()),
+      );
+
       const currentShift =
         latestShifts.find(shift => shift.id === selectedShift?.id) ??
         latestShifts[0] ??
@@ -137,6 +144,7 @@ export const fetchSiteAsyncAction = createOfflineAsyncThunk(
         currentShift,
         latestShifts,
         materials,
+        stopReasonTypes,
         siteConfig,
         ...shiftData,
       };
@@ -189,6 +197,7 @@ const getShiftData = async (
 const clearSiteData = (state: Draft<SiteState>) => {
   state.siteConfig = {};
   state.materials = [];
+  state.stopReasonTypes = [];
   state.currentShift = null;
   state.productionSummary = null;
   state.observations = [];
@@ -262,6 +271,7 @@ const slice = createSlice({
           state.currentShift = action.payload.currentShift;
           state.latestShifts = action.payload.latestShifts;
           state.materials = action.payload.materials;
+          state.stopReasonTypes = action.payload.stopReasonTypes;
           state.haulCycles = action.payload.haulCycles;
           state.observations = action.payload.observations;
           state.siteConfig = config;
