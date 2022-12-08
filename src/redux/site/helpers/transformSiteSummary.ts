@@ -264,6 +264,7 @@ export const transformSiteSummary = (
     materialTimeSeries,
     totalLoadsValue: summary.totalLoads,
     averageCycleTime: summary.averageCycleTime,
+    lastCycleTime: summary.lastCycleTime,
     averageQueuingDurationEmpty: summary.averageQueuingDurationEmpty,
     ...commonData,
     ...hourlyTargetData,

@@ -31,6 +31,7 @@ export type CatEquipmentSummary = CatSiteSummary &
 export type CatAreaSummary = CatSiteSummary & {
   area: PlanArea;
   type: AreaType;
+  lastObservedMaterialId: string;
 };
 
 export type CatRouteSummary = CatSiteSummary & {
@@ -79,11 +80,13 @@ export const transformSummaries = (
       ...transformSiteSummary(loadAreaSummary, materials, defaultUnit),
       type: CategoryType.LOAD_AREA,
       area: loadAreaSummary.loadArea,
+      lastObservedMaterialId: loadAreaSummary.lastObservedMaterialId,
     })),
     dumpSummaries: summaries.dumpSummaries.map(dumpSummary => ({
       ...transformSiteSummary(dumpSummary, materials, defaultUnit),
       type: CategoryType.DUMP_AREA,
       area: dumpSummary.dumpArea,
+      lastObservedMaterialId: dumpSummary.lastObservedMaterialId,
     })),
     loadEquipSummaries: summaries.loadEquipSummaries.map(equipSummary =>
       transformEquipSummary(

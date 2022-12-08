@@ -1,4 +1,5 @@
 import {Material} from './types/cat/material';
+import {CommonConstants} from './types/cat/common';
 
 export const findMaterials = (materials: Material[], ids: string[]) => {
   if (ids && ids.length) {
@@ -8,4 +9,6 @@ export const findMaterials = (materials: Material[], ids: string[]) => {
 };
 
 export const findMaterial = (materials: Material[], id: string | undefined) =>
-  materials.find(material => material.id === id);
+  materials.find(
+    material => (material.id ?? CommonConstants.UNDEFINED_UUID) === id,
+  );

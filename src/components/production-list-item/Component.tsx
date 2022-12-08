@@ -1,13 +1,13 @@
 import React from 'react';
 import {Pressable, TextStyle, View} from 'react-native';
-import {CatRouteItemType} from './types';
+import {CatProductionListItemType} from './types';
 import styles from './styles';
 import CatTextWithIcon from '../../components/text-with-icon';
 import {useTranslation} from 'react-i18next';
 import useCatTheme from '../../hooks/useCatTheme';
 import CatCard from '../../components/card';
 
-const CatRouteItem: React.FC<CatRouteItemType> = ({
+const CatProductionListItem: React.FC<CatProductionListItemType> = ({
   name,
   icon,
   onPress,
@@ -34,4 +34,4 @@ const CatRouteItem: React.FC<CatRouteItemType> = ({
   );
 };
 
-export default CatRouteItem;
+export default CatProductionListItem;

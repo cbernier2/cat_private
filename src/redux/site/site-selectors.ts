@@ -14,6 +14,7 @@ import {
   CatSummaries,
 } from './helpers/transformSummaries';
 import {CurrentArea, CurrentEquipment} from './site-slice';
+import {CatHaulCycle} from '../../api/types/haul-cycle';
 
 export const lastUpdateSelector = createSelector(
   (state: RootState) => state.site.lastUpdate,
@@ -235,4 +236,48 @@ export const siteClockIs24HourSelector = createSiteConfigsSelector(
 export const systemUnitTypeSelector = createSiteConfigsSelector(
   ConfigItemName.PRODUCTION_UNIT_TYPE,
   CommonConstants.DEFAULT_UNIT_TYPE_VALUE,
+);
+
+export const haulCyclesEquipmentSelector = createSelector(
+  (state: RootState, haulCycles: CatHaulCycle[]) => haulCycles,
+  (state: RootState) => state.site.productionSummary?.loadEquipSummaries,
+  (state: RootState) => state.site.productionSummary?.haulEquipSummaries,
+  (haulCycles, loadEquipSummaries, haulEquipSummaries) => {
+    const loadEquipmentsIds = new Set();
+    const haulEquipmentsIds = new Set();
+    haulCycles.forEach(haulCycle => {
+      loadEquipmentsIds.add(haulCycle.loadEquipment);
+      haulEquipmentsIds.add(haulCycle.haulEquipment);
+    });
+    const getEquipSummaries = (
+      ids: typeof loadEquipmentsIds,
+      summaries: typeof loadEquipSummaries,
+      categoryType: CategoryType,
+    ) => {
+      return (
+        summaries?.filter(summary =>
+          ids.has(summary.equipment?.id ?? CommonConstants.UNDEFINED_UUID),
+        ) ?? []
+      )
+        .sort((a, b) =>
+          (a.equipment?.name ?? '').localeCompare(b.equipment?.name ?? ''),
+        )
+        .map(summary => ({
+          ...summary,
+          categoryType: categoryType,
+        }));
+    };
+    return [
+      ...getEquipSummaries(
+        loadEquipmentsIds,
+        loadEquipSummaries,
+        CategoryType.LOAD_EQUIPMENT,
+      ),
+      ...getEquipSummaries(
+        haulEquipmentsIds,
+        haulEquipSummaries,
+        CategoryType.HAUL_EQUIPMENT,
+      ),
+    ];
+  },
 );
