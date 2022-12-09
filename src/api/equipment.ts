@@ -1,4 +1,4 @@
-import {CommonConstants, EquipmentOperationalStatus} from './types/cat/common';
+import {EquipmentOperationalStatus} from './types/cat/common';
 import moment from 'moment/moment';
 import {ObservationUtils} from './observation';
 import {EquipmentSummaryUtils} from './types/cat/production';
@@ -22,21 +22,12 @@ const getShiftObservationTime = (currentShift: Shift | null) => {
 
 export const countObservationsForEquipment = (
   equipmentSummary: CatEquipmentSummary,
-  currentShift: Shift | null,
-  observations: ObservationDO[],
 ) => {
-  if (!currentShift) {
-    return 0;
-  }
-  const equipmentId =
-    equipmentSummary.equipment?.id ?? CommonConstants.UNDEFINED_UUID;
-  return observations.filter(observation => {
-    return (
-      observation.observedEquipmentId === equipmentId &&
-      observation.startTime <= currentShift.endTime &&
-      observation.endTime >= currentShift.startTime
-    );
-  }).length;
+  return (
+    (equipmentSummary?.operationalDelayTimeline.length ?? 0) +
+    (equipmentSummary?.standbyTimeline.length ?? 0) +
+    (equipmentSummary?.maintenanceTimeline.length ?? 0)
+  );
 };
 
 export const getEquipmentStatusColor = (

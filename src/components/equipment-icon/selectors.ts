@@ -27,11 +27,7 @@ export const equipmentIconDataSelector = createSelector(
         stopReasonTypes,
         theme,
       ),
-      observationCount: countObservationsForEquipment(
-        equipmentSummary,
-        currentShift,
-        observations,
-      ),
+      observationCount: countObservationsForEquipment(equipmentSummary),
     };
   },
 );
