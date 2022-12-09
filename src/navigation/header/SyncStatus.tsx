@@ -22,7 +22,7 @@ const CatSyncStatus: React.FC = () => {
     ? format(lastSyncTime, t('status_date_format'))
     : t('status_not_available');
 
-  let iconColor = colors.secondary;
+  let iconColor = colors.primary;
   let iconName: MinestarIconName = 'edge_network_strength_high';
   if (isConnected === false) {
     iconColor = colors.errorWarning0;

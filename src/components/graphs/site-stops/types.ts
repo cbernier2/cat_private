@@ -1,1 +1,3 @@
-export interface SiteStopsChartType {}
+export interface SiteStopsChartType {
+  steps: Date[];
+}

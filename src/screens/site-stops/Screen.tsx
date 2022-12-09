@@ -1,15 +1,73 @@
-import React from 'react';
+import React, {useState} from 'react';
 import CatScreen from '../../components/screen';
 import {ScreenType} from './types';
 import {useTranslation} from 'react-i18next';
-import {SiteStopsChart} from '../../components/graphs/site-stops/Component';
+import {TabView} from 'react-native-tab-view';
+import {useWindowDimensions, View} from 'react-native';
+import {useStyles} from './styles';
+import CatButton from '../../components/button';
+import {stopsScheduleSceneSelector} from './selectors';
+import useCatSelector from '../../hooks/useCatSelector';
+import CatText from '../../components/text';
+import {dateToHoursString} from '../../utils/date-utils';
+import CatStopsFilters from '../../components/stops-filters';
+import {CatStopsFiltersType} from '../../components/stops-filters/types';
 
 const SiteStopsScreen: React.FC<ScreenType> = () => {
   const {t} = useTranslation();
+  const layout = useWindowDimensions();
+  const styles = useStyles();
+  const [index, setIndex] = useState(0);
+  const [filters, setFilters] = useState<CatStopsFiltersType>({
+    infiniteOnly: false,
+    noReasonOnly: false,
+  });
+  const {routes, renderScene} = useCatSelector(stopsScheduleSceneSelector);
+  const currentPage = routes[index].value;
 
   return (
-    <CatScreen title={t('cat.site_stops')}>
-      <SiteStopsChart />
+    <CatScreen scroll={false} title={t('cat.site_stops')}>
+      <View style={styles.headerContainer}>
+        <View style={styles.timeSelectorContainer}>
+          <CatText variant={'headlineMedium'} style={styles.timeSelectorText}>
+            {dateToHoursString(currentPage[0]) +
+              '-' +
+              dateToHoursString(currentPage[currentPage.length - 1])}
+          </CatText>
+          <View style={styles.timeSelectorPageIndicator}>
+            {routes.map((route, i) => (
+              <View
+                key={route.key}
+                style={[
+                  styles.timeSelectorPageBadge,
+                  index === i ? styles.badgeSelected : undefined,
+                ]}
+              />
+            ))}
+          </View>
+        </View>
+        <View style={styles.filterButtonsContainer}>
+          <CatStopsFilters
+            onChange={newFilters => setFilters(newFilters)}
+            initialState={filters}
+          />
+        </View>
+      </View>
+      <View>
+        <CatButton labelStyle={styles.addButtonLabel} style={styles.addButton}>
+          {'+'}
+        </CatButton>
+      </View>
+      <TabView
+        style={styles.tabView}
+        navigationState={{index, routes}}
+        renderScene={renderScene}
+        onIndexChange={setIndex}
+        renderTabBar={() => {
+          return <></>;
+        }}
+        initialLayout={{width: layout.width}}
+      />
     </CatScreen>
   );
 };
