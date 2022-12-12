@@ -6,6 +6,7 @@
 import i18n, {t} from 'i18next';
 import {UNDEFINED_VALUE} from '../api/types/cat/common';
 import {DateUtils} from './date-utils';
+import moment from 'moment';
 
 export const formatNumber = (value?: number, numDecimals = 0) => {
   if (value) {
@@ -29,6 +30,10 @@ export const formatMinutesOnlyFromMillis = (value?: number): string => {
 
 export const formatMinutesOnly = (value?: number): string => {
   return formatMinutesOnlyFromMillis(value && value * 60 * 1000);
+};
+
+export const formatRelativeTime = (value?: number): string => {
+  return DateUtils.from(moment(value));
 };
 
 export const formatUnit = (value?: number) => {

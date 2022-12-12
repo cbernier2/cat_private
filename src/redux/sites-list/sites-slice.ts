@@ -18,7 +18,7 @@ export interface Site {
 }
 
 export interface SitesState {
-  error: Error | null;
+  error: string | null;
   loading: boolean;
   sites: Site[];
   selectedSiteUrl: string | null;
@@ -70,7 +70,7 @@ const slice = createSlice({
       })
       .addCase(fetchSitesAsyncAction.rejected, (state, action) => {
         console.error(action);
-        state.error = new Error('genericErrorMessage');
+        state.error = 'cat.login_server_error';
         state.loading = false;
       })
       .addCase(fetchSitesAsyncAction.fulfilled, (state, action) => {
@@ -87,7 +87,7 @@ const typedReducer: Reducer<typeof initialState> = slice.reducer;
 const sitesReducer = catPersistReducer(
   {
     key,
-    blacklist: ['sites', 'selectedSite'],
+    blacklist: ['error', 'loading'],
   },
   typedReducer,
 );

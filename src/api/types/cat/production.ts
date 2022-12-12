@@ -159,6 +159,7 @@ export interface HaulCyclesSummary extends Summary {}
 export interface PlanAreaSummary extends Summary {
   area: PlanArea;
   materialObservationForPlanArea: string;
+  lastObservedMaterialId: string;
 }
 
 export interface EquipmentSummary extends Summary {

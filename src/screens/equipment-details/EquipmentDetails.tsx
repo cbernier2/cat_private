@@ -6,15 +6,11 @@ import {
   formatLabel,
   formatMinutesOnly,
   formatMinutesOnlyFromMillis,
-  formatNumber,
   formatPercent,
   formatUnit,
 } from '../../utils/format';
 import {CategoryType, UNDEFINED_VALUE} from '../../api/types/cat/common';
 import {ScrollView, View} from 'react-native';
-import Svg, {Defs, Rect} from 'react-native-svg';
-import {Pattern} from '../../components/graphs/pattern/Component';
-import {getPatternId} from '../../components/graphs/pattern/functions';
 import CatText from '../../components/text';
 import CatCard from '../../components/card';
 import CatUserBanner from '../../components/user-banner';
@@ -30,6 +26,8 @@ import {
   currentEquipmentPersonSelector,
 } from './selectors';
 import {useTranslation} from 'react-i18next';
+import CatValueWithUnit from '../../components/value-with-unit';
+import MaterialSample from '../../components/material-sample';
 
 const CatEquipmentDetails = (props: any) => {
   const {t} = useTranslation();
@@ -66,10 +64,12 @@ const CatEquipmentDetails = (props: any) => {
     },
     {
       label: t('cat.production_shiftToDate'),
-      children:
-        formatUnit(selectedEquipmentSummary.totalValue) +
-        ' ' +
-        t(selectedEquipmentSummary.totalUnit),
+      children: (
+        <CatValueWithUnit
+          value={formatUnit(selectedEquipmentSummary.totalValue)}
+          unit={t(selectedEquipmentSummary.totalUnit)}
+        />
+      ),
     },
     {
       label: formatLabel(
@@ -83,10 +83,12 @@ const CatEquipmentDetails = (props: any) => {
   const kpiRow2 = kpiRowJSX([
     {
       label: t('cat.production_currentRate'),
-      children:
-        formatNumber(selectedEquipmentSummary.currentRateValue) +
-        ' ' +
-        t(selectedEquipmentSummary.currentRateUnit),
+      children: (
+        <CatValueWithUnit
+          value={formatUnit(selectedEquipmentSummary.currentRateValue)}
+          unit={t(selectedEquipmentSummary.currentRateUnit)}
+        />
+      ),
     },
     {
       label: formatLabel(
@@ -128,28 +130,7 @@ const CatEquipmentDetails = (props: any) => {
       label: formatLabel('cat.production_material'),
       children: (
         <View style={styles.materialValue}>
-          {material && (
-            <Svg width={24} height={24}>
-              <Defs>
-                <Pattern
-                  background={material.color}
-                  pattern={material.pattern}
-                  foreground={material.patternColor}
-                />
-              </Defs>
-              <Rect
-                width={'100%'}
-                height={'100%'}
-                rx={4}
-                ry={4}
-                fill={`url(#${getPatternId(
-                  material.color,
-                  material.pattern,
-                  material.patternColor,
-                )})`}
-              />
-            </Svg>
-          )}
+          {material && <MaterialSample material={material} size={24} />}
           <CatText variant={'titleLarge'} style={styles.materialName}>
             {material?.name ?? UNDEFINED_VALUE}
           </CatText>

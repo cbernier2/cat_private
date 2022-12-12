@@ -12,6 +12,24 @@ import {ObservationDO} from './types/cat/observation';
 import {Shift, ShiftType} from './types/cat/shift';
 import {findShiftType} from './shift';
 
+const getShiftObservationTime = (currentShift: Shift | null) => {
+  const now = moment().valueOf();
+  return !currentShift ||
+    findShiftType(now, currentShift) !== ShiftType.HISTORICAL
+    ? now
+    : currentShift.endTime;
+};
+
+export const countObservationsForEquipment = (
+  equipmentSummary: CatEquipmentSummary,
+) => {
+  return (
+    (equipmentSummary?.operationalDelayTimeline.length ?? 0) +
+    (equipmentSummary?.standbyTimeline.length ?? 0) +
+    (equipmentSummary?.maintenanceTimeline.length ?? 0)
+  );
+};
+
 export const getEquipmentStatusColor = (
   equipmentSummary: CatEquipmentSummary,
   currentShift: Shift | null,
@@ -19,14 +37,10 @@ export const getEquipmentStatusColor = (
   stopReasonTypes: StopReasonTypeDO[],
   {colors}: CatTheme,
 ) => {
-  if (!currentShift || !equipmentSummary || stopReasonTypes.length === 0) {
+  if (stopReasonTypes.length === 0) {
     return colors.grey100;
   }
-  const now = moment().valueOf();
-  const atTime =
-    findShiftType(now, currentShift) !== ShiftType.HISTORICAL
-      ? now
-      : currentShift.endTime;
+  const atTime = getShiftObservationTime(currentShift);
   const operationalStatus = ObservationUtils.findEquipmentOperationalStatus(
     observations,
     equipmentSummary.id,
