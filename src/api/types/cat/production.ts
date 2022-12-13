@@ -1,10 +1,11 @@
 // Copy from Caterpillar Web App: src/common/providers/production/production-summary.ts
-// Edit: define EquipmentTimeline to call findStopReasonTypeIdAtTime witih a CatEquipmentSummary
+// Edit: define EquipmentTimeline to call findStopReasonTypeIdAtTime with a CatEquipmentSummary
 
 import {Route} from './route';
 import {PlanArea} from './plan-area';
 import {Equipment} from './equipment';
 import {Labelable, Timestampable} from './common';
+import {StopReasonTypeDO} from './stop-reason';
 
 export interface HourlyRateMetric {
   minimum: number;
@@ -24,6 +25,9 @@ export interface Timeline {
   stopReasonTypeId?: string;
   stopReasonDescription?: string;
   fuelingOccurred?: boolean;
+}
+export interface TimelineWithReasonType extends Timeline {
+  reasonType?: StopReasonTypeDO;
 }
 
 /**

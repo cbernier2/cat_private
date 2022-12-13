@@ -5,7 +5,7 @@ export interface CircledIconType {
   badge?: number;
   borderColor?: ColorValue;
   borderWidth?: number;
-  fillColor?: ColorValue;
+  fillColor?: ColorValue | null;
   iconColor?: ColorValue;
   iconSize?: number;
   name: MinestarIconName;

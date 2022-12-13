@@ -1,6 +1,8 @@
 import textures from 'textures';
 
 export const patterns = {
+  // General Patterns
+  gradiant: null,
   none: null,
   UNKNOWN: textures.lines().size(6).strokeWidth(0.5),
   PATTERN_01: textures.lines(),
@@ -48,4 +50,7 @@ export const patterns = {
     .lighter()
     .shapeRendering('crispEdges'),
   PATTERN_30: textures.paths().d('squares').size(8).lighter(),
+
+  // Stops and Observations Patterns
+  OBSERVATION: textures.lines().size(6.5).strokeWidth(1.75),
 };

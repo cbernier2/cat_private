@@ -1,18 +1,33 @@
 import React from 'react';
 import {useSelector} from 'react-redux';
-import {G, Line, Text} from 'react-native-svg';
+import {G, Line, Polygon, Text} from 'react-native-svg';
 import moment from 'moment-timezone';
 
-import {siteClockIs24HourSelector} from '../../../../redux/site/site-selectors';
+import {
+  shiftNominalOperationalTimelineSelector,
+  siteClockIs24HourSelector,
+} from '../../../../redux/site/site-selectors';
 
 import {GridType} from './types';
 
 export const Grid = (props: GridType) => {
   const {height, labelWidth, time_scale, width} = props;
   const clockIs24 = useSelector(siteClockIs24HourSelector);
+  const nominalOperationalTime = useSelector(
+    shiftNominalOperationalTimelineSelector,
+  );
+
+  const backgroundTimeline: string[] =
+    nominalOperationalTime?.map((operation: any) => {
+      const y1 = time_scale(operation.startTime);
+      const y2 = time_scale(operation.endTime);
+
+      return `${labelWidth},${y1} ${labelWidth},${y2} ${width},${y2} ${width},${y1}`;
+    }) ?? [];
 
   const stroke = '#4b5055';
   const text = '#4b5055';
+  const timelineFill = '#464b508c';
 
   const timeFormat = clockIs24 ? 'HH:mm' : 'ha';
 
@@ -50,6 +65,9 @@ export const Grid = (props: GridType) => {
           </Text>
           <Line x1={60} x2={width} y={line.y} stroke={stroke} />
         </G>
+      ))}
+      {backgroundTimeline.map(points => (
+        <Polygon key={points} points={points} fill={timelineFill} />
       ))}
     </>
   );

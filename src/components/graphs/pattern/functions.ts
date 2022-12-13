@@ -1,7 +1,7 @@
 import {Pattern, PatternType} from './types';
 
 export const getPatternId = (
-  background: string,
+  background: string = 'transparent',
   pattern: Pattern | null = 'none',
   foreground?: string | null,
 ) => {

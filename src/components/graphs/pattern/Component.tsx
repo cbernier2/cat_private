@@ -1,6 +1,7 @@
 import React from 'react';
 
 import {Circles} from './components/Circles';
+import {Gradiant} from './components/Gradiant';
 import {Flat} from './components/Flat';
 import {Lines} from './components/Lines';
 import {Paths} from './components/Paths';
@@ -13,6 +14,11 @@ export const Pattern: React.FC<PatternType> = props => {
   const {background, foreground, pattern: patternId} = props;
 
   const id = getPatternId(background, patternId, foreground);
+
+  if (patternId === 'gradiant') {
+    return <Gradiant id={id} fill={background} />;
+  }
+
   const pattern = patterns[patternId ?? 'none'];
 
   if (pattern) {

@@ -1,12 +1,15 @@
 /**
  * Sourced from https://gitgis.ecorp.cat.com/minestar/pitsupervisor/minestar-core/-/blob/develop/app-web/src/common/providers/observation/observation.ts
- * Edited for lint/prettier fixes and imports
+ * Edited for lint/prettier fixes and imports, added `ObservationWithReasonType`
  */
 
 import {v4 as uuidv4} from 'uuid';
-import {PlanAreaProductionStatus, SaveOptions} from './common';
-import {DateUtils} from '../../../utils/date-utils';
 import moment from 'moment';
+
+import {DateUtils} from '../../../utils/date-utils';
+
+import {PlanAreaProductionStatus, SaveOptions} from './common';
+import {StopReasonTypeDO} from './stop-reason';
 
 export interface ObservationDO extends SaveOptions {
   id: string;
@@ -25,6 +28,10 @@ export interface ObservationDO extends SaveOptions {
   attributes?: {
     [name: string]: string;
   };
+}
+
+export interface ObservationWithReasonType extends ObservationDO {
+  reasonType?: StopReasonTypeDO;
 }
 
 export class ObservationType {
