@@ -62,6 +62,8 @@ const SiteStopsScreen: React.FC<ScreenType> = () => {
         style={styles.tabView}
         navigationState={{index, routes}}
         renderScene={renderScene}
+        lazy={false}
+        swipeEnabled={true}
         onIndexChange={setIndex}
         renderTabBar={() => {
           return <></>;

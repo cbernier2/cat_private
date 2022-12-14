@@ -57,13 +57,11 @@ export const SiteStopsStops: React.FC<SiteStopsStopsType> = props => {
               height={barHeight}
             />
             <G mask={`url(#mask${stop.id})`} display={display(thinBar)}>
-              <ForeignObject
-                x={x0 + 3}
-                y={y + yAdjust + 3}
-                // @ts-ignore
-                display={display(length < 40)}>
-                <MinestarIcon name="stop_reason_no_work" size={24} />
-              </ForeignObject>
+              {length > 40 && (
+                <ForeignObject x={x0 + 3} y={y + yAdjust + 3}>
+                  <MinestarIcon name="stop_reason_no_work" size={24} />
+                </ForeignObject>
+              )}
               <Text
                 x={x0 + 35}
                 y={y + yAdjust + barHeight / 2 + 5}
