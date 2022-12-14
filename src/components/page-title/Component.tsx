@@ -20,7 +20,7 @@ export const PageTitle = (props: PageTitleType) => {
 
   const titleTextStyle: TextStyle[] = [styles.titleText];
   if (title === t('cat.undefined')) {
-    titleTextStyle.push({color: colors.secondary});
+    titleTextStyle.push({color: colors.primary});
   }
 
   const handlePress = () => {
