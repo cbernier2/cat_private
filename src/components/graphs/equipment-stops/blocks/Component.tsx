@@ -11,12 +11,14 @@ import {Block, BlocksType} from './types';
 import {
   assignColumns,
   countColumns,
+  filterBlock,
   findConflicts,
   toBlockData,
 } from './functions';
 
 export const Blocks = (props: BlocksType) => {
-  const {labelWidth, now, observations, timelines, scale, width} = props;
+  const {filters, labelWidth, now, observations, timelines, scale, width} =
+    props;
   const {i18n} = useTranslation();
 
   const boxPadding = 5;
@@ -37,7 +39,7 @@ export const Blocks = (props: BlocksType) => {
 
     // Filter and sort list, also save index for easier looping later
     const entries = [...tls, ...obs]
-      .filter(tl => tl)
+      .filter(tl => filterBlock(tl, filters))
       .sort((a, b) => a.start - b.start)
       .map((tl, index) => ({...tl, index}))
       .map(findConflicts)
@@ -50,7 +52,7 @@ export const Blocks = (props: BlocksType) => {
       blocks: entries,
       patterns: Array.from(new Set(entries.flatMap(e => e.patternId))),
     };
-  }, [i18n, now, observations, timelines]);
+  }, [filters, i18n, now, observations, timelines]);
 
   const drawBlock = (block: Block) => {
     const cWidth = (width - labelWidth - boxPadding) / block.columns;

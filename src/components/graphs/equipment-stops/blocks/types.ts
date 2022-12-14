@@ -4,8 +4,10 @@ import {ObservationWithReasonType} from '../../../../api/types/cat/observation';
 import {TimelineWithReasonType} from '../../../../api/types/cat/production';
 
 import {MinestarIconName} from '../../../minestar-icon/types';
+import {CatStopsFiltersType} from '../../../stops-filters/types';
 
 export interface BlocksType {
+  filters: CatStopsFiltersType;
   labelWidth: number;
   now: number;
   observations: ObservationWithReasonType[];
@@ -23,6 +25,7 @@ export interface Block {
   index: number;
   isOngoing: boolean;
   label: string;
+  noReason: boolean;
   patternId: string;
   position: number;
   start: number;

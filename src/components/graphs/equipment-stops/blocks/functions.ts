@@ -5,6 +5,7 @@ import {ObservationWithReasonType} from '../../../../api/types/cat/observation';
 import {StopReasonTypeUtils} from '../../../../api/types/cat/stop-reason';
 import {DateUtils} from '../../../../utils/date-utils';
 
+import {CatStopsFiltersType} from '../../../stops-filters/types';
 import {MinestarIconName} from '../../../minestar-icon/types';
 
 import {StopReasonPatterns} from '../../pattern/stop-patterns';
@@ -98,6 +99,14 @@ export const countColumns = (
   return {...block, columns: Math.max(...positions) + 1};
 };
 
+export const filterBlock = (block: Block, filters: CatStopsFiltersType) => {
+  return (
+    (!filters.infiniteOnly && !filters.noReasonOnly) ||
+    (filters.infiniteOnly && block.isOngoing) ||
+    (filters.noReasonOnly && block.noReason)
+  );
+};
+
 export const findConflicts = (a: Block, _: number, blocks: Block[]): Block => ({
   ...a,
   conflicts: blocks
@@ -133,6 +142,7 @@ export const toBlockData = (
   let icons: MinestarIconName[] = [];
   let label = translations.no_reason;
   let pattern;
+  let noReason: boolean = false;
 
   if (entry.reasonType) {
     icons.push(entry.reasonType.iconName as MinestarIconName);
@@ -149,6 +159,7 @@ export const toBlockData = (
   } else {
     pattern = StopReasonPatterns.get('UNKNOWN');
     icons.push('stop_reason_unknown');
+    noReason = true;
   }
 
   if (
@@ -163,11 +174,12 @@ export const toBlockData = (
     columns: 1,
     conflicts: [],
     duration,
+    end: getEndTime(entry, now),
     icons,
     index: -1,
     isOngoing,
     label,
-    end: getEndTime(entry, now),
+    noReason,
     patternId: getPatternId(
       pattern?.background,
       pattern?.pattern,

@@ -7,6 +7,12 @@ const styles = StyleSheet.create({
   graphContainer: {
     marginTop: 16,
   },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
   productionContainer: {
     margin: 8,
     paddingVertical: 12,
