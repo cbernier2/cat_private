@@ -27,7 +27,7 @@ export const SiteStopsStops: React.FC<SiteStopsStopsType> = props => {
         );
         const length = x1 - x0;
         const duration =
-          stop.endTime > props.now.getTime()
+          stop.endTime > props.now.valueOf()
             ? '∞'
             : (stop.endTime - stop.startTime) / 60000;
 

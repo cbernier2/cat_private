@@ -1,7 +1,7 @@
 import React from 'react';
 import {createSelector} from '@reduxjs/toolkit';
 import {currentShiftSelector} from '../../redux/site/site-selectors';
-import moment from 'moment';
+import moment, {Moment} from 'moment';
 import {SceneMap} from 'react-native-tab-view';
 import {SiteStopsChart} from '../../components/graphs/site-stops/Component';
 
@@ -14,14 +14,14 @@ export const stopsScheduleSceneSelector = createSelector(
     const currentMoment = moment(currentShift.startTime);
     currentMoment.set({minutes: 0});
     const endMoment = moment(currentShift.endTime);
-    const pagesHours: Date[][] = [];
-    let pageHours: Date[] = [];
+    const pagesHours: Moment[][] = [];
+    let pageHours: Moment[] = [];
     while (currentMoment < endMoment) {
       if (pageHours.length === 3) {
         pagesHours.push(pageHours);
         pageHours = [pageHours[pageHours.length - 1]];
       }
-      pageHours.push(currentMoment.toDate());
+      pageHours.push(currentMoment.clone());
       currentMoment.add({hour: 1});
     }
     if (pageHours.length > 1) {

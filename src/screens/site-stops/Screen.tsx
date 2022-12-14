@@ -9,9 +9,9 @@ import CatButton from '../../components/button';
 import {stopsScheduleSceneSelector} from './selectors';
 import useCatSelector from '../../hooks/useCatSelector';
 import CatText from '../../components/text';
-import {dateToHoursString} from '../../utils/date-utils';
 import CatStopsFilters from '../../components/stops-filters';
 import {CatStopsFiltersType} from '../../components/stops-filters/types';
+import {formatTime} from '../../utils/format';
 
 const SiteStopsScreen: React.FC<ScreenType> = () => {
   const {t} = useTranslation();
@@ -30,9 +30,9 @@ const SiteStopsScreen: React.FC<ScreenType> = () => {
       <View style={styles.headerContainer}>
         <View style={styles.timeSelectorContainer}>
           <CatText variant={'headlineMedium'} style={styles.timeSelectorText}>
-            {dateToHoursString(currentPage[0]) +
+            {formatTime(currentPage[0]) +
               '-' +
-              dateToHoursString(currentPage[currentPage.length - 1])}
+              formatTime(currentPage[currentPage.length - 1])}
           </CatText>
           <View style={styles.timeSelectorPageIndicator}>
             {routes.map((route, i) => (
