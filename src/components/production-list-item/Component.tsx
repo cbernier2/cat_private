@@ -18,7 +18,7 @@ const CatProductionListItem: React.FC<CatProductionListItemType> = ({
   if (name === 'Unknown') {
     name = undefined;
   }
-  const extraStyle: TextStyle = name ? {} : {color: colors.secondary};
+  const extraStyle: TextStyle = name ? {} : {color: colors.primary};
 
   return (
     <Pressable onPress={onPress}>
