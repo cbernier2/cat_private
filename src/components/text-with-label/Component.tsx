@@ -17,7 +17,7 @@ const CatTextWithLabel: React.FC<CatTextWithLabelType> = ({
 }) => {
   const {colors} = useCatTheme();
 
-  const valueStyle: TextStyle = isPrimary ? {color: colors.primary} : {};
+  const valueStyle: TextStyle = isPrimary ? {color: colors.secondary} : {};
 
   return (
     <View style={styles.container}>

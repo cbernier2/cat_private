@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import moment from 'moment';
 import {Dimensions} from 'react-native';
 import Svg, {Circle, Defs, G, Line} from 'react-native-svg';
 import * as scale from 'd3-scale';
@@ -19,19 +20,19 @@ import {Equipment} from '../../../api/types/cat/equipment';
 
 const window = Dimensions.get('window');
 
-export const SiteStopsChart: React.FC<SiteStopsChartType> = () => {
+export const SiteStopsChart: React.FC<SiteStopsChartType> = ({steps}) => {
   const theme = useCatTheme();
   const equipments = EquipmentsMock as Equipment[];
   const stops = StopsMock as IStop[];
 
   const rowHeight = 50;
   const headerHeight = 40;
-  const labelWidth = 110;
+  const labelWidth = 150;
 
   const [width, setWidth] = useState(window.width);
   const height = headerHeight + rowHeight + equipments.length * rowHeight;
 
-  const now = new Date('2022-10-20 9:53:00');
+  const now = moment().toDate();
 
   useEffect(() => {
     const subscription = Dimensions.addEventListener('change', d => {
@@ -47,17 +48,14 @@ export const SiteStopsChart: React.FC<SiteStopsChartType> = () => {
 
   const x_time = scale
     .scaleTime()
-    // TODO get view start and end times from current "page"
-    .domain([new Date('2022-10-20 07:45:00'), new Date('2022-10-20 10:15:00')])
+    .domain([
+      steps[0],
+      moment(steps[steps.length - 1])
+        .add({minutes: 15})
+        .toDate(),
+    ])
     .range([labelWidth, width])
     .clamp(true);
-
-  // TODO get steps from current "page"
-  const steps = [
-    new Date('2022-10-20 08:00:00'),
-    new Date('2022-10-20 09:00:00'),
-    new Date('2022-10-20 10:00:00'),
-  ];
 
   const addObservation = () => console.log('Add Observation');
   const addStop = () => console.log('Add Site Wide Stop');
@@ -90,21 +88,23 @@ export const SiteStopsChart: React.FC<SiteStopsChartType> = () => {
         x_scale={x_time}
         y_scale={equipment_band}
       />
-      <G>
-        <Circle
-          cx={x_time(now)}
-          cy={headerHeight - 6}
-          r={3}
-          fill={theme.colors.errorWarning0}
-        />
-        <Line
-          x={x_time(now)}
-          y1={headerHeight - 4}
-          y2={height}
-          stroke={theme.colors.errorWarning0}
-          strokeWidth={2}
-        />
-      </G>
+      {now >= steps[0] && now <= steps[steps.length - 1] && (
+        <G>
+          <Circle
+            cx={x_time(now)}
+            cy={headerHeight - 6}
+            r={3}
+            fill={theme.colors.errorWarning0}
+          />
+          <Line
+            x={x_time(now)}
+            y1={headerHeight - 4}
+            y2={height}
+            stroke={theme.colors.errorWarning0}
+            strokeWidth={2}
+          />
+        </G>
+      )}
     </Svg>
   );
 };

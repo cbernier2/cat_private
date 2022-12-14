@@ -22,7 +22,7 @@ export const useStyles = () => {
         activeTab: {
           borderBottomWidth: 3,
           paddingBottom: 9,
-          borderColor: colors.secondary,
+          borderColor: colors.primary,
         },
       }),
     [colors],

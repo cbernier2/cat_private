@@ -46,26 +46,26 @@ export const darkTheme = {
 
     // Like for fonts, not all MD3 colors seem to be covered in the UI Kit provided
     //   https://github.com/callstack/react-native-paper/blob/v5.0.0-rc.6/src/styles/themes/v3/LightTheme.tsx#L12
-    primary: '#FC0',
+    primary: '#0288D1',
     onPrimary: '#FAFBFE',
     primaryContainer: '#000',
     onPrimaryContainer: '#000',
 
-    secondary: '#0288D1',
-    onSecondary: '#FAFBFE',
+    secondary: '#FC0',
+    onSecondary: '#000000',
     secondaryContainer: '#03A9F4',
     onSecondaryContainer: '#FAFBFE',
 
     tertiary: '#08CB36',
-    onTertiary: '#FAFBFE',
+    onTertiary: '#000000',
 
     // onBackground and onSurface don't make much sense since `on*` is "text over *" for MD3
     //  and according to the UI Kit, we want almost black on black...
     background: '#12171C',
-    onBackground: '#191E23',
+    onBackground: '#7D8287',
 
     surface: '#262B30',
-    onSurface: '#32373C',
+    onSurface: '#7D8287',
 
     elevation: {
       level0: 'transparent',

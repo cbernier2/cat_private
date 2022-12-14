@@ -5,6 +5,7 @@
 
 import moment from 'moment';
 import {unitOfTime} from 'moment/moment';
+import {UNDEFINED_VALUE} from '../api/types/cat/common';
 
 export class DateUtils {
   public static readonly MAX_TIMESTAMP_VALUE: number = 9007199254740991;
@@ -156,3 +157,12 @@ export class DateUtils {
     return this.MAX_TIMESTAMP_VALUE === epochTimestamp;
   }
 }
+
+// Added by Spiria:
+export const dateToHoursString = (value: Date | undefined) => {
+  if (value) {
+    return value.toTimeString().split(' ')[0].substring(0, 5);
+  } else {
+    return UNDEFINED_VALUE;
+  }
+};
