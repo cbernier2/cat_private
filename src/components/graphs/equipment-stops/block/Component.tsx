@@ -34,7 +34,7 @@ export const Block = (props: BlockType) => {
       <G mask={`url(#mask${block.index})`}>
         {block.icons?.map((icon, i) => (
           <ForeignCircledIcon
-            key={`i${i}`}
+            key={`i${icon}${i}`}
             x={x1 + iconSpacing * i}
             y={scale(block.start) - iconYOffset}
             fillColor={null}

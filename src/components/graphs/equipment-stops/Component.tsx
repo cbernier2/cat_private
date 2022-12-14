@@ -12,7 +12,13 @@ import {NowMarker} from './now-marker/Component';
 import {EquipmentStopsType} from './types';
 
 export const EquipmentStops = (props: EquipmentStopsType) => {
-  const {endTime = 0, observations = [], startTime = 0, timelines = []} = props;
+  const {
+    endTime = 0,
+    filters,
+    observations = [],
+    startTime = 0,
+    timelines = [],
+  } = props;
   const width = useWidth();
   const labelWidth = 60;
   const padding = 30;
@@ -37,6 +43,7 @@ export const EquipmentStops = (props: EquipmentStopsType) => {
         width={width}
       />
       <Blocks
+        filters={filters}
         labelWidth={labelWidth}
         now={now}
         observations={observations}
