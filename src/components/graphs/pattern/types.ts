@@ -13,6 +13,11 @@ export interface FlatType {
   fill: string;
 }
 
+export interface GradiantType {
+  id: string;
+  fill: string;
+}
+
 export interface CirclesType {
   background: string;
   complement: boolean;

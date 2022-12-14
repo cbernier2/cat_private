@@ -4,6 +4,10 @@ import moment from 'moment';
 import {ConfigItemName} from '../../api/types/cat/config-item';
 import {CategoryType, CommonConstants} from '../../api/types/cat/common';
 import {CatPersons, SiteConfig} from '../../api/types';
+import {
+  ObservationType,
+  ObservationWithReasonType,
+} from '../../api/types/cat/observation';
 
 import {RootState} from '../index';
 
@@ -236,6 +240,28 @@ export const siteClockIs24HourSelector = createSiteConfigsSelector(
 export const systemUnitTypeSelector = createSiteConfigsSelector(
   ConfigItemName.PRODUCTION_UNIT_TYPE,
   CommonConstants.DEFAULT_UNIT_TYPE_VALUE,
+);
+
+export const StopReasonTypesSelector = createSelector(
+  (state: RootState) => state.site.stopReasonTypes,
+  stopReasonTypes => stopReasonTypes,
+);
+
+export const currentEquipmentObservationsSelector = createSelector(
+  (state: RootState, selector: EquipmentSelector) => selector(state),
+  (state: RootState) => state.site.observations,
+  StopReasonTypesSelector,
+  (equipment, observations, stopReasonTypes): ObservationWithReasonType[] =>
+    observations
+      .filter(
+        obs =>
+          obs.observedEquipmentId === equipment?.id &&
+          obs.observationType === ObservationType.STOP_REASON_TYPE,
+      )
+      .map(obs => ({
+        ...obs,
+        reasonType: stopReasonTypes.find(rt => rt.id === obs.observedValueId),
+      })),
 );
 
 export const haulCyclesEquipmentSelector = createSelector(

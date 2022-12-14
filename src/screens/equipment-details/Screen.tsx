@@ -1,21 +1,23 @@
 import React, {useEffect} from 'react';
+import {useTranslation} from 'react-i18next';
 
 import {
   currentEquipmentSelector,
   searchEquipmentSelector,
 } from '../../redux/site/site-selectors';
 import useCatSelector from '../../hooks/useCatSelector';
-import {ScreenType} from './types';
-import CatEquipmentDetails from './EquipmentDetails';
 import {PageTitle} from '../../components/page-title/Component';
 import {getEquipmentIcon} from '../../api/types/equipment';
 import CatScreen from '../../components/screen';
 import CatTabView from '../../components/tab-view';
-import {useTranslation} from 'react-i18next';
+
+import CatEquipmentDetails from './EquipmentDetails';
+import {EquipmentStopsTab} from './EquipmentStopsTab';
+import {ScreenType} from './types';
 
 const pages = {
   'info-outline': CatEquipmentDetails,
-  schedule: () => <></>,
+  schedule: EquipmentStopsTab,
 };
 
 const EquipmentDetailsScreen = (props: ScreenType) => {

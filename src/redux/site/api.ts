@@ -12,11 +12,11 @@ import {ProductionSummary} from '../../api/types/cat/production';
 import {Shift} from '../../api/types/cat/shift';
 import {findMostRecentShift} from '../../api/shift';
 import {CatHaulCycle} from '../../api/types/haul-cycle';
+import {ObservationDO} from '../../api/types/cat/observation';
+import {StopReasonTypeDO} from '../../api/types/cat/stop-reason';
 
 import {RootState} from '../index';
 import {catBaseQuery} from '../api';
-import {ObservationDO} from '../../api/types/cat/observation';
-import {StopReasonTypeDO} from '../../api/types/cat/stop-reason';
 
 export const apiResult = async <T extends {error?: unknown; data?: unknown}>(
   dispatchResult: Promise<T>,
@@ -57,6 +57,10 @@ export const catApi = createApi({
       transformResponse: (shifts: Shift[]) => {
         return findMostRecentShift(shifts);
       },
+    }),
+
+    getStopReasonTypes: builder.query<StopReasonTypeDO[] | null, void>({
+      query: () => ({path: 'stop_reason_type/find', method: 'GET'}),
     }),
 
     getMaterials: builder.query<Material[] | null, void>({
@@ -119,13 +123,6 @@ export const catApi = createApi({
         path: 'observation/findByTimeRange',
         method: 'GET',
         queryParams,
-      }),
-    }),
-
-    getStopReasonTypes: builder.query<StopReasonTypeDO[], void>({
-      query: () => ({
-        path: 'stop_reason_type/find',
-        method: 'GET',
       }),
     }),
   }),

@@ -15,16 +15,16 @@ import {CatOperatorInfo, CatPersons, SiteConfig} from '../../api/types';
 import {AreaType, CategoryType, UnitType} from '../../api/types/cat/common';
 import {CatHaulCycle} from '../../api/types/haul-cycle';
 import {createOfflineAsyncThunk} from '../../utils/offline';
+import {ObservationDO} from '../../api/types/cat/observation';
+import {StopReasonTypeDO} from '../../api/types/cat/stop-reason';
 
 import {RootState} from '../index';
 import {logoutAsyncAction} from '../user/user-slice';
+import {catPersistReducer} from '../utils';
 
 import {apiResult, catApi} from './api';
 import {transformConfig} from './helpers/transformConfig';
 import {transformSummaries} from './helpers/transformSummaries';
-import {catPersistReducer} from '../utils';
-import {ObservationDO} from '../../api/types/cat/observation';
-import {StopReasonTypeDO} from '../../api/types/cat/stop-reason';
 
 export const key = 'site';
 
@@ -144,8 +144,8 @@ export const fetchSiteAsyncAction = createOfflineAsyncThunk(
         currentShift,
         latestShifts,
         materials,
-        stopReasonTypes,
         siteConfig,
+        stopReasonTypes,
         ...shiftData,
       };
     } catch (e) {
