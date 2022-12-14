@@ -32,7 +32,7 @@ export const SiteStopsChart: React.FC<SiteStopsChartType> = ({steps}) => {
   const [width, setWidth] = useState(window.width);
   const height = headerHeight + rowHeight + equipments.length * rowHeight;
 
-  const now = moment().toDate();
+  const now = moment();
 
   useEffect(() => {
     const subscription = Dimensions.addEventListener('change', d => {

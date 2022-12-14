@@ -65,7 +65,7 @@ export const getEquipmentStatusColor = (
   }
   switch (stopReasonType.classification) {
     case StopReasonClassification.STANDBY:
-      return colors.secondary;
+      return colors.primary;
     case StopReasonClassification.OPERATIONAL_DELAY:
       return colors.errorCaution0;
     case StopReasonClassification.UNSCHEDULED_MAINTENANCE:

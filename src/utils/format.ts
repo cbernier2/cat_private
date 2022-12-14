@@ -6,7 +6,7 @@
 import i18n, {t} from 'i18next';
 import {UNDEFINED_VALUE} from '../api/types/cat/common';
 import {DateUtils} from './date-utils';
-import moment from 'moment';
+import moment, {Moment} from 'moment';
 
 export const formatNumber = (value?: number, numDecimals = 0) => {
   if (value) {
@@ -46,4 +46,12 @@ export const formatPercent = (value: number) => {
 
 export const formatLabel = (baseLabel: string, unit?: string) => {
   return t(baseLabel) + (unit ? ' ' + t(unit) : '');
+};
+
+export const formatTime = (value: Moment | undefined) => {
+  if (value) {
+    return value.format('HH:mm');
+  } else {
+    return UNDEFINED_VALUE;
+  }
 };

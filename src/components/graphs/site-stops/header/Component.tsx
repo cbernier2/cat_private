@@ -2,20 +2,20 @@ import React from 'react';
 import {G, Line, Text} from 'react-native-svg';
 
 import {SiteStopsHeaderType} from './types';
-import {dateToHoursString} from '../../../../utils/date-utils';
+import {formatTime} from '../../../../utils/format';
 
 export const SiteStopsHeader: React.FC<SiteStopsHeaderType> = props => {
   return (
     <>
       {props.steps.map(step => (
-        <G key={step.getTime()}>
+        <G key={step.valueOf()}>
           <Text
             fontSize={12}
             x={props.scale(step)}
             y={props.headerHeight / 2 + 6}
             fill="white"
             textAnchor="middle">
-            {dateToHoursString(step)}
+            {formatTime(step)}
           </Text>
           <Line
             x={props.scale(step)}
