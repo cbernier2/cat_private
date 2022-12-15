@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react';
+import React, { useMemo, useRef, useState } from "react";
 import {ScrollView} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {List} from 'react-native-paper';
@@ -24,9 +24,11 @@ import {
   operatorsSelector,
   routesSelector,
 } from '../../redux/site/site-selectors';
+import {TextInput as NativeTextInput} from 'react-native';
 
 import {ScreenType, SearchItem} from './types';
 import styles from './styles';
+import { useFocusEffect } from "@react-navigation/native";
 
 const SearchScreen = (props: ScreenType) => {
   const {navigation} = props;
@@ -34,11 +36,16 @@ const SearchScreen = (props: ScreenType) => {
   const {t} = useTranslation();
   const dispatch = useCatDispatch();
   const [filter, setFilter] = useState<string>('');
+  const textInputRef = useRef<NativeTextInput>(null);
 
   const areas = useSelector(areasSelector);
   const equipments = useSelector(equipmentsSelector);
   const operators = useSelector(operatorsSelector);
   const routes = useSelector(routesSelector);
+
+  useFocusEffect(() => {
+    textInputRef.current?.focus();
+  });
 
   const getIcon = (type: CategoryType): MinestarIconName => {
     return Category.findByCategoryType(type)?.icon as MinestarIconName;
@@ -142,6 +149,7 @@ const SearchScreen = (props: ScreenType) => {
           label={t('cat.button_search')}
           value={filter}
           onChangeText={value => setFilter(value)}
+          ref={textInputRef}
         />
         <List.Section style={styles.mh}>
           <ScrollView>
