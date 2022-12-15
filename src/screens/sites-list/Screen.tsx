@@ -20,12 +20,12 @@ import {
   selectSiteAsyncAction,
   Site,
 } from '../../redux/sites-list/sites-slice';
-
-import {SitesListTypes} from './types';
-import styles from './styles';
 import {siteIsLoadingSelector} from '../../redux/site/site-selectors';
 import useCatStore from '../../hooks/useCatStore';
 import {fetchSiteAsyncAction} from '../../redux/site/site-slice';
+
+import {SitesListTypes} from './types';
+import styles from './styles';
 
 export const SitesListScreen: React.FC<SitesListTypes> = props => {
   const root = Boolean(props.route.params?.root);

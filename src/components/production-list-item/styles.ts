@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     marginVertical: 4,
   },
   cardItem: {
-    width: '50%',
+    width: '60%',
   },
   areaText: {
     marginRight: 8,
