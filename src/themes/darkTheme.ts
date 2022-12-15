@@ -62,10 +62,10 @@ export const darkTheme = {
     // onBackground and onSurface don't make much sense since `on*` is "text over *" for MD3
     //  and according to the UI Kit, we want almost black on black...
     background: '#12171C',
-    onBackground: '#7D8287',
+    onBackground: greyColors.grey70,
 
     surface: '#262B30',
-    onSurface: '#7D8287',
+    onSurface: greyColors.grey70,
 
     elevation: {
       level0: 'transparent',
