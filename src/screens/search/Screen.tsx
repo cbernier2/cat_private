@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, {useMemo, useRef, useState} from 'react';
 import {ScrollView} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {List} from 'react-native-paper';
@@ -28,7 +28,7 @@ import {TextInput as NativeTextInput} from 'react-native';
 
 import {ScreenType, SearchItem} from './types';
 import styles from './styles';
-import { useFocusEffect } from "@react-navigation/native";
+import {useFocusEffect} from '@react-navigation/native';
 
 const SearchScreen = (props: ScreenType) => {
   const {navigation} = props;
