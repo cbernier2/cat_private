@@ -47,7 +47,7 @@ const CatTabView = (props: CatTabViewType) => {
                   <MaterialIcons
                     name={route.key}
                     size={32}
-                    color={active ? colors.primary : colors.label}
+                    color={active ? colors.primary : colors.onSurfaceDisabled}
                   />
                 </TouchableOpacity>
               );

@@ -47,25 +47,29 @@ export const darkTheme = {
     // Like for fonts, not all MD3 colors seem to be covered in the UI Kit provided
     //   https://github.com/callstack/react-native-paper/blob/v5.0.0-rc.6/src/styles/themes/v3/LightTheme.tsx#L12
     primary: '#0288D1',
-    onPrimary: '#FAFBFE',
-    primaryContainer: '#000',
-    onPrimaryContainer: '#000',
+    onPrimary: greyColors.grey90,
+    primaryContainer: '#0288D1',
+    onPrimaryContainer: greyColors.grey90,
 
     secondary: '#FC0',
-    onSecondary: '#000000',
-    secondaryContainer: '#03A9F4',
-    onSecondaryContainer: '#FAFBFE',
+    onSecondary: greyColors.grey0,
+    secondaryContainer: '#0288D1',
+    onSecondaryContainer: greyColors.grey90,
 
     tertiary: '#08CB36',
-    onTertiary: '#000000',
+    onTertiary: greyColors.grey0,
+    tertiaryContainer: '#08CB36',
+    onTertiaryContainer: greyColors.grey0,
 
     // onBackground and onSurface don't make much sense since `on*` is "text over *" for MD3
     //  and according to the UI Kit, we want almost black on black...
-    background: '#12171C',
-    onBackground: greyColors.grey70,
+    background: greyColors.grey5,
+    onBackground: greyColors.grey90,
 
-    surface: '#262B30',
-    onSurface: greyColors.grey70,
+    surface: greyColors.grey15,
+    onSurface: greyColors.grey90,
+    onSurfaceVariant: greyColors.grey70,
+    onSurfaceDisabled: greyColors.grey50,
 
     elevation: {
       level0: 'transparent',
@@ -77,6 +81,7 @@ export const darkTheme = {
     },
 
     error: '#D32F2F',
+    onError: greyColors.grey90,
 
     // custom values, matching what's in the UI Kit which have no MD3 match
     errorCaution0: '#FF7C00',
@@ -85,9 +90,5 @@ export const darkTheme = {
     errorWarning100: 'rgba(211, 47, 47, 0.8)',
 
     ...greyColors,
-
-    text: greyColors.grey90,
-    label: greyColors.grey50,
-    title: greyColors.grey70,
   },
 };

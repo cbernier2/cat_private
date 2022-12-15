@@ -13,7 +13,7 @@ const CatTextWithIcon: React.FC<CatTextWithIconType> = props => {
 
   const {
     icon,
-    iconColor = colors.label,
+    iconColor = colors.onSurface,
     iconSize = 24,
     variant = 'bodyLarge',
     style: textStyle,

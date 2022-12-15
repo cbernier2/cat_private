@@ -97,7 +97,6 @@ const DashboardScreen: React.FC<ScreenType> = ({navigation}) => {
           hasError={attentionRequired}
           title={{
             icon: 'route',
-            iconColor: colors.text,
             children: routeSummary.route.name,
           }}
           summary={routeSummary}
