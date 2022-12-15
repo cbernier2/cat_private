@@ -28,7 +28,7 @@ const CatSyncStatus: React.FC = () => {
     iconColor = colors.errorWarning0;
     iconName = 'edge_no_network_connection';
   } else if (networkError !== null) {
-    iconColor = colors.errorCaution0;
+    iconColor = colors.grey30;
     iconName = 'edge_hotspot_error';
   }
 

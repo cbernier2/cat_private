@@ -42,7 +42,7 @@ export const darkTheme = {
   colors: {
     ...base.colors,
 
-    logoColor: '#FFF',
+    logoColor: '#F0F5FA',
 
     // Like for fonts, not all MD3 colors seem to be covered in the UI Kit provided
     //   https://github.com/callstack/react-native-paper/blob/v5.0.0-rc.6/src/styles/themes/v3/LightTheme.tsx#L12
@@ -65,7 +65,8 @@ export const darkTheme = {
     onBackground: '#7D8287',
 
     surface: '#262B30',
-    onSurface: '#7D8287',
+    onSurface: '#F0F5FA',
+    onSurfaceVariant: '#F0F5FA', // TODO not yet provided
 
     elevation: {
       level0: 'transparent',
