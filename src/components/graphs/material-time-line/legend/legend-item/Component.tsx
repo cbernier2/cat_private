@@ -9,12 +9,13 @@ import CatText from '../../../../text';
 import {Pattern} from '../../../pattern/Component';
 
 import {LegendItemType} from './types';
-import {styles} from './styles';
+import {useStyles} from './styles';
 
 export const LegendItem: React.FC<LegendItemType> = props => {
   const {name = '', pattern, patternId, quantity} = props;
+  const styles = useStyles();
 
-  const {t} = useTranslation();
+  const {i18n, t} = useTranslation();
 
   const getQtyLabel = () => {
     if (quantity) {
@@ -24,7 +25,7 @@ export const LegendItem: React.FC<LegendItemType> = props => {
       const value = Math.round(
         UnitUtils.toLocalUnitValue(quantity.value, quantity.unit.toString()) ??
           0,
-      );
+      ).toLocaleString(i18n.language);
 
       return `${value} ${unit}`;
     }

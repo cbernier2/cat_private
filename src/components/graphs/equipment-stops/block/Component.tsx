@@ -1,6 +1,8 @@
 import React from 'react';
 import {Defs, G, Mask, Polygon, Text} from 'react-native-svg';
 
+import useCatTheme from '../../../../hooks/useCatTheme';
+
 import {ForeignCircledIcon} from '../../../circled-icon/Component';
 
 import {BlockType} from './types';
@@ -8,6 +10,7 @@ import {BlockType} from './types';
 export const Block = (props: BlockType) => {
   const {block, blockPadding, height, maskPoints, points, scale, x1, x2} =
     props;
+  const {colors} = useCatTheme();
 
   const left = x1 + blockPadding;
   const right = x2 - blockPadding;
@@ -20,7 +23,7 @@ export const Block = (props: BlockType) => {
   const minHeightForLabel = 40;
   const labelYOffset = 35;
 
-  const textColor = '#fff';
+  const textColor = colors.onSurface;
 
   return (
     <>
