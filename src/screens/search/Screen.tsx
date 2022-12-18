@@ -1,5 +1,4 @@
 import React, {useMemo, useRef, useState} from 'react';
-import {ScrollView} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {List} from 'react-native-paper';
 import {useSelector} from 'react-redux';
@@ -29,6 +28,7 @@ import {TextInput as NativeTextInput} from 'react-native';
 import {ScreenType, SearchItem} from './types';
 import styles from './styles';
 import {useFocusEffect} from '@react-navigation/native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const SearchScreen = (props: ScreenType) => {
   const {navigation} = props;
@@ -143,7 +143,7 @@ const SearchScreen = (props: ScreenType) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <CatScreen title={t('cat.button_search')}>
+      <CatScreen scroll={false} title={t('cat.button_search')}>
         <CatTextInput
           style={styles.mh}
           label={t('cat.button_search')}
@@ -151,9 +151,9 @@ const SearchScreen = (props: ScreenType) => {
           onChangeText={value => setFilter(value)}
           ref={textInputRef}
         />
-        <List.Section style={styles.mh}>
-          <ScrollView>
-            <CatError style={styles.mh} message={error} />
+        <CatError style={styles.mh} message={error} />
+        <KeyboardAwareScrollView keyboardShouldPersistTaps="always">
+          <List.Section style={styles.mh}>
             {results.map((item, i) => (
               <List.Item
                 key={`r${i}`}
@@ -162,8 +162,8 @@ const SearchScreen = (props: ScreenType) => {
                 left={() => <CircledIcon name={getIcon(item.type)} />}
               />
             ))}
-          </ScrollView>
-        </List.Section>
+          </List.Section>
+        </KeyboardAwareScrollView>
       </CatScreen>
     </SafeAreaView>
   );
