@@ -1,5 +1,4 @@
 import React from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import {useTranslation} from 'react-i18next';
 
 import MineStarLogo from '../../../assets/MineStarLogo.svg';
@@ -37,21 +36,19 @@ const LoginScreen: React.FC<LoginScreenType> = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <CatScreen title={'login'}>
-        <MineStarLogo color={theme.colors.logoColor} width="100%" />
+    <CatScreen style={styles.container} title={'login'}>
+      <MineStarLogo color={theme.colors.logoColor} width="100%" />
 
-        <CatText variant="headlineMedium" style={styles.title}>
-          {t('cat.login_sign_in')}
-        </CatText>
+      <CatText variant="headlineMedium" style={styles.title}>
+        {t('cat.login_sign_in')}
+      </CatText>
 
-        <CatError message={loginError} />
+      <CatError message={loginError} />
 
-        <CatButton disabled={isLogin} onPress={login} style={styles.submit}>
-          {buttonLabel}
-        </CatButton>
-      </CatScreen>
-    </SafeAreaView>
+      <CatButton disabled={isLogin} onPress={login} style={styles.submit}>
+        {buttonLabel}
+      </CatButton>
+    </CatScreen>
   );
 };
 

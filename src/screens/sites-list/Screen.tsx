@@ -1,6 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {ScrollView} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import {ActivityIndicator, List} from 'react-native-paper';
 import {useTranslation} from 'react-i18next';
 
@@ -69,32 +68,28 @@ export const SitesListScreen: React.FC<SitesListTypes> = props => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <CatScreen title={t('my_sites')}>
-        <CatTextInput
-          style={styles.mh}
-          label={t('cat.button_search')}
-          value={filter}
-          onChangeText={value => setFilter(value)}
-        />
-        <List.Section style={styles.mh}>
-          <List.Subheader>{t('my_sites')}</List.Subheader>
-          <ScrollView>
-            <ActivityIndicator
-              animating={loadingSites || loadingSelectedSite}
+    <CatScreen style={styles.container} title={t('my_sites')}>
+      <CatTextInput
+        style={styles.mh}
+        label={t('cat.button_search')}
+        value={filter}
+        onChangeText={value => setFilter(value)}
+      />
+      <List.Section style={styles.mh}>
+        <List.Subheader>{t('my_sites')}</List.Subheader>
+        <ScrollView>
+          <ActivityIndicator animating={loadingSites || loadingSelectedSite} />
+          <CatError style={styles.mh} message={error && t(error)} />
+          {/* TODO hide while loading? */}
+          {filteredSites.map((site, i) => (
+            <List.Item
+              key={`s${i}`}
+              title={site.siteName}
+              onPress={() => onSelect(site)}
             />
-            <CatError style={styles.mh} message={error && t(error)} />
-            {/* TODO hide while loading? */}
-            {filteredSites.map((site, i) => (
-              <List.Item
-                key={`s${i}`}
-                title={site.siteName}
-                onPress={() => onSelect(site)}
-              />
-            ))}
-          </ScrollView>
-        </List.Section>
-      </CatScreen>
-    </SafeAreaView>
+          ))}
+        </ScrollView>
+      </List.Section>
+    </CatScreen>
   );
 };

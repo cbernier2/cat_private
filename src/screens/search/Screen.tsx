@@ -1,5 +1,4 @@
 import React, {useMemo, useRef, useState} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import {List} from 'react-native-paper';
 import {useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
@@ -142,30 +141,31 @@ const SearchScreen = (props: ScreenType) => {
   }, [areas, equipments, filter, operators, routes, t]);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <CatScreen scroll={false} title={t('cat.button_search')}>
-        <CatTextInput
-          style={styles.mh}
-          label={t('cat.button_search')}
-          value={filter}
-          onChangeText={value => setFilter(value)}
-          ref={textInputRef}
-        />
-        <CatError style={styles.mh} message={error} />
-        <KeyboardAwareScrollView keyboardShouldPersistTaps="always">
-          <List.Section style={styles.mh}>
-            {results.map((item, i) => (
-              <List.Item
-                key={`r${i}`}
-                title={item.label}
-                onPress={() => item.onPress(item)}
-                left={() => <CircledIcon name={getIcon(item.type)} />}
-              />
-            ))}
-          </List.Section>
-        </KeyboardAwareScrollView>
-      </CatScreen>
-    </SafeAreaView>
+    <CatScreen
+      style={styles.container}
+      scroll={false}
+      title={t('cat.button_search')}>
+      <CatTextInput
+        style={styles.mh}
+        label={t('cat.button_search')}
+        value={filter}
+        onChangeText={value => setFilter(value)}
+        ref={textInputRef}
+      />
+      <CatError style={styles.mh} message={error} />
+      <KeyboardAwareScrollView keyboardShouldPersistTaps="always">
+        <List.Section style={styles.mh}>
+          {results.map((item, i) => (
+            <List.Item
+              key={`r${i}`}
+              title={item.label}
+              onPress={() => item.onPress(item)}
+              left={() => <CircledIcon name={getIcon(item.type)} />}
+            />
+          ))}
+        </List.Section>
+      </KeyboardAwareScrollView>
+    </CatScreen>
   );
 };
 
