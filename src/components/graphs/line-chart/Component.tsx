@@ -5,7 +5,7 @@ import * as scale from 'd3-scale';
 import moment from 'moment-timezone';
 import {useTranslation} from 'react-i18next';
 
-import {useWidth} from '../../../hooks/useWidth';
+import {useGraphWidth} from '../../../hooks/useGraphWidth';
 
 import CatText from '../../text';
 import {withShowIf} from '../../with-show-if/Component';
@@ -36,7 +36,7 @@ export const LineChart = withShowIf((props: LineChartType) => {
   } = props;
 
   const {t} = useTranslation();
-  const width = useWidth();
+  const width = useGraphWidth();
 
   if (!values || !values.length) {
     return (
