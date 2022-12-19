@@ -1,5 +1,4 @@
 import React from 'react';
-import {ScrollView} from 'react-native';
 import {RadioButton} from 'react-native-paper';
 import {useTranslation} from 'react-i18next';
 
@@ -50,35 +49,33 @@ const DebugScreen: React.FC<DebugScreenType> = props => {
   console.log(JSON.stringify(actionQueue));
 
   return (
-    <CatScreen>
-      <ScrollView>
-        <CatButton onPress={() => dispatch(appActions.toggleOffline())}>
-          Emulate offline ({isEmulatingOffline ? 'On' : 'Off'})
-        </CatButton>
-        <CatButton onPress={queue}>Queue a thing</CatButton>
-        <CatButton onPress={cancel}>Cancel queue</CatButton>
+    <CatScreen safeAreaEdges={['bottom', 'top', 'left', 'right']}>
+      <CatButton onPress={() => dispatch(appActions.toggleOffline())}>
+        Emulate offline ({isEmulatingOffline ? 'On' : 'Off'})
+      </CatButton>
+      <CatButton onPress={queue}>Queue a thing</CatButton>
+      <CatButton onPress={cancel}>Cancel queue</CatButton>
 
-        <CatText>{JSON.stringify(actionQueue)}</CatText>
+      <CatText>{JSON.stringify(actionQueue)}</CatText>
 
-        <CatButton onPress={() => dispatch(appActions.toggleTheme())}>
-          {t('theme_switch', {
-            name: t(`theme_${isThemeDark ? 'light' : 'dark'}`),
-          })}
-        </CatButton>
+      <CatButton onPress={() => dispatch(appActions.toggleTheme())}>
+        {t('theme_switch', {
+          name: t(`theme_${isThemeDark ? 'light' : 'dark'}`),
+        })}
+      </CatButton>
 
-        <CatButton onPress={clearSiteSelection}>Clear site selection</CatButton>
-        <RadioButton.Group
-          onValueChange={changeShift}
-          value={currentShift?.id ?? ''}>
-          {latestShifts?.map(shift => (
-            <RadioButton.Item
-              key={shift.id}
-              label={shift.name}
-              value={shift.id}
-            />
-          ))}
-        </RadioButton.Group>
-      </ScrollView>
+      <CatButton onPress={clearSiteSelection}>Clear site selection</CatButton>
+      <RadioButton.Group
+        onValueChange={changeShift}
+        value={currentShift?.id ?? ''}>
+        {latestShifts?.map(shift => (
+          <RadioButton.Item
+            key={shift.id}
+            label={shift.name}
+            value={shift.id}
+          />
+        ))}
+      </RadioButton.Group>
     </CatScreen>
   );
 };
