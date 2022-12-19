@@ -36,18 +36,9 @@ export const PageTitle = (props: PageTitleType) => {
       <TouchableOpacity
         hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}
         onPress={handlePress}>
-        <MinestarIcon
-          name="edge_arrow_back_ios"
-          size={16}
-          color={colors.text}
-        />
+        <MinestarIcon name="edge_arrow_back_ios" size={16} />
       </TouchableOpacity>
-      <MinestarIcon
-        style={styles.titleIcon}
-        name={props.icon}
-        size={24}
-        color={colors.text}
-      />
+      <MinestarIcon style={styles.titleIcon} name={props.icon} size={24} />
       <CatText variant={'bodyLarge'} style={titleTextStyle}>
         {title}
       </CatText>

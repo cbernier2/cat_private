@@ -41,6 +41,7 @@
     "react-native-app-auth": "^6.4.3",
     "react-native-gesture-handler": "^2.6.1",
     "react-native-get-random-values": "^1.8.0",
+    "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-localize": "^2.2.4",
     "react-native-offline": "^6.0.0",
     "react-native-pager-view": "^6.1.1",

@@ -12,3 +12,8 @@ export const emulateOfflineSelector = createSelector(
   (state: RootState) => state.app.emulateOffline,
   emulateOffline => emulateOffline,
 );
+
+export const searchHistorySelector = createSelector(
+  (state: RootState) => state.app.searchHistory,
+  searchHistory => searchHistory.map(searchTerm => searchTerm.term),
+);

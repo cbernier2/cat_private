@@ -14,7 +14,7 @@ const CatDrawerIcon: React.FC = () => {
     <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
       <MaterialIcons
         name={'menu'}
-        color={colors.text}
+        color={colors.onSurface}
         size={32}
         style={styles.drawerIcon}
       />

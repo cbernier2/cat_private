@@ -371,6 +371,18 @@ export namespace Category {
         summariesKey: 'routeSummaries',
       },
     ],
+    // Added by Spiria
+    [
+      CategoryType.SUPPORT_EQUIPMENT,
+      <Category>{
+        type: CategoryType.SUPPORT_EQUIPMENT,
+        i18n: 'equipment_supportEquip',
+        unknownI18n: 'production_unknown_supportEquip',
+        icon: 'dozer',
+        iconClass: 'icons',
+        summariesKey: 'supportEquipSummaries',
+      },
+    ],
   ] as Array<[CategoryType, Category]>);
 
   /**

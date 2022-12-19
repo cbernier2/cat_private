@@ -20,7 +20,7 @@ const CatAccordion: React.FC<CatAccordionType> = ({children}) => {
       <TouchableOpacity style={styles.accordionHandle} onPress={() => toggle()}>
         <MaterialIcons
           name={isExpanded ? 'keyboard-arrow-up' : 'keyboard-arrow-down'}
-          color={colors.label}
+          color={colors.onSurface}
           size={24}
         />
       </TouchableOpacity>

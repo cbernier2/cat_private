@@ -8,7 +8,7 @@ import {CatEquipmentIcon} from '../equipment-icon';
 import {CategoryType} from '../../api/types/cat/common';
 import CatTextWithLabel from '../text-with-label';
 import {formatMinutesOnly, formatNumber} from '../../utils/format';
-import {actions as siteActions} from '../../redux/site/site-slice';
+import {siteActions} from '../../redux/site/site-slice';
 import useCatDispatch from '../../hooks/useCatDispatch';
 import {useNavigation} from '@react-navigation/native';
 import CatProductionListItem from '../production-list-item';

@@ -2,30 +2,25 @@ import React from 'react';
 import {Text} from 'react-native-paper';
 import {CatTextType} from './types';
 import useCatTheme from '../../hooks/useCatTheme';
+import {TextStyle} from 'react-native';
 
 const CatText: React.FC<CatTextType> = props => {
   const {variant = 'bodyMedium'} = props;
   const {colors} = useCatTheme();
 
   // TODO: Use MD3 colors
-  const getColor = () => {
-    if (variant.startsWith('body')) {
-      return colors.text;
-    } else if (variant.startsWith('label')) {
-      return colors.label;
+  const getStyle = (): TextStyle | undefined => {
+    if (variant.startsWith('label')) {
+      return {color: colors.onSurfaceDisabled};
     } else if (variant.startsWith('headline') || variant.startsWith('title')) {
-      return colors.title;
+      return {color: colors.onSurfaceVariant};
     } else {
-      colors.primary;
+      return undefined;
     }
   };
 
   return (
-    <Text
-      {...props}
-      style={[{color: getColor()}, props.style]}
-      variant={variant}
-    />
+    <Text {...props} style={[getStyle(), props.style]} variant={variant} />
   );
 };
 

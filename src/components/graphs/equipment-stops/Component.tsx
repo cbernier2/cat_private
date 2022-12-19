@@ -3,7 +3,7 @@ import Svg from 'react-native-svg';
 import * as scale from 'd3-scale';
 import moment from 'moment/moment';
 
-import {useWidth} from '../../../hooks/useWidth';
+import {useGraphWidth} from '../../../hooks/useGraphWidth';
 
 import {Blocks} from './blocks/Component';
 import {Grid} from './grid/Component';
@@ -19,7 +19,7 @@ export const EquipmentStops = (props: EquipmentStopsType) => {
     startTime = 0,
     timelines = [],
   } = props;
-  const width = useWidth();
+  const width = useGraphWidth();
   const labelWidth = 60;
   const padding = 30;
   const height =

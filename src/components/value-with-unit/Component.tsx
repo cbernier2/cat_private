@@ -15,7 +15,7 @@ const CatValueWithUnit: React.FC<CatValueWithUnitType> = ({
       <CatText variant={'titleLarge'} style={[styles.valueText, valueStyle]}>
         {value}
       </CatText>
-      <CatText variant={'labelLarge'} style={[styles.unitText, unitStyle]}>
+      <CatText variant={'bodyMedium'} style={[styles.unitText, unitStyle]}>
         {unit}
       </CatText>
     </View>
