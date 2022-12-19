@@ -11,6 +11,7 @@ const CatScreen: React.FC<CatScreenType> = ({
   title,
   style,
   scroll = true,
+  safeAreaEdges = ['left', 'right'],
 }) => {
   const navigation = useNavigation<StackNavigationProp<any>>();
 
@@ -48,7 +49,7 @@ const CatScreen: React.FC<CatScreenType> = ({
   };
 
   return (
-    <SafeAreaView style={[style, styles.background]} edges={['left', 'right']}>
+    <SafeAreaView style={[style, styles.background]} edges={safeAreaEdges}>
       <TouchableWithoutFeedback onPress={onPressTrigger}>
         <View style={styles.triggerContainer} />
       </TouchableWithoutFeedback>

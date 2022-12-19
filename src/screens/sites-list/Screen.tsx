@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {ScrollView} from 'react-native';
+import {View} from 'react-native';
 import {ActivityIndicator, List} from 'react-native-paper';
 import {useTranslation} from 'react-i18next';
 
@@ -25,6 +25,7 @@ import {fetchSiteAsyncAction} from '../../redux/site/site-slice';
 
 import {SitesListTypes} from './types';
 import styles from './styles';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 export const SitesListScreen: React.FC<SitesListTypes> = props => {
   const root = Boolean(props.route.params?.root);
@@ -34,6 +35,7 @@ export const SitesListScreen: React.FC<SitesListTypes> = props => {
   const error = useCatSelector(sitesErrorSelector);
   const loadingSites = useCatSelector(sitesLoadingSelector);
   const loadingSelectedSite = useCatSelector(siteIsLoadingSelector);
+  const isLoading = loadingSites || loadingSelectedSite;
   const sites = useCatSelector(sitesSitesSelector);
   const [filter, setFilter] = useState<string>('');
 
@@ -68,19 +70,23 @@ export const SitesListScreen: React.FC<SitesListTypes> = props => {
   };
 
   return (
-    <CatScreen style={styles.container} title={t('my_sites')}>
-      <CatTextInput
-        style={styles.mh}
-        label={t('cat.button_search')}
-        value={filter}
-        onChangeText={value => setFilter(value)}
-      />
-      <List.Section style={styles.mh}>
-        <List.Subheader>{t('my_sites')}</List.Subheader>
-        <ScrollView>
-          <ActivityIndicator animating={loadingSites || loadingSelectedSite} />
-          <CatError style={styles.mh} message={error && t(error)} />
-          {/* TODO hide while loading? */}
+    <CatScreen
+      safeAreaEdges={['bottom', 'left', 'right']}
+      scroll={false}
+      style={styles.container}
+      title={t('my_sites')}>
+      <View style={styles.mh}>
+        <CatTextInput
+          style={styles.mh}
+          label={t('cat.button_search')}
+          value={filter}
+          onChangeText={value => setFilter(value)}
+        />
+        <CatError style={styles.mh} message={error && t(error)} />
+      </View>
+      <KeyboardAwareScrollView keyboardShouldPersistTaps="always">
+        <List.Section style={styles.mh}>
+          <List.Subheader>{t('my_sites')}</List.Subheader>
           {filteredSites.map((site, i) => (
             <List.Item
               key={`s${i}`}
@@ -88,8 +94,14 @@ export const SitesListScreen: React.FC<SitesListTypes> = props => {
               onPress={() => onSelect(site)}
             />
           ))}
-        </ScrollView>
-      </List.Section>
+        </List.Section>
+      </KeyboardAwareScrollView>
+      {isLoading && (
+        <ActivityIndicator
+          style={styles.activityIndicator}
+          animating={isLoading}
+        />
+      )}
     </CatScreen>
   );
 };

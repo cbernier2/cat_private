@@ -1,4 +1,5 @@
-import {ReactNode} from 'react';
+import {ComponentProps, ReactNode} from 'react';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {ViewStyle} from 'react-native';
 
 export type CatScreenType = {
@@ -6,4 +7,5 @@ export type CatScreenType = {
   title?: string;
   style?: ViewStyle;
   scroll?: boolean;
+  safeAreaEdges?: ComponentProps<typeof SafeAreaView>['edges'];
 };

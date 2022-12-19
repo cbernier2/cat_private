@@ -146,6 +146,10 @@ const CatNavigation = () => {
               name="SitesList"
               component={SitesListScreen}
               initialParams={{root: true}}
+              options={{
+                headerShown: true,
+                headerTitle: t('side_menu_select_site'),
+              }}
             />
           ) : (
             <>

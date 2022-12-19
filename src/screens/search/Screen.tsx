@@ -50,26 +50,28 @@ const SearchScreen = () => {
       style={styles.container}
       scroll={false}
       title={t('cat.button_search')}>
-      <CatTextInput
-        label={t('cat.button_search')}
-        value={filter}
-        onChangeText={value => setFilter(value)}
-        ref={textInputRef}
-      />
-      {filteredSearchHistory.length > 0 && (
-        <View style={styles.historyHeader}>
-          <CatText>{t('search_recent')}</CatText>
-          <TouchableOpacity
-            onPress={() => dispatch(appActions.clearAllSearchTermHistory())}>
-            <CatText style={styles.historyHeaderClearAll}>
-              {t('search_clear_all')}
-            </CatText>
-          </TouchableOpacity>
-        </View>
-      )}
-      <CatError message={error} />
+      <View style={styles.mh}>
+        <CatTextInput
+          label={t('cat.button_search')}
+          value={filter}
+          onChangeText={value => setFilter(value)}
+          ref={textInputRef}
+        />
+        {filteredSearchHistory.length > 0 && (
+          <View style={styles.historyHeader}>
+            <CatText>{t('search_recent')}</CatText>
+            <TouchableOpacity
+              onPress={() => dispatch(appActions.clearAllSearchTermHistory())}>
+              <CatText style={styles.historyHeaderClearAll}>
+                {t('search_clear_all')}
+              </CatText>
+            </TouchableOpacity>
+          </View>
+        )}
+        <CatError message={error} />
+      </View>
       <KeyboardAwareScrollView keyboardShouldPersistTaps="always">
-        <List.Section>
+        <List.Section style={styles.mh}>
           {filteredSearchHistory.map(searchTerm => (
             <List.Item
               key={searchTerm}
