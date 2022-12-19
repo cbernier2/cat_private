@@ -29,7 +29,7 @@ import {areaHaulCyclesSelector, areaMaterialSelector} from './selectors';
 import CatEquipmentList from '../../components/equipment-list';
 import MaterialSample from '../../components/material-sample';
 import CatText from '../../components/text';
-import {UNDEFINED_VALUE} from '../../api/types/cat/common';
+import {CategoryType, UNDEFINED_VALUE} from '../../api/types/cat/common';
 
 export const AreaOverviewScreen = (props: ScreenType) => {
   const {navigation} = props;
@@ -48,17 +48,19 @@ export const AreaOverviewScreen = (props: ScreenType) => {
     areaMaterialSelector(state, selectedArea),
   );
 
+  const isAreaValid = selectedArea && selectedArea.area;
   useEffect(() => {
-    if (!selectedArea) {
+    if (!isAreaValid) {
       navigation.goBack();
     }
-  }, [selectedArea, navigation]);
+  }, [navigation, isAreaValid]);
 
-  if (!selectedArea || !selectedArea.area) {
+  if (!isAreaValid) {
     return null;
   }
 
-  const iconName = selectedArea.type === 'loadArea' ? 'load_area' : 'dump';
+  const isLoadArea = selectedArea.type === CategoryType.LOAD_AREA;
+  const iconName = isLoadArea ? 'load_area' : 'dump';
 
   const kpiRowJSX = (values: CatTextWithLabelType[]) => (
     <CatValuesRow style={styles.kpiRow} values={values} />
@@ -124,10 +126,6 @@ export const AreaOverviewScreen = (props: ScreenType) => {
 
   const kpiRow4 = kpiRowJSX([
     {
-      label: t('cat.production_lastCycleTime'),
-      children: formatRelativeTime(selectedArea.lastCycleTime),
-    },
-    {
       label: formatLabel('cat.production_material'),
       children: (
         <View style={styles.materialValue}>
@@ -138,6 +136,15 @@ export const AreaOverviewScreen = (props: ScreenType) => {
         </View>
       ),
     },
+    isLoadArea
+      ? {
+          label: '',
+          children: '',
+        }
+      : {
+          label: t('cat.production_lastCycleTime'),
+          children: formatRelativeTime(selectedArea.lastCycleTime),
+        },
   ]);
 
   return (
