@@ -1,6 +1,5 @@
-import React, {useMemo, useRef, useState} from 'react';
+import React, {useRef} from 'react';
 import {List} from 'react-native-paper';
-import {useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 
 import {CatError} from '../../components/error';
@@ -8,137 +7,43 @@ import CatScreen from '../../components/screen';
 import CatTextInput from '../../components/text-input';
 import {CircledIcon} from '../../components/circled-icon/Component';
 import {Category, CategoryType} from '../../api/types/cat/common';
-import {
-  CatAreaSummary,
-  CatEquipmentSummary,
-  CatRouteSummary,
-} from '../../redux/site/helpers/transformSummaries';
 import {MinestarIconName} from '../../components/minestar-icon/types';
-import useCatDispatch from '../../hooks/useCatDispatch';
-import {actions as siteActions} from '../../redux/site/site-slice';
 import {
-  areasSelector,
-  equipmentsSelector,
-  operatorsSelector,
-  routesSelector,
-} from '../../redux/site/site-selectors';
-import {TextInput as NativeTextInput} from 'react-native';
+  TextInput as NativeTextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
-import {ScreenType, SearchItem} from './types';
 import styles from './styles';
 import {useFocusEffect} from '@react-navigation/native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {appActions} from '../../redux/app/app-slice';
+import CatText from '../../components/text';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import useCatTheme from '../../hooks/useCatTheme';
+import {useCatSearchFilter} from './useCatSearchFilter';
+import useCatDispatch from '../../hooks/useCatDispatch';
 
-const SearchScreen = (props: ScreenType) => {
-  const {navigation} = props;
-
-  const {t} = useTranslation();
+const SearchScreen = () => {
   const dispatch = useCatDispatch();
-  const [filter, setFilter] = useState<string>('');
+  const {colors} = useCatTheme();
+  const {t} = useTranslation();
+
   const textInputRef = useRef<NativeTextInput>(null);
-
-  const areas = useSelector(areasSelector);
-  const equipments = useSelector(equipmentsSelector);
-  const operators = useSelector(operatorsSelector);
-  const routes = useSelector(routesSelector);
-
   useFocusEffect(() => {
     textInputRef.current?.focus();
   });
+
+  const {filter, setFilter, results, error, filteredSearchHistory} =
+    useCatSearchFilter();
 
   const getIcon = (type: CategoryType): MinestarIconName => {
     return Category.findByCategoryType(type)?.icon as MinestarIconName;
   };
 
-  const goToArea = (item: SearchItem) => {
-    const area = item as CatAreaSummary;
-    dispatch(
-      siteActions.setCurrentArea({
-        id: area.area.id,
-        type: area.type,
-        isSearch: true,
-      }),
-    );
-    navigation.navigate('AreaDetails');
+  const onItemSelected = () => {
+    dispatch(appActions.addSearchTermToHistory(filter));
   };
-
-  const goToEquipment = (item: SearchItem) => {
-    const equipment = item as CatEquipmentSummary;
-    dispatch(
-      siteActions.setCurrentEquipment({
-        name: equipment.equipment?.name,
-        category: equipment.type,
-        isSearch: true,
-      }),
-    );
-    navigation.navigate('EquipmentDetails');
-  };
-
-  const goToRoute = (item: SearchItem) => {
-    const route = item as CatRouteSummary;
-    dispatch(
-      siteActions.setCurrentRouteName({name: route.route.name, isSearch: true}),
-    );
-    navigation.navigate('RouteOverview');
-  };
-
-  const {error, results} = useMemo(() => {
-    if (!filter) {
-      return {error: '', results: []};
-    }
-
-    const equipmentIdsFromOperators = operators
-      .filter(operator =>
-        operator.name?.toLowerCase().includes(filter.toLowerCase()),
-      )
-      .map(operator => operator.operatorInfo?.operatorAssignments)
-      .flat()
-      .map(assignment => assignment?.equipmentId ?? '')
-      .filter(id => id !== '');
-
-    const filteredAreas: SearchItem[] =
-      areas
-        ?.filter(item =>
-          item.area.name.toLowerCase().includes(filter.toLowerCase()),
-        )
-        .map(item => ({
-          ...item,
-          label: item.area.name,
-          onPress: goToArea,
-        })) ?? [];
-
-    const filteredEquipments: SearchItem[] =
-      equipments
-        ?.filter(
-          item =>
-            item.equipment?.name.toLowerCase().includes(filter.toLowerCase()) ||
-            equipmentIdsFromOperators.includes(item.equipment?.id ?? ''),
-        )
-        .map(item => ({
-          ...item,
-          label: item.equipment!.name,
-          onPress: goToEquipment,
-        })) ?? [];
-
-    const filteredRoutes: SearchItem[] =
-      routes
-        ?.filter(item =>
-          item.route.name.toLowerCase().includes(filter.toLowerCase()),
-        )
-        .map(item => ({
-          ...item,
-          label: item.route.name,
-          onPress: goToRoute,
-        })) ?? [];
-
-    const items = [...filteredAreas, ...filteredEquipments, ...filteredRoutes];
-
-    return {
-      error: items.length ? '' : t('search_no_results'),
-      results: items,
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [areas, equipments, filter, operators, routes, t]);
 
   return (
     <CatScreen
@@ -146,20 +51,52 @@ const SearchScreen = (props: ScreenType) => {
       scroll={false}
       title={t('cat.button_search')}>
       <CatTextInput
-        style={styles.mh}
         label={t('cat.button_search')}
         value={filter}
         onChangeText={value => setFilter(value)}
         ref={textInputRef}
       />
-      <CatError style={styles.mh} message={error} />
+      {filteredSearchHistory.length > 0 && (
+        <View style={styles.historyHeader}>
+          <CatText>{t('search_recent')}</CatText>
+          <TouchableOpacity
+            onPress={() => dispatch(appActions.clearAllSearchTermHistory())}>
+            <CatText style={styles.historyHeaderClearAll}>
+              {t('search_clear_all')}
+            </CatText>
+          </TouchableOpacity>
+        </View>
+      )}
+      <CatError message={error} />
       <KeyboardAwareScrollView keyboardShouldPersistTaps="always">
-        <List.Section style={styles.mh}>
+        <List.Section>
+          {filteredSearchHistory.map(searchTerm => (
+            <List.Item
+              key={searchTerm}
+              title={searchTerm}
+              onPress={() => setFilter(searchTerm)}
+              right={() => (
+                <TouchableOpacity
+                  onPress={() =>
+                    dispatch(appActions.removeSearchTermFromHistory(searchTerm))
+                  }>
+                  <MaterialIcons
+                    name={'close'}
+                    size={24}
+                    color={colors.onSurface}
+                  />
+                </TouchableOpacity>
+              )}
+            />
+          ))}
           {results.map((item, i) => (
             <List.Item
               key={`r${i}`}
               title={item.label}
-              onPress={() => item.onPress(item)}
+              onPress={() => {
+                onItemSelected();
+                item.onPress(item);
+              }}
               left={() => <CircledIcon name={getIcon(item.type)} />}
             />
           ))}

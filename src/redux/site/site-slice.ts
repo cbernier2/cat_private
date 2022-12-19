@@ -316,6 +316,6 @@ const sitesReducer = catPersistReducer(
   typedReducer,
 );
 
-export const {actions} = slice;
+export const {actions: siteActions} = slice;
 
 export default sitesReducer;

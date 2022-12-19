@@ -7,17 +7,12 @@ import CatScreen from '../../components/screen';
 import CatText from '../../components/text';
 import CatButton from '../../components/button';
 import useCatSelector from '../../hooks/useCatSelector';
-import {
-  offlineQueueTest,
-  offlineCancelTest,
-  toggleOffline,
-  toggleTheme,
-} from '../../redux/app/app-slice';
+import {offlineQueueTest, appActions} from '../../redux/app/app-slice';
 import useCatDispatch from '../../hooks/useCatDispatch';
 import {emulateOfflineSelector} from '../../redux/app/app-selectors';
 import {selectSiteAsyncAction} from '../../redux/sites-list/sites-slice';
 import {
-  actions as siteActions,
+  siteActions,
   fetchShiftDataAsyncAction,
 } from '../../redux/site/site-slice';
 
@@ -34,7 +29,7 @@ const DebugScreen: React.FC<DebugScreenType> = props => {
   const isEmulatingOffline = useCatSelector(emulateOfflineSelector);
 
   const cancel = async () => {
-    await dispatch(offlineCancelTest());
+    await dispatch(appActions.offlineCancelTest());
   };
 
   const queue = async () => {
@@ -57,7 +52,7 @@ const DebugScreen: React.FC<DebugScreenType> = props => {
   return (
     <CatScreen>
       <ScrollView>
-        <CatButton onPress={() => dispatch(toggleOffline())}>
+        <CatButton onPress={() => dispatch(appActions.toggleOffline())}>
           Emulate offline ({isEmulatingOffline ? 'On' : 'Off'})
         </CatButton>
         <CatButton onPress={queue}>Queue a thing</CatButton>
@@ -65,7 +60,7 @@ const DebugScreen: React.FC<DebugScreenType> = props => {
 
         <CatText>{JSON.stringify(actionQueue)}</CatText>
 
-        <CatButton onPress={() => dispatch(toggleTheme())}>
+        <CatButton onPress={() => dispatch(appActions.toggleTheme())}>
           {t('theme_switch', {
             name: t(`theme_${isThemeDark ? 'light' : 'dark'}`),
           })}

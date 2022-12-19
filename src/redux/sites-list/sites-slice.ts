@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice, Reducer} from '@reduxjs/toolkit';
 
 import {logoutAsyncAction} from '../user/user-slice';
-import {fetchSiteAsyncAction, actions as siteActions} from '../site/site-slice';
+import {fetchSiteAsyncAction, siteActions} from '../site/site-slice';
 import {apiResult} from '../site/api';
 import {catPersistReducer} from '../utils';
 

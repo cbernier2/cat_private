@@ -14,7 +14,7 @@ import CatValuesRow from '../../components/value-row';
 import CatTextWithLabel from '../../components/text-with-label';
 import {CircledIcon} from '../../components/circled-icon/Component';
 import {SummaryGraphs} from '../../components/summary-graphs/Component';
-import {actions as siteActions} from '../../redux/site/site-slice';
+import {siteActions} from '../../redux/site/site-slice';
 import useCatDispatch from '../../hooks/useCatDispatch';
 import CatScreen from '../../components/screen';
 import {PageTitle} from '../../components/page-title/Component';

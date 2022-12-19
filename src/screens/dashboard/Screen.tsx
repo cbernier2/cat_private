@@ -16,7 +16,7 @@ import {
 } from '../../utils/format';
 import {CatTextWithLabelType} from '../../components/text-with-label/types';
 import CatValuesRow from '../../components/value-row';
-import {actions as siteActions} from '../../redux/site/site-slice';
+import {siteActions} from '../../redux/site/site-slice';
 import useCatDispatch from '../../hooks/useCatDispatch';
 import {sitesSelectedSiteSelector} from '../../redux/sites-list/sites-selectors';
 import {SummaryGraphs} from '../../components/summary-graphs/Component';

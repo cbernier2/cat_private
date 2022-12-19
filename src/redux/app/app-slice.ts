@@ -1,9 +1,11 @@
-import {createSlice, Reducer} from '@reduxjs/toolkit';
+import {createSlice, PayloadAction, Reducer} from '@reduxjs/toolkit';
 import {createOfflineAsyncThunk} from '../../utils/offline';
 import {offlineActionTypes} from 'react-native-offline';
 import {sleep} from '../../utils/promise';
 import {darkTheme} from '../../themes/darkTheme';
 import {catPersistReducer} from '../utils';
+import {logoutAsyncAction} from '../user/user-slice';
+import moment from 'moment/moment';
 
 export const key = 'app';
 
@@ -11,12 +13,14 @@ export interface AppState {
   isThemeDark: boolean;
   theme: typeof darkTheme;
   emulateOffline: boolean;
+  searchHistory: {term: string; timestamp: number}[];
 }
 
 const initialState: AppState = {
   isThemeDark: true,
   theme: darkTheme,
   emulateOffline: false,
+  searchHistory: [],
 };
 
 export const offlineQueueTest = createOfflineAsyncThunk(
@@ -49,11 +53,31 @@ export const slice = createSlice({
     toggleOffline: state => {
       state.emulateOffline = !state.emulateOffline;
     },
+    addSearchTermToHistory: (state, action: PayloadAction<string>) => {
+      state.searchHistory = [
+        {term: action.payload, timestamp: moment().valueOf()},
+        ...state.searchHistory
+          .filter(searchTerm => searchTerm.term !== action.payload)
+          .slice(0, 100),
+      ];
+    },
+    removeSearchTermFromHistory: (state, action: PayloadAction<string>) => {
+      state.searchHistory = state.searchHistory.filter(
+        searchTerm => searchTerm.term !== action.payload,
+      );
+    },
+    clearAllSearchTermHistory: state => {
+      state.searchHistory = [];
+    },
   },
   extraReducers: builder => {
-    builder.addCase(offlineActionTypes.FETCH_OFFLINE_MODE, state => {
-      return state;
-    });
+    builder
+      .addCase(offlineActionTypes.FETCH_OFFLINE_MODE, state => {
+        return state;
+      })
+      .addCase(logoutAsyncAction.fulfilled, state => {
+        state.searchHistory = [];
+      });
   },
 });
 
@@ -66,6 +90,6 @@ const appReducer = catPersistReducer(
   typedReducer,
 );
 
-export const {offlineCancelTest, toggleOffline, toggleTheme} = slice.actions;
+export const {actions: appActions} = slice;
 
 export default appReducer;
