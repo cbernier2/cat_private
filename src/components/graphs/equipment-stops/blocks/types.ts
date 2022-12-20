@@ -8,6 +8,7 @@ import {CatStopsFiltersType} from '../../../stops-filters/types';
 
 export interface BlocksType {
   filters: CatStopsFiltersType;
+  height: number;
   labelWidth: number;
   now: number;
   observations: ObservationWithReasonType[];
@@ -23,6 +24,8 @@ export interface Block {
   end: number;
   icons?: MinestarIconName[];
   index: number;
+  isMaintenance?: boolean;
+  isObservation?: boolean;
   isOngoing: boolean;
   label: string;
   noReason: boolean;

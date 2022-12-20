@@ -21,6 +21,15 @@ const standbyForeground = ColourUtils.convertHexToRGBA(
   0.4,
 );
 
+const SiteWideOperationalDelayBackground = ColourUtils.convertHexToRGBA(
+  CommonConstants.COLOR_DARK_ORANGE,
+  0.1,
+);
+const SitewideStandbyBackground = ColourUtils.convertHexToRGBA(
+  CommonConstants.COLOR_DARK_BLUE,
+  0.1,
+);
+
 export const StopReasonPatterns = new Map<string, PatternType>([
   [
     'UNKNOWN',
@@ -29,6 +38,22 @@ export const StopReasonPatterns = new Map<string, PatternType>([
         CommonConstants.COLOR_YELLOW_ORANGE,
         0.7,
       ),
+      pattern: 'none',
+    },
+  ],
+
+  [
+    `BG_${StopReasonClassification.OPERATIONAL_DELAY}`,
+    {
+      background: SiteWideOperationalDelayBackground,
+      pattern: 'none',
+    },
+  ],
+
+  [
+    `BG_${StopReasonClassification.STANDBY}`,
+    {
+      background: SitewideStandbyBackground,
       pattern: 'none',
     },
   ],
@@ -66,6 +91,22 @@ export const StopReasonPatterns = new Map<string, PatternType>([
       background,
       pattern: 'OBSERVATION',
       foreground: maintenanceForeground,
+    },
+  ],
+
+  [
+    `SW_${StopReasonClassification.OPERATIONAL_DELAY}`,
+    {
+      background: CommonConstants.COLOR_DARK_ORANGE,
+      pattern: 'none',
+    },
+  ],
+
+  [
+    `SW_${StopReasonClassification.STANDBY}`,
+    {
+      background: CommonConstants.COLOR_DARK_BLUE,
+      pattern: 'none',
     },
   ],
 

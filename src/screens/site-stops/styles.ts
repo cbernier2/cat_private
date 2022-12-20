@@ -14,10 +14,6 @@ export const useStyles = () => {
         addButton: {
           width: 70,
           height: 24,
-          position: 'absolute',
-          top: 8,
-          left: 12,
-          zIndex: 1,
         },
         addButtonLabel: {
           color: '#000',
@@ -33,10 +29,6 @@ export const useStyles = () => {
           marginHorizontal: 12,
           marginVertical: 16,
         },
-        timeSelectorContainer: {
-          flexDirection: 'column',
-        },
-        timeSelectorText: {},
         timeSelectorPageIndicator: {
           flexDirection: 'row',
           marginTop: 8,
@@ -53,6 +45,14 @@ export const useStyles = () => {
         },
         filterButtonsContainer: {
           flexDirection: 'row',
+        },
+
+        verticalScrollWrapper: {
+          flex: 1,
+          flexDirection: 'row',
+        },
+        equipmentList: {
+          width: 110,
         },
       }),
     [colors],

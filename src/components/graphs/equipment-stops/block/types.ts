@@ -1,5 +1,3 @@
-import {ScaleTime} from 'd3';
-
 import {Block} from '../blocks/types';
 
 export interface BlockType {
@@ -8,7 +6,7 @@ export interface BlockType {
   height: number;
   maskPoints: string;
   points: string;
-  scale: ScaleTime<any, any>;
   x1: number;
   x2: number;
+  y1: number;
 }

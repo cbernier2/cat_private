@@ -49,7 +49,7 @@ export const EquipmentStopsTab = (props: any) => {
   }));
 
   return (
-    <View style={styles.productionContainer}>
+    <View style={styles.stopsContainer}>
       <View style={styles.header}>
         <CatText variant={'headlineSmall'}>{title}</CatText>
         <CatStopsFilters
