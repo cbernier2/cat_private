@@ -36,7 +36,10 @@ const LoginScreen: React.FC<LoginScreenType> = () => {
   };
 
   return (
-    <CatScreen style={styles.container} title={'login'}>
+    <CatScreen
+      style={styles.container}
+      title={'login'}
+      safeAreaEdges={['top', 'bottom', 'left', 'right']}>
       <MineStarLogo color={theme.colors.logoColor} width="100%" />
 
       <CatText variant="headlineMedium" style={styles.title}>

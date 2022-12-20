@@ -23,6 +23,12 @@ const SiteStopsScreen: React.FC<ScreenType> = () => {
     noReasonOnly: false,
   });
   const {routes, renderScene} = useCatSelector(stopsScheduleSceneSelector);
+  if (routes.length === 0) {
+    return null;
+  } else if (routes.length <= index) {
+    setIndex(0);
+    return null;
+  }
   const currentPage = routes[index].value;
 
   return (

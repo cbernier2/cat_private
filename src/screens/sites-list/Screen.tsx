@@ -82,6 +82,12 @@ export const SitesListScreen: React.FC<SitesListTypes> = props => {
           value={filter}
           onChangeText={value => setFilter(value)}
         />
+        {isLoading && (
+          <ActivityIndicator
+            style={styles.activityIndicator}
+            animating={isLoading}
+          />
+        )}
         <CatError style={styles.mh} message={error && t(error)} />
       </View>
       <KeyboardAwareScrollView keyboardShouldPersistTaps="always">
@@ -96,12 +102,6 @@ export const SitesListScreen: React.FC<SitesListTypes> = props => {
           ))}
         </List.Section>
       </KeyboardAwareScrollView>
-      {isLoading && (
-        <ActivityIndicator
-          style={styles.activityIndicator}
-          animating={isLoading}
-        />
-      )}
     </CatScreen>
   );
 };
