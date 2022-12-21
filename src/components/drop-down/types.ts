@@ -1,4 +1,8 @@
 import {ComponentProps} from 'react';
-import {Dropdown} from 'sharingan-rn-modal-dropdown';
+import DropDown from 'react-native-paper-dropdown';
+import {Optional} from 'utility-types';
 
-export type CatDropDownType = ComponentProps<typeof Dropdown>;
+export type CatDropDownType = Optional<
+  ComponentProps<typeof DropDown>,
+  'visible' | 'showDropDown' | 'onDismiss'
+  >;

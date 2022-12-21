@@ -59,7 +59,6 @@
     "redux-persist": "^6.0.0",
     "redux-persist-transform-encrypt": "^4.0.0",
     "redux-thunk": "^2.4.1",
-    "sharingan-rn-modal-dropdown": "^1.4.0",
     "textures": "1.2.3",
     "utility-types": "^3.10.0",
     "uuid": "^9.0.0",
