@@ -47,6 +47,7 @@
     "react-native-pager-view": "^6.1.1",
     "react-native-paper": "^5.0.0-rc.9",
     "react-native-paper-dates": "0.9.2",
+    "react-native-paper-dropdown": "^1.0.7",
     "react-native-reanimated": "^2.12.0",
     "react-native-safe-area-context": "^4.3.4",
     "react-native-screens": "^3.17.0",
@@ -59,6 +60,7 @@
     "redux-persist-transform-encrypt": "^4.0.0",
     "redux-thunk": "^2.4.1",
     "textures": "1.2.3",
+    "utility-types": "^3.10.0",
     "uuid": "^9.0.0",
     "yup": "^0.32.11"
   },
