@@ -4,15 +4,15 @@ import {CatTextInputType} from './types';
 import {TextInput as NativeTextInput} from 'react-native';
 
 const CatTextInput = forwardRef<NativeTextInput, CatTextInputType>(
-  (props, ref) => {
+  ({errorMessage, ...inputProps}, ref) => {
     return (
       <>
-        <TextInput ref={ref} mode="outlined" {...props} />
-        <HelperText
-          type="error"
-          visible={Boolean(props.error && props.errorMessage)}>
-          {props.errorMessage}
-        </HelperText>
+        <TextInput ref={ref} mode="outlined" {...inputProps} />
+        {errorMessage !== undefined && (
+          <HelperText visible={errorMessage.length > 0} type="error">
+            {errorMessage}
+          </HelperText>
+        )}
       </>
     );
   },

@@ -26,6 +26,7 @@ import {fetchSiteAsyncAction} from '../../redux/site/site-slice';
 import {SitesListTypes} from './types';
 import styles from './styles';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import CatSpacer from "../../components/spacer";
 
 export const SitesListScreen: React.FC<SitesListTypes> = props => {
   const root = Boolean(props.route.params?.root);
@@ -82,6 +83,7 @@ export const SitesListScreen: React.FC<SitesListTypes> = props => {
           value={filter}
           onChangeText={value => setFilter(value)}
         />
+        <CatSpacer />
         {isLoading && (
           <ActivityIndicator
             style={styles.activityIndicator}
