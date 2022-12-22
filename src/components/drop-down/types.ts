@@ -1,8 +1,28 @@
-import {ComponentProps} from 'react';
-import DropDown from 'react-native-paper-dropdown';
-import {Optional} from 'utility-types';
+import {ComponentProps, ReactNode} from 'react';
+import {TextStyle, ViewStyle} from 'react-native';
+import CatTextInput from '../text-input';
 
-export type CatDropDownType = Optional<
-  ComponentProps<typeof DropDown>,
-  'visible' | 'showDropDown' | 'onDismiss'
-  >;
+export interface CatDropDownType {
+  value: any;
+  setValue: (_value: any) => void;
+  label?: string | undefined;
+  list: Array<{
+    label: string;
+    value: string | number;
+    custom?: ReactNode;
+  }>;
+  visible?: boolean;
+  multiSelect?: boolean;
+  onDismiss?: () => void;
+  showDropDown?: () => void;
+  dropDownContainerMaxHeight?: number;
+  dropDownContainerHeight?: number;
+  accessibilityLabel?: string;
+  placeholder?: string | undefined;
+  dropDownStyle?: ViewStyle;
+  dropDownItemSelectedTextStyle?: TextStyle;
+  dropDownItemSelectedStyle?: ViewStyle;
+  dropDownItemStyle?: ViewStyle;
+  dropDownItemTextStyle?: TextStyle;
+  inputProps?: ComponentProps<typeof CatTextInput>;
+}
