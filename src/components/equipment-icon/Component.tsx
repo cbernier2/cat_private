@@ -19,7 +19,7 @@ export const CatEquipmentIcon: React.FC<CatEquipmentIconType> = ({
       size={size}
       iconColor={equipmentIconData.statusColor}
       badge={
-        equipmentIconData.observationCount > 3
+        equipmentIconData.observationCount >= 3
           ? equipmentIconData.observationCount
           : undefined
       }
