@@ -12,3 +12,6 @@ export const getEquipmentIcon = (
       : Category.findByCategoryType(categoryType).icon
   ) as MinestarIconName;
 };
+
+export const getEquipmentBadge = (count: number) =>
+  count >= 3 ? count : undefined;

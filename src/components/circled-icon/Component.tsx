@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import Svg, {Circle, ForeignObject, Text} from 'react-native-svg';
-import {useFocusEffect} from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
 import moment from 'moment/moment';
 
 import useCatTheme from '../../hooks/useCatTheme';
@@ -13,13 +13,14 @@ import {getKey} from './functions';
 
 export const CircledIcon: React.FC<CircledIconType> = props => {
   const {colors} = useCatTheme();
+  const isFocused = useIsFocused();
   const [iOSFix, setiOSFix] = useState<string>('');
 
-  useFocusEffect(() => {
-    // iOS additionally requires the icon to be re-rendered
-    //  after the screen hosting it leaves and re-enters focus
-    setiOSFix(String(moment().unix()));
-  });
+  useEffect(() => {
+    if (isFocused) {
+      setiOSFix(String(moment().unix()));
+    }
+  }, [isFocused]);
 
   const {
     name,

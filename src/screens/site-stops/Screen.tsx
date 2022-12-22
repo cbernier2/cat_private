@@ -1,22 +1,25 @@
 import React, {useState} from 'react';
-import CatScreen from '../../components/screen';
-import {ScreenType} from './types';
-import {useTranslation} from 'react-i18next';
+import {useSelector} from 'react-redux';
 import {ScrollView, View} from 'react-native';
-import {useStyles} from './styles';
+import {useTranslation} from 'react-i18next';
+
+import CatScreen from '../../components/screen';
 import CatButton from '../../components/button';
 import CatText from '../../components/text';
 import CatStopsFilters from '../../components/stops-filters';
 import {CatStopsFiltersType} from '../../components/stops-filters/types';
 import {SiteStopsChart} from '../../components/graphs/site-stops/Component';
-import {useSelector} from 'react-redux';
-import {
-  currentShiftLabelSelector,
-  siteEquipmentsObservationsSelector,
-  siteObservationsSelector,
-} from '../../redux/site/site-selectors';
+import {currentShiftLabelSelector} from '../../redux/site/site-selectors';
 import {ArrayUtils} from '../../utils/array-utils';
 import {EquipmentList} from '../../components/graphs/site-stops/equipmentList/Component';
+import {CatError} from '../../components/error';
+
+import {
+  siteEquipmentsObservationsSelector,
+  siteObservationsSelector,
+} from './selectors';
+import {ScreenType} from './types';
+import {useStyles} from './styles';
 
 const SiteStopsScreen: React.FC<ScreenType> = () => {
   const {t} = useTranslation();
@@ -33,48 +36,63 @@ const SiteStopsScreen: React.FC<ScreenType> = () => {
   //  Split list into smaller chunks to render multiple SVGs instead
   const equipmentsGroups = ArrayUtils.splitArray(equipments, 10);
 
+  const data = currentShift && equipments.length > 0;
+
   return (
     <CatScreen scroll={false} title={t('cat.site_stops')}>
       <View style={styles.headerContainer}>
-        <CatText variant={'headlineSmall'}>{currentShift}</CatText>
+        <CatText variant={'headlineSmall'}>
+          {currentShift ?? t('no_shifts')}
+        </CatText>
       </View>
-      <View style={styles.headerContainer}>
-        <CatButton labelStyle={styles.addButtonLabel} style={styles.addButton}>
-          {'+'}
-        </CatButton>
-        <View style={styles.filterButtonsContainer}>
-          <CatStopsFilters
-            onChange={newFilters => setFilters(newFilters)}
-            initialState={filters}
-          />
+      {equipments.length === 0 && (
+        <View style={styles.noDataContainer}>
+          <CatError message={t('cat.message_no_data_available')} />
         </View>
-      </View>
-      <ScrollView>
-        <View style={styles.verticalScrollWrapper}>
-          <View>
-            {equipmentsGroups.map((group, i) => (
-              <EquipmentList
-                key={`l${i}`}
-                equipments={group}
-                withSiteStopsRow={i === 0}
+      )}
+      {data && (
+        <>
+          <View style={styles.headerContainer}>
+            <CatButton
+              labelStyle={styles.addButtonLabel}
+              style={styles.addButton}>
+              {'+'}
+            </CatButton>
+            <View style={styles.filterButtonsContainer}>
+              <CatStopsFilters
+                onChange={newFilters => setFilters(newFilters)}
+                initialState={filters}
               />
-            ))}
+            </View>
           </View>
-          <ScrollView horizontal>
-            <View>
-              {equipmentsGroups.map((group, i) => (
-                <SiteStopsChart
-                  key={`c${i}`}
-                  equipments={group}
-                  filters={filters}
-                  siteStops={siteStops}
-                  withSiteStopsRow={i === 0}
-                />
-              ))}
+          <ScrollView>
+            <View style={styles.verticalScrollWrapper}>
+              <View>
+                {equipmentsGroups.map((group, i) => (
+                  <EquipmentList
+                    key={`l${i}`}
+                    equipments={group}
+                    withSiteStopsRow={i === 0}
+                  />
+                ))}
+              </View>
+              <ScrollView horizontal>
+                <View>
+                  {equipmentsGroups.map((group, i) => (
+                    <SiteStopsChart
+                      key={`c${i}`}
+                      equipments={group}
+                      filters={filters}
+                      siteStops={siteStops}
+                      withSiteStopsRow={i === 0}
+                    />
+                  ))}
+                </View>
+              </ScrollView>
             </View>
           </ScrollView>
-        </View>
-      </ScrollView>
+        </>
+      )}
     </CatScreen>
   );
 };

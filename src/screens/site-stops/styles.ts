@@ -29,6 +29,12 @@ export const useStyles = () => {
           marginHorizontal: 12,
           marginVertical: 16,
         },
+        noDataContainer: {
+          flexDirection: 'row',
+          justifyContent: 'center',
+          marginHorizontal: 12,
+          marginVertical: 16,
+        },
         timeSelectorPageIndicator: {
           flexDirection: 'row',
           marginTop: 8,

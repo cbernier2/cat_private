@@ -44,11 +44,11 @@ export const SiteStopsChart = (props: SiteStopsChartType) => {
       ?.translation.cat;
 
     const siteRow: Block[] = siteStops
-      .map(tl => toBlockData(tl, 'SW', catTranslations, now, false))
+      .map(tl => toBlockData(tl, 'SW', catTranslations, 0, false))
       .sort((a, b) => a.start - b.start);
 
     const siteBG: Block[] = siteStops
-      .map(tl => toBlockData(tl, 'BG', catTranslations, now, false))
+      .map(tl => toBlockData(tl, 'BG', catTranslations, 0, false))
       .sort((a, b) => a.start - b.start);
 
     return {
@@ -56,7 +56,7 @@ export const SiteStopsChart = (props: SiteStopsChartType) => {
       background: siteBG,
       stopPatterns: new Set([...siteRow, ...siteBG].flatMap(e => e.patternId)),
     };
-  }, [i18n, now, siteStops]);
+  }, [i18n, siteStops]);
 
   const {equipmentStops, equipmentPatterns} = useMemo(() => {
     const catTranslations = i18n.getDataByLanguage(i18n.resolvedLanguage)
@@ -94,10 +94,10 @@ export const SiteStopsChart = (props: SiteStopsChartType) => {
         es.flatMap(e => e.stops).map(s => s.patternId),
       ),
     };
-  }, [equipments, filters, i18n, now, stopReasons]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [equipments, filters, i18n, stopReasons]);
 
   if (!endTime || !startTime) {
-    // TODO show a message that there is nothing to display
     return null;
   }
 

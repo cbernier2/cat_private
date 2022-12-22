@@ -7,7 +7,6 @@ import useCatSelector from '../../hooks/useCatSelector';
 import CatText from '../../components/text';
 import {TimelineWithReasonType} from '../../api/types/cat/production';
 import {
-  currentEquipmentObservationsSelector,
   currentEquipmentSelector,
   searchEquipmentSelector,
   shiftEndTimeSelector,
@@ -16,6 +15,8 @@ import {
 } from '../../redux/site/site-selectors';
 import CatStopsFilters from '../../components/stops-filters';
 import {CatStopsFiltersType} from '../../components/stops-filters/types';
+
+import {currentEquipmentObservationsSelector} from '../site-stops/selectors';
 
 import styles from './styles';
 
