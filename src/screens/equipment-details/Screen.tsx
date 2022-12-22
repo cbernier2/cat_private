@@ -1,10 +1,7 @@
 import React, {useEffect} from 'react';
 import {useTranslation} from 'react-i18next';
 
-import {
-  currentEquipmentSelector,
-  searchEquipmentSelector,
-} from '../../redux/site/site-selectors';
+import {getEquipmentSelector} from '../../redux/site/site-selectors';
 import useCatSelector from '../../hooks/useCatSelector';
 import {PageTitle} from '../../components/page-title/Component';
 import {getEquipmentIcon} from '../../api/types/equipment';
@@ -22,11 +19,9 @@ const pages = {
 
 const EquipmentDetailsScreen = (props: ScreenType) => {
   const {navigation} = props;
-  const isSearch = Boolean(props.route.params?.search);
+  const context = props.route.params?.context;
   const {t} = useTranslation();
-  const equipmentSelector = isSearch
-    ? searchEquipmentSelector
-    : currentEquipmentSelector;
+  const equipmentSelector = getEquipmentSelector(context);
   const selectedEquipmentSummary = useCatSelector(equipmentSelector);
 
   useEffect(() => {
@@ -48,7 +43,7 @@ const EquipmentDetailsScreen = (props: ScreenType) => {
         )}
         title={selectedEquipmentSummary.equipment?.name}
       />
-      <CatTabView extraParams={{isSearch}} pages={pages} />
+      <CatTabView extraParams={{context}} pages={pages} />
     </CatScreen>
   );
 };

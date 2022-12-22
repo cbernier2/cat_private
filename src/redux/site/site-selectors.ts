@@ -19,7 +19,7 @@ import {
   CatRouteSummary,
   CatSummaries,
 } from './helpers/transformSummaries';
-import {CurrentArea, CurrentEquipment} from './site-slice';
+import {CurrentArea, CurrentEquipment, MainContext} from './site-slice';
 import {CatHaulCycle} from '../../api/types/haul-cycle';
 import {StopReasonTypeDO} from '../../api/types/cat/stop-reason';
 
@@ -89,6 +89,19 @@ export const searchAreaSelector = createSelector(
   returnArea,
 );
 
+export type AreaSelector =
+  | typeof currentAreaSelector
+  | typeof searchAreaSelector;
+
+export const getAreaSelector = (context: MainContext): AreaSelector => {
+  switch (context) {
+    case 'search':
+      return searchAreaSelector;
+    default:
+      return currentAreaSelector;
+  }
+};
+
 const equipmentTypeToSummary = (
   productionSummary: CatSummaries | undefined,
   categoryType: CategoryType,
@@ -132,9 +145,29 @@ export const searchEquipmentSelector = createSelector(
   returnEquipment,
 );
 
+export const stopsEquipmentSelector = createSelector(
+  (state: RootState) => state.site.productionSummary,
+  (state: RootState) => state.site.stopsEquipment,
+  returnEquipment,
+);
+
 export type EquipmentSelector =
   | typeof currentEquipmentSelector
-  | typeof searchEquipmentSelector;
+  | typeof searchEquipmentSelector
+  | typeof stopsEquipmentSelector;
+
+export const getEquipmentSelector = (
+  context: MainContext,
+): EquipmentSelector => {
+  switch (context) {
+    case 'search':
+      return searchEquipmentSelector;
+    case 'siteStops':
+      return stopsEquipmentSelector;
+    default:
+      return currentEquipmentSelector;
+  }
+};
 
 const returnRoute = (
   routeSummaries: CatRouteSummary[] | undefined,
@@ -164,6 +197,15 @@ export const searchRouteSelector = createSelector(
 export type RouteSelector =
   | typeof currentRouteSelector
   | typeof searchRouteSelector;
+
+export const getRouteSelector = (context: MainContext): RouteSelector => {
+  switch (context) {
+    case 'search':
+      return searchRouteSelector;
+    default:
+      return currentRouteSelector;
+  }
+};
 
 export const personsSelector = createSelector(
   (state: RootState) => state.site.persons,

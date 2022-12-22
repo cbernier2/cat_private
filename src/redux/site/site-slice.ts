@@ -28,11 +28,12 @@ import {transformSummaries} from './helpers/transformSummaries';
 
 export const key = 'site';
 
-export type CurrentArea = {id: string; type: AreaType; isSearch?: boolean};
+export type MainContext = 'dashboard' | 'siteStops' | 'search';
+export type CurrentArea = {id: string; type: AreaType; context?: MainContext};
 export type CurrentEquipment = {
   name: string | undefined;
   category: CategoryType;
-  isSearch?: boolean;
+  context?: MainContext;
 };
 export type ProductionSummary = ReturnType<typeof transformSummaries>;
 
@@ -51,6 +52,7 @@ export interface SiteState {
   searchRouteName: string | null;
   searchArea: CurrentArea | null;
   searchEquipment: CurrentEquipment | null;
+  stopsEquipment: CurrentEquipment | null;
   persons: CatPersons;
   operatorInfo: CatOperatorInfo;
 
@@ -83,6 +85,7 @@ const initialState: SiteState = {
   searchRouteName: null,
   searchArea: null,
   searchEquipment: null,
+  stopsEquipment: null,
   siteConfig: {},
 };
 
@@ -216,29 +219,41 @@ const slice = createSlice({
     },
     setCurrentRouteName: (
       state,
-      action: PayloadAction<{name: string | null; isSearch?: boolean} | null>,
+      action: PayloadAction<{
+        name: string | null;
+        context?: MainContext;
+      } | null>,
     ) => {
-      if (action.payload?.isSearch) {
-        state.searchRouteName = action.payload.name ?? null;
-      } else {
-        state.currentRouteName = action.payload?.name ?? null;
+      switch (action.payload?.context) {
+        case 'search':
+          state.searchRouteName = action.payload.name ?? null;
+          break;
+        default:
+          state.currentRouteName = action.payload?.name ?? null;
       }
     },
     setCurrentArea: (state, action: PayloadAction<CurrentArea | null>) => {
-      if (action.payload?.isSearch) {
-        state.searchArea = action.payload;
-      } else {
-        state.currentArea = action.payload;
+      switch (action.payload?.context) {
+        case 'search':
+          state.searchArea = action.payload;
+          break;
+        default:
+          state.currentArea = action.payload;
       }
     },
     setCurrentEquipment: (
       state,
       action: PayloadAction<SiteState['currentEquipment']>,
     ) => {
-      if (action.payload?.isSearch) {
-        state.searchEquipment = action.payload;
-      } else {
-        state.currentEquipment = action.payload;
+      switch (action.payload?.context) {
+        case 'search':
+          state.searchEquipment = action.payload;
+          break;
+        case 'siteStops':
+          state.stopsEquipment = action.payload;
+          break;
+        default:
+          state.currentEquipment = action.payload;
       }
     },
     selectShift: (state, action: PayloadAction<Shift>) => {

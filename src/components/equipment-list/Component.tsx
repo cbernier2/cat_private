@@ -16,7 +16,7 @@ import {MaterialBottomTabNavigationProp} from '@react-navigation/material-bottom
 
 const CatEquipmentList: React.FC<CatEquipmentListType> = ({
   equipment,
-  isSearch,
+  context,
 }) => {
   const {t} = useTranslation();
   const dispatch = useCatDispatch();
@@ -27,7 +27,7 @@ const CatEquipmentList: React.FC<CatEquipmentListType> = ({
       siteActions.setCurrentEquipment({
         name: routeEquipment.equipment?.name,
         category: routeEquipment.type,
-        isSearch,
+        context,
       }),
     );
     navigation.navigate('EquipmentDetails');
