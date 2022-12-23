@@ -15,10 +15,21 @@ import {
   findConflicts,
   toBlockData,
 } from './functions';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
 
 export const Blocks = (props: BlocksType) => {
-  const {filters, labelWidth, now, observations, timelines, scale, width} =
-    props;
+  const navigation = useNavigation<StackNavigationProp<any>>();
+  const {
+    filters,
+    labelWidth,
+    now,
+    observations,
+    timelines,
+    scale,
+    width,
+    equipmentId,
+  } = props;
   const {i18n} = useTranslation();
 
   const boxPadding = 5;
@@ -30,12 +41,24 @@ export const Blocks = (props: BlocksType) => {
     const catTranslations = i18n.getDataByLanguage(i18n.resolvedLanguage)
       ?.translation.cat;
 
-    const tls: Block[] = timelines.map(tl =>
-      toBlockData(tl, 'TL', catTranslations, now),
-    );
-    const obs: Block[] = observations.map(ob =>
-      toBlockData(ob, 'OB', catTranslations, now),
-    );
+    const tls: Block[] = timelines.map(tl => ({
+      ...toBlockData(tl, 'TL', catTranslations, now),
+      onPress: () => {
+        navigation.navigate({
+          name: 'AddEditObservation',
+          params: {equipmentId},
+        });
+      },
+    }));
+    const obs: Block[] = observations.map(ob => ({
+      ...toBlockData(ob, 'OB', catTranslations, now),
+      onPress: () => {
+        navigation.navigate({
+          name: 'AddEditObservation',
+          params: {observationId: ob.id},
+        });
+      },
+    }));
 
     // Filter and sort list, also save index for easier looping later
     const entries = [...tls, ...obs]
@@ -52,7 +75,7 @@ export const Blocks = (props: BlocksType) => {
       blocks: entries,
       patterns: Array.from(new Set(entries.flatMap(e => e.patternId))),
     };
-  }, [filters, i18n, now, observations, timelines]);
+  }, [equipmentId, filters, i18n, navigation, now, observations, timelines]);
 
   const drawBlock = (block: Block) => {
     const cWidth = (width - labelWidth - boxPadding) / block.columns;
@@ -92,7 +115,9 @@ export const Blocks = (props: BlocksType) => {
         ))}
       </Defs>
       {blocks.map((block, i) => (
-        <G key={`b${i}`}>{drawBlock(block)}</G>
+        <G key={`b${i}`} onPress={block.onPress}>
+          {drawBlock(block)}
+        </G>
       ))}
     </>
   );

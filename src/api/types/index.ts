@@ -8,6 +8,8 @@ export type CatQueryFnParams = {
   method: string;
   path: string;
   queryParams?: Record<string, any>;
+  body?: any;
+  urlFormEncoded?: boolean;
 };
 
 export type GetCountResult = {

@@ -21,5 +21,7 @@
     "search_no_results": "No results found",
     "no_shifts": "No shifts selected",
     "search_recent": "Recent",
-    "search_clear_all": "Clear All"
+    "search_clear_all": "Clear All",
+    "save_observation": "Save Observation",
+    "edit_observation": "Edit Observation"
 }

@@ -6,7 +6,7 @@ import {logoutAsyncAction, refreshTokenAsyncAction} from './user/user-slice';
 
 export const catBaseQuery = async (
   baseUrl: string,
-  {method, path, queryParams}: CatQueryFnParams,
+  {method, path, queryParams, body, urlFormEncoded}: CatQueryFnParams,
   {getState, dispatch}: BaseQueryApi,
 ) => {
   const state = () => getState() as RootState;
@@ -29,11 +29,23 @@ export const catBaseQuery = async (
       });
       urlParams = '?' + new URLSearchParams(urlParamsObj);
     }
+    const headers: RequestInit['headers'] = {
+      Authorization: `${auth?.tokenType} ${auth?.accessToken}`,
+    };
+    let fetchBody: RequestInit['body'];
+    if (body) {
+      if (urlFormEncoded) {
+        headers['Content-Type'] = 'application/x-www-form-urlencoded';
+        fetchBody = new URLSearchParams(body).toString();
+      } else {
+        headers['Content-Type'] = 'application/json';
+        fetchBody = JSON.stringify(body);
+      }
+    }
     const response = await fetch(`${baseUrl}/${path}${urlParams}`, {
       method,
-      headers: {
-        Authorization: `${auth?.tokenType} ${auth?.accessToken}`,
-      },
+      headers,
+      body: fetchBody,
     });
     if (response.status >= 200 && response.status <= 299) {
       return {data: await response.json()};

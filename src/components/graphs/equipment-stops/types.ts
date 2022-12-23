@@ -9,4 +9,5 @@ export interface EquipmentStopsType {
   observations: ObservationWithReasonType[];
   startTime?: number;
   timelines: TimelineWithReasonType[];
+  equipmentId: string;
 }

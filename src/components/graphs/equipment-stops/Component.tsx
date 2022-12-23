@@ -18,6 +18,7 @@ export const EquipmentStops = (props: EquipmentStopsType) => {
     observations = [],
     startTime = 0,
     timelines = [],
+    equipmentId,
   } = props;
   const width = useGraphWidth();
   const labelWidth = 60;
@@ -50,6 +51,7 @@ export const EquipmentStops = (props: EquipmentStopsType) => {
         scale={y}
         timelines={timelines}
         width={width}
+        equipmentId={equipmentId}
       />
       <NowMarker now={now} scale={y} x1={labelWidth} x2={width} />
     </Svg>
