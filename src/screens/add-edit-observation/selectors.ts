@@ -159,7 +159,6 @@ export const addEditObservationSelector = createSelector(
   (state: RootState, params: AddEditObservationParams) => params?.observationId,
   equipmentsSelector,
   observationsSelector,
-  (state: RootState) => state.site.productionSummary ?? undefined,
   (state: RootState) => state.site.stopReasonTypes,
   currentShiftSelector,
   (
@@ -167,7 +166,6 @@ export const addEditObservationSelector = createSelector(
     observationId,
     equipmentSummaries,
     observations,
-    productionSummary,
     stopReasonTypes,
     currentShift,
   ) => {

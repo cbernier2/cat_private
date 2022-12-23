@@ -18,14 +18,8 @@ const CatScreen: React.FC<CatScreenType> = ({
   useFocusEffect(
     useCallback(() => {
       if (title) {
-        let drawerNavigation = navigation;
-        if (drawerNavigation.getParent()) {
-          drawerNavigation = navigation.getParent();
-          if (drawerNavigation.getParent()) {
-            drawerNavigation = navigation.getParent();
-          }
-        }
-        drawerNavigation?.setOptions({
+        let titleNavigation = navigation.getParent()?.getParent() || navigation;
+        titleNavigation?.setOptions({
           title,
         });
       }
