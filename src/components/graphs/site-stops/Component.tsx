@@ -1,110 +1,162 @@
-import React, {useEffect, useState} from 'react';
-import moment from 'moment';
-import {Dimensions} from 'react-native';
-import Svg, {Circle, Defs, G, Line} from 'react-native-svg';
+import React, {useMemo} from 'react';
+import Svg, {Defs} from 'react-native-svg';
+import {useTranslation} from 'react-i18next';
 import * as scale from 'd3-scale';
+import moment from 'moment';
 
-import useCatTheme from '../../../hooks/useCatTheme';
-import {IStop} from '../../../redux/stops/types';
+import useCatSelector from '../../../hooks/useCatSelector';
+import {
+  shiftEndTimeSelector,
+  shiftStartTimeSelector,
+  StopReasonTypesSelector,
+} from '../../../redux/site/site-selectors';
+import {TimelineWithReasonType} from '../../../api/types/cat/production';
 
+import {NowMarker} from '../common/now-marker/Component';
+import {Block} from '../equipment-stops/blocks/types';
+import {filterBlock, toBlockData} from '../equipment-stops/blocks/functions';
 import {Pattern} from '../pattern/Component';
+import {getPatternFromId} from '../pattern/functions';
 
+import {Grid} from './grid/Component';
+import {SiteWideStops} from './siteWideStops/Component';
+import {EquipmentStops} from './equipmentStops/Component';
+
+import {rowHeight, timeLabelsHeight} from './config';
 import {SiteStopsChartType} from './types';
 
-import EquipmentsMock from './equipement.mock.json';
-import StopsMock from './stops.mock.json';
-import {SiteStopsEquipments} from './equipments/Component';
-import {SiteStopsHeader} from './header/Component';
-import {SiteStopsStops} from './stops/Component';
-import {Equipment} from '../../../api/types/cat/equipment';
+export const SiteStopsChart = (props: SiteStopsChartType) => {
+  const {equipments, filters, siteStops, withSiteStopsRow = true} = props;
 
-const window = Dimensions.get('window');
+  const {i18n} = useTranslation();
+  const endTime = useCatSelector(shiftEndTimeSelector);
+  const startTime = useCatSelector(shiftStartTimeSelector);
+  const stopReasons = useCatSelector(StopReasonTypesSelector);
 
-export const SiteStopsChart: React.FC<SiteStopsChartType> = ({steps}) => {
-  const theme = useCatTheme();
-  const equipments = EquipmentsMock as Equipment[];
-  const stops = StopsMock as IStop[];
+  const now = moment().valueOf();
 
-  const rowHeight = 50;
-  const headerHeight = 40;
-  const labelWidth = 150;
+  const {stops, background, stopPatterns} = useMemo((): {
+    stops: Block[];
+    background: Block[];
+    stopPatterns: Set<string>;
+  } => {
+    const catTranslations = i18n.getDataByLanguage(i18n.resolvedLanguage)
+      ?.translation.cat;
 
-  const [width, setWidth] = useState(window.width);
-  const height = headerHeight + rowHeight + equipments.length * rowHeight;
+    const siteRow: Block[] = siteStops
+      .map(tl => toBlockData(tl, 'SW', catTranslations, 0, false))
+      .sort((a, b) => a.start - b.start);
 
-  const now = moment();
+    const siteBG: Block[] = siteStops
+      .map(tl => toBlockData(tl, 'BG', catTranslations, 0, false))
+      .sort((a, b) => a.start - b.start);
 
-  useEffect(() => {
-    const subscription = Dimensions.addEventListener('change', d => {
-      setWidth(d.window.width);
+    return {
+      stops: siteRow,
+      background: siteBG,
+      stopPatterns: new Set([...siteRow, ...siteBG].flatMap(e => e.patternId)),
+    };
+  }, [i18n, siteStops]);
+
+  const {equipmentStops, equipmentPatterns} = useMemo(() => {
+    const catTranslations = i18n.getDataByLanguage(i18n.resolvedLanguage)
+      ?.translation.cat;
+
+    const es = equipments.map(equipment => {
+      const timelines: TimelineWithReasonType[] = [
+        ...(equipment?.maintenanceTimeline ?? []),
+        ...(equipment?.operationalDelayTimeline ?? []),
+        ...(equipment?.standbyTimeline ?? []),
+      ].map(tl => ({
+        ...tl,
+        reasonType: stopReasons.find(rt => tl.stopReasonTypeId === rt.id),
+      }));
+
+      const tls = timelines.map(tl =>
+        toBlockData(tl, 'TL', catTranslations, now),
+      );
+      const obs = equipment.observations.map(ob =>
+        toBlockData(ob, 'OB', catTranslations, now),
+      );
+      const entries = [...tls, ...obs]
+        .filter(tl => filterBlock(tl, filters))
+        .sort((a, b) => a.start - b.start);
+
+      return {
+        id: equipment.id,
+        stops: entries,
+      };
     });
-    return () => subscription?.remove();
-  }, [setWidth]);
 
-  const equipment_band = scale
+    return {
+      equipmentStops: es,
+      equipmentPatterns: new Set(
+        es.flatMap(e => e.stops).map(s => s.patternId),
+      ),
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [equipments, filters, i18n, stopReasons]);
+
+  if (!endTime || !startTime) {
+    return null;
+  }
+
+  const patterns = Array.from([...equipmentPatterns, ...stopPatterns]);
+  const headerHeight = timeLabelsHeight + (withSiteStopsRow ? rowHeight : 0);
+  const padding = 40;
+
+  const width =
+    moment.duration(moment(endTime).diff(moment(startTime))).asMinutes() * 3;
+  const height = headerHeight + equipments.length * rowHeight;
+  const totalWidth = width + padding;
+
+  const y_scale = scale
     .scaleBand()
     .domain(equipments.map(e => e.id))
-    .range([headerHeight + rowHeight, height]);
+    .range([headerHeight, height]);
 
   const x_time = scale
     .scaleTime()
-    .domain([
-      steps[0],
-      moment(steps[steps.length - 1])
-        .add({minutes: 15})
-        .toDate(),
-    ])
-    .range([labelWidth, width])
-    .clamp(true);
+    .domain([startTime, endTime])
+    .range([padding, width])
+    .clamp(false);
 
-  const addObservation = () => console.log('Add Observation');
-  const addStop = () => console.log('Add Site Wide Stop');
+  // const addObservation = () => console.log('Add Observation');
+  // const addStop = () => console.log('Add Site Wide Stop');
 
   return (
-    <Svg height={height} width={width}>
+    <Svg height={height} width={totalWidth}>
       <Defs>
-        <Pattern background={'#555'} pattern="PATTERN_07" foreground="red" />
-        <Pattern background={'#555'} pattern="PATTERN_07" foreground="blue" />
+        {patterns.map(patternId => (
+          <Pattern key={patternId} {...getPatternFromId(patternId)} />
+        ))}
       </Defs>
-      <SiteStopsHeader
-        addStop={addStop}
-        headerHeight={headerHeight}
-        height={height}
-        steps={steps}
-        scale={x_time}
-        width={width}
-      />
-      <SiteStopsEquipments
-        equipments={equipments}
-        headerHeight={headerHeight}
-        rowHeight={rowHeight}
-        scale={equipment_band}
-        width={width}
-      />
-      <SiteStopsStops
-        addObservation={addObservation}
-        now={now}
+      <Grid equipments={equipments} x_scale={x_time} y_scale={y_scale} />
+      <SiteWideStops
+        background={false}
+        display={withSiteStopsRow}
+        equipmentId=""
         stops={stops}
+        width={totalWidth}
         x_scale={x_time}
-        y_scale={equipment_band}
       />
-      {now >= steps[0] && now <= steps[steps.length - 1] && (
-        <G>
-          <Circle
-            cx={x_time(now)}
-            cy={headerHeight - 6}
-            r={3}
-            fill={theme.colors.errorWarning0}
-          />
-          <Line
-            x={x_time(now)}
-            y1={headerHeight - 4}
-            y2={height}
-            stroke={theme.colors.errorWarning0}
-            strokeWidth={2}
-          />
-        </G>
-      )}
+      {equipmentStops.map((equipment, i) => (
+        <EquipmentStops
+          key={i}
+          equipmentId={equipment.id}
+          equipmentStops={equipment.stops}
+          siteWideStops={background}
+          width={totalWidth}
+          x_scale={x_time}
+          y_scale={y_scale}
+        />
+      ))}
+      <NowMarker
+        now={now}
+        x_scale={x_time}
+        y1={withSiteStopsRow ? timeLabelsHeight - 10 : 0}
+        y2={height}
+      />
     </Svg>
   );
 };

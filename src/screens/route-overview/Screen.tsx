@@ -3,9 +3,8 @@ import {View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 
 import {
-  currentRouteSelector,
+  getRouteSelector,
   haulCyclesEquipmentSelector,
-  searchRouteSelector,
 } from '../../redux/site/site-selectors';
 import useCatSelector from '../../hooks/useCatSelector';
 import CatText from '../../components/text';
@@ -34,10 +33,10 @@ import CatEquipmentList from '../../components/equipment-list';
 
 const RouteOverviewScreen = (props: ScreenType) => {
   const {navigation} = props;
-  const isSearch = Boolean(props.route.params?.search);
+  const context = props.route.params?.context;
   const {t} = useTranslation();
   const dispatch = useCatDispatch();
-  const routeSelector = isSearch ? searchRouteSelector : currentRouteSelector;
+  const routeSelector = getRouteSelector(context);
   const selectedRouteSummary = useCatSelector(routeSelector);
   const selectedRoute = selectedRouteSummary?.route;
   const routeAreas = useCatSelector(state =>
@@ -104,7 +103,7 @@ const RouteOverviewScreen = (props: ScreenType) => {
       siteActions.setCurrentArea({
         id: area.summary.id,
         type: area.summary.type,
-        isSearch,
+        context,
       }),
     );
     navigation.navigate('AreaDetails');
@@ -132,7 +131,7 @@ const RouteOverviewScreen = (props: ScreenType) => {
             </CatProductionListItem>
           ))}
         </View>
-        <CatEquipmentList equipment={routeEquipments} isSearch={isSearch} />
+        <CatEquipmentList equipment={routeEquipments} context={context} />
       </View>
     </CatScreen>
   );

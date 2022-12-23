@@ -147,4 +147,12 @@ export class ArrayUtils {
   public static isNotEmpty<T>(array: T[]): boolean {
     return ObjectUtils.isValid(array) && array.length !== 0;
   }
+
+  // Added by Spiria
+  public static splitArray<T>(array: T[], splitLength: number): T[][] {
+    return Array(Math.ceil(array.length / splitLength))
+      .fill(0)
+      .map((_, index) => index * splitLength)
+      .map(begin => array.slice(begin, begin + splitLength));
+  }
 }

@@ -11,7 +11,7 @@ import {
   operatorsSelector,
   routesSelector,
 } from '../../redux/site/site-selectors';
-import {siteActions} from '../../redux/site/site-slice';
+import {MainContext, siteActions} from '../../redux/site/site-slice';
 import {
   CatAreaSummary,
   CatEquipmentSummary,
@@ -30,6 +30,7 @@ export const useCatSearchFilter = () => {
   const equipments = useSelector(equipmentsSelector);
   const operators = useSelector(operatorsSelector);
   const routes = useSelector(routesSelector);
+  const context: MainContext = 'search';
 
   return useMemo(() => {
     let filteredSearchHistory = searchHistory
@@ -50,7 +51,7 @@ export const useCatSearchFilter = () => {
         siteActions.setCurrentArea({
           id: area.area.id,
           type: area.type,
-          isSearch: true,
+          context,
         }),
       );
       navigation.navigate('AreaDetails');
@@ -62,7 +63,7 @@ export const useCatSearchFilter = () => {
         siteActions.setCurrentEquipment({
           name: equipment.equipment?.name,
           category: equipment.type,
-          isSearch: true,
+          context,
         }),
       );
       navigation.navigate('EquipmentDetails');
@@ -73,7 +74,7 @@ export const useCatSearchFilter = () => {
       dispatch(
         siteActions.setCurrentRouteName({
           name: route.route.name,
-          isSearch: true,
+          context,
         }),
       );
       navigation.navigate('RouteOverview');

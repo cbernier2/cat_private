@@ -4,7 +4,7 @@ import {G, Text, Defs, Mask, Rect, ForeignObject} from 'react-native-svg';
 import {SiteStopsStopsType} from './types';
 import {MinestarIcon} from '../../../minestar-icon';
 
-export const SiteStopsStops: React.FC<SiteStopsStopsType> = props => {
+export const SiteStopsStops = (props: SiteStopsStopsType) => {
   const fontSize = 12;
 
   const display = (hide: boolean): string => (hide ? 'none' : '');
