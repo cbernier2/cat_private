@@ -1,19 +1,21 @@
 import React from 'react';
 import {View} from 'react-native';
-import styles from './styles';
 import {useTranslation} from 'react-i18next';
 import {format} from 'date-fns';
+
 import useCatSelector from '../../hooks/useCatSelector';
-import {useNetInfo} from '@react-native-community/netinfo';
 import CatTextWithLabel from '../../components/text-with-label';
 import {lastUpdateSelector} from '../../redux/site/site-selectors';
 import useCatTheme from '../../hooks/useCatTheme';
 import {MinestarIconName} from '../../components/minestar-icon/types';
 import {MinestarIcon} from '../../components/minestar-icon';
+import {isConnectedSelector} from '../../redux/network/network-selectors';
+
+import styles from './styles';
 
 const CatSyncStatus: React.FC = () => {
   const {t} = useTranslation();
-  const isConnected = useNetInfo().isConnected;
+  const isConnected = useCatSelector(isConnectedSelector);
   const lastSyncTime = useCatSelector(lastUpdateSelector);
   const {colors} = useCatTheme();
   const networkError = useCatSelector(state => state.site.error);

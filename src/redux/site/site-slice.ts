@@ -214,9 +214,6 @@ const slice = createSlice({
   name: key,
   initialState,
   reducers: {
-    siteSelected: state => {
-      clearSiteData(state);
-    },
     setCurrentRouteName: (
       state,
       action: PayloadAction<{
@@ -277,6 +274,8 @@ const slice = createSlice({
       .addCase(
         fetchSiteAsyncAction.fulfilled,
         (state, action: PayloadAction<any>) => {
+          clearSiteData(state);
+
           state.loading = false;
           state.error = null;
           state.lastUpdate = moment().valueOf();
