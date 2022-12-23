@@ -17,6 +17,13 @@ const styles = StyleSheet.create({
     margin: 8,
     paddingVertical: 12,
   },
+  stopsContainer: {
+    margin: 8,
+    paddingVertical: 12,
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  },
   kpiCard: {
     paddingBottom: 0,
   },

@@ -16,11 +16,11 @@ import useCatSelector from '../../hooks/useCatSelector';
 import {sitesSelectedSiteSelector} from '../../redux/sites-list/sites-selectors';
 import {
   currentShiftLabelSelector,
+  eulaLinkSelector,
   personsSelector,
 } from '../../redux/site/site-selectors';
 
 import {CatDrawerType} from './types';
-
 import {CatExternalLink} from './external-link';
 import {CatMenuItem} from './MenuItem';
 import {useStyles} from './styles';
@@ -32,6 +32,7 @@ const CatDrawer: React.FC<CatDrawerType> = ({navigation}) => {
   const selectedSite = useCatSelector(sitesSelectedSiteSelector);
   const userName = useCatSelector(userNameSelector);
   const persons = useCatSelector(personsSelector);
+  const EULA = useCatSelector(eulaLinkSelector);
   const person = findPersonByUserName(persons, userName);
   const styles = useStyles();
   const siteName = selectedSite?.siteName ?? '';
@@ -64,17 +65,15 @@ const CatDrawer: React.FC<CatDrawerType> = ({navigation}) => {
           </Drawer.Section>
           <Drawer.Section>
             <CatExternalLink
-              /* TODO are we always sending to the EN version?
-                If other versions exist, simply changing `en` to another ISO-639 code doesn't work */
-              url="https://www.caterpillar.com/en/legal-notices/minestar-legal.html"
+              url={EULA}
               label={t('cat.legal_page_title')}
               icon={'copyright'}
             />
-            <CatExternalLink
+            {/*<CatExternalLink TODO Re-add this as part of CATPS-409, when link is provided.
               url="https://google.com"
               label={t('side_menu_help')}
               icon={'help'}
-            />
+            />*/}
           </Drawer.Section>
           <Drawer.Section>
             <CatMenuItem

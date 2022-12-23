@@ -22,6 +22,7 @@ import {sitesSelectedSiteSelector} from '../redux/sites-list/sites-selectors';
 import RouteOverviewScreen from '../screens/route-overview';
 import EquipmentDetailsScreen from '../screens/equipment-details';
 import {AreaOverviewScreen} from '../screens/area-overview/Screen';
+import {MainContext} from '../redux/site/site-slice';
 
 import CatDrawer from './drawer';
 import CatDrawerIcon from './header/DrawerIcon';
@@ -30,46 +31,81 @@ import CatSyncStatus from './header/SyncStatus';
 import AddEditObservationScreen from '../screens/add-edit-observation';
 
 const SummaryStack = createStackNavigator();
-const SummaryNavigator = () => (
-  <SummaryStack.Navigator screenOptions={{headerShown: false}}>
-    <SummaryStack.Screen name="Dashboard" component={DashboardScreen} />
-    <SummaryStack.Screen name="RouteOverview" component={RouteOverviewScreen} />
-    <SummaryStack.Screen name="AreaDetails" component={AreaOverviewScreen} />
-    <SummaryStack.Screen
-      name="EquipmentDetails"
-      component={EquipmentDetailsScreen}
-    />
-  </SummaryStack.Navigator>
-);
+const SummaryNavigator = () => {
+  const context: MainContext = 'dashboard';
+  return (
+    <SummaryStack.Navigator screenOptions={{headerShown: false}}>
+      <SummaryStack.Screen
+        name="Dashboard"
+        component={DashboardScreen}
+        initialParams={{context}}
+      />
+      <SummaryStack.Screen
+        name="RouteOverview"
+        component={RouteOverviewScreen}
+        initialParams={{context}}
+      />
+      <SummaryStack.Screen
+        name="AreaDetails"
+        component={AreaOverviewScreen}
+        initialParams={{context}}
+      />
+      <SummaryStack.Screen
+        name="EquipmentDetails"
+        component={EquipmentDetailsScreen}
+        initialParams={{context}}
+      />
+    </SummaryStack.Navigator>
+  );
+};
 
 const SiteStopsStack = createStackNavigator();
-const SiteStopsNavigator = () => (
-  <SiteStopsStack.Navigator screenOptions={{headerShown: false}}>
-    <SiteStopsStack.Screen name="SiteStops" component={SiteStopsScreen} />
-  </SiteStopsStack.Navigator>
-);
+const SiteStopsNavigator = () => {
+  const context: MainContext = 'siteStops';
+  return (
+    <SiteStopsStack.Navigator screenOptions={{headerShown: false}}>
+      <SiteStopsStack.Screen
+        name="SiteStops"
+        component={SiteStopsScreen}
+        initialParams={{context}}
+      />
+      <SiteStopsStack.Screen
+        name="EquipmentDetails"
+        component={EquipmentDetailsScreen}
+        initialParams={{context}}
+      />
+    </SiteStopsStack.Navigator>
+  );
+};
 
 const SearchStack = createStackNavigator();
-const SearchNavigator = () => (
-  <SearchStack.Navigator screenOptions={{headerShown: false}}>
-    <SearchStack.Screen name="Search" component={SearchScreen} />
-    <SearchStack.Screen
-      name="RouteOverview"
-      component={RouteOverviewScreen}
-      initialParams={{search: true}}
-    />
-    <SearchStack.Screen
-      name="AreaDetails"
-      component={AreaOverviewScreen}
-      initialParams={{search: true}}
-    />
-    <SearchStack.Screen
-      name="EquipmentDetails"
-      component={EquipmentDetailsScreen}
-      initialParams={{search: true}}
-    />
-  </SearchStack.Navigator>
-);
+const SearchNavigator = () => {
+  const context: MainContext = 'search';
+  return (
+    <SearchStack.Navigator screenOptions={{headerShown: false}}>
+      <SearchStack.Screen
+        name="Search"
+        component={SearchScreen}
+        initialParams={{context}}
+      />
+      <SearchStack.Screen
+        name="RouteOverview"
+        component={RouteOverviewScreen}
+        initialParams={{context}}
+      />
+      <SearchStack.Screen
+        name="AreaDetails"
+        component={AreaOverviewScreen}
+        initialParams={{context}}
+      />
+      <SearchStack.Screen
+        name="EquipmentDetails"
+        component={EquipmentDetailsScreen}
+        initialParams={{context}}
+      />
+    </SearchStack.Navigator>
+  );
+};
 
 const Tab = createMaterialBottomTabNavigator();
 const TabNavigator = () => {

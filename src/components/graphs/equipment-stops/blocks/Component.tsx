@@ -22,6 +22,7 @@ export const Blocks = (props: BlocksType) => {
   const navigation = useNavigation<StackNavigationProp<any>>();
   const {
     filters,
+    height: fullHeight,
     labelWidth,
     now,
     observations,
@@ -82,8 +83,8 @@ export const Blocks = (props: BlocksType) => {
     const x1 = labelWidth + boxPadding + cWidth * block.position;
     const x2 = x1 + cWidth - boxPadding;
 
-    const y1 = scale(block.start);
-    const y2 = scale(block.end);
+    const y1 = Math.max(0, scale(block.start));
+    const y2 = Math.min(fullHeight, scale(block.end));
 
     const height = y2 - y1;
     const blockPadding = 5;
@@ -100,9 +101,9 @@ export const Blocks = (props: BlocksType) => {
         height={height}
         maskPoints={maskPoints}
         points={points}
-        scale={scale}
         x1={x1}
         x2={x2}
+        y1={y1}
       />
     );
   };

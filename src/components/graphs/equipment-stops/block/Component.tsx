@@ -8,8 +8,7 @@ import {ForeignCircledIcon} from '../../../circled-icon/Component';
 import {BlockType} from './types';
 
 export const Block = (props: BlockType) => {
-  const {block, blockPadding, height, maskPoints, points, scale, x1, x2} =
-    props;
+  const {block, blockPadding, height, maskPoints, points, x1, x2, y1} = props;
   const {colors} = useCatTheme();
 
   const left = x1 + blockPadding;
@@ -39,7 +38,7 @@ export const Block = (props: BlockType) => {
           <ForeignCircledIcon
             key={`i${icon}${i}`}
             x={x1 + iconSpacing * i}
-            y={scale(block.start) - iconYOffset}
+            y={y1 - iconYOffset}
             fillColor={null}
             name={icon}
             iconColor={textColor}
@@ -47,13 +46,13 @@ export const Block = (props: BlockType) => {
         ))}
         <Text
           x={right}
-          y={scale(block.start) + durationYOffset}
+          y={y1 + durationYOffset}
           fill={textColor}
           textAnchor={'end'}>
           {block.duration}
         </Text>
         {height >= minHeightForLabel && (
-          <Text x={left} y={scale(block.start) + labelYOffset} fill={textColor}>
+          <Text x={left} y={y1 + labelYOffset} fill={textColor}>
             {block.label}
           </Text>
         )}

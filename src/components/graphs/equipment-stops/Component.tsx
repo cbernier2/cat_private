@@ -31,7 +31,7 @@ export const EquipmentStops = (props: EquipmentStopsType) => {
     .scaleTime()
     .domain([startTime, endTime])
     .range([padding, height - padding])
-    .clamp(true);
+    .clamp(false);
 
   const now = moment().valueOf();
 
@@ -45,6 +45,7 @@ export const EquipmentStops = (props: EquipmentStopsType) => {
       />
       <Blocks
         filters={filters}
+        height={height}
         labelWidth={labelWidth}
         now={now}
         observations={observations}

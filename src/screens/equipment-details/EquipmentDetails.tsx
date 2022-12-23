@@ -16,10 +16,7 @@ import CatCard from '../../components/card';
 import CatUserBanner from '../../components/user-banner';
 import {SummaryGraphs} from '../../components/summary-graphs/Component';
 import useCatSelector from '../../hooks/useCatSelector';
-import {
-  currentEquipmentSelector,
-  searchEquipmentSelector,
-} from '../../redux/site/site-selectors';
+import {getEquipmentSelector} from '../../redux/site/site-selectors';
 import {
   currentEquipmentAreaSelector,
   currentEquipmentMaterialSelector,
@@ -31,10 +28,8 @@ import MaterialSample from '../../components/material-sample';
 
 const CatEquipmentDetails = (props: any) => {
   const {t} = useTranslation();
-  const isSearch = Boolean(props.route.isSearch);
-  const equipmentSelector = isSearch
-    ? searchEquipmentSelector
-    : currentEquipmentSelector;
+  const context = props.route.context;
+  const equipmentSelector = getEquipmentSelector(context);
   const selectedEquipmentSummary = useCatSelector(equipmentSelector);
   const person = useCatSelector(state =>
     currentEquipmentPersonSelector(state, equipmentSelector),

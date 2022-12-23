@@ -1,5 +1,11 @@
-import {Moment} from 'moment';
+import {CatEquipmentSummaryWithObservations} from '../../../redux/site/helpers/transformSummaries';
+import {ObservationWithReasonType} from '../../../api/types/cat/observation';
+
+import {CatStopsFiltersType} from '../../stops-filters/types';
 
 export interface SiteStopsChartType {
-  steps: Moment[];
+  equipments: CatEquipmentSummaryWithObservations[];
+  filters: CatStopsFiltersType;
+  siteStops: ObservationWithReasonType[];
+  withSiteStopsRow?: boolean;
 }

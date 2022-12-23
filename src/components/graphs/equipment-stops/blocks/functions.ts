@@ -117,6 +117,7 @@ export const findConflicts = (a: Block, _: number, blocks: Block[]): Block => ({
 export const getEndTime = (
   entry: ObservationWithReasonType | TimelineWithReasonType,
   now: number,
+  stopAtNow: boolean = true,
 ) => {
   const minimumDuration = 15;
   const duration = moment
@@ -125,14 +126,17 @@ export const getEndTime = (
 
   return duration < minimumDuration
     ? moment(entry.startTime).add(minimumDuration, 'minutes').valueOf()
-    : Math.min(entry.endTime, now);
+    : stopAtNow
+    ? Math.min(entry.endTime, now)
+    : entry.endTime;
 };
 
 export const toBlockData = (
   entry: ObservationWithReasonType | TimelineWithReasonType,
-  prefix: 'OB' | 'TL',
+  prefix: 'BG' | 'OB' | 'SW' | 'TL',
   translations: any,
   now: number,
+  stopAtNow: boolean = true,
 ): Block => {
   const isOngoing = entry.endTime === DateUtils.MAX_TIMESTAMP_VALUE;
   const duration = isOngoing
@@ -174,9 +178,13 @@ export const toBlockData = (
     columns: 1,
     conflicts: [],
     duration,
-    end: getEndTime(entry, now),
-    icons,
+    end: getEndTime(entry, now, stopAtNow),
+    icons: icons.filter(icon => icon),
     index: -1,
+    isMaintenance:
+      entry.reasonType?.classification.toLowerCase().includes('maintenance') ??
+      false,
+    isObservation: prefix === 'OB',
     isOngoing,
     label,
     noReason,

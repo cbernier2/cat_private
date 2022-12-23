@@ -7,6 +7,7 @@ import {AreaType, CategoryType, UnitType} from '../../../api/types/cat/common';
 import {PlanArea} from '../../../api/types/cat/plan-area';
 import {Route} from '../../../api/types/cat/route';
 import {Equipment} from '../../../api/types/cat/equipment';
+import {ObservationWithReasonType} from '../../../api/types/cat/observation';
 
 import {transformEquipSummary} from './transformEquipSummary';
 import {CatSiteSummary, transformSiteSummary} from './transformSiteSummary';
@@ -22,6 +23,11 @@ export type CatEquipmentSummary = CatSiteSummary &
     lastObservedDestinationAreaId?: string;
     type: CategoryType;
   };
+
+export interface CatEquipmentSummaryWithObservations
+  extends CatEquipmentSummary {
+  observations: ObservationWithReasonType[];
+}
 
 export type CatAreaSummary = CatSiteSummary & {
   area: PlanArea;
