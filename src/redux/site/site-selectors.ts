@@ -4,6 +4,7 @@ import moment from 'moment';
 import {ConfigItemName} from '../../api/types/cat/config-item';
 import {CategoryType, CommonConstants} from '../../api/types/cat/common';
 import {CatPersons, SiteConfig} from '../../api/types';
+import {CatHaulCycle} from '../../api/types/haul-cycle';
 
 import {RootState} from '../index';
 
@@ -14,7 +15,6 @@ import {
   CatSummaries,
 } from './helpers/transformSummaries';
 import {CurrentArea, CurrentEquipment, MainContext} from './site-slice';
-import {CatHaulCycle} from '../../api/types/haul-cycle';
 
 export const lastUpdateSelector = createSelector(
   (state: RootState) => state.site.lastUpdate,
@@ -275,9 +275,14 @@ export const createSiteConfigsSelector = (
 export const siteClockIs24HourSelector = createSiteConfigsSelector(
   ConfigItemName.SETTINGS_LOCALIZATION_TIME_FORMAT_24HOUR,
 );
+
 export const systemUnitTypeSelector = createSiteConfigsSelector(
   ConfigItemName.PRODUCTION_UNIT_TYPE,
   CommonConstants.DEFAULT_UNIT_TYPE_VALUE,
+);
+
+export const eulaLinkSelector = createSiteConfigsSelector(
+  ConfigItemName.SITE_EULA_URL,
 );
 
 export const StopReasonTypesSelector = createSelector(
