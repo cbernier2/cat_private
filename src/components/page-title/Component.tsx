@@ -2,11 +2,13 @@ import React from 'react';
 import {TextStyle, TouchableOpacity, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
 import {useNavigation} from '@react-navigation/native';
+import {isString} from 'lodash';
 
 import useCatTheme from '../../hooks/useCatTheme';
 
 import CatText from '../text';
 import {MinestarIcon} from '../minestar-icon';
+import {MinestarIconName} from '../minestar-icon/types';
 
 import {PageTitleType} from './types';
 import styles from './styles';
@@ -38,7 +40,15 @@ export const PageTitle = (props: PageTitleType) => {
         onPress={handlePress}>
         <MinestarIcon name="edge_arrow_back_ios" size={16} />
       </TouchableOpacity>
-      <MinestarIcon style={styles.titleIcon} name={props.icon} size={24} />
+      {isString(props.icon) ? (
+        <MinestarIcon
+          style={styles.titleIcon}
+          name={props.icon as MinestarIconName}
+          size={24}
+        />
+      ) : (
+        props.icon
+      )}
       <CatText variant={'bodyLarge'} style={titleTextStyle}>
         {title}
       </CatText>

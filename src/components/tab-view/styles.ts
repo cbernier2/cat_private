@@ -24,6 +24,11 @@ export const useStyles = () => {
           paddingBottom: 9,
           borderColor: colors.primary,
         },
+        badge: {
+          position: 'absolute',
+          top: '90%',
+          right: '47%',
+        },
       }),
     [colors],
   );

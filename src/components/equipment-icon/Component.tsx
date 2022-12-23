@@ -6,7 +6,7 @@ import useCatSelector from '../../hooks/useCatSelector';
 import {CircledIcon, ForeignCircledIcon} from '../circled-icon/Component';
 
 export const CatEquipmentIcon = (props: CatEquipmentIconType) => {
-  const {equipmentSummary, type, size = 40, iconSize} = props;
+  const {equipmentSummary, fillColor, type, size = 40, iconSize} = props;
 
   const equipmentIconData = useCatSelector(state =>
     equipmentIconDataSelector(state, equipmentSummary),
@@ -15,6 +15,7 @@ export const CatEquipmentIcon = (props: CatEquipmentIconType) => {
   return (
     <CircledIcon
       size={size}
+      fillColor={fillColor}
       iconSize={iconSize}
       iconColor={equipmentIconData.statusColor}
       badge={getEquipmentBadge(equipmentIconData.observationCount)}

@@ -1,10 +1,13 @@
 import React, {useMemo} from 'react';
-import {CatTabViewType} from './types';
 import {TouchableOpacity, useWindowDimensions, View} from 'react-native';
+import {Badge} from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {SceneMap, TabView} from 'react-native-tab-view';
-import {useStyles} from './styles';
+
 import useCatTheme from '../../hooks/useCatTheme';
+
+import {CatTabViewType} from './types';
+import {useStyles} from './styles';
 
 const CatTabView = (props: CatTabViewType) => {
   const {extraParams = {}, pages} = props;
@@ -18,7 +21,7 @@ const CatTabView = (props: CatTabViewType) => {
     return SceneMap(pages);
   }, [pages]);
 
-  const routes = Object.keys(pages).map(iconName => ({
+  const routes: any[] = Object.keys(pages).map(iconName => ({
     key: iconName,
     ...extraParams,
   }));
@@ -49,6 +52,11 @@ const CatTabView = (props: CatTabViewType) => {
                     size={32}
                     color={active ? colors.primary : colors.onSurfaceDisabled}
                   />
+                  {route[route.key]?.badge && (
+                    <Badge style={styles.badge} size={15}>
+                      {route[route.key].badge}
+                    </Badge>
+                  )}
                 </TouchableOpacity>
               );
             })}
