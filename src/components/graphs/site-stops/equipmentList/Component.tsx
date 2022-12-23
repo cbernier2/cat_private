@@ -1,9 +1,14 @@
 import React from 'react';
 import {useTranslation} from 'react-i18next';
 import SVG, {G, Line, Polygon, Text} from 'react-native-svg';
+import {useNavigation} from '@react-navigation/native';
+import {MaterialBottomTabNavigationProp} from '@react-navigation/material-bottom-tabs';
 import * as scale from 'd3-scale';
 
 import useCatTheme from '../../../../hooks/useCatTheme';
+import {CatEquipmentSummaryWithObservations} from '../../../../redux/site/helpers/transformSummaries';
+import {MainContext, siteActions} from '../../../../redux/site/site-slice';
+import useCatDispatch from '../../../../hooks/useCatDispatch';
 
 import {CatForeignEquipmentIcon} from '../../../equipment-icon/Component';
 
@@ -16,6 +21,8 @@ export const EquipmentList = (props: EquipmentListType) => {
 
   const {t} = useTranslation();
   const {colors} = useCatTheme();
+  const dispatch = useCatDispatch();
+  const navigation = useNavigation<MaterialBottomTabNavigationProp<any>>();
 
   const headerHeight = timeLabelsHeight + (withSiteStopsRow ? rowHeight : 0);
   const height = headerHeight + equipments.length * rowHeight;
@@ -23,15 +30,24 @@ export const EquipmentList = (props: EquipmentListType) => {
   const fontSize = 12;
   const textColour = colors.onBackground;
   const stroke = colors.grey30;
+  const context: MainContext = 'siteStops';
 
   const y_scale = scale
     .scaleBand()
     .domain(equipments.map(e => e.id))
     .range([headerHeight, height]);
 
-  const navigateToEquipment = (id: string) => {
-    // TODO CATPS-58 Navigate to Equipment Screen
-    console.log(id);
+  const navigateToEquipment = (
+    equipment: CatEquipmentSummaryWithObservations,
+  ) => {
+    dispatch(
+      siteActions.setCurrentEquipment({
+        name: equipment.equipment?.name,
+        category: equipment.type,
+        context,
+      }),
+    );
+    navigation.navigate('EquipmentDetails');
   };
 
   return (
@@ -57,7 +73,7 @@ export const EquipmentList = (props: EquipmentListType) => {
           <G key={equipment.id}>
             <Polygon
               points={points}
-              onPress={() => navigateToEquipment(equipment.id)}
+              onPress={() => navigateToEquipment(equipment)}
             />
             <Line x1={0} x2={width} y={topY} stroke={stroke} />
             <CatForeignEquipmentIcon

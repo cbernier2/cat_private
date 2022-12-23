@@ -4,9 +4,8 @@ import {useSelector} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 
 import {
-  currentAreaSelector,
+  getAreaSelector,
   haulCyclesEquipmentSelector,
-  searchAreaSelector,
 } from '../../redux/site/site-selectors';
 import CatScreen from '../../components/screen';
 import {PageTitle} from '../../components/page-title/Component';
@@ -33,10 +32,10 @@ import {CategoryType, UNDEFINED_VALUE} from '../../api/types/cat/common';
 
 export const AreaOverviewScreen = (props: ScreenType) => {
   const {navigation} = props;
-  const isSearch = Boolean(props.route.params?.search);
+  const context = props.route.params?.context;
 
   const {t} = useTranslation();
-  const areaSelector = isSearch ? searchAreaSelector : currentAreaSelector;
+  const areaSelector = getAreaSelector(context);
   const selectedArea = useSelector(areaSelector);
   const areasEquipments = useCatSelector(state =>
     haulCyclesEquipmentSelector(
@@ -160,7 +159,7 @@ export const AreaOverviewScreen = (props: ScreenType) => {
       </View>
       <View style={styles.productionContainer}>
         <SummaryGraphs summary={selectedArea} />
-        <CatEquipmentList equipment={areasEquipments} isSearch={isSearch} />
+        <CatEquipmentList equipment={areasEquipments} context={context} />
       </View>
     </CatScreen>
   );

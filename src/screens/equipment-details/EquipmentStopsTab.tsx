@@ -7,8 +7,7 @@ import useCatSelector from '../../hooks/useCatSelector';
 import CatText from '../../components/text';
 import {TimelineWithReasonType} from '../../api/types/cat/production';
 import {
-  currentEquipmentSelector,
-  searchEquipmentSelector,
+  getEquipmentSelector,
   shiftEndTimeSelector,
   shiftStartTimeSelector,
   StopReasonTypesSelector,
@@ -31,10 +30,8 @@ export const EquipmentStopsTab = (props: any) => {
 
   const title = moment(shiftStartTime).format('ddd. DD');
 
-  const isSearch = Boolean(props.route.isSearch);
-  const equipmentSelector = isSearch
-    ? searchEquipmentSelector
-    : currentEquipmentSelector;
+  const context = props.route.context;
+  const equipmentSelector = getEquipmentSelector(context);
   const selectedEquipment = useCatSelector(equipmentSelector);
   const stopReasons = useCatSelector(StopReasonTypesSelector);
   const observations = useCatSelector(state =>
