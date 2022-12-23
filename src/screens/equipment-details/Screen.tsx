@@ -4,9 +4,12 @@ import {useTranslation} from 'react-i18next';
 import {getEquipmentSelector} from '../../redux/site/site-selectors';
 import useCatSelector from '../../hooks/useCatSelector';
 import {PageTitle} from '../../components/page-title/Component';
-import {getEquipmentIcon} from '../../api/types/equipment';
+import {CatEquipmentIcon} from '../../components/equipment-icon';
 import CatScreen from '../../components/screen';
 import CatTabView from '../../components/tab-view';
+import {equipmentIconDataSelector} from '../../components/equipment-icon/selectors';
+import {getEquipmentBadge} from '../../api/types/equipment';
+import {CatEquipmentSummary} from '../../redux/site/helpers/transformSummaries';
 
 import CatEquipmentDetails from './EquipmentDetails';
 import {EquipmentStopsTab} from './EquipmentStopsTab';
@@ -23,6 +26,18 @@ const EquipmentDetailsScreen = (props: ScreenType) => {
   const {t} = useTranslation();
   const equipmentSelector = getEquipmentSelector(context);
   const selectedEquipmentSummary = useCatSelector(equipmentSelector);
+  const equipmentIconData = useCatSelector(state =>
+    equipmentIconDataSelector(
+      state,
+      selectedEquipmentSummary as CatEquipmentSummary,
+    ),
+  );
+  const badge = getEquipmentBadge(equipmentIconData.observationCount);
+
+  const extraParams = {
+    context,
+    schedule: {badge},
+  };
 
   useEffect(() => {
     if (!selectedEquipmentSummary) {
@@ -37,13 +52,16 @@ const EquipmentDetailsScreen = (props: ScreenType) => {
   return (
     <CatScreen scroll={false} title={t('equipment_details_title')}>
       <PageTitle
-        icon={getEquipmentIcon(
-          selectedEquipmentSummary.equipment,
-          selectedEquipmentSummary.type,
-        )}
+        icon={
+          <CatEquipmentIcon
+            equipmentSummary={selectedEquipmentSummary}
+            fillColor={'transparent'}
+            type={selectedEquipmentSummary.type}
+          />
+        }
         title={selectedEquipmentSummary.equipment?.name}
       />
-      <CatTabView extraParams={{context}} pages={pages} />
+      <CatTabView extraParams={extraParams} pages={pages} />
     </CatScreen>
   );
 };
