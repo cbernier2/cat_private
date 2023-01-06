@@ -25,6 +25,7 @@ import {catPersistReducer} from '../utils';
 import {apiResult, catApi} from './api';
 import {transformConfig} from './helpers/transformConfig';
 import {transformSummaries} from './helpers/transformSummaries';
+import {merge} from 'lodash';
 
 export const key = 'site';
 
@@ -110,6 +111,37 @@ export const fetchShiftDataAsyncAction = createAsyncThunk(
     } catch (e) {
       return rejectWithValue(e);
     }
+  },
+);
+
+const saveObservationOfflineAsyncAction = createOfflineAsyncThunk(
+  `${key}/saveObservationOffline`,
+  async (
+    observation: Parameters<
+      typeof catApi.endpoints.saveObservation.initiate
+    >[0],
+    {dispatch, rejectWithValue},
+  ) => {
+    try {
+      await apiResult(
+        dispatch(catApi.endpoints.saveObservation.initiate(observation)),
+      );
+    } catch (e) {
+      return rejectWithValue(e);
+    }
+  },
+);
+
+export const saveObservationAsyncAction = createAsyncThunk(
+  `${key}/saveObservation`,
+  async (
+    observation: Parameters<
+      typeof catApi.endpoints.saveObservation.initiate
+    >[0],
+    {dispatch},
+  ) => {
+    return (await dispatch(saveObservationOfflineAsyncAction(observation)))
+      .payload;
   },
 );
 
@@ -316,8 +348,18 @@ const slice = createSlice({
             );
         },
       )
-      .addCase(fetchPersonsAsyncAction.fulfilled, (state, action) => {
-        state.persons = action.payload;
+      .addCase(saveObservationAsyncAction.fulfilled, (state, action) => {
+        const currentObservation = state.observations.find(
+          observation => observation.id === action.meta.arg.id,
+        );
+        if (currentObservation) {
+          merge(currentObservation, action.meta.arg);
+        } else {
+          state.observations.push(action.meta.arg as ObservationDO);
+        }
+      })
+      .addCase(saveObservationOfflineAsyncAction.rejected, (state, action) => {
+        console.error(action.payload);
       });
   },
 });

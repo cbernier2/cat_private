@@ -7,7 +7,12 @@ const CatTextInput = forwardRef<NativeTextInput, CatTextInputType>(
   ({errorMessage, ...inputProps}, ref) => {
     return (
       <>
-        <TextInput ref={ref} mode="outlined" {...inputProps} />
+        <TextInput
+          ref={ref}
+          mode="outlined"
+          error={errorMessage !== undefined}
+          {...inputProps}
+        />
         {errorMessage !== undefined && (
           <HelperText visible={errorMessage.length > 0} type="error">
             {errorMessage}

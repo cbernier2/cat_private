@@ -16,14 +16,17 @@ import CatText from '../../components/text';
 import CatCard from '../../components/card';
 import {CatEquipmentIcon} from '../../components/equipment-icon';
 import CatTextWithLabel from '../../components/text-with-label';
-import {UNDEFINED_VALUE} from '../../api/types/cat/common';
+import {CommonConstants, UNDEFINED_VALUE} from '../../api/types/cat/common';
 import {formatDuration, intervalToDuration} from 'date-fns';
 import {CatTimePicker} from '../../components/pickers/time/Component';
 import {TimeOption} from '../../api/types/cat/time-option';
 import {formatTime} from '../../utils/format';
 import moment from 'moment';
-import {catApi} from '../../redux/site/api';
 import useCatDispatch from '../../hooks/useCatDispatch';
+import {ObservationType} from '../../api/types/cat/observation';
+import {HelperText} from 'react-native-paper';
+import {saveObservationAsyncAction} from '../../redux/site/site-slice';
+import {CatError} from '../../components/error';
 
 const AddEditObservationScreen: React.FC<AddEditObservationScreenType> = ({
   route,
@@ -54,6 +57,9 @@ const AddEditObservationScreen: React.FC<AddEditObservationScreenType> = ({
   const [description, setDescription] = useState(
     storeData?.observation?.description,
   );
+  const [savePressed, setSavePressed] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [serverError, setServerError] = useState<string>();
 
   const setStartTimeOption = (newValue: TimeOption) => {
     _setStartTimeOption(newValue);
@@ -121,15 +127,33 @@ const AddEditObservationScreen: React.FC<AddEditObservationScreenType> = ({
       : UNDEFINED_VALUE;
 
   const saveObservation = async () => {
-    dispatch(
-      catApi.endpoints.saveObservation.initiate({
+    setSavePressed(true);
+
+    if (!stopReason || !startTime || !endTime || startTime >= endTime) {
+      return;
+    }
+
+    setIsSaving(true);
+    const result = await dispatch(
+      saveObservationAsyncAction({
         id: observation?.id ?? UUID(),
+        observedEquipmentId:
+          equipmentSummary.equipment?.id ?? CommonConstants.UNDEFINED_UUID,
+        lastUpdateTime: moment().valueOf(),
+        observationType: ObservationType.STOP_REASON_TYPE,
+        observedValueId: stopReason,
         startTime,
         endTime,
-        observedValueId: stopReason,
         description,
       }),
     );
+    if (result.payload) {
+      setServerError(t('cat.message_server_error'));
+    } else {
+      setServerError(undefined);
+    }
+    setIsSaving(false);
+
     navigation.goBack();
   };
 
@@ -188,6 +212,12 @@ const AddEditObservationScreen: React.FC<AddEditObservationScreenType> = ({
             setValue={value => setStartTimeOption(value)}
             list={startTimeOptions}
             label={t('cat.start_time')}
+            inputProps={{
+              errorMessage:
+                savePressed && !startTime
+                  ? t('start_time_required')
+                  : undefined,
+            }}
           />
         </View>
         <CatSpacer />
@@ -197,15 +227,30 @@ const AddEditObservationScreen: React.FC<AddEditObservationScreenType> = ({
             setValue={value => setEndTimeOption(value)}
             list={endTimeOptions}
             label={t('cat.end_time')}
+            inputProps={{
+              errorMessage:
+                savePressed && !endTime ? t('end_time_required') : undefined,
+            }}
           />
         </View>
       </View>
+      {savePressed && startTime && endTime && startTime >= endTime && (
+        <HelperText type="error">
+          {t('observation_error_start_before_end')}
+        </HelperText>
+      )}
       <CatSpacer />
       <CatDropDown
         value={stopReason}
         setValue={value => setStopReason(value)}
         list={stopReasons}
         label={t('cat.stop_reason')}
+        inputProps={{
+          errorMessage:
+            savePressed && !stopReason
+              ? t('cat.stop_reason_required')
+              : undefined,
+        }}
       />
       <CatSpacer />
       <CatTextInput
@@ -216,9 +261,8 @@ const AddEditObservationScreen: React.FC<AddEditObservationScreenType> = ({
         onChangeText={newDescription => setDescription(newDescription)}
       />
       <CatSpacer />
-      <CatButton
-        onPress={saveObservation}
-        disabled={!startTime || !endTime || !stopReason}>
+      <CatError message={serverError} />
+      <CatButton onPress={saveObservation} loading={isSaving}>
         {isEditing ? t('save_observation') : t('cat.add_observation')}
       </CatButton>
     </CatScreen>

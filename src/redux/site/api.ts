@@ -126,7 +126,10 @@ export const catApi = createApi({
       }),
     }),
 
-    saveObservation: builder.query<ObservationDO[], Partial<ObservationDO>>({
+    saveObservation: builder.query<
+      ObservationDO[],
+      Partial<ObservationDO> & {id: string}
+    >({
       query: body => ({
         path: 'observation/save',
         method: 'POST',

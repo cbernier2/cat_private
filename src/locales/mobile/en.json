@@ -23,5 +23,8 @@
     "search_recent": "Recent",
     "search_clear_all": "Clear All",
     "save_observation": "Save Observation",
-    "edit_observation": "Edit Observation"
+    "edit_observation": "Edit Observation",
+    "start_time_required": "Start Time is required",
+    "end_time_required": "End Time is required",
+    "observation_error_start_before_end": "Start Time must be before End Time"
 }
