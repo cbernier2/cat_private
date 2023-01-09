@@ -2,6 +2,7 @@ import React, {useEffect, useMemo, useState} from 'react';
 import {View} from 'react-native';
 import {ActivityIndicator, List} from 'react-native-paper';
 import {useTranslation} from 'react-i18next';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import {CatError} from '../../components/error';
 import CatScreen from '../../components/screen';
@@ -22,10 +23,10 @@ import {
 import {siteIsLoadingSelector} from '../../redux/site/site-selectors';
 import useCatStore from '../../hooks/useCatStore';
 import {fetchSiteAsyncAction} from '../../redux/site/site-slice';
+import {isConnectedSelector} from '../../redux/network/network-selectors';
 
 import {SitesListTypes} from './types';
 import styles from './styles';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 export const SitesListScreen: React.FC<SitesListTypes> = props => {
   const root = Boolean(props.route.params?.root);
@@ -33,11 +34,18 @@ export const SitesListScreen: React.FC<SitesListTypes> = props => {
   const dispatch = useCatDispatch();
   const store = useCatStore();
   const error = useCatSelector(sitesErrorSelector);
+  const isConnected = useCatSelector(isConnectedSelector);
   const loadingSites = useCatSelector(sitesLoadingSelector);
   const loadingSelectedSite = useCatSelector(siteIsLoadingSelector);
   const isLoading = loadingSites || loadingSelectedSite;
   const sites = useCatSelector(sitesSitesSelector);
   const [filter, setFilter] = useState<string>('');
+
+  const errorMessage = !isConnected
+    ? t('site_select_no_connection')
+    : error
+    ? t(error)
+    : null;
 
   useEffect(() => {
     dispatch(fetchSitesAsyncAction());
@@ -88,7 +96,7 @@ export const SitesListScreen: React.FC<SitesListTypes> = props => {
             animating={isLoading}
           />
         )}
-        <CatError style={styles.mh} message={error && t(error)} />
+        <CatError style={styles.mh} message={errorMessage} />
       </View>
       <KeyboardAwareScrollView keyboardShouldPersistTaps="always">
         <List.Section style={styles.mh}>

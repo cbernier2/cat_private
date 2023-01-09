@@ -21,5 +21,6 @@
     "search_no_results": "No results found",
     "no_shifts": "No shifts selected",
     "search_recent": "Recent",
-    "search_clear_all": "Clear All"
+    "search_clear_all": "Clear All",
+    "site_select_no_connection": "No connection, cannot fetch or change sites."
 }
