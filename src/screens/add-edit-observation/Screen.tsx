@@ -28,6 +28,7 @@ import {HelperText} from 'react-native-paper';
 import {saveObservationAsyncAction} from '../../redux/site/site-slice';
 import {CatError} from '../../components/error';
 import {sitesSelectedSiteSelector} from '../../redux/sites-list/sites-selectors';
+import {DateUtils} from '../../utils/date-utils';
 
 const AddEditObservationScreen: React.FC<AddEditObservationScreenType> = ({
   route,
@@ -117,12 +118,19 @@ const AddEditObservationScreen: React.FC<AddEditObservationScreenType> = ({
       observation,
       observations,
     );
-  const startTimeStr = startTime
-    ? formatTime(moment(startTime))
-    : UNDEFINED_VALUE;
-  const endTimeStr = endTime ? formatTime(moment(endTime)) : UNDEFINED_VALUE;
+  const startTimeStr =
+    startTime && startTime !== DateUtils.MAX_TIMESTAMP_VALUE
+      ? formatTime(moment(startTime))
+      : UNDEFINED_VALUE;
+  const endTimeStr =
+    endTime && endTime !== DateUtils.MAX_TIMESTAMP_VALUE
+      ? formatTime(moment(endTime))
+      : UNDEFINED_VALUE;
   const durationStr =
-    startTime && endTime
+    startTime &&
+    endTime &&
+    startTime !== DateUtils.MAX_TIMESTAMP_VALUE &&
+    endTime !== DateUtils.MAX_TIMESTAMP_VALUE
       ? formatDuration(intervalToDuration({start: startTime, end: endTime}), {
           format: ['hours', 'minutes'],
         })
