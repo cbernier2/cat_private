@@ -16,12 +16,13 @@ const CatTextWithIcon: React.FC<CatTextWithIconType> = props => {
     iconColor = colors.onSurface,
     iconSize = 24,
     variant = 'bodyLarge',
+    containerStyle,
     style: textStyle,
     ...textProps
   } = props;
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, containerStyle]}>
       {isString(icon) ? (
         <MinestarIcon
           name={icon as MinestarIconName}

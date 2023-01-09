@@ -16,6 +16,7 @@ import {
 } from '../../redux/site/site-slice';
 
 import {DebugScreenType} from './types';
+import CatSpacer from '../../components/spacer';
 
 const DebugScreen: React.FC<DebugScreenType> = props => {
   const dispatch = useCatDispatch();
@@ -50,6 +51,8 @@ const DebugScreen: React.FC<DebugScreenType> = props => {
 
   return (
     <CatScreen safeAreaEdges={['bottom', 'top', 'left', 'right']}>
+      <CatSpacer />
+      <CatSpacer />
       <CatButton onPress={() => dispatch(appActions.toggleOffline())}>
         Emulate offline ({isEmulatingOffline ? 'On' : 'Off'})
       </CatButton>

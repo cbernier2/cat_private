@@ -96,7 +96,7 @@ export namespace EquipmentTypeUtils {
    * @param type the internal Edge Equipment Type
    */
   export function toUnifiedEquipmentType(
-    type: EquipmentType,
+    type: EquipmentType | undefined,
   ): UnifiedEquipmentType | null {
     switch (type) {
       case EquipmentType.DOZER:

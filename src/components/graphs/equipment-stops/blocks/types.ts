@@ -15,6 +15,7 @@ export interface BlocksType {
   scale: ScaleTime<any, any>;
   timelines: TimelineWithReasonType[];
   width: number;
+  equipmentId: string;
 }
 
 export interface Block {
@@ -32,4 +33,5 @@ export interface Block {
   patternId: string;
   position: number;
   start: number;
+  onPress?: () => any;
 }

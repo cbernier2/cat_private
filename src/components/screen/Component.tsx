@@ -3,8 +3,9 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {CatScreenType} from './types';
 import styles from './styles';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
-import {ScrollView, TouchableWithoutFeedback, View} from 'react-native';
+import {TouchableWithoutFeedback, View} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const CatScreen: React.FC<CatScreenType> = ({
   children,
@@ -18,7 +19,8 @@ const CatScreen: React.FC<CatScreenType> = ({
   useFocusEffect(
     useCallback(() => {
       if (title) {
-        navigation.getParent()?.getParent()?.setOptions({
+        let titleNavigation = navigation.getParent()?.getParent() || navigation;
+        titleNavigation?.setOptions({
           title,
         });
       }
@@ -54,9 +56,11 @@ const CatScreen: React.FC<CatScreenType> = ({
         <View style={styles.triggerContainer} />
       </TouchableWithoutFeedback>
       {scroll ? (
-        <ScrollView alwaysBounceVertical={false}>
+        <KeyboardAwareScrollView
+          alwaysBounceVertical={false}
+          keyboardShouldPersistTaps="always">
           <View style={styles.scrollViewContent}>{children}</View>
-        </ScrollView>
+        </KeyboardAwareScrollView>
       ) : (
         <>{children}</>
       )}

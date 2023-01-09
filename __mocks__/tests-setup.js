@@ -30,6 +30,11 @@ jest.mock('@react-navigation/native', () => {
   };
 });
 
+jest.mock('react-native-keyboard-aware-scroll-view', () => {
+  const KeyboardAwareScrollView = ({children}) => children;
+  return {KeyboardAwareScrollView};
+});
+
 NativeModules.RNCNetInfo = {
   getCurrentConnectivity: jest.fn(),
   isConnectionMetered: jest.fn(),

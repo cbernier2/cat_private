@@ -3,12 +3,7 @@ import {
   ProductionSummary,
 } from '../../../api/types/cat/production';
 import {Material} from '../../../api/types/cat/material';
-import {
-  AreaType,
-  CategoryType,
-  EquipmentType,
-  UnitType,
-} from '../../../api/types/cat/common';
+import {AreaType, CategoryType, UnitType} from '../../../api/types/cat/common';
 import {PlanArea} from '../../../api/types/cat/plan-area';
 import {Route} from '../../../api/types/cat/route';
 import {Equipment} from '../../../api/types/cat/equipment';
@@ -26,7 +21,7 @@ export type CatEquipmentSummary = CatSiteSummary &
     lastObservedDumpAreaId?: string;
     lastObservedMaterialId?: string;
     lastObservedDestinationAreaId?: string;
-    type: EquipmentType;
+    type: CategoryType;
   };
 
 export interface CatEquipmentSummaryWithObservations

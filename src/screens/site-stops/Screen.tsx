@@ -21,7 +21,7 @@ import {
 import {ScreenType} from './types';
 import {useStyles} from './styles';
 
-const SiteStopsScreen: React.FC<ScreenType> = () => {
+const SiteStopsScreen: React.FC<ScreenType> = ({navigation}) => {
   const {t} = useTranslation();
   const styles = useStyles();
   const [filters, setFilters] = useState<CatStopsFiltersType>({
@@ -37,6 +37,10 @@ const SiteStopsScreen: React.FC<ScreenType> = () => {
   const equipmentsGroups = ArrayUtils.splitArray(equipments, 10);
 
   const data = currentShift && equipments.length > 0;
+
+  const addObservation = () => {
+    navigation.navigate('AddEditObservation');
+  };
 
   return (
     <CatScreen scroll={false} title={t('cat.site_stops')}>
@@ -54,6 +58,7 @@ const SiteStopsScreen: React.FC<ScreenType> = () => {
         <>
           <View style={styles.headerContainer}>
             <CatButton
+              onPress={addObservation}
               labelStyle={styles.addButtonLabel}
               style={styles.addButton}>
               {'+'}

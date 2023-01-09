@@ -23,6 +23,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import useCatTheme from '../../hooks/useCatTheme';
 import {useCatSearchFilter} from './useCatSearchFilter';
 import useCatDispatch from '../../hooks/useCatDispatch';
+import CatSpacer from '../../components/spacer';
 
 const SearchScreen = () => {
   const dispatch = useCatDispatch();
@@ -57,6 +58,7 @@ const SearchScreen = () => {
           onChangeText={value => setFilter(value)}
           ref={textInputRef}
         />
+        <CatSpacer />
         {filteredSearchHistory.length > 0 && (
           <View style={styles.historyHeader}>
             <CatText>{t('search_recent')}</CatText>

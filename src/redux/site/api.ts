@@ -125,5 +125,17 @@ export const catApi = createApi({
         queryParams,
       }),
     }),
+
+    saveObservation: builder.query<
+      ObservationDO[],
+      Partial<ObservationDO> & {id: string}
+    >({
+      query: body => ({
+        path: 'observation/save',
+        method: 'POST',
+        body,
+        urlFormEncoded: true,
+      }),
+    }),
   }),
 });

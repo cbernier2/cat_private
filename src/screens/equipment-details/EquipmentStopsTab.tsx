@@ -37,10 +37,15 @@ export const EquipmentStopsTab = (props: any) => {
   const observations = useCatSelector(state =>
     currentEquipmentObservationsSelector(state, equipmentSelector),
   );
+
+  if (!selectedEquipment) {
+    return null;
+  }
+
   const timelines: TimelineWithReasonType[] = [
-    ...(selectedEquipment?.maintenanceTimeline ?? []),
-    ...(selectedEquipment?.operationalDelayTimeline ?? []),
-    ...(selectedEquipment?.standbyTimeline ?? []),
+    ...(selectedEquipment.maintenanceTimeline ?? []),
+    ...(selectedEquipment.operationalDelayTimeline ?? []),
+    ...(selectedEquipment.standbyTimeline ?? []),
   ].map(tl => ({
     ...tl,
     reasonType: stopReasons.find(rt => tl.stopReasonTypeId === rt.id),
@@ -62,6 +67,7 @@ export const EquipmentStopsTab = (props: any) => {
           observations={observations}
           startTime={shiftStartTime}
           timelines={timelines}
+          equipmentId={selectedEquipment.id}
         />
       </ScrollView>
     </View>

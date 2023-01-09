@@ -1,4 +1,4 @@
-import {EquipmentOperationalStatus} from './types/cat/common';
+import {CategoryType, EquipmentOperationalStatus} from './types/cat/common';
 import moment from 'moment/moment';
 import {ObservationUtils} from './observation';
 import {EquipmentSummaryUtils} from './types/cat/production';
@@ -7,7 +7,10 @@ import {
   StopReasonTypeDO,
 } from './types/cat/stop-reason';
 import {CatTheme} from '../themes/types';
-import {CatEquipmentSummary} from '../redux/site/helpers/transformSummaries';
+import {
+  CatEquipmentSummary,
+  CatSummaries,
+} from '../redux/site/helpers/transformSummaries';
 import {ObservationDO} from './types/cat/observation';
 import {Shift, ShiftType} from './types/cat/shift';
 import {findShiftType} from './shift';
@@ -72,4 +75,21 @@ export const getEquipmentStatusColor = (
     case StopReasonClassification.SCHEDULED_MAINTENANCE:
       return colors.error;
   }
+};
+
+export const equipmentTypeToSummary = (
+  productionSummary: CatSummaries | undefined,
+  categoryType: CategoryType,
+) => {
+  switch (categoryType) {
+    case CategoryType.LOAD_EQUIPMENT:
+      return productionSummary?.loadEquipSummaries;
+    case CategoryType.HAUL_EQUIPMENT:
+      return productionSummary?.haulEquipSummaries;
+    case CategoryType.SUPPORT_EQUIPMENT:
+      return productionSummary?.supportEquipSummaries;
+    case CategoryType.WATER_TRUCK_EQUIPMENT:
+      return productionSummary?.waterTruckSummaries;
+  }
+  return undefined;
 };
