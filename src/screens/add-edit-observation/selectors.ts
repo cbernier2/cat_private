@@ -20,6 +20,7 @@ import {
   observationsSelector,
 } from '../../redux/site/site-selectors';
 import {ObservationDO} from '../../api/types/cat/observation';
+import {CatEquipmentSummary} from '../../redux/site/helpers/transformSummaries';
 
 export const canAssignToManageObject = (
   stopReasonType: StopReasonTypeDO,
@@ -169,17 +170,30 @@ export const addEditObservationSelector = createSelector(
     stopReasonTypes,
     currentShift,
   ) => {
-    const observation = observations.find(it => it.id === observationId);
-    if (observation) {
-      equipmentId = observation.observedEquipmentId;
+    if (!currentShift) {
+      return null;
     }
 
-    const equipmentSummary =
-      equipmentId &&
-      equipmentSummaries.find(summary => summary.equipment?.id === equipmentId);
+    let equipmentSummary: CatEquipmentSummary | undefined;
+    let observation: ObservationDO | undefined;
 
-    if (!equipmentSummary || !currentShift) {
-      return null;
+    if (observationId) {
+      observation = observations.find(it => it.id === observationId);
+      if (observation && observation.observedEquipmentId) {
+        equipmentSummary = equipmentSummaries.find(
+          summary => summary.equipment?.id === observation?.observedEquipmentId,
+        );
+        if (!equipmentSummary) {
+          return null;
+        }
+      }
+    } else if (equipmentId) {
+      equipmentSummary = equipmentSummaries.find(
+        summary => summary.equipment?.id === equipmentId,
+      );
+      if (!equipmentSummary) {
+        return null;
+      }
     }
 
     const stopReasons = stopReasonTypes
@@ -187,10 +201,11 @@ export const addEditObservationSelector = createSelector(
         stopReasonType =>
           stopReasonType.id !== CommonConstants.UNDEFINED_TERRAIN_DELAY_UUID &&
           (stopReasonType.siteWide ||
-            canAssignToManageObject(
-              stopReasonType,
-              equipmentSummary.equipment?.type,
-            )),
+            (equipmentSummary &&
+              canAssignToManageObject(
+                stopReasonType,
+                equipmentSummary.equipment?.type,
+              ))),
       )
       .sort((a, b) => a.name.localeCompare(b.name))
       .map(stopReasonType => ({

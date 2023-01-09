@@ -27,6 +27,7 @@ import {ObservationType} from '../../api/types/cat/observation';
 import {HelperText} from 'react-native-paper';
 import {saveObservationAsyncAction} from '../../redux/site/site-slice';
 import {CatError} from '../../components/error';
+import {sitesSelectedSiteSelector} from '../../redux/sites-list/sites-selectors';
 
 const AddEditObservationScreen: React.FC<AddEditObservationScreenType> = ({
   route,
@@ -37,6 +38,7 @@ const AddEditObservationScreen: React.FC<AddEditObservationScreenType> = ({
   const storeData = useCatSelector(state =>
     addEditObservationSelector(state, route.params ?? {}),
   );
+  const selectedSite = useCatSelector(sitesSelectedSiteSelector);
   const [stopReason, setStopReason] = useState<string | undefined>(
     storeData?.observation?.observedValueId,
   );
@@ -137,8 +139,9 @@ const AddEditObservationScreen: React.FC<AddEditObservationScreenType> = ({
     const result = await dispatch(
       saveObservationAsyncAction({
         id: observation?.id ?? UUID(),
-        observedEquipmentId:
-          equipmentSummary.equipment?.id ?? CommonConstants.UNDEFINED_UUID,
+        observedEquipmentId: equipmentSummary
+          ? equipmentSummary.equipment?.id ?? ''
+          : CommonConstants.UNDEFINED_UUID,
         lastUpdateTime: moment().valueOf(),
         observationType: ObservationType.STOP_REASON_TYPE,
         observedValueId: stopReason,
@@ -192,12 +195,18 @@ const AddEditObservationScreen: React.FC<AddEditObservationScreenType> = ({
         <CatSpacer />
         <View style={styles.previewRow2}>
           <View style={styles.equipmentName}>
-            <CatEquipmentIcon
-              equipmentSummary={equipmentSummary}
-              type={equipmentSummary.type}
-            />
-            <CatSpacer width={8} />
-            <CatText>{equipmentSummary.equipment?.name}</CatText>
+            {equipmentSummary ? (
+              <>
+                <CatEquipmentIcon
+                  equipmentSummary={equipmentSummary}
+                  type={equipmentSummary.type}
+                />
+                <CatSpacer width={8} />
+                <CatText>{equipmentSummary.equipment?.name}</CatText>
+              </>
+            ) : (
+              <CatText>{selectedSite?.siteName}</CatText>
+            )}
           </View>
           <CatTextWithLabel label={`${startTimeStr} - ${endTimeStr}`}>
             {durationStr}
