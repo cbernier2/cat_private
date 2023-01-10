@@ -30,6 +30,20 @@ import {CatError} from '../../components/error';
 import {sitesSelectedSiteSelector} from '../../redux/sites-list/sites-selectors';
 import {DateUtils} from '../../utils/date-utils';
 
+const timestampToString = (timestamp: number | undefined) =>
+  timestamp
+    ? timestamp === DateUtils.MAX_TIMESTAMP_VALUE
+      ? '∞'
+      : formatTime(moment(timestamp))
+    : UNDEFINED_VALUE;
+
+const timestampToTimeOption = (timestamp: number | undefined) =>
+  timestamp
+    ? timestamp === DateUtils.MAX_TIMESTAMP_VALUE
+      ? TimeOption.ON_GOING
+      : TimeOption.CUSTOM
+    : undefined;
+
 const AddEditObservationScreen: React.FC<AddEditObservationScreenType> = ({
   route,
   navigation,
@@ -53,9 +67,9 @@ const AddEditObservationScreen: React.FC<AddEditObservationScreenType> = ({
   );
   const [startTimeOption, _setStartTimeOption] = useState<
     TimeOption | undefined
-  >(storeData?.observation?.startTime ? TimeOption.CUSTOM : undefined);
+  >(timestampToTimeOption(storeData?.observation?.startTime));
   const [endTimeOption, _setEndTimeOption] = useState<TimeOption | undefined>(
-    storeData?.observation?.endTime ? TimeOption.CUSTOM : undefined,
+    timestampToTimeOption(storeData?.observation?.endTime),
   );
   const [description, setDescription] = useState(
     storeData?.observation?.description,
@@ -118,22 +132,15 @@ const AddEditObservationScreen: React.FC<AddEditObservationScreenType> = ({
       observation,
       observations,
     );
-  const startTimeStr =
-    startTime && startTime !== DateUtils.MAX_TIMESTAMP_VALUE
-      ? formatTime(moment(startTime))
-      : UNDEFINED_VALUE;
-  const endTimeStr =
-    endTime && endTime !== DateUtils.MAX_TIMESTAMP_VALUE
-      ? formatTime(moment(endTime))
-      : UNDEFINED_VALUE;
+  const startTimeStr = timestampToString(startTime);
+  const endTimeStr = timestampToString(endTime);
   const durationStr =
-    startTime &&
-    endTime &&
-    startTime !== DateUtils.MAX_TIMESTAMP_VALUE &&
-    endTime !== DateUtils.MAX_TIMESTAMP_VALUE
-      ? formatDuration(intervalToDuration({start: startTime, end: endTime}), {
-          format: ['hours', 'minutes'],
-        })
+    startTime && endTime
+      ? endTime !== DateUtils.MAX_TIMESTAMP_VALUE
+        ? formatDuration(intervalToDuration({start: startTime, end: endTime}), {
+            format: ['hours', 'minutes'],
+          })
+        : '∞'
       : UNDEFINED_VALUE;
 
   const saveObservation = async () => {

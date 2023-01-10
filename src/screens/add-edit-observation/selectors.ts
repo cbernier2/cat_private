@@ -219,7 +219,7 @@ export const addEditObservationSelector = createSelector(
       observations,
       observation,
       startTimeOptions: getStartTimeOptions(currentShift, true),
-      endTimeOptions: getEndTimeOptions(currentShift),
+      endTimeOptions: getEndTimeOptions(currentShift, observation),
       stopReasons,
     };
   },

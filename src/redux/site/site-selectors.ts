@@ -15,6 +15,7 @@ import {
   CatSummaries,
 } from './helpers/transformSummaries';
 import {CurrentArea, CurrentEquipment, MainContext} from './site-slice';
+import {equipmentTypeToSummary} from '../../api/equipment';
 
 export const lastUpdateSelector = createSelector(
   (state: RootState) => state.site.lastUpdate,
@@ -93,23 +94,6 @@ export const getAreaSelector = (context: MainContext): AreaSelector => {
     default:
       return currentAreaSelector;
   }
-};
-
-const equipmentTypeToSummary = (
-  productionSummary: CatSummaries | undefined,
-  categoryType: CategoryType,
-) => {
-  switch (categoryType) {
-    case CategoryType.LOAD_EQUIPMENT:
-      return productionSummary?.loadEquipSummaries;
-    case CategoryType.HAUL_EQUIPMENT:
-      return productionSummary?.haulEquipSummaries;
-    case CategoryType.SUPPORT_EQUIPMENT:
-      return productionSummary?.supportEquipSummaries;
-    case CategoryType.WATER_TRUCK_EQUIPMENT:
-      return productionSummary?.waterTruckSummaries;
-  }
-  return undefined;
 };
 
 const returnEquipment = (
