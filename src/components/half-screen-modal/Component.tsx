@@ -1,24 +1,26 @@
 import React from 'react';
-import {TouchableWithoutFeedback, View} from 'react-native';
-import {BlurView} from '@react-native-community/blur';
 
 import {HalfScreenModalType} from './types';
 import {useStyles} from './styles';
+import {Modal, Portal} from 'react-native-paper';
 
-export const HalfScreenModal: React.FC<HalfScreenModalType> = props => {
-  const {ratio = '1:1'} = props;
+export const HalfScreenModal: React.FC<HalfScreenModalType> = ({
+  ratio = 0.5,
+  children,
+  visible,
+  onDismiss,
+  contentStyle,
+}) => {
   const styles = useStyles(ratio);
 
-  const dismiss = () => {
-    props.navigation.pop();
-  };
-
   return (
-    <View style={styles.fill}>
-      <TouchableWithoutFeedback style={styles.top} onPress={dismiss}>
-        <BlurView style={styles.fill} blurAmount={1} blurType="material" />
-      </TouchableWithoutFeedback>
-      <View style={styles.bottom}>{props.children}</View>
-    </View>
+    <Portal>
+      <Modal
+        contentContainerStyle={[contentStyle, styles.contentContainer]}
+        visible={visible}
+        onDismiss={onDismiss}>
+        {children}
+      </Modal>
+    </Portal>
   );
 };

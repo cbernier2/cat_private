@@ -1,28 +1,18 @@
-import {ComponentProps, ReactNode} from 'react';
-import {TextStyle, ViewStyle} from 'react-native';
+import {ComponentProps} from 'react';
+import {ViewStyle} from 'react-native';
 import CatTextInput from '../text-input';
+import {CatSelectListItems, CatSelectListValueType} from '../select-list/types';
 
 export interface CatDropDownType {
-  value: any;
-  setValue: (_value: any) => void;
-  label?: string | undefined;
-  list: Array<{
-    label: string;
-    value: string | number;
-    custom?: ReactNode;
-  }>;
+  value: CatSelectListValueType;
+  setValue: (_value: CatSelectListValueType) => void;
+  label: string;
+  list: CatSelectListItems;
   visible?: boolean;
-  multiSelect?: boolean;
   onDismiss?: () => void;
   showDropDown?: () => void;
-  dropDownContainerMaxHeight?: number;
-  dropDownContainerHeight?: number;
   accessibilityLabel?: string;
   placeholder?: string | undefined;
   dropDownStyle?: ViewStyle;
-  dropDownItemSelectedTextStyle?: TextStyle;
-  dropDownItemSelectedStyle?: ViewStyle;
-  dropDownItemStyle?: ViewStyle;
-  dropDownItemTextStyle?: TextStyle;
   inputProps?: ComponentProps<typeof CatTextInput>;
 }
