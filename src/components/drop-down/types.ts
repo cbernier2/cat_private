@@ -1,13 +1,16 @@
 import {ComponentProps} from 'react';
 import {ViewStyle} from 'react-native';
 import CatTextInput from '../text-input';
-import {CatSelectListItems, CatSelectListValueType} from '../select-list/types';
+import {CatSelectListValueType} from '../select-list/types';
 
 export interface CatDropDownType {
   value: CatSelectListValueType;
   setValue: (_value: CatSelectListValueType) => void;
   label: string;
-  list: CatSelectListItems;
+  list: {
+    value: any;
+    label: string;
+  }[];
   visible?: boolean;
   onDismiss?: () => void;
   showDropDown?: () => void;

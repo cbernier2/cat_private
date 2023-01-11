@@ -10,4 +10,5 @@ export interface SiteWideStopsType {
   width: number;
   x_scale: ScaleTime<any, any>;
   y_scale?: ScaleBand<any>;
+  onSelect: () => void;
 }

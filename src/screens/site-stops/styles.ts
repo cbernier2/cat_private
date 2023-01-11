@@ -60,6 +60,18 @@ export const useStyles = () => {
         equipmentList: {
           width: 110,
         },
+        observationListItem: {
+          padding: 16,
+        },
+        observationListItemTimeText: {
+          marginTop: 4,
+        },
+        observationListAdd: {
+          paddingVertical: 16,
+        },
+        observationListAddText: {
+          fontWeight: 'bold',
+        },
       }),
     [colors],
   );

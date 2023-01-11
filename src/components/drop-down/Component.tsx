@@ -6,7 +6,6 @@ import React, {forwardRef, useEffect, useState} from 'react';
 import {CatDropDownType} from './types';
 import CatTextInput from '../text-input';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {HalfScreenModal} from '../half-screen-modal/Component';
 import {CatSelectList} from '../select-list/Component';
 
 const CatDropDown = forwardRef<View, CatDropDownType>((props, ref) => {
@@ -60,18 +59,15 @@ const CatDropDown = forwardRef<View, CatDropDownType>((props, ref) => {
           />
         </View>
       </TouchableRipple>
-      <HalfScreenModal
+      <CatSelectList
         visible={visible}
+        list={list}
+        value={value}
+        setValue={setValue}
+        title={label}
         onDismiss={onDismiss}
-        contentStyle={dropDownStyle}>
-        <CatSelectList
-          list={list}
-          value={value}
-          setValue={setValue}
-          title={label}
-          onDismiss={onDismiss}
-        />
-      </HalfScreenModal>
+        contentViewStyle={dropDownStyle}
+      />
     </>
   );
 });

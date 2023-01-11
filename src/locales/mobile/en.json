@@ -27,5 +27,6 @@
     "edit_observation": "Edit Observation",
     "start_time_required": "Start time is required",
     "end_time_required": "End time is required",
-    "observation_error_start_before_end": "Start Time must be before End Time"
+    "observation_error_start_before_end": "Start Time must be before End Time",
+    "select_observation_title": "Select an observation"
 }

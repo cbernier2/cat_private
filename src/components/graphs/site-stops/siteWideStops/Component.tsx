@@ -17,6 +17,7 @@ export const SiteWideStops = (props: SiteWideStopsType) => {
     width,
     x_scale,
     y_scale,
+    onSelect,
   } = props;
 
   if (!display) {
@@ -37,7 +38,7 @@ export const SiteWideStops = (props: SiteWideStopsType) => {
   };
 
   return (
-    <>
+    <G onPress={onSelect}>
       {stops.map((stop, i) => {
         const {x1, x2, y1, y2} = getCoordinates(stop);
         const points = `${x1},${y1} ${x1},${y2} ${x2},${y2} ${x2},${y1}`;
@@ -55,6 +56,6 @@ export const SiteWideStops = (props: SiteWideStopsType) => {
           </G>
         );
       })}
-    </>
+    </G>
   );
 };

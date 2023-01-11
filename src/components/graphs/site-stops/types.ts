@@ -8,4 +8,5 @@ export interface SiteStopsChartType {
   filters: CatStopsFiltersType;
   siteStops: ObservationWithReasonType[];
   withSiteStopsRow?: boolean;
+  onSelect: () => void;
 }

@@ -10,8 +10,15 @@ import {StopData} from '../stopData/Component';
 import {EquipmentStopsType} from './types';
 
 export const EquipmentStops = (props: EquipmentStopsType) => {
-  const {equipmentId, equipmentStops, siteWideStops, width, x_scale, y_scale} =
-    props;
+  const {
+    equipmentId,
+    equipmentStops,
+    siteWideStops,
+    width,
+    x_scale,
+    y_scale,
+    onSelect,
+  } = props;
 
   const bigHeight = 30;
   const smallHeight = 6;
@@ -46,7 +53,7 @@ export const EquipmentStops = (props: EquipmentStopsType) => {
   };
 
   return (
-    <>
+    <G onPress={() => onSelect(equipmentId)}>
       <SiteWideStops
         equipmentId={equipmentId}
         stops={siteWideStops}
@@ -71,6 +78,6 @@ export const EquipmentStops = (props: EquipmentStopsType) => {
           </G>
         );
       })}
-    </>
+    </G>
   );
 };

@@ -178,8 +178,13 @@ export const addEditObservationSelector = createSelector(
     let observation: ObservationDO | undefined;
 
     if (observationId) {
+      console.log('looking for:' + observationId);
       observation = observations.find(it => it.id === observationId);
-      if (observation && observation.observedEquipmentId) {
+      if (
+        observation &&
+        observation.observedEquipmentId &&
+        observation.observedEquipmentId !== CommonConstants.UNDEFINED_UUID
+      ) {
         equipmentSummary = equipmentSummaries.find(
           summary => summary.equipment?.id === observation?.observedEquipmentId,
         );

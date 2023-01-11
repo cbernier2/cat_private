@@ -9,4 +9,5 @@ export interface EquipmentStopsType {
   width: number;
   x_scale: ScaleTime<any, any>;
   y_scale: ScaleBand<any>;
+  onSelect: (equipmentId: string) => void;
 }

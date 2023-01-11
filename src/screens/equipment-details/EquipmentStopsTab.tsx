@@ -10,7 +10,7 @@ import {
   getEquipmentSelector,
   shiftEndTimeSelector,
   shiftStartTimeSelector,
-  StopReasonTypesSelector,
+  stopReasonTypesSelector,
 } from '../../redux/site/site-selectors';
 import CatStopsFilters from '../../components/stops-filters';
 import {CatStopsFiltersType} from '../../components/stops-filters/types';
@@ -33,7 +33,7 @@ export const EquipmentStopsTab = (props: any) => {
   const context = props.route.context;
   const equipmentSelector = getEquipmentSelector(context);
   const selectedEquipment = useCatSelector(equipmentSelector);
-  const stopReasons = useCatSelector(StopReasonTypesSelector);
+  const stopReasons = useCatSelector(stopReasonTypesSelector);
   const observations = useCatSelector(state =>
     currentEquipmentObservationsSelector(state, equipmentSelector),
   );

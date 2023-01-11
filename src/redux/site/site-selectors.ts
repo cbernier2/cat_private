@@ -269,11 +269,6 @@ export const eulaLinkSelector = createSiteConfigsSelector(
   ConfigItemName.SITE_EULA_URL,
 );
 
-export const StopReasonTypesSelector = createSelector(
-  (state: RootState) => state.site.stopReasonTypes,
-  stopReasonTypes => stopReasonTypes,
-);
-
 export const haulCyclesEquipmentSelector = createSelector(
   (state: RootState, haulCycles: CatHaulCycle[]) => haulCycles,
   (state: RootState) => state.site.productionSummary?.loadEquipSummaries,

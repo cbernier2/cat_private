@@ -30,7 +30,7 @@ import {CatError} from '../../components/error';
 import {sitesSelectedSiteSelector} from '../../redux/sites-list/sites-selectors';
 import {DateUtils} from '../../utils/date-utils';
 
-const timestampToString = (timestamp: number | undefined) =>
+export const timestampToString = (timestamp: number | undefined) =>
   timestamp
     ? timestamp === DateUtils.MAX_TIMESTAMP_VALUE
       ? '∞'

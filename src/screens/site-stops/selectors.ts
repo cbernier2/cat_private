@@ -11,7 +11,8 @@ import {CommonConstants} from '../../api/types/cat/common';
 import {CatEquipmentSummaryWithObservations} from '../../redux/site/helpers/transformSummaries';
 import {
   EquipmentSelector,
-  StopReasonTypesSelector,
+  observationsSelector,
+  stopReasonTypesSelector,
 } from '../../redux/site/site-selectors';
 
 const selectObservationsWithReasonType = (
@@ -32,8 +33,8 @@ const selectObservationsWithReasonType = (
 
 export const currentEquipmentObservationsSelector = createSelector(
   (state: RootState, selector: EquipmentSelector) => selector(state),
-  (state: RootState) => state.site.observations,
-  StopReasonTypesSelector,
+  observationsSelector,
+  stopReasonTypesSelector,
   (equipment, observations, stopReasonTypes) =>
     selectObservationsWithReasonType(
       equipment?.id ?? '',
@@ -42,9 +43,30 @@ export const currentEquipmentObservationsSelector = createSelector(
     ),
 );
 
+export const equipmentObservationsSelector = createSelector(
+  (state: RootState, equipmentId: string | null) => equipmentId,
+  observationsSelector,
+  stopReasonTypesSelector,
+  (equipmentId, observations, stopReasonTypes) => {
+    if (equipmentId !== null) {
+      return selectObservationsWithReasonType(
+        equipmentId,
+        observations,
+        stopReasonTypes,
+      );
+    } else {
+      return selectObservationsWithReasonType(
+        CommonConstants.UNDEFINED_UUID,
+        observations,
+        stopReasonTypes,
+      ).filter(obs => obs.reasonType?.siteWide);
+    }
+  },
+);
+
 export const siteObservationsSelector = createSelector(
   (state: RootState) => state.site.observations,
-  StopReasonTypesSelector,
+  stopReasonTypesSelector,
   (observations, stopReasonTypes) =>
     selectObservationsWithReasonType(
       CommonConstants.UNDEFINED_UUID,
@@ -77,8 +99,8 @@ const siteEquipmentsSelector = createSelector(
 
 export const siteEquipmentsObservationsSelector = createSelector(
   siteEquipmentsSelector,
-  (state: RootState) => state.site.observations,
-  StopReasonTypesSelector,
+  observationsSelector,
+  stopReasonTypesSelector,
   (
     equipments,
     observations,

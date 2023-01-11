@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {ScrollView, View} from 'react-native';
 import {useTranslation} from 'react-i18next';
@@ -15,19 +15,29 @@ import {EquipmentList} from '../../components/graphs/site-stops/equipmentList/Co
 import {CatError} from '../../components/error';
 
 import {
+  equipmentObservationsSelector,
   siteEquipmentsObservationsSelector,
   siteObservationsSelector,
 } from './selectors';
 import {ScreenType} from './types';
 import {useStyles} from './styles';
+import useCatStore from '../../hooks/useCatStore';
+import {CatSelectListItems} from '../../components/select-list/types';
+import {CatSelectList} from '../../components/select-list/Component';
+import {timestampToString} from '../add-edit-observation/Screen';
 
 const SiteStopsScreen: React.FC<ScreenType> = ({navigation}) => {
   const {t} = useTranslation();
+  const store = useCatStore();
   const styles = useStyles();
   const [filters, setFilters] = useState<CatStopsFiltersType>({
     infiniteOnly: false,
     noReasonOnly: false,
   });
+  const [
+    currentObservationListEquipmentId,
+    setCurrentObservationListEquipmentId,
+  ] = useState<string | null | undefined>();
 
   const currentShift = useSelector(currentShiftLabelSelector);
   const siteStops = useSelector(siteObservationsSelector);
@@ -40,6 +50,54 @@ const SiteStopsScreen: React.FC<ScreenType> = ({navigation}) => {
 
   const addObservation = () => {
     navigation.navigate('AddEditObservation');
+  };
+
+  const currentEquipmentObservations = useMemo((): CatSelectListItems => {
+    if (currentObservationListEquipmentId === undefined) {
+      return [];
+    }
+    const state = store.getState();
+    const stopReasonTypes = state.site.stopReasonTypes;
+    const observations = equipmentObservationsSelector(
+      state,
+      currentObservationListEquipmentId,
+    );
+    return observations.map(observation => ({
+      value: observation.id,
+      label: (
+        <View style={styles.observationListItem}>
+          <CatText variant="titleMedium">
+            {
+              stopReasonTypes.find(
+                stopReason => stopReason.id === observation.observedValueId,
+              )?.name
+            }
+          </CatText>
+          <CatText
+            variant="labelLarge"
+            style={styles.observationListItemTimeText}>
+            {timestampToString(observation.startTime)} -{' '}
+            {timestampToString(observation.endTime)}
+          </CatText>
+        </View>
+      ),
+    }));
+  }, [currentObservationListEquipmentId, store, styles]);
+
+  const addEditObservation = (observationId: string | null) => {
+    if (currentObservationListEquipmentId !== undefined) {
+      navigation.navigate({
+        name: 'AddEditObservation',
+        params: {
+          equipmentId:
+            currentObservationListEquipmentId !== null
+              ? currentObservationListEquipmentId
+              : undefined,
+          observationId: observationId ?? undefined,
+        },
+      });
+      setCurrentObservationListEquipmentId(undefined);
+    }
   };
 
   return (
@@ -86,6 +144,9 @@ const SiteStopsScreen: React.FC<ScreenType> = ({navigation}) => {
                   {equipmentsGroups.map((group, i) => (
                     <SiteStopsChart
                       key={`c${i}`}
+                      onSelect={() =>
+                        setCurrentObservationListEquipmentId(null)
+                      }
                       equipments={group}
                       filters={filters}
                       siteStops={siteStops}
@@ -98,6 +159,27 @@ const SiteStopsScreen: React.FC<ScreenType> = ({navigation}) => {
           </ScrollView>
         </>
       )}
+      <CatSelectList
+        visible={currentObservationListEquipmentId !== undefined}
+        title={t('select_observation_title')}
+        list={[
+          ...currentEquipmentObservations,
+          {
+            label: (
+              <View style={styles.observationListAdd}>
+                <CatText
+                  style={styles.observationListAddText}
+                  variant="titleMedium">
+                  {t('cat.add_observation').toUpperCase()}
+                </CatText>
+              </View>
+            ),
+            value: null,
+          },
+        ]}
+        setValue={addEditObservation}
+        onDismiss={() => setCurrentObservationListEquipmentId(undefined)}
+      />
     </CatScreen>
   );
 };

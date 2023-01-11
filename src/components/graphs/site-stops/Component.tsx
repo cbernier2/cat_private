@@ -8,7 +8,7 @@ import useCatSelector from '../../../hooks/useCatSelector';
 import {
   shiftEndTimeSelector,
   shiftStartTimeSelector,
-  StopReasonTypesSelector,
+  stopReasonTypesSelector,
 } from '../../../redux/site/site-selectors';
 import {TimelineWithReasonType} from '../../../api/types/cat/production';
 
@@ -26,12 +26,18 @@ import {rowHeight, timeLabelsHeight} from './config';
 import {SiteStopsChartType} from './types';
 
 export const SiteStopsChart = (props: SiteStopsChartType) => {
-  const {equipments, filters, siteStops, withSiteStopsRow = true} = props;
+  const {
+    equipments,
+    filters,
+    siteStops,
+    withSiteStopsRow = true,
+    onSelect,
+  } = props;
 
   const {i18n} = useTranslation();
   const endTime = useCatSelector(shiftEndTimeSelector);
   const startTime = useCatSelector(shiftStartTimeSelector);
-  const stopReasons = useCatSelector(StopReasonTypesSelector);
+  const stopReasons = useCatSelector(stopReasonTypesSelector);
 
   const now = moment().valueOf();
 
@@ -133,6 +139,7 @@ export const SiteStopsChart = (props: SiteStopsChartType) => {
       </Defs>
       <Grid equipments={equipments} x_scale={x_time} y_scale={y_scale} />
       <SiteWideStops
+        onSelect={onSelect}
         background={false}
         display={withSiteStopsRow}
         equipmentId=""
@@ -143,6 +150,7 @@ export const SiteStopsChart = (props: SiteStopsChartType) => {
       {equipmentStops.map((equipment, i) => (
         <EquipmentStops
           key={i}
+          onSelect={onSelect}
           equipmentId={equipment.id}
           equipmentStops={equipment.stops}
           siteWideStops={background}
